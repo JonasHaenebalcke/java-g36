@@ -2,16 +2,21 @@ package domein;
 
 import java.util.List;
 
+import javafx.beans.property.SimpleStringProperty;
+
+
+
 public class Gebruiker {
 
+	//Geen idee hoe enum werkt (als niemand het weet kijk ik er nog eens naar)
 	private Status status;
 	private Type type;
-	private String gebruikerID;
-	private String voornaam;
-	private String familienaam;
-	private String mailadres;
-	private String gebruikersnaam;
-	private String profielfoto;
+	private SimpleStringProperty gebruikerID = new SimpleStringProperty();
+	private SimpleStringProperty voornaam = new SimpleStringProperty(); 
+	private SimpleStringProperty familienaam = new SimpleStringProperty();
+	private SimpleStringProperty mailadres = new SimpleStringProperty();
+	private SimpleStringProperty gebruikersnaam = new SimpleStringProperty();
+	private SimpleStringProperty profielfoto = new SimpleStringProperty();
 
 	public Gebruiker() {
 		// TODO - implement Gebruiker.Gebruiker
@@ -28,8 +33,13 @@ public class Gebruiker {
 	 */
 	public Gebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam, Type type,
 			Status status, String profielfoto) {
-		// TODO - implement Gebruiker.Gebruiker
-		throw new UnsupportedOperationException();
+		setStatus(status);
+		setType(type);
+		setVoornaam(voornaam);
+		setFamilienaam(familienaam);
+		setMailadres(mailadres);
+		setGebruikersnaam(gebruikersnaam);
+		setProfielfoto(profielfoto);
 	}
 
 	public Status getStatus() {
@@ -48,52 +58,65 @@ public class Gebruiker {
 		this.type = type;
 	}
 
-	public String getGebruikerID() {
-		return gebruikerID;
+	public StringProperty getGebruikerID() {
+		return gebruikerID.get();
 	}
+//	Hoort niet te veranderen?
+//	private void setGebruikerID(String gebruikerID) {
+//		this.gebruikerID = gebruikerID;
+//	}
 
-	private void setGebruikerID(String gebruikerID) {
-		this.gebruikerID = gebruikerID;
-	}
-
-	public String getVoornaam() {
-		return voornaam;
+	public StringProperty getVoornaam() {
+		return voornaam.get();
 	}
 
 	private void setVoornaam(String voornaam) {
-		this.voornaam = voornaam;
+		if (voornaam == null || voornaam.isBlank())
+			throw new NullPointerException("Voornaam mag niet leeg zijn!");
+		this.voornaam.set(voornaam);
 	}
 
-	public String getFamilienaam() {
-		return familienaam;
+	public StringProperty getFamilienaam() {
+		return familienaam.get();
 	}
 
 	private void setFamilienaam(String familienaam) {
-		this.familienaam = familienaam;
+		if (familienaam == null || familienaam.isBlank())
+			throw new NullPointerException("familienaam mag niet leeg zijn!");
+		this.familienaam.set(familienaam);
 	}
 
-	public String getMailadres() {
-		return mailadres;
+	public StringProperty getMailadres() {
+		return mailadres.get();
 	}
 
 	private void setMailadres(String mailadres) {
-		this.mailadres = mailadres;
+		if (mailadres == null || mailadres.isEmpty())
+			throw new NullPointerException("Mailadres mag niet leeg zijn!");
+		if (!mailadres.matches(
+				"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"))
+			throw new IllegalArgumentException("Email moet geldig zijn!");
+
+		this.mailadres.set(mailadres);
 	}
 
-	public String getGebruikersnaam() {
-		return gebruikersnaam;
+	public StringProperty getGebruikersnaam() {
+		return gebruikersnaam.get();
 	}
 
 	private void setGebruikersnaam(String gebruikersnaam) {
-		this.gebruikersnaam = gebruikersnaam;
+		if (gebruikersnaam == null || gebruikersnaam.isEmpty())
+			throw new NullPointerException("Gebruikersnaam mag niet leeg zijn!");
+		// Eventueel met Regex ook controleren
+		this.gebruikersnaam.set(gebruikersnaam);
 	}
 
-	public String getProfielfoto() {
-		return profielfoto;
+	public StringProperty getProfielfoto() {
+		return profielfoto.get();
 	}
 
 	private void setProfielfoto(String profielfoto) {
-		this.profielfoto = profielfoto;
+		this.profielfoto.set(profielfoto);
 	}
 
 	/**
@@ -104,15 +127,23 @@ public class Gebruiker {
 	 * @param gebruikersnaam
 	 * @param profielfoto
 	 */
-	public void wijzigGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam,
-			String type, String status, String profielfoto) {
-		// TODO - implement Gebruiker.wijzigGebruiker
-		throw new UnsupportedOperationException();
+	public void wijzigGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam, Type type,
+			Status status, String profielfoto) {
+		// Kan dit status zijn of moet ik string gebruiken, weet niet hoe dit van
+		// toepassing is op javaFX
+		setStatus(status);
+		setType(type);
+		setVoornaam(voornaam);
+		setFamilienaam(familienaam);
+		setMailadres(mailadres);
+		setGebruikersnaam(gebruikersnaam);
+		setProfielfoto(profielfoto);
+
 	}
 
-	public List<String> detailsGebruiker() {
-		// TODO - implement Gebruiker.detailsGebruiker
-		throw new UnsupportedOperationException();
-	}
+//	public List<String> detailsGebruiker() {
+//		// TODO - implement Gebruiker.detailsGebruiker
+//		throw new UnsupportedOperationException();
+//	}
 
 }
