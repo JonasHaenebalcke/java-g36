@@ -2,12 +2,11 @@ package domein;
 
 import java.util.List;
 
-public class DomeinController {
+public class GebruikerController {
 
 	private Gebruiker gebruiker;
-	private GebruikerRepository gebruikerRepo;
 
-	public List<List<String>> toonAlleGebruikers() {
+	public List<Gebruiker> toonAlleGebruikers() {
 		// TODO - implement DomeinController.toonAlleGebruikers
 		throw new UnsupportedOperationException();
 	}

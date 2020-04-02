@@ -2,11 +2,8 @@ package testen;
 
 import java.util.stream.Stream;
 
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.api.Test;
 
 import domein.Gebruiker;
 import domein.Status;
@@ -25,7 +22,7 @@ public class GebruikerTest {
 		Assertions.assertEquals("Lucas", gebruiker.getVoornaam());
 		Assertions.assertEquals("vdh", gebruiker.getFamilienaam());
 		Assertions.assertEquals("lucas@Email.com", gebruiker.getMailadres());
-		Assertions.assertEquals("123jb", gebruiker.getGebruikersnaam());
+		Assertions.assertEquals("123lv", gebruiker.getGebruikersnaam());
 		Assertions.assertEquals(Type.Gebruiker, gebruiker.getType());
 		Assertions.assertEquals(Status.Actief, gebruiker.getStatus());
 		Assertions.assertNull(gebruiker.getProfielfoto());

@@ -26,11 +26,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/ontwerpen/II/javafx/javafx-sdk-11.0.2/lib/javafx.base.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
@@ -61,11 +56,40 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/library/JPA/mysql-connector-java-8.0.18.jar"/>
-	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/library/eclipselink2.7.6/org.eclipse.persistence.antlr-2.7.6.jar"/>
-	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/library/eclipselink2.7.6/org.eclipse.persistence.asm-2.7.6.jar"/>
-	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/library/eclipselink2.7.6/org.eclipse.persistence.core-2.7.6.jar"/>
-	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/library/eclipselink2.7.6/org.eclipse.persistence.jpa-2.7.6.jar"/>
-	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/library/eclipselink2.7.6/org.eclipse.persistence.jpa.jpql-2.7.6.jar"/>
+	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/library/JPA/mysql-connector-java-8.0.18.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/library/eclipselink2.7.6/org.eclipse.persistence.antlr-2.7.6.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/library/eclipselink2.7.6/org.eclipse.persistence.asm-2.7.6.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/library/eclipselink2.7.6/org.eclipse.persistence.core-2.7.6.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/library/eclipselink2.7.6/org.eclipse.persistence.jpa-2.7.6.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/library/eclipselink2.7.6/org.eclipse.persistence.jpa.jpql-2.7.6.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
