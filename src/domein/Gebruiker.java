@@ -161,9 +161,4 @@ public class Gebruiker {
 
 	}
 
-//	public List<String> detailsGebruiker() {
-//		// TODO - implement Gebruiker.detailsGebruiker
-//		throw new UnsupportedOperationException();
-//	}
-
 }
