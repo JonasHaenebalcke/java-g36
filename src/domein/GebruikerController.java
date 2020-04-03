@@ -1,6 +1,7 @@
 package domein;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,7 +22,7 @@ public class GebruikerController {
 		gebruikerRepo = mock;
 	}
 
-	public List<Gebruiker> toonAlleGebruikers() {
+	public List<Gebruiker> GeefAlleGebruikers() {
 		if (gebruikerList == null) {
 			gebruikerList = gebruikerRepo.findAll();
 		}
@@ -39,11 +40,18 @@ public class GebruikerController {
 	public void voegToeGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam,
 			Type type, Status status, String profielfoto) {
 		try {
-			Gebruiker gebruiker = new Gebruiker(voornaam, familienaam, mailadres, gebruikersnaam, type,
-					status, profielfoto);
-			if (gebruiker == null)
-				throw new NullPointerException("Er ging iets mis bij het toevoegen van de gebruiker.");
+			Gebruiker gebruiker = new Gebruiker(voornaam, familienaam, mailadres, gebruikersnaam, type, status,
+					profielfoto);
+
+			if (GeefAlleGebruikers().stream().map(Gebruiker::getGebruikersnaam).collect(Collectors.toList())
+					.contains(gebruiker.getGebruikersnaam()))
+				throw new IllegalArgumentException("Deze gebruiker bestaat al!");
+
 			gebruikerList.add(gebruiker);
+			GenericDaoJpa.startTransaction();
+			gebruikerRepo.insert(gebruiker);
+			GenericDaoJpa.commitTransaction();
+
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
@@ -56,7 +64,12 @@ public class GebruikerController {
 	public void verwijderGebruiker(int index) {
 		try {
 			Gebruiker gebruiker = gebruikerList.get(index);
-			gebruikerList.remove();
+
+			gebruikerList.remove(gebruiker);
+			GenericDaoJpa.startTransaction();
+			gebruikerRepo.delete(gebruiker);
+			GenericDaoJpa.commitTransaction();
+
 		} catch (Exception e) {
 			System.err.println("Er ging iets fout bij het verwijderen van de gebruiker.");
 		}
@@ -73,6 +86,10 @@ public class GebruikerController {
 		} catch (Exception e) {
 			System.err.println("Er ging iets fout bij het teruggeven van de gebruiker.");
 		}
+	}
+
+	public void close() {
+		GenericDaoJpa.closePersistency();
 	}
 
 }

@@ -3,6 +3,7 @@ package domein;
 import java.util.List;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 
 
@@ -18,10 +19,7 @@ public class Gebruiker {
 	private SimpleStringProperty gebruikersnaam = new SimpleStringProperty();
 	private SimpleStringProperty profielfoto = new SimpleStringProperty();
 
-	public Gebruiker() {
-		// TODO - implement Gebruiker.Gebruiker
-		throw new UnsupportedOperationException();
-	}
+	public Gebruiker() {}
 
 	/**
 	 * 
@@ -58,16 +56,24 @@ public class Gebruiker {
 		this.type = type;
 	}
 
-	public StringProperty getGebruikerID() {
+	public String getGebruikerID() {
 		return gebruikerID.get();
+	}
+	
+	public StringProperty getGebruikerIDProperty() {
+		return gebruikerID;
 	}
 //	Hoort niet te veranderen?
 //	private void setGebruikerID(String gebruikerID) {
 //		this.gebruikerID = gebruikerID;
 //	}
 
-	public StringProperty getVoornaam() {
+	public String getVoornaam() {
 		return voornaam.get();
+	}
+	
+	public StringProperty getVoornaamProperty() {
+		return voornaam;
 	}
 
 	private void setVoornaam(String voornaam) {
@@ -76,8 +82,12 @@ public class Gebruiker {
 		this.voornaam.set(voornaam);
 	}
 
-	public StringProperty getFamilienaam() {
+	public String getFamilienaam() {
 		return familienaam.get();
+	}
+	
+	public StringProperty getFamilienaamProperty() {
+		return familienaam;
 	}
 
 	private void setFamilienaam(String familienaam) {
@@ -86,12 +96,16 @@ public class Gebruiker {
 		this.familienaam.set(familienaam);
 	}
 
-	public StringProperty getMailadres() {
+	public String getMailadres() {
 		return mailadres.get();
+	}
+	
+	public StringProperty getMailadresProperty() {
+		return mailadres;
 	}
 
 	private void setMailadres(String mailadres) {
-		if (mailadres == null || mailadres.isEmpty())
+		if (mailadres == null || mailadres.isBlank())
 			throw new NullPointerException("Mailadres mag niet leeg zijn!");
 		if (!mailadres.matches(
 				"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"))
@@ -100,8 +114,12 @@ public class Gebruiker {
 		this.mailadres.set(mailadres);
 	}
 
-	public StringProperty getGebruikersnaam() {
+	public String getGebruikersnaam() {
 		return gebruikersnaam.get();
+	}
+	
+	public StringProperty getGebruikersnaamProperty() {
+		return gebruikersnaam;
 	}
 
 	private void setGebruikersnaam(String gebruikersnaam) {
@@ -111,8 +129,12 @@ public class Gebruiker {
 		this.gebruikersnaam.set(gebruikersnaam);
 	}
 
-	public StringProperty getProfielfoto() {
+	public String getProfielfoto() {
 		return profielfoto.get();
+	}
+	
+	public StringProperty getProfielfotoProperty() {
+		return profielfoto;
 	}
 
 	private void setProfielfoto(String profielfoto) {

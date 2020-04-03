@@ -10,4 +10,9 @@ open module JpaEnJavaFxExperiment {
 	requires org.junit.jupiter.api;
 	requires mockito.junit.jupiter;
 	requires org.mockito;
+	
+	exports domein;
+	exports gui;
+	exports testen;
+	exports main;
 }
