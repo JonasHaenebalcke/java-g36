@@ -3,26 +3,37 @@ package domein;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
+import repository.GebruikerDao;
+import repository.GebruikerDaoJpa;
 import repository.GenericDao;
 import repository.GenericDaoJpa;
 
 public class GebruikerController {
 
-	private FXCollections.observableArrayList<Gebruiker> gebruikerList;
-	private GenericDao<Gebruiker> gebruikerRepo;
+	private ObservableList<Gebruiker> gebruikerObservableList;
+	private List<Gebruiker> gebruikerList;
+	private GebruikerDao gebruikerRepo;
 
-	public GebruikerController() {
-		setGebruikerRepo(new GenericDaoJpa<>(Gebruiker.class));
+	public GebruikerController() {		
+		setGebruikerRepo(new GebruikerDaoJpa());
 	}
 
-	public void setGebruikerRepo(GenericDao<Gebruiker> mock) {
+	public void setGebruikerRepo(GebruikerDao mock) {
 		gebruikerRepo = mock;
 	}
+	
+	public List<Gebruiker> GeefGebruikersObservableList() {
+		if (gebruikerObservableList == null) {
+			gebruikerObservableList = FXCollections.observableArrayList(GeefGebruikersList());
+		}
+		return gebruikerObservableList;
+	}
 
-	public List<Gebruiker> GeefAlleGebruikers() {
+	private List<Gebruiker> GeefGebruikersList() {
 		if (gebruikerList == null) {
 			gebruikerList = gebruikerRepo.findAll();
 		}
@@ -43,7 +54,7 @@ public class GebruikerController {
 			Gebruiker gebruiker = new Gebruiker(voornaam, familienaam, mailadres, gebruikersnaam, type, status,
 					profielfoto);
 
-			if (GeefAlleGebruikers().stream().map(Gebruiker::getGebruikersnaam).collect(Collectors.toList())
+			if (GeefGebruikersList().stream().map(Gebruiker::getGebruikersnaam).collect(Collectors.toList())
 					.contains(gebruiker.getGebruikersnaam()))
 				throw new IllegalArgumentException("Deze gebruiker bestaat al!");
 
@@ -85,6 +96,7 @@ public class GebruikerController {
 			return gebruiker;
 		} catch (Exception e) {
 			System.err.println("Er ging iets fout bij het teruggeven van de gebruiker.");
+			throw new EntityNotFoundException("Er ging iets fout bij het teruggeven van de gebruiker.");
 		}
 	}
 

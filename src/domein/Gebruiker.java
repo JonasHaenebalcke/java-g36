@@ -5,8 +5,6 @@ import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-
-
 public class Gebruiker {
 
 	//Geen idee hoe enum werkt (als niemand het weet kijk ik er nog eens naar)

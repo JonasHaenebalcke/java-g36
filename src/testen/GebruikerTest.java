@@ -44,7 +44,7 @@ public class GebruikerTest {
 //				Arguments.of(new String[] { "Lucas", "vdh", "lucas@Email.com", "123lv", Type.Gebruiker.toString(),
 //						Status.Actief.toString(), "?" }));
 //	}
-
+//
 //	@ParameterizedTest
 //	@MethodSource("fouteGegevens")
 //	public void gebruiker_faalt(String[] fouteGegevens) {
@@ -59,13 +59,13 @@ public class GebruikerTest {
 
 	@Test
 	public void wijzigGebruiker_niets_slaagt() {
-		gebruiker.wijzigGebruiker("Lucas", "vdh", "lucas@Email.com", "123lv", Type.Gebruiker.toString(),
-				Status.Actief.toString(), null);
+		gebruiker.wijzigGebruiker("Lucas", "vdh", "lucas@Email.com", "123lv", Type.Gebruiker,
+				Status.Actief, null);
 
 		Assertions.assertEquals("Lucas", gebruiker.getVoornaam());
 		Assertions.assertEquals("vdh", gebruiker.getFamilienaam());
 		Assertions.assertEquals("lucas@Email.com", gebruiker.getMailadres());
-		Assertions.assertEquals("123jb", gebruiker.getGebruikersnaam());
+		Assertions.assertEquals("123lv", gebruiker.getGebruikersnaam());
 		Assertions.assertEquals(Status.Actief, gebruiker.getStatus());
 		Assertions.assertEquals(Type.Gebruiker, gebruiker.getType());
 		Assertions.assertNull(gebruiker.getProfielfoto());
@@ -73,8 +73,8 @@ public class GebruikerTest {
 
 	@Test
 	public void wijzigGebruiker_Naam_slaagt() {
-		gebruiker.wijzigGebruiker("Jonas", "vdh", "lucas@Email.com", "123lv", Type.Gebruiker.toString(),
-				Status.Actief.toString(), null);
+		gebruiker.wijzigGebruiker("Jonas", "vdh", "lucas@Email.com", "123lv", Type.Gebruiker,
+				Status.Actief, null);
 
 		Assertions.assertEquals("Jonas", gebruiker.getVoornaam());
 		Assertions.assertEquals(Status.Actief, gebruiker.getStatus()); // ongewijzigd?
@@ -82,24 +82,24 @@ public class GebruikerTest {
 
 	@Test
 	public void wijzigGebruiker_Status_slaagt() {
-		gebruiker.wijzigGebruiker("Lucas", "vdh", "lucas@Email.com", "123lv", Type.Gebruiker.toString(),
-				Status.Geblokkeerd.toString(), null);
+		gebruiker.wijzigGebruiker("Lucas", "vdh", "lucas@Email.com", "123lv", Type.Gebruiker,
+				Status.Geblokkeerd, null);
 
 		Assertions.assertEquals(Status.Geblokkeerd, gebruiker.getStatus());
 	}
 
 	@Test
 	public void wijzigGebruiker_Gebruiker_slaagt() {
-		gebruiker.wijzigGebruiker("Lucas", "vdh", "lucas@Email.com", "123lv", Type.Verantwoordelijke.toString(),
-				Status.Actief.toString(), null);
+		gebruiker.wijzigGebruiker("Lucas", "vdh", "lucas@Email.com", "123lv", Type.Verantwoordelijke,
+				Status.Actief, null);
 
 		Assertions.assertEquals(Type.Verantwoordelijke, gebruiker.getType());
 	}
 
 	@Test
 	public void wijzigGebruiker_AlleParameter_slaagt() {
-		gebruiker.wijzigGebruiker("Jonas", "Behiels", "jonas@Email.be", "123jb", Type.Verantwoordelijke.toString(),
-				Status.NietActief.toString(), "test.png");
+		gebruiker.wijzigGebruiker("Jonas", "Behiels", "jonas@Email.be", "123jb", Type.Verantwoordelijke,
+				Status.NietActief, "test.png");
 
 		Assertions.assertEquals("Jonas", gebruiker.getVoornaam());
 		Assertions.assertEquals("Behiels", gebruiker.getFamilienaam());
