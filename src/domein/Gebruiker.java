@@ -7,17 +7,18 @@ import javafx.beans.property.StringProperty;
 
 public class Gebruiker {
 
-	//Geen idee hoe enum werkt (als niemand het weet kijk ik er nog eens naar)
+	// Geen idee hoe enum werkt (als niemand het weet kijk ik er nog eens naar)
 	private Status status;
 	private Type type;
 	private SimpleStringProperty gebruikerID = new SimpleStringProperty();
-	private SimpleStringProperty voornaam = new SimpleStringProperty(); 
+	private SimpleStringProperty voornaam = new SimpleStringProperty();
 	private SimpleStringProperty familienaam = new SimpleStringProperty();
 	private SimpleStringProperty mailadres = new SimpleStringProperty();
 	private SimpleStringProperty gebruikersnaam = new SimpleStringProperty();
 	private SimpleStringProperty profielfoto = new SimpleStringProperty();
 
-	public Gebruiker() {}
+	public Gebruiker() {
+	}
 
 	/**
 	 * 
@@ -57,7 +58,7 @@ public class Gebruiker {
 	public String getGebruikerID() {
 		return gebruikerID.get();
 	}
-	
+
 	public StringProperty getGebruikerIDProperty() {
 		return gebruikerID;
 	}
@@ -69,7 +70,7 @@ public class Gebruiker {
 	public String getVoornaam() {
 		return voornaam.get();
 	}
-	
+
 	public StringProperty getVoornaamProperty() {
 		return voornaam;
 	}
@@ -77,13 +78,15 @@ public class Gebruiker {
 	private void setVoornaam(String voornaam) {
 		if (voornaam == null || voornaam.isBlank())
 			throw new NullPointerException("Voornaam mag niet leeg zijn!");
+		if (!voornaam.matches("^([A-Za-zÀ-ÿ\\\\'`´’\\- ])+$"))
+			throw new IllegalArgumentException("Voornaam is ongeldig");
 		this.voornaam.set(voornaam);
 	}
 
 	public String getFamilienaam() {
 		return familienaam.get();
 	}
-	
+
 	public StringProperty getFamilienaamProperty() {
 		return familienaam;
 	}
@@ -91,13 +94,15 @@ public class Gebruiker {
 	private void setFamilienaam(String familienaam) {
 		if (familienaam == null || familienaam.isBlank())
 			throw new NullPointerException("familienaam mag niet leeg zijn!");
+		if (!familienaam.matches("^([A-Za-zÀ-ÿ\\\\'`´’\\- ])+$"))
+			throw new IllegalArgumentException("familienaam is ongeldig");
 		this.familienaam.set(familienaam);
 	}
 
 	public String getMailadres() {
 		return mailadres.get();
 	}
-	
+
 	public StringProperty getMailadresProperty() {
 		return mailadres;
 	}
@@ -115,22 +120,24 @@ public class Gebruiker {
 	public String getGebruikersnaam() {
 		return gebruikersnaam.get();
 	}
-	
+
 	public StringProperty getGebruikersnaamProperty() {
 		return gebruikersnaam;
 	}
 
 	private void setGebruikersnaam(String gebruikersnaam) {
+
 		if (gebruikersnaam == null || gebruikersnaam.isEmpty())
 			throw new NullPointerException("Gebruikersnaam mag niet leeg zijn!");
-		// Eventueel met Regex ook controleren
+		if (!gebruikersnaam.matches("[0-9]{6}[a-z]{2}"))
+			throw new IllegalArgumentException("Gebruikersnaam moet 6 cijfers gevolgd door 2 initialen");
 		this.gebruikersnaam.set(gebruikersnaam);
 	}
 
 	public String getProfielfoto() {
 		return profielfoto.get();
 	}
-	
+
 	public StringProperty getProfielfotoProperty() {
 		return profielfoto;
 	}
