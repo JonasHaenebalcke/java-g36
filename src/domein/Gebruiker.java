@@ -1,14 +1,22 @@
 package domein;
 
+import java.io.Serializable;
 import java.util.List;
-
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Gebruiker {
+@Entity
+public class Gebruiker implements Serializable {
 
 	private Status status;
 	private Type type;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private SimpleStringProperty gebruikerID = new SimpleStringProperty();
 	private SimpleStringProperty voornaam = new SimpleStringProperty();
 	private SimpleStringProperty familienaam = new SimpleStringProperty();

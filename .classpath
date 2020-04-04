@@ -6,52 +6,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/ontwerpen/II/mockitoJar/JARS_MockitoJupiter/byte-buddy-1.10.1.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/ontwerpen/II/mockitoJar/JARS_MockitoJupiter/mockito-core-3.0.0.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/ontwerpen/II/mockitoJar/JARS_MockitoJupiter/mockito-junit-jupiter-3.0.0.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/ontwerpen/II/mockitoJar/JARS_MockitoJupiter/objenesis-3.0.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/ontwerpen/II/javafx/javafx-sdk-11.0.2/lib/javafx.base.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/ontwerpen/II/javafx/javafx-sdk-11.0.2/lib/javafx.controls.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/ontwerpen/II/javafx/javafx-sdk-11.0.2/lib/javafx.fxml.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/ontwerpen/II/javafx/javafx-sdk-11.0.2/lib/javafx.graphics.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/library/eclipselink2.7.6/jakarta.persistence-2.2.3.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
@@ -61,11 +16,56 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/library/JPA/mysql-connector-java-8.0.18.jar"/>
-	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/library/eclipselink2.7.6/org.eclipse.persistence.antlr-2.7.6.jar"/>
-	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/library/eclipselink2.7.6/org.eclipse.persistence.asm-2.7.6.jar"/>
-	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/library/eclipselink2.7.6/org.eclipse.persistence.core-2.7.6.jar"/>
-	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/library/eclipselink2.7.6/org.eclipse.persistence.jpa-2.7.6.jar"/>
-	<classpathentry kind="lib" path="D:/A Lucas Map/Hogent/library/eclipselink2.7.6/org.eclipse.persistence.jpa.jpql-2.7.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Audrey Behiels/Documents/Toegepaste Informatica/Semester_3/Ontwerpen_II/MockitoJars/byte-buddy-1.10.1.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Audrey Behiels/Documents/Toegepaste Informatica/Semester_3/Ontwerpen_II/MockitoJars/mockito-core-3.0.0.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Audrey Behiels/Documents/Toegepaste Informatica/Semester_3/Ontwerpen_II/MockitoJars/mockito-junit-jupiter-3.0.0.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Audrey Behiels/Documents/Toegepaste Informatica/Semester_3/Ontwerpen_II/MockitoJars/objenesis-3.0.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Audrey Behiels/Documents/Toegepaste Informatica/Semester_3/Programmeren_III/jpa/jakarta.persistence_2.2.3.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Program Files/JavaFX_SDK/javafx-sdk-11.0.2/lib/javafx.base.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Program Files/JavaFX_SDK/javafx-sdk-11.0.2/lib/javafx.controls.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Program Files/JavaFX_SDK/javafx-sdk-11.0.2/lib/javafx.fxml.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Program Files/JavaFX_SDK/javafx-sdk-11.0.2/lib/javafx.graphics.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Program Files/jarEclipse/org.eclipse.persistence.antlr-2.7.6.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/jarEclipse/org.eclipse.persistence.asm-2.7.6.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/jarEclipse/org.eclipse.persistence.core-2.7.6.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/jarEclipse/org.eclipse.persistence.jpa.jpql-2.7.6.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/jarEclipse/org.eclipse.persistence.jpa-2.7.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Audrey Behiels/Documents/Toegepaste Informatica/Semester_3/Programmeren_III/mysql-connector-java-8.0.18.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
