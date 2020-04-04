@@ -7,7 +7,6 @@ import javafx.beans.property.StringProperty;
 
 public class Gebruiker {
 
-	// Geen idee hoe enum werkt (als niemand het weet kijk ik er nog eens naar)
 	private Status status;
 	private Type type;
 	private SimpleStringProperty gebruikerID = new SimpleStringProperty();
@@ -62,7 +61,7 @@ public class Gebruiker {
 	public StringProperty getGebruikerIDProperty() {
 		return gebruikerID;
 	}
-//	Hoort niet te veranderen?
+
 //	private void setGebruikerID(String gebruikerID) {
 //		this.gebruikerID = gebruikerID;
 //	}
@@ -111,7 +110,9 @@ public class Gebruiker {
 		if (mailadres == null || mailadres.isBlank())
 			throw new NullPointerException("Mailadres mag niet leeg zijn!");
 		if (!mailadres.matches(
-				"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"))
+//				"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+				".*@+.*\\.+.*"
+				))
 			throw new IllegalArgumentException("Email moet geldig zijn!");
 
 		this.mailadres.set(mailadres);
@@ -127,7 +128,7 @@ public class Gebruiker {
 
 	private void setGebruikersnaam(String gebruikersnaam) {
 
-		if (gebruikersnaam == null || gebruikersnaam.isEmpty())
+		if (gebruikersnaam == null || gebruikersnaam.isBlank())
 			throw new NullPointerException("Gebruikersnaam mag niet leeg zijn!");
 		if (!gebruikersnaam.matches("[0-9]{6}[a-z]{2}"))
 			throw new IllegalArgumentException("Gebruikersnaam moet 6 cijfers gevolgd door 2 initialen");
@@ -156,8 +157,6 @@ public class Gebruiker {
 	 */
 	public void wijzigGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam, Type type,
 			Status status, String profielfoto) {
-		// Kan dit status zijn of moet ik string gebruiken, weet niet hoe dit van
-		// toepassing is op javaFX
 		setStatus(status);
 		setType(type);
 		setVoornaam(voornaam);
