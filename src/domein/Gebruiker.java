@@ -2,29 +2,57 @@ package domein;
 
 import java.io.Serializable;
 import java.util.List;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+@SuppressWarnings("serial")
 @Entity
+//@NamedQuery(name= "Gebruiker. ", query = "select * from Gebruiker")
+@Table(name = "Gebruiker")
 public class Gebruiker implements Serializable {
 
+	@Transient
 	private Status status;
+	@Transient
 	private Type type;
-	
+
+	@Transient
+	private SimpleStringProperty gebruikerID = new SimpleStringProperty();
+	@Transient
+	private SimpleStringProperty gebruikersnaam = new SimpleStringProperty();
+	@Transient
+	private SimpleStringProperty voornaam = new SimpleStringProperty();
+	@Transient
+	private SimpleStringProperty familienaam = new SimpleStringProperty();
+	@Transient
+	private SimpleStringProperty mailadres = new SimpleStringProperty();
+
+	@Transient
+	private StringProperty profielfoto = new SimpleStringProperty();
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private SimpleStringProperty gebruikerID = new SimpleStringProperty();
-	private SimpleStringProperty voornaam = new SimpleStringProperty();
-	private SimpleStringProperty familienaam = new SimpleStringProperty();
-	private SimpleStringProperty mailadres = new SimpleStringProperty();
-	private SimpleStringProperty gebruikersnaam = new SimpleStringProperty();
-	private SimpleStringProperty profielfoto = new SimpleStringProperty();
+	@Column(name = "Id")
+	private String id;
+	@Column(name = "UserName")
+	private String username;
+	@Column(name = "Voornaam")
+	private String test;
+	@Column(name = "Familienaam")
+	private String naam;
+	@Column(name = "Email")
+	private String emailadres;
 
-	public Gebruiker() {
+	protected Gebruiker() {
 	}
 
 	/**
@@ -119,8 +147,7 @@ public class Gebruiker implements Serializable {
 			throw new NullPointerException("Mailadres mag niet leeg zijn!");
 		if (!mailadres.matches(
 //				"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
-				".*@+.*\\.+.*"
-				))
+				".*@+.*\\.+.*"))
 			throw new IllegalArgumentException("Email moet geldig zijn!");
 
 		this.mailadres.set(mailadres);
@@ -173,6 +200,14 @@ public class Gebruiker implements Serializable {
 		setGebruikersnaam(gebruikersnaam);
 		setProfielfoto(profielfoto);
 
+	}
+
+	@Override
+	public String toString() {
+		return "Gebruiker [status=" + status + ", type=" + type + ", gebruikerID=" + gebruikerID + ", gebruikersnaam="
+				+ gebruikersnaam + ", voornaam=" + voornaam + ", familienaam=" + familienaam + ", mailadres="
+				+ mailadres + ", profielfoto=" + profielfoto + ", id=" + id + ", username=" + username + ", test="
+				+ test + ", naam=" + naam + ", emailadres=" + emailadres + "]";
 	}
 
 }

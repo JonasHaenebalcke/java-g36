@@ -5,6 +5,7 @@
 	<persistence-unit name="ItLabTest"
 		transaction-type="RESOURCE_LOCAL">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		
 		<class>domein.Gebruiker</class>
 		
 		<properties>
@@ -12,7 +13,7 @@
 				id=jonas.haenebalcke;password=5e39b@2D8905;Integrated Security=True;Trusted_Connection=False;"; -->
 			
 			<property name="javax.persistence.jdbc.url" 
-			value="jdbc:sqlserver://40.68.196.74;databaseName=ItLabTest;integratedSecurity=true" />
+			value="jdbc:sqlserver://40.68.196.74;databaseName=ItLabTest;" />
 			<property name="javax.persistence.jdbc.user" value="jonas.haenebalcke" />
 			<property name="javax.persistence.jdbc.driver"	value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
 			<property name="javax.persistence.jdbc.password" value="5e39b@2D8905" />

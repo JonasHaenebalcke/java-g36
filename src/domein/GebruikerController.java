@@ -33,7 +33,7 @@ public class GebruikerController {
 		return gebruikerObservableList;
 	}
 
-	private List<Gebruiker> GeefGebruikersList() {
+	public List<Gebruiker> GeefGebruikersList() {
 		if (gebruikerList == null) {
 			gebruikerList = gebruikerRepo.findAll();
 		}
