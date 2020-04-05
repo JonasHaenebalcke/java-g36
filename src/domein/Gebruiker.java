@@ -5,9 +5,13 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PostLoad;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -20,11 +24,7 @@ import javafx.beans.property.StringProperty;
 @Table(name = "Gebruiker")
 public class Gebruiker implements Serializable {
 
-	@Transient
-	private Status status;
-	@Transient
-	private Type type;
-
+	// Attributen voor JavaFX
 	@Transient
 	private SimpleStringProperty gebruikerID = new SimpleStringProperty();
 	@Transient
@@ -35,22 +35,55 @@ public class Gebruiker implements Serializable {
 	private SimpleStringProperty familienaam = new SimpleStringProperty();
 	@Transient
 	private SimpleStringProperty mailadres = new SimpleStringProperty();
-
-	@Transient
+	@Transient // Dit is eigenlijk een pad, dus moet dit wel stringProp zijn?
 	private StringProperty profielfoto = new SimpleStringProperty();
 
+	// Enums
+	@Column(name = "StatusGebruiker")
+	private int statusValue;
+	@Transient
+	private Status status;
+
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "IsHoofdverantwoordelijke")
+	private Type type;
+
+	// Data die binnenkomt via databank
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "Id")
-	private String id;
+	private String gebruikerIdDb;
 	@Column(name = "UserName")
-	private String username;
+	private String gebruikersnaamDb;
 	@Column(name = "Voornaam")
-	private String test;
+	private String voornaamDb;
 	@Column(name = "Familienaam")
-	private String naam;
+	private String familienaamDb;
 	@Column(name = "Email")
-	private String emailadres;
+	private String mailadresDb;
+
+	// Methodes voor Enums te mappen
+	@PostLoad
+	public void fillTransient() {
+		this.status = Status.of(statusValue);
+
+		try {
+			if (this.type.toString().equalsIgnoreCase("Verantwoordelijke")) {
+				this.type = type.Hoofdverantwoordelijke;
+			} else {
+				this.type = type.Verantwoordelijke;
+			}
+		} catch (NullPointerException e) {
+			this.type = type.Gebruiker;
+		}
+
+	}
+
+	@PrePersist
+	public void fillPersistent() {
+		if (status != null)
+			this.statusValue = status.getStatus();
+	}
 
 	protected Gebruiker() {
 	}
@@ -65,6 +98,7 @@ public class Gebruiker implements Serializable {
 	 */
 	public Gebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam, Type type,
 			Status status, String profielfoto) {
+
 		setStatus(status);
 		setType(type);
 		setVoornaam(voornaam);
@@ -204,10 +238,11 @@ public class Gebruiker implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Gebruiker [status=" + status + ", type=" + type + ", gebruikerID=" + gebruikerID + ", gebruikersnaam="
-				+ gebruikersnaam + ", voornaam=" + voornaam + ", familienaam=" + familienaam + ", mailadres="
-				+ mailadres + ", profielfoto=" + profielfoto + ", id=" + id + ", username=" + username + ", test="
-				+ test + ", naam=" + naam + ", emailadres=" + emailadres + "]";
+		return "Gebruiker [gebruikerID=" + gebruikerID + ", gebruikersnaam=" + gebruikersnaam + ", voornaam=" + voornaam
+				+ ", familienaam=" + familienaam + ", mailadres=" + mailadres + ", profielfoto=" + profielfoto
+				+ ", statusValue=" + statusValue + ", status=" + status + ", type=" + type + ", gebruikerIdDb="
+				+ gebruikerIdDb + ", gebruikersnaamDb=" + gebruikersnaamDb + ", voornaamDb=" + voornaamDb
+				+ ", familienaamDb=" + familienaamDb + ", mailadresDb=" + mailadresDb + "]";
 	}
 
 }
