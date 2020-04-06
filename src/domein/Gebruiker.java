@@ -17,6 +17,8 @@ import javax.persistence.Transient;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import java.io.*;
+import javafx.beans.property.*;
 
 @SuppressWarnings("serial")
 @Entity
@@ -108,19 +110,21 @@ public class Gebruiker implements Serializable {
 		setProfielfoto(profielfoto);
 	}
 
+	@Transient
 	public Status getStatus() {
 		return status;
 	}
 
-	private void setStatus(Status status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 
+	@Transient
 	public Type getType() {
 		return type;
 	}
 
-	private void setType(Type type) {
+	public void setType(Type type) {
 		this.type = type;
 	}
 

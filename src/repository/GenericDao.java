@@ -1,6 +1,7 @@
 package repository;
 
 import java.util.List;
+import java.util.*;
 
 public interface GenericDao<T> {
     public List<T> findAll();  

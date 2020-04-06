@@ -11,6 +11,9 @@ import repository.GebruikerDao;
 import repository.GebruikerDaoJpa;
 import repository.GenericDao;
 import repository.GenericDaoJpa;
+import javafx.collections.*;
+import java.util.*;
+import repository.*;
 
 public class GebruikerController {
 
@@ -18,14 +21,14 @@ public class GebruikerController {
 	private List<Gebruiker> gebruikerList;
 	private GebruikerDao gebruikerRepo;
 
-	public GebruikerController() {		
+	public GebruikerController() {
 		setGebruikerRepo(new GebruikerDaoJpa());
 	}
 
 	public void setGebruikerRepo(GebruikerDao mock) {
 		gebruikerRepo = mock;
 	}
-	
+
 	public List<Gebruiker> GeefGebruikersObservableList() {
 		if (gebruikerObservableList == null) {
 			gebruikerObservableList = FXCollections.observableArrayList(GeefGebruikersList());
@@ -102,6 +105,11 @@ public class GebruikerController {
 
 	public void close() {
 		GenericDaoJpa.closePersistency();
+	}
+
+	public void wijzigGebruiker(String voornaam, String familienaam, String mailadres,
+			String gebruikersnaam, Type type, Status status, String profielfoto) {
+		throw new UnsupportedOperationException();
 	}
 
 }

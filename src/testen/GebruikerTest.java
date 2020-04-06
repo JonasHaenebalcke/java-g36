@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import domein.Gebruiker;
 import domein.Status;
 import domein.Type;
+import domein.*;
 
 public class GebruikerTest {
 
