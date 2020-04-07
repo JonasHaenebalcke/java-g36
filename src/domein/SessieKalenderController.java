@@ -9,18 +9,21 @@ import repository.SessieKalenderDao;
 public class SessieKalenderController {
 
 	private Collection<SessieKalender> sessieKalenderList;
-	private ObservableList<domein.SessieKalender> sessieKalenderObservableList;
-	private SessieKalenderDao sessieRepo;
+	private ObservableList<SessieKalender> sessieKalenderObservableList;
+	private SessieKalenderDao sessieKalenderRepo;
 
-	public SessieKalenderDao getSessieRepo() {
-		return this.sessieRepo;
+	public SessieKalenderDao getSessieKalenderRepo() {
+		return this.sessieKalenderRepo;
 	}
 
 	public void setSessieRepo(SessieKalenderDao value) {
-		this.sessieRepo = value;
+		this.sessieKalenderRepo = value;
 	}
 
 	public void wijzigSessieKalender(LocalDate startDate, LocalDate eindDate) {
+		throw new UnsupportedOperationException();
+	}
+	public void voegToeSessieKalender(LocalDate startDate, LocalDate eindDate) {
 		throw new UnsupportedOperationException();
 	}
 
