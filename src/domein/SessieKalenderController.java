@@ -3,6 +3,7 @@ package domein;
 import java.time.LocalDate;
 import java.util.*;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import repository.SessieKalenderDao;
 
@@ -20,9 +21,27 @@ public class SessieKalenderController {
 		this.sessieKalenderRepo = value;
 	}
 
+	public List<SessieKalender> geefSessieKalenderObservableList() {
+		if (sessieKalenderObservableList == null) {
+			sessieKalenderObservableList = FXCollections.observableArrayList(geefSessieKalenderList());
+		}
+		return sessieKalenderObservableList;
+	}
+
+	public Collection<SessieKalender> geefSessieKalenderList() {
+		if (sessieKalenderList == null) {
+			sessieKalenderList = sessieKalenderRepo.findAll();
+		}
+		return sessieKalenderList;
+	}
+
+	public SessieKalender geefSessieKalender(int index) {
+		throw new UnsupportedOperationException();
+	}
 	public void wijzigSessieKalender(LocalDate startDate, LocalDate eindDate) {
 		throw new UnsupportedOperationException();
 	}
+
 	public void voegToeSessieKalender(LocalDate startDate, LocalDate eindDate) {
 		throw new UnsupportedOperationException();
 	}
