@@ -12,7 +12,6 @@ public class StartUp extends Application{
 	@Override
     public void start(Stage primaryStage) {
 		GebruikerController dc = new GebruikerController();
-		
 		dc.GeefGebruikersList().forEach(g -> System.out.println(g.toString()));
         MenuController root = new MenuController(dc);
         Scene scene = new Scene(root);
