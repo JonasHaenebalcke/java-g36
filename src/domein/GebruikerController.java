@@ -51,12 +51,13 @@ public class GebruikerController {
 	 * @param gebruikersnaam
 	 * @param profielfoto
 	 */
-	public void voegToeGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam,
-			Type type, Status status, String profielfoto) {
+    public void voegToeGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam,
+            Type type, Status status, String profielfoto, String wachtwoord) {
 		try {
 			Gebruiker gebruiker = new Gebruiker(voornaam, familienaam, mailadres, gebruikersnaam, type, status,
-					profielfoto);
+					profielfoto, wachtwoord);
 			gebruiker.setRandomGebruikerID();
+			gebruiker.setPasswordHash(wachtwoord);
 
 			if (geefGebruikersList().stream().map(Gebruiker::getGebruikersnaam).collect(Collectors.toList())
 					.contains(gebruiker.getGebruikersnaam()))

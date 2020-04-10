@@ -63,6 +63,9 @@ public class GebruikersSchermController extends AnchorPane{
     
     @FXML
     private Label lblError;
+    
+    @FXML
+    private TextField inputWachtwoord;
 
     private GebruikerController dc;
     
@@ -130,7 +133,7 @@ public class GebruikersSchermController extends AnchorPane{
     @FXML
     void voegToe(ActionEvent event) {
     	try {
-    		dc.voegToeGebruiker(inputVoornaam.getText(), inputNaam.getText(), inputEmail.getText(), inputGebruikersnaam.getText(), cbxType.getValue(), cbxStatus.getValue(), "profielfoto");
+    		dc.voegToeGebruiker(inputVoornaam.getText(), inputNaam.getText(), inputEmail.getText(), inputGebruikersnaam.getText(), cbxType.getValue(), cbxStatus.getValue(), "profielfoto", inputWachtwoord.getText());
     		lvGebruikers.getSelectionModel().selectLast();
     	}catch(Exception e) {
     		lblError.setText(e.getMessage());

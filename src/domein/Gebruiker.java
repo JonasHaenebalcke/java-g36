@@ -1,6 +1,11 @@
 package domein;
 
 import java.io.Serializable;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -66,6 +71,37 @@ public class Gebruiker implements Serializable {
 	private String mailadres;
 	@Transient
 	private String profielFoto;
+	@Column(name = "NormalizedUserName")
+	private String normalizedUserName;
+	@Column(name = "NormalizedEmail")
+	private String normalizedEmail;
+	@Column(name = "EmailConfirmed")
+	private boolean emailConfirmed;
+	@Column(name = "PasswordHash")
+	private String passwordHash;
+	@Column(name = "SecurityStamp")
+	private String securityStamp;
+	@Column(name = "ConcurrencyStamp")
+	private String concurrencyStamp;
+	@Column(name = "PhoneNumber")
+	private String phoneNumber;
+	@Column(name = "PhoneNumberConfirmed")
+	private boolean phoneNumberConfirmed;
+	@Column(name = "TwoFactorEnabled")
+	private boolean twoFactorEnabled;
+	@Column(name = "LockoutEnd")
+	private LocalDateTime lockoutEnd;
+	@Column(name = "LockoutEnabled")
+	private boolean lockoutEnabled;
+	@Column(name = "AccessFailedCount")
+	private int accessFailedCount;
+	@Column(name = "Barcode")
+	private String barcode;
+	@Column(name = "AantalKeerAfwezig")
+	private int aantalKeerAfwezig;
+	@Column(name = "Type")
+	private String typeDb;
+	
 
 	// Methodes voor Enums te mappen
 	@PostLoad
@@ -100,9 +136,12 @@ public class Gebruiker implements Serializable {
 	 * @param mailadres
 	 * @param gebruikersnaam
 	 * @param profielfoto
+	 * @param wachtwoord 
+	 * @throws InvalidKeySpecException 
+	 * @throws NoSuchAlgorithmException 
 	 */
 	public Gebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam, Type type,
-			Status status, String profielfoto) {
+			Status status, String profielfoto, String wachtwoord) throws NoSuchAlgorithmException, InvalidKeySpecException {
 
 		
 		setStatus(status);
@@ -112,7 +151,36 @@ public class Gebruiker implements Serializable {
 		setMailadres(mailadres);
 		setGebruikersnaam(gebruikersnaam);
 		setProfielfoto(profielfoto);
+		
+		if(type.equals(type.Hoofdverantwoordelijke)) {
+			this.typeDb = type.Verantwoordelijke.toString();
+		}else {
+			this.typeDb = type.toString();
+		}
+		
+		this.normalizedUserName = gebruikersnaam.toUpperCase();
+		this.normalizedEmail = mailadres.toUpperCase();
+		this.emailConfirmed = false;
+		setPasswordHash(wachtwoord);
+		this.securityStamp = UUID.randomUUID().toString();
+		this.concurrencyStamp = UUID.randomUUID().toString();
+		this.phoneNumber = null;
+
+		this.phoneNumberConfirmed = false;
+		this.twoFactorEnabled = false;
+		this.lockoutEnd = null;
+		this.lockoutEnabled = false;
+		this.accessFailedCount = 0;
+		this.barcode = barcode;
+		this.aantalKeerAfwezig = aantalKeerAfwezig;
+		
+		
 	}
+
+	
+
+
+
 
 	@Transient
 	public Status getStatus() {
@@ -141,7 +209,7 @@ public class Gebruiker implements Serializable {
 //	}
 
 	public void setRandomGebruikerID() {
-		if(gebruikerID == null)
+		if (gebruikerID == null)
 			this.gebruikerID = UUID.randomUUID().toString();
 	}
 
@@ -242,7 +310,146 @@ public class Gebruiker implements Serializable {
 		setMailadres(mailadres);
 		setGebruikersnaam(gebruikersnaam);
 		setProfielfoto(profielfoto);
+	}
 
+	public int getStatusValue() {
+		return statusValue;
+	}
+
+	public void setStatusValue(int statusValue) {
+		this.statusValue = statusValue;
+	}
+
+	public String getProfielFoto() {
+		return profielFoto;
+	}
+
+	public void setProfielFoto(String profielFoto) {
+		this.profielFoto = profielFoto;
+	}
+
+	public String getNormalizedUserName() {
+		return normalizedUserName;
+	}
+
+	public void setNormalizedUserName(String normalizedUserName) {
+		this.normalizedUserName = normalizedUserName;
+	}
+
+	public String getNormalizedEmail() {
+		return normalizedEmail;
+	}
+
+	public void setNormalizedEmail(String normalizedEmail) {
+		this.normalizedEmail = normalizedEmail;
+	}
+
+	public String getPasswordHash() {
+		return passwordHash;
+	}
+
+	public void setPasswordHash(String passwordHash) throws NoSuchAlgorithmException, InvalidKeySpecException {
+		this.passwordHash = PasswordHasher.getPasswordHash(passwordHash);
+	}
+
+	public String getSecurityStamp() {
+		return securityStamp;
+	}
+
+	public void setSecurityStamp(String securityStamp) {
+		this.securityStamp = securityStamp;
+	}
+
+	public String getConcurrencyStamp() {
+		return concurrencyStamp;
+	}
+
+	public void setConcurrencyStamp(String concurrencyStamp) {
+		this.concurrencyStamp = concurrencyStamp;
+	}
+
+	public boolean isEmailConfirmed() {
+		return emailConfirmed;
+	}
+
+	public void setEmailConfirmed(boolean emailConfirmed) {
+		this.emailConfirmed = emailConfirmed;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public boolean isPhoneNumberConfirmed() {
+		return phoneNumberConfirmed;
+	}
+
+	public void setPhoneNumberConfirmed(boolean phoneNumberConfirmed) {
+		this.phoneNumberConfirmed = phoneNumberConfirmed;
+	}
+
+	public boolean isTwoFactorEnabled() {
+		return twoFactorEnabled;
+	}
+
+	public void setTwoFactorEnabled(boolean twoFactorEnabled) {
+		this.twoFactorEnabled = twoFactorEnabled;
+	}
+
+	public LocalDateTime getLockoutEnd() {
+		return lockoutEnd;
+	}
+
+	public void setLockoutEnd(LocalDateTime lockoutEnd) {
+		this.lockoutEnd = lockoutEnd;
+	}
+
+	public boolean isLockoutEnabled() {
+		return lockoutEnabled;
+	}
+
+	public void setLockoutEnabled(boolean lockoutEnabled) {
+		this.lockoutEnabled = lockoutEnabled;
+	}
+
+	public int getAccessFailedCount() {
+		return accessFailedCount;
+	}
+
+	public void setAccessFailedCount(int accessFailedCount) {
+		this.accessFailedCount = accessFailedCount;
+	}
+
+	public String getBarcode() {
+		return barcode;
+	}
+
+	public void setBarcode(String barcode) {
+		this.barcode = barcode;
+	}
+
+	public int getAantalKeerAfwezig() {
+		return aantalKeerAfwezig;
+	}
+
+	public void setAantalKeerAfwezig(int aantalKeerAfwezig) {
+		this.aantalKeerAfwezig = aantalKeerAfwezig;
+	}
+
+	public String getTypeDb() {
+		return typeDb;
+	}
+
+	public void setTypeDb(String typeDb) {
+		this.typeDb = typeDb;
+	}
+
+	public void setGebruikerID(String gebruikerID) {
+		this.gebruikerID = gebruikerID;
 	}
 
 	@Override

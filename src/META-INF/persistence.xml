@@ -17,7 +17,7 @@
 			<property name="javax.persistence.jdbc.user" value="jonas.haenebalcke" />
 			<property name="javax.persistence.jdbc.driver"	value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
 			<property name="javax.persistence.jdbc.password" value="5e39b@2D8905" />
-			<property name="javax.persistence.schema-generation.database.action" value="drop" />
+			<property name="javax.persistence.schema-generation.database.action" value="dropx²" />
 		</properties>
 	</persistence-unit>
 </persistence>
