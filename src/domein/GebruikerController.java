@@ -29,14 +29,14 @@ public class GebruikerController {
 		gebruikerRepo = mock;
 	}
 
-	public List<Gebruiker> GeefGebruikersObservableList() {
+	public ObservableList<Gebruiker> geefGebruikersObservableList() {
 		if (gebruikerObservableList == null) {
-			gebruikerObservableList = FXCollections.observableArrayList(GeefGebruikersList());
+			gebruikerObservableList = FXCollections.observableArrayList(geefGebruikersList());
 		}
 		return gebruikerObservableList;
 	}
 
-	public List<Gebruiker> GeefGebruikersList() {
+	public List<Gebruiker> geefGebruikersList() {
 		if (gebruikerList == null) {
 			gebruikerList = gebruikerRepo.findAll();
 		}
@@ -56,8 +56,9 @@ public class GebruikerController {
 		try {
 			Gebruiker gebruiker = new Gebruiker(voornaam, familienaam, mailadres, gebruikersnaam, type, status,
 					profielfoto);
+			gebruiker.setRandomGebruikerID();
 
-			if (GeefGebruikersList().stream().map(Gebruiker::getGebruikersnaam).collect(Collectors.toList())
+			if (geefGebruikersList().stream().map(Gebruiker::getGebruikersnaam).collect(Collectors.toList())
 					.contains(gebruiker.getGebruikersnaam()))
 				throw new IllegalArgumentException("Deze gebruiker bestaat al!");
 

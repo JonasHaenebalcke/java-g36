@@ -84,9 +84,10 @@ public class GebruikersSchermController extends AnchorPane{
     }
     
     public void initialize() {
-    	ObservableList<Gebruiker> items = (ObservableList<Gebruiker>) dc.GeefGebruikersObservableList();
+//    	ObservableList<Gebruiker> items = dc.geefGebruikersObservableList();
+//    	 lvGebruikers.setItems(items);
         //dc.GeefGebruikersList().forEach(g -> items.add(g/*g.getFamilienaam()+" "+g.getVoornaam()*/));
-        lvGebruikers.setItems(items);
+        lvGebruikers.setItems(dc.geefGebruikersObservableList());
         
         cbxStatus.setItems( FXCollections.observableArrayList(Status.values()));
         cbxType.setItems( FXCollections.observableArrayList(Type.values()));
@@ -100,7 +101,7 @@ public class GebruikersSchermController extends AnchorPane{
     void pasGebruikerAan(ActionEvent event) {
     	try {
     		dc.wijzigGebruiker(inputVoornaam.getText(), inputNaam.getText(), inputEmail.getText(), inputGebruikersnaam.getText(), cbxType.getValue(), cbxStatus.getValue(), "profielfoto");
-	    }catch(Exception e) {
+    	}catch(Exception e) {
 			lblError.setText(e.getMessage());
 		}
     }
@@ -108,7 +109,10 @@ public class GebruikersSchermController extends AnchorPane{
     @FXML
     void verwijderGebruiker(ActionEvent event) {
     	try {
-    		dc.verwijderGebruiker(Integer.parseInt(lvGebruikers.getSelectionModel().getSelectedItem().getGebruikerID())); //is nu null
+    		int index = lvGebruikers.getSelectionModel().getSelectedIndex();
+    		
+    		lvGebruikers.getSelectionModel().clearSelection();
+    		dc.verwijderGebruiker(index); //is nu null
 	    }catch(Exception e) {
 			lblError.setText(e.getMessage());
 		}
@@ -127,6 +131,7 @@ public class GebruikersSchermController extends AnchorPane{
     void voegToe(ActionEvent event) {
     	try {
     		dc.voegToeGebruiker(inputVoornaam.getText(), inputNaam.getText(), inputEmail.getText(), inputGebruikersnaam.getText(), cbxType.getValue(), cbxStatus.getValue(), "profielfoto");
+    		lvGebruikers.getSelectionModel().selectLast();
     	}catch(Exception e) {
     		lblError.setText(e.getMessage());
     	}
@@ -142,8 +147,9 @@ public class GebruikersSchermController extends AnchorPane{
             btnPasAan.setVisible(true);
             btnVerwijder.setVisible(true);
             inputVoornaam.setText(newValue.getVoornaam());
-            inputEmail.setText(newValue.getFamilienaam());
-            inputGebruikersnaam.setText(newValue.getGebruikerID());
+            inputNaam.setText(newValue.getFamilienaam());
+            inputEmail.setText(newValue.getMailadres());
+            inputGebruikersnaam.setText(newValue.getGebruikersnaam());
             cbxStatus.setValue(newValue.getStatus());
             cbxType.setValue(newValue.getType());
         }

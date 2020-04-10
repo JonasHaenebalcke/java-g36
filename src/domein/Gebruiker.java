@@ -2,6 +2,7 @@ package domein;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,18 +28,18 @@ import javafx.beans.property.*;
 public class Gebruiker implements Serializable {
 
 	// Attributen voor JavaFX
-	@Transient
-	private SimpleStringProperty gebruikerID = new SimpleStringProperty();
-	@Transient
-	private SimpleStringProperty gebruikersnaam = new SimpleStringProperty();
-	@Transient
-	private SimpleStringProperty voornaam = new SimpleStringProperty();
-	@Transient
-	private SimpleStringProperty familienaam = new SimpleStringProperty();
-	@Transient
-	private SimpleStringProperty mailadres = new SimpleStringProperty();
-	@Transient // Dit is eigenlijk een pad, dus moet dit wel stringProp zijn?
-	private StringProperty profielfoto = new SimpleStringProperty();
+//	@Transient
+//	private SimpleStringProperty gebruikerID = new SimpleStringProperty();
+//	@Transient
+//	private SimpleStringProperty gebruikersnaam = new SimpleStringProperty();
+//	@Transient
+//	private SimpleStringProperty voornaam = new SimpleStringProperty();
+//	@Transient
+//	private SimpleStringProperty familienaam = new SimpleStringProperty();
+//	@Transient
+//	private SimpleStringProperty mailadres = new SimpleStringProperty();
+//	@Transient // Dit is eigenlijk een pad, dus moet dit wel stringProp zijn?
+//	private StringProperty profielfoto = new SimpleStringProperty();
 
 	// Enums
 	@Column(name = "StatusGebruiker")
@@ -52,17 +53,19 @@ public class Gebruiker implements Serializable {
 
 	// Data die binnenkomt via databank
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "Id")
-	private String gebruikerIdDb;
+	private String gebruikerID;
 	@Column(name = "UserName")
-	private String gebruikersnaamDb;
+	private String gebruikersnaam;
 	@Column(name = "Voornaam")
-	private String voornaamDb;
+	private String voornaam;
 	@Column(name = "Familienaam")
-	private String familienaamDb;
+	private String familienaam;
 	@Column(name = "Email")
-	private String mailadresDb;
+	private String mailadres;
+	@Transient
+	private String profielFoto;
 
 	// Methodes voor Enums te mappen
 	@PostLoad
@@ -101,6 +104,7 @@ public class Gebruiker implements Serializable {
 	public Gebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam, Type type,
 			Status status, String profielfoto) {
 
+		
 		setStatus(status);
 		setType(type);
 		setVoornaam(voornaam);
@@ -129,56 +133,57 @@ public class Gebruiker implements Serializable {
 	}
 
 	public String getGebruikerID() {
-		return gebruikerID.get();
-	}
-
-	public StringProperty getGebruikerIDProperty() {
 		return gebruikerID;
 	}
 
-//	private void setGebruikerID(String gebruikerID) {
-//		this.gebruikerID = gebruikerID;
+//	public StringProperty getGebruikerIDProperty() {
+//		return gebruikerID;
 //	}
 
-	public String getVoornaam() {
-		return voornaam.get();
+	public void setRandomGebruikerID() {
+		if(gebruikerID == null)
+			this.gebruikerID = UUID.randomUUID().toString();
 	}
 
-	public StringProperty getVoornaamProperty() {
+	public String getVoornaam() {
 		return voornaam;
 	}
+
+//	public StringProperty getVoornaamProperty() {
+//		return voornaam;
+//	}
 
 	private void setVoornaam(String voornaam) {
 		if (voornaam == null || voornaam.isBlank())
 			throw new NullPointerException("Voornaam mag niet leeg zijn!");
 		if (!voornaam.matches("^([A-Za-zÀ-ÿ\\\\'`´’\\- ])+$"))
 			throw new IllegalArgumentException("Voornaam is ongeldig");
-		this.voornaam.set(voornaam);
+		this.voornaam = voornaam;
 	}
 
 	public String getFamilienaam() {
-		return familienaam.get();
-	}
-
-	public StringProperty getFamilienaamProperty() {
 		return familienaam;
 	}
+
+//	public StringProperty getFamilienaamProperty() {
+//		return familienaam;
+//	}
 
 	private void setFamilienaam(String familienaam) {
 		if (familienaam == null || familienaam.isBlank())
 			throw new NullPointerException("familienaam mag niet leeg zijn!");
 		if (!familienaam.matches("^([A-Za-zÀ-ÿ\\\\'`´’\\- ])+$"))
 			throw new IllegalArgumentException("familienaam is ongeldig");
-		this.familienaam.set(familienaam);
+		this.familienaam = familienaam;
 	}
 
 	public String getMailadres() {
-		return mailadres.get();
-	}
-
-	public StringProperty getMailadresProperty() {
 		return mailadres;
 	}
+
+//	public StringProperty getMailadresProperty() {
+//		return mailadres;
+//	}
 
 	private void setMailadres(String mailadres) {
 		if (mailadres == null || mailadres.isBlank())
@@ -188,16 +193,16 @@ public class Gebruiker implements Serializable {
 				".*@+.*\\.+.*"))
 			throw new IllegalArgumentException("Email moet geldig zijn!");
 
-		this.mailadres.set(mailadres);
+		this.mailadres = mailadres;
 	}
 
 	public String getGebruikersnaam() {
-		return gebruikersnaam.get();
-	}
-
-	public StringProperty getGebruikersnaamProperty() {
 		return gebruikersnaam;
 	}
+
+//	public StringProperty getGebruikersnaamProperty() {
+//		return gebruikersnaam;
+//	}
 
 	private void setGebruikersnaam(String gebruikersnaam) {
 
@@ -205,19 +210,19 @@ public class Gebruiker implements Serializable {
 			throw new NullPointerException("Gebruikersnaam mag niet leeg zijn!");
 		if (!gebruikersnaam.matches("[0-9]{6}[a-z]{2}"))
 			throw new IllegalArgumentException("Gebruikersnaam moet 6 cijfers gevolgd door 2 initialen");
-		this.gebruikersnaam.set(gebruikersnaam);
+		this.gebruikersnaam = gebruikersnaam;
 	}
 
 	public String getProfielfoto() {
-		return profielfoto.get();
+		return profielFoto;
 	}
 
-	public StringProperty getProfielfotoProperty() {
-		return profielfoto;
-	}
+//	public StringProperty getProfielfotoProperty() {
+//		return profielfoto;
+//	}
 
 	private void setProfielfoto(String profielfoto) {
-		this.profielfoto.set(profielfoto);
+		this.profielFoto = profielfoto;
 	}
 
 	/**
@@ -242,11 +247,18 @@ public class Gebruiker implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Gebruiker [gebruikerID=" + gebruikerID + ", gebruikersnaam=" + gebruikersnaam + ", voornaam=" + voornaam
-				+ ", familienaam=" + familienaam + ", mailadres=" + mailadres + ", profielfoto=" + profielfoto
-				+ ", statusValue=" + statusValue + ", status=" + status + ", type=" + type + ", gebruikerIdDb="
-				+ gebruikerIdDb + ", gebruikersnaamDb=" + gebruikersnaamDb + ", voornaamDb=" + voornaamDb
-				+ ", familienaamDb=" + familienaamDb + ", mailadresDb=" + mailadresDb + "]";
+		return "Gebruiker [status=" + status + ", type=" + type + ", gebruikerID=" + gebruikerID + ", gebruikersnaam="
+				+ gebruikersnaam + ", voornaam=" + voornaam + ", familienaam=" + familienaam + ", mailadres="
+				+ mailadres + ", profielFoto=" + profielFoto + "]";
 	}
+
+//	@Override
+//	public String toString() {
+//		return "Gebruiker [gebruikerID=" + gebruikerID + ", gebruikersnaam=" + gebruikersnaam + ", voornaam=" + voornaam
+//				+ ", familienaam=" + familienaam + ", mailadres=" + mailadres + ", profielfoto=" + profielfoto
+//				+ ", statusValue=" + statusValue + ", status=" + status + ", type=" + type + ", gebruikerIdDb="
+//				+ gebruikerIdDb + ", gebruikersnaamDb=" + gebruikersnaamDb + ", voornaamDb=" + voornaamDb
+//				+ ", familienaamDb=" + familienaamDb + ", mailadresDb=" + mailadresDb + "]";
+//	}
 
 }
