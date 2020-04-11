@@ -3,7 +3,7 @@ import java.io.IOException;
 import domein.Gebruiker;
 import domein.GebruikerController;
 import domein.Status;
-import domein.Type;
+import domein.TypeGebruiker;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -37,7 +37,7 @@ public class GebruikersSchermController extends AnchorPane{
     private Label lblTitle;
 
     @FXML
-    private ComboBox<Type> cbxType;
+    private ComboBox<TypeGebruiker> cbxType;
 
     @FXML
     private ComboBox<Status> cbxStatus;
@@ -93,7 +93,7 @@ public class GebruikersSchermController extends AnchorPane{
         lvGebruikers.setItems(dc.geefGebruikersObservableList());
         
         cbxStatus.setItems( FXCollections.observableArrayList(Status.values()));
-        cbxType.setItems( FXCollections.observableArrayList(Type.values()));
+        cbxType.setItems( FXCollections.observableArrayList(TypeGebruiker.values()));
         lvGebruikers();
         btnPasAan.setVisible(false);
         btnVerwijder.setVisible(false);

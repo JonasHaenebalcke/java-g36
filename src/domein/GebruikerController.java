@@ -1,6 +1,5 @@
 package domein;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
@@ -52,7 +51,7 @@ public class GebruikerController {
 	 * @param profielfoto
 	 */
     public void voegToeGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam,
-            Type type, Status status, String profielfoto, String wachtwoord) {
+            TypeGebruiker type, Status status, String profielfoto, String wachtwoord) {
 		try {
 			Gebruiker gebruiker = new Gebruiker(voornaam, familienaam, mailadres, gebruikersnaam, type, status,
 					profielfoto, wachtwoord);
@@ -66,7 +65,11 @@ public class GebruikerController {
 			gebruikerList.add(gebruiker);
 			GenericDaoJpa.startTransaction();
 			gebruikerRepo.insert(gebruiker);
+			for (Gebruiker g : gebruikerList) {
+				g.fillPersistent();
+			}
 			GenericDaoJpa.commitTransaction();
+			
 
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -109,7 +112,7 @@ public class GebruikerController {
 		GenericDaoJpa.closePersistency();
 	}
 
-	public void wijzigGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam, Type type,
+	public void wijzigGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam, TypeGebruiker type,
 			Status status, String profielfoto) {
 		// werkt niet 
 		/*GeefGebruikersList().stream().filter(g -> g.getGebruikersnaam().equals(gebruikersnaam))

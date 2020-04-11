@@ -54,7 +54,7 @@ public class Gebruiker implements Serializable {
 
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "IsHoofdverantwoordelijke")
-	private Type type;
+	private TypeGebruiker typeGebruiker;
 
 	// Data die binnenkomt via databank
 	@Id
@@ -108,15 +108,18 @@ public class Gebruiker implements Serializable {
 	public void fillTransient() {
 		this.status = Status.of(statusValue);
 
-		try {
-			if (this.type.toString().equalsIgnoreCase("Verantwoordelijke")) {
-				this.type = type.Hoofdverantwoordelijke;
-			} else {
-				this.type = type.Verantwoordelijke;
-			}
-		} catch (NullPointerException e) {
-			this.type = type.Gebruiker;
+		if(this.typeGebruiker == null) {
+			this.typeGebruiker = typeGebruiker.Gebruiker;
 		}
+//		try {
+//			if (this.typeGebruiker.toString().equalsIgnoreCase("Verantwoordelijke")) {
+//				this.typeGebruiker = typeGebruiker.Hoofdverantwoordelijke;
+//			} else {
+//				this.typeGebruiker = typeGebruiker.Verantwoordelijke;
+//			}
+//		} catch (NullPointerException e) {
+//			this.typeGebruiker = typeGebruiker.Gebruiker;
+//		}
 
 	}
 
@@ -124,6 +127,9 @@ public class Gebruiker implements Serializable {
 	public void fillPersistent() {
 		if (status != null)
 			this.statusValue = status.getStatus();
+		
+		if (this.typeGebruiker == typeGebruiker.Gebruiker)
+			this.typeGebruiker = null;
 	}
 
 	protected Gebruiker() {
@@ -140,7 +146,7 @@ public class Gebruiker implements Serializable {
 	 * @throws InvalidKeySpecException 
 	 * @throws NoSuchAlgorithmException 
 	 */
-	public Gebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam, Type type,
+	public Gebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam, TypeGebruiker type,
 			Status status, String profielfoto, String wachtwoord) throws NoSuchAlgorithmException, InvalidKeySpecException {
 
 		
@@ -160,7 +166,7 @@ public class Gebruiker implements Serializable {
 		
 		this.normalizedUserName = gebruikersnaam.toUpperCase();
 		this.normalizedEmail = mailadres.toUpperCase();
-		this.emailConfirmed = false;
+		this.emailConfirmed = true;
 		setPasswordHash(wachtwoord);
 		this.securityStamp = UUID.randomUUID().toString();
 		this.concurrencyStamp = UUID.randomUUID().toString();
@@ -192,12 +198,12 @@ public class Gebruiker implements Serializable {
 	}
 
 	@Transient
-	public Type getType() {
-		return type;
+	public TypeGebruiker getType() {
+		return typeGebruiker;
 	}
 
-	public void setType(Type type) {
-		this.type = type;
+	public void setType(TypeGebruiker type) {
+		this.typeGebruiker = type;
 	}
 
 	public String getGebruikerID() {
@@ -301,7 +307,7 @@ public class Gebruiker implements Serializable {
 	 * @param gebruikersnaam
 	 * @param profielfoto
 	 */
-	public void wijzigGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam, Type type,
+	public void wijzigGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam, TypeGebruiker type,
 			Status status, String profielfoto) {
 		setStatus(status);
 		setType(type);
@@ -454,7 +460,7 @@ public class Gebruiker implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Gebruiker [status=" + status + ", type=" + type + ", gebruikerID=" + gebruikerID + ", gebruikersnaam="
+		return "Gebruiker [status=" + status + ", type=" + typeGebruiker + ", gebruikerID=" + gebruikerID + ", gebruikersnaam="
 				+ gebruikersnaam + ", voornaam=" + voornaam + ", familienaam=" + familienaam + ", mailadres="
 				+ mailadres + ", profielFoto=" + profielFoto + "]";
 	}
