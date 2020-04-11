@@ -87,6 +87,9 @@ public class GebruikerController {
 			gebruikerList.remove(gebruiker);
 			GenericDaoJpa.startTransaction();
 			gebruikerRepo.delete(gebruiker);
+			for (Gebruiker g : gebruikerList) {
+				g.fillPersistent();
+			}
 			GenericDaoJpa.commitTransaction();
 
 		} catch (Exception e) {

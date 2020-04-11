@@ -114,7 +114,7 @@ public class GebruikersSchermController extends AnchorPane{
     	try {
     		int index = lvGebruikers.getSelectionModel().getSelectedIndex();
     		
-    		lvGebruikers.getSelectionModel().clearSelection();
+    		//lvGebruikers.getSelectionModel().clearSelection(); 
     		dc.verwijderGebruiker(index); //is nu null
 	    }catch(Exception e) {
 			lblError.setText(e.getMessage());
