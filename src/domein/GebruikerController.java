@@ -50,8 +50,8 @@ public class GebruikerController {
 	 * @param gebruikersnaam
 	 * @param profielfoto
 	 */
-    public void voegToeGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam,
-            TypeGebruiker type, Status status, String profielfoto, String wachtwoord) {
+	public void voegToeGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam,
+			TypeGebruiker type, Status status, String profielfoto, String wachtwoord) {
 		try {
 			Gebruiker gebruiker = new Gebruiker(voornaam, familienaam, mailadres, gebruikersnaam, type, status,
 					profielfoto, wachtwoord);
@@ -69,7 +69,6 @@ public class GebruikerController {
 				g.fillPersistent();
 			}
 			GenericDaoJpa.commitTransaction();
-			
 
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -115,30 +114,16 @@ public class GebruikerController {
 		GenericDaoJpa.closePersistency();
 	}
 
-	public void wijzigGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam, TypeGebruiker type,
+	public void wijzigGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam, Type type,
 			Status status, String profielfoto) {
-		// werkt niet 
-		/*GeefGebruikersList().stream().filter(g -> g.getGebruikersnaam().equals(gebruikersnaam))
-		.map(Gebruiker::wijzigGebruiker(voornaam, familienaam, mailadres, gebruikersnaam, type, status, profielfoto));			
-		*/		
+		
+		 for (Gebruiker gebruiker : gebruikerList) {
+				  if (gebruiker.getGebruikersnaam().equals(gebruikersnaam)) {
+				  
+				  gebruiker.wijzigGebruiker(voornaam, familienaam, mailadres, gebruikersnaam,
+				  type, status, profielfoto);
+				  }
+		 }
 	}
-		/*
-		 * 
-		// for (Gebruiker gebruiker : gebruikerList) {
-		 * if (!gebruiker.getGebruikersnaam().equals(gebruikersnaam) ||
-		 * !gebruiker.getVoornaam().equals(voornaam) ||
-		 * !gebruiker.getFamilienaam().equals(familienaam) ||
-		 * !gebruiker.getMailadres().equals(mailadres) ||
-		 * !gebruiker.getStatus().equals(status) || !gebruiker.getType().equals(type) ||
-		 * !gebruiker.getProfielfoto().equals(profielfoto)) {
-		 * 
-		 * gebruiker.wijzigGebruiker(voornaam, familienaam, mailadres, gebruikersnaam,
-		 * type, status, profielfoto); }
-		 */	
-	// gebruikerList.forEach(g -> g.getGebruikersnaam().equals(gebruikersnaam));
-	/*if(gebruiker.getGebruikersnaam().equals(gebruikersnaam)) { // gebruikersnaam is uniek 
-	 * gebruiker.wijzigGebruiker(voornaam, familienaam, mailadres, gebruikersnaam, type, status, profielfoto); 
-	 * }
-	 */
 	
 }
