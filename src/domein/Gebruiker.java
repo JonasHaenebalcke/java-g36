@@ -460,9 +460,11 @@ public class Gebruiker implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Gebruiker [status=" + status + ", type=" + typeGebruiker + ", gebruikerID=" + gebruikerID + ", gebruikersnaam="
+		return gebruikersnaam +", "+ voornaam +", "+ familienaam +", "+ mailadres +", "+ typeGebruiker +", "+ status ;
+		
+		/*return "Gebruiker [status=" + status + ", type=" + typeGebruiker + ", gebruikerID=" + gebruikerID + ", gebruikersnaam="
 				+ gebruikersnaam + ", voornaam=" + voornaam + ", familienaam=" + familienaam + ", mailadres="
-				+ mailadres + ", profielFoto=" + profielFoto + "]";
+				+ mailadres + ", profielFoto=" + profielFoto + "]";*/
 	}
 
 //	@Override

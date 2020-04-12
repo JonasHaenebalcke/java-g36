@@ -114,7 +114,7 @@ public class GebruikerController {
 		GenericDaoJpa.closePersistency();
 	}
 
-	public void wijzigGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam, Type type,
+	public void wijzigGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam, TypeGebruiker type,
 			Status status, String profielfoto) {
 		
 		 for (Gebruiker gebruiker : gebruikerList) {
