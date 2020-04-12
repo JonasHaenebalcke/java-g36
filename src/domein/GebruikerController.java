@@ -9,9 +9,9 @@ import repository.GebruikerDaoJpa;
 import repository.GenericDaoJpa;
 import javafx.collections.*;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
+//import java.beans.PropertyChangeEvent;
+//import java.beans.PropertyChangeListener;
+//import java.beans.PropertyChangeSupport;
 import java.util.*;
 
 public class GebruikerController {
@@ -63,6 +63,7 @@ public class GebruikerController {
 				throw new IllegalArgumentException("Deze gebruiker bestaat al!");
 
 			gebruikerList.add(gebruiker);
+			gebruikerObservableList.add(gebruiker);
 			GenericDaoJpa.startTransaction();
 			gebruikerRepo.insert(gebruiker);
 			for (Gebruiker g : gebruikerList) {
@@ -84,6 +85,7 @@ public class GebruikerController {
 			Gebruiker gebruiker = gebruikerList.get(index);
 
 			gebruikerList.remove(gebruiker);
+			gebruikerObservableList.remove(gebruiker);
 			GenericDaoJpa.startTransaction();
 			gebruikerRepo.delete(gebruiker);
 			for (Gebruiker g : gebruikerList) {

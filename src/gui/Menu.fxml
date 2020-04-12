@@ -5,11 +5,16 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="889.0" stylesheets="@stylesheet.css" type="AnchorPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <VBox prefHeight="466.0" prefWidth="208.0" style="-fx-background-color: #0081c5#0081c5;">
+
+<fx:root stylesheets="@stylesheet.css" type="BorderPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <AnchorPane fx:id="scherm" prefHeight="500.0" prefWidth="700.0" />
+   </center>
+   <left>
+      <VBox prefHeight="500.0" prefWidth="200.0" style="-fx-background-color: #0081c5#0081c5;" BorderPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -24,6 +29,5 @@
             <Button id="btnMenu" fx:id="btnSessiesBeheren" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#sessiesBeheren" prefHeight="50.0" prefWidth="200.0" text="Sessies beheren" textFill="WHITE" />
          </children>
       </VBox>
-      <AnchorPane fx:id="scherm" layoutX="200.0" layoutY="1.0" prefHeight="466.0" prefWidth="690.0" />
-   </children>
+   </left>
 </fx:root>

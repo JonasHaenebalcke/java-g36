@@ -93,17 +93,18 @@ public class GebruikersSchermController extends AnchorPane {
 //    	 lvGebruikers.setItems(items);
         //dc.GeefGebruikersList().forEach(g -> items.add(g/*g.getFamilienaam()+" "+g.getVoornaam()*/));
        
-    	 lvGebruikers.setItems(dc.geefGebruikersObservableList());
-        
+    	initializeList();
         cbxStatus.setItems( FXCollections.observableArrayList(Status.values()));
         cbxType.setItems( FXCollections.observableArrayList(TypeGebruiker.values()));
      
         lvGebruikers();
-         btnPasAan.setVisible(false);
+        btnPasAan.setVisible(false);
         btnVerwijder.setVisible(false);
         lblTitle.setText("Voeg gebruiker toe");
-        inputWachtwoord.setVisible(false);
-        lblWachtwoord.setVisible(false);
+        inputWachtwoord.setVisible(true);
+        lblWachtwoord.setVisible(true);
+        btnVoegToe.setVisible(true);
+        btnGebruikerToevoegen.setVisible(true);
         
         
     }
@@ -113,6 +114,7 @@ public class GebruikersSchermController extends AnchorPane {
     	try {    		
     		dc.wijzigGebruiker(inputVoornaam.getText(), inputNaam.getText(), inputEmail.getText(), inputGebruikersnaam.getText(), cbxType.getValue(), cbxStatus.getValue(), "profielfoto");
     		System.out.println("!!gebruiker aangepast"); // staat er in om te testen of se knop werk, mag later weg
+    		initializeList();
     	}catch(Exception e) {
 			lblError.setText(e.getMessage());
 		}
@@ -124,8 +126,8 @@ public class GebruikersSchermController extends AnchorPane {
     		int index = lvGebruikers.getSelectionModel().getSelectedIndex();
     		
     		//lvGebruikers.getSelectionModel().clearSelection(); 
-    		dc.verwijderGebruiker(index); //is nu null
-    	
+    		dc.verwijderGebruiker(index);
+    		initializeList();
     		System.out.println("!!gebruiker verwijderd"); // staat er in om te testen of se knop werk, mag later weg
 	    }catch(Exception e) {
 			lblError.setText(e.getMessage());
@@ -145,7 +147,7 @@ public class GebruikersSchermController extends AnchorPane {
     
     @FXML
      void voegToe(ActionEvent event) {
-    	btnGebruikerToevoegen.setVisible(false);
+    	//btnGebruikerToevoegen.setVisible(false); Doet btn gewoon weg na je een gebruiker toevoegt?
     	try {
     		if(!inputVoornaam.getText().isBlank() && !inputNaam.getText().isBlank() 
     				&& !inputEmail.getText().isBlank() && !inputGebruikersnaam.getText().isBlank() && 
@@ -155,7 +157,7 @@ public class GebruikersSchermController extends AnchorPane {
     			dc.voegToeGebruiker(inputVoornaam.getText(), inputNaam.getText(), inputEmail.getText(), inputGebruikersnaam.getText(), cbxType.getValue(), cbxStatus.getValue(), "profielfoto", inputWachtwoord.getText());
     			//lvGebruikers.getSelectionModel().selectLast();
     			System.out.println("!!gebruiker toegevoegd"); // staat er in om te testen of se knop werk, mag later weg
-    			
+    			initializeList();
     			//Stream.of(inputVoornaam, inputEmail, inputNaam, inputGebruikersnaam, inputWachtwoord).forEach(TextField::clear);
     			
     		} 
@@ -177,6 +179,9 @@ public class GebruikersSchermController extends AnchorPane {
         	btnVoegToe.setVisible(false);
             btnPasAan.setVisible(true);
             btnVerwijder.setVisible(true);
+            inputWachtwoord.setVisible(false);
+            lblWachtwoord.setVisible(false);
+            btnGebruikerToevoegen.setVisible(true);
             inputVoornaam.setText(newValue.getVoornaam());
             inputNaam.setText(newValue.getFamilienaam());
             inputEmail.setText(newValue.getMailadres());
@@ -190,6 +195,9 @@ public class GebruikersSchermController extends AnchorPane {
     
     }
 
+    void initializeList() {
+    	lvGebruikers.setItems(dc.geefGebruikersObservableList());
+    }
     
 }
 
