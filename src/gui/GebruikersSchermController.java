@@ -7,7 +7,6 @@ import domein.TypeGebruiker;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
-public class GebruikersSchermController extends AnchorPane{
+public class GebruikersSchermController extends AnchorPane {
 
     @FXML
     private Button btnVoegToe;
@@ -63,6 +62,8 @@ public class GebruikersSchermController extends AnchorPane{
     
     @FXML
     private Label lblError;
+    @FXML
+    private Label lblWachtwoord;
     
     @FXML
     private TextField inputWachtwoord;
@@ -74,67 +75,94 @@ public class GebruikersSchermController extends AnchorPane{
     }
     
     public GebruikersSchermController(GebruikerController dc) {
+    	this.dc = dc;
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("GebruikersScherm.fxml"));
         loader.setRoot(this);
         loader.setController(this);
-        this.dc = dc;
-
+        
         try {
             loader.load();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+        initialize();
     }
     
-    public void initialize() {
+     public void initialize() {
 //    	ObservableList<Gebruiker> items = dc.geefGebruikersObservableList();
 //    	 lvGebruikers.setItems(items);
         //dc.GeefGebruikersList().forEach(g -> items.add(g/*g.getFamilienaam()+" "+g.getVoornaam()*/));
-        lvGebruikers.setItems(dc.geefGebruikersObservableList());
+       
+    	 lvGebruikers.setItems(dc.geefGebruikersObservableList());
         
         cbxStatus.setItems( FXCollections.observableArrayList(Status.values()));
         cbxType.setItems( FXCollections.observableArrayList(TypeGebruiker.values()));
+     
         lvGebruikers();
-        btnPasAan.setVisible(false);
+         btnPasAan.setVisible(false);
         btnVerwijder.setVisible(false);
         lblTitle.setText("Voeg gebruiker toe");
+        inputWachtwoord.setVisible(false);
+        lblWachtwoord.setVisible(false);
+        
+        
     }
     
     @FXML
-    void pasGebruikerAan(ActionEvent event) {
-    	try {
+     private void pasGebruikerAan(ActionEvent event) {
+    	try {    		
     		dc.wijzigGebruiker(inputVoornaam.getText(), inputNaam.getText(), inputEmail.getText(), inputGebruikersnaam.getText(), cbxType.getValue(), cbxStatus.getValue(), "profielfoto");
+    		System.out.println("!!gebruiker aangepast"); // staat er in om te testen of se knop werk, mag later weg
     	}catch(Exception e) {
 			lblError.setText(e.getMessage());
 		}
     }
 
     @FXML
-    void verwijderGebruiker(ActionEvent event) {
+     private void verwijderGebruiker(ActionEvent event) {
     	try {
     		int index = lvGebruikers.getSelectionModel().getSelectedIndex();
     		
     		//lvGebruikers.getSelectionModel().clearSelection(); 
     		dc.verwijderGebruiker(index); //is nu null
+    	
+    		System.out.println("!!gebruiker verwijderd"); // staat er in om te testen of se knop werk, mag later weg
 	    }catch(Exception e) {
 			lblError.setText(e.getMessage());
-		}
+			System.out.print(e.getMessage());
+	    }
     }
     
     @FXML
     void voegGebruikerToe(ActionEvent event) {
-	    	lblTitle.setText("Voeg gebruiker toe");
+ 	    	lblTitle.setText("Voeg gebruiker toe");
 	    	btnVoegToe.setVisible(true);
 	    	btnVerwijder.setVisible(false);
 	    	btnPasAan.setVisible(false);
-	    
+	    	inputWachtwoord.setVisible(true);
+	    	lblWachtwoord.setVisible(true);
     }
     
     @FXML
-    void voegToe(ActionEvent event) {
+     void voegToe(ActionEvent event) {
+    	btnGebruikerToevoegen.setVisible(false);
     	try {
-    		dc.voegToeGebruiker(inputVoornaam.getText(), inputNaam.getText(), inputEmail.getText(), inputGebruikersnaam.getText(), cbxType.getValue(), cbxStatus.getValue(), "profielfoto", inputWachtwoord.getText());
-    		lvGebruikers.getSelectionModel().selectLast();
+    		if(!inputVoornaam.getText().isBlank() && !inputNaam.getText().isBlank() 
+    				&& !inputEmail.getText().isBlank() && !inputGebruikersnaam.getText().isBlank() && 
+    				/*!cbxType.getValue().equals("Type") && !cbxStatus.getValue().equals("Status") &&*/
+    				!inputWachtwoord.getText().isBlank()) {
+    			
+    			dc.voegToeGebruiker(inputVoornaam.getText(), inputNaam.getText(), inputEmail.getText(), inputGebruikersnaam.getText(), cbxType.getValue(), cbxStatus.getValue(), "profielfoto", inputWachtwoord.getText());
+    			//lvGebruikers.getSelectionModel().selectLast();
+    			System.out.println("!!gebruiker toegevoegd"); // staat er in om te testen of se knop werk, mag later weg
+    			
+    			//Stream.of(inputVoornaam, inputEmail, inputNaam, inputGebruikersnaam, inputWachtwoord).forEach(TextField::clear);
+    			
+    		} 
+    		else {
+    			lblError.setText("Tekstvakken mogen niet leeg zijn");
+    		}
+    	   
     	}catch(Exception e) {
     		lblError.setText(e.getMessage());
     	}
@@ -155,9 +183,14 @@ public class GebruikersSchermController extends AnchorPane{
             inputGebruikersnaam.setText(newValue.getGebruikersnaam());
             cbxStatus.setValue(newValue.getStatus());
             cbxType.setValue(newValue.getType());
+          
         }
     });
+ 
+    
     }
+
+    
 }
 
 

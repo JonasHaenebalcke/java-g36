@@ -4,22 +4,22 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import repository.GebruikerDao;
 import repository.GebruikerDaoJpa;
-import repository.GenericDao;
 import repository.GenericDaoJpa;
 import javafx.collections.*;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.*;
-import repository.*;
 
 public class GebruikerController {
 
 	private ObservableList<Gebruiker> gebruikerObservableList;
 	private List<Gebruiker> gebruikerList;
 	private GebruikerDao gebruikerRepo;
-
+	
 	public GebruikerController() {
 		setGebruikerRepo(new GebruikerDaoJpa());
 	}
@@ -119,11 +119,15 @@ public class GebruikerController {
 		
 		 for (Gebruiker gebruiker : gebruikerList) {
 				  if (gebruiker.getGebruikersnaam().equals(gebruikersnaam)) {
-				  
+				
+				  GenericDaoJpa.startTransaction();
 				  gebruiker.wijzigGebruiker(voornaam, familienaam, mailadres, gebruikersnaam,
 				  type, status, profielfoto);
+				  gebruikerRepo.update(gebruiker);
+				  GenericDaoJpa.commitTransaction();
 				  }
 		 }
 	}
-	
+
+
 }

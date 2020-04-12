@@ -10,42 +10,47 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GebruikersSchermController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="459.0" prefWidth="711.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GebruikersSchermController">
    <children>
-      <AnchorPane prefHeight="400.0" prefWidth="300.0">
+      <AnchorPane prefHeight="459.0" prefWidth="347.0">
          <children>
-            <Button fx:id="btnGebruikerToevoegen" layoutX="89.0" layoutY="362.0" mnemonicParsing="false" onAction="#voegGebruikerToe" text="Gebruiker toevoegen" />
-            <Label layoutX="114.0" layoutY="23.0" text="Gebruikers">
+            <Button fx:id="btnGebruikerToevoegen" layoutX="110.0" layoutY="407.0" mnemonicParsing="false" onAction="#voegGebruikerToe" text="Gebruiker toevoegen" />
+            <Label layoutX="131.0" layoutY="22.0" text="Gebruikers">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <ListView fx:id="lvGebruikers" layoutX="31.0" layoutY="56.0" prefHeight="295.0" prefWidth="250.0" />
+            <ListView fx:id="lvGebruikers" layoutX="31.0" layoutY="56.0" prefHeight="328.0" prefWidth="303.0" />
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="300.0" prefHeight="400.0" prefWidth="300.0">
+      <AnchorPane layoutX="352.0" prefHeight="459.0" prefWidth="360.0">
          <children>
-            <TextField fx:id="inputNaam" layoutX="15.0" layoutY="257.0" prefHeight="27.0" prefWidth="133.0" promptText="Naam" />
-               <TextField fx:id="inputWachtwoord" layoutX="0" layoutY="240.0" prefHeight="15.0" prefWidth="133.0" promptText="wachtwoord" />
-            <TextField fx:id="inputVoornaam" layoutX="160.0" layoutY="257.0" prefHeight="27.0" prefWidth="126.0" promptText="Voornaam" />
-            <Label fx:id="lblTitle" layoutX="75.0" layoutY="24.0" text="Gebruiker aanpassen">
+            <TextField fx:id="inputNaam" layoutX="33.0" layoutY="272.0" prefHeight="27.0" prefWidth="133.0" promptText="Naam" />
+               <TextField fx:id="inputWachtwoord" layoutX="33.0" layoutY="319.0" prefHeight="15.0" prefWidth="133.0" promptText="wachtwoord" />
+            <TextField fx:id="inputVoornaam" layoutX="178.0" layoutY="272.0" prefHeight="27.0" prefWidth="126.0" promptText="Voornaam" />
+            <Label fx:id="lblTitle" layoutX="85.0" layoutY="22.0" text="Gebruiker aanpassen">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <ComboBox fx:id="cbxType" layoutX="15.0" layoutY="297.0" prefHeight="27.0" prefWidth="133.0" promptText="Type" />
-            <ComboBox fx:id="cbxStatus" layoutX="160.0" layoutY="297.0" prefHeight="27.0" prefWidth="126.0" promptText="Status" />
-            <ImageView fx:id="imageProfielfoto" fitHeight="105.0" fitWidth="126.0" layoutX="101.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
+            <ComboBox fx:id="cbxType" layoutX="33.0" layoutY="357.0" prefHeight="27.0" prefWidth="133.0" promptText="Type" />
+            <ComboBox fx:id="cbxStatus" layoutX="178.0" layoutY="357.0" prefHeight="27.0" prefWidth="126.0" promptText="Status" />
+            <ImageView fx:id="imageProfielfoto" fitHeight="105.0" fitWidth="126.0" layoutX="116.0" layoutY="58.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/default-user.png" />
                </image>
             </ImageView>
-            <Button fx:id="btnPasAan" layoutX="82.0" layoutY="341.0" mnemonicParsing="false" onAction="#pasGebruikerAan" text="Pas aan" />
-            <Button fx:id="btnVerwijder" layoutX="168.0" layoutY="341.0" mnemonicParsing="false" onAction="#verwijderGebruiker" text="Verwijder" />
-            <Button fx:id="btnVoegToe" layoutX="119.0" layoutY="341.0" mnemonicParsing="false" onAction="#voegToe" text="Voeg Toe" />
-            <TextField fx:id="inputEmail" layoutX="15.0" layoutY="217.0" prefHeight="27.0" prefWidth="270.0" promptText="E-mail" />
-            <TextField fx:id="inputGebruikersnaam" layoutX="15.0" layoutY="178.0" prefHeight="27.0" prefWidth="270.0" promptText="Gebruikersnaam" />
-            <Label fx:id="lblError" layoutX="14.0" layoutY="376.0" prefHeight="17.0" prefWidth="270.0" textFill="RED" />
+            <Button fx:id="btnPasAan" layoutX="47.0" layoutY="407.0" mnemonicParsing="false" onAction="#pasGebruikerAan" text="Pas aan" />
+            <Button fx:id="btnVerwijder" layoutX="223.0" layoutY="407.0" mnemonicParsing="false" onAction="#verwijderGebruiker" text="Verwijder" />
+            <Button fx:id="btnVoegToe" layoutX="129.0" layoutY="407.0" mnemonicParsing="false" onAction="#voegToe" text="Voeg Toe" />
+            <TextField fx:id="inputEmail" layoutX="33.0" layoutY="223.0" prefHeight="27.0" prefWidth="270.0" promptText="E-mail" />
+            <TextField fx:id="inputGebruikersnaam" layoutX="33.0" layoutY="175.0" prefHeight="27.0" prefWidth="270.0" promptText="Gebruikersnaam" />
+            <Label fx:id="lblError" layoutX="33.0" layoutY="10.0" prefHeight="17.0" prefWidth="270.0" textFill="RED" />
+            <Label fx:id="lblWachtwoord" layoutX="33.0" layoutY="302.0" text="Wachtwoord" />
+            <Label layoutX="33.0" layoutY="255.0" text="Familienaam" />
+            <Label layoutX="178.0" layoutY="255.0" text="Voornaam" />
+            <Label layoutX="33.0" layoutY="206.0" text="mailadres" />
+            <Label layoutX="32.0" layoutY="158.0" text="Gebruikersnaam" />
          </children>
       </AnchorPane>
    </children>
