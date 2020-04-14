@@ -7,7 +7,8 @@
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 		
 		<class>domein.Gebruiker</class>
-		
+		<class>domein.SessieKalender</class>
+
 		<properties>
 			<!-- var connectionString = @"Server=40.68.196.74;Database=ItLabTest;user 
 				id=jonas.haenebalcke;password=5e39b@2D8905;Integrated Security=True;Trusted_Connection=False;"; -->
