@@ -131,7 +131,7 @@ public class GebruikersSchermController extends AnchorPane {
 		try {
 			int index = lvGebruikers.getSelectionModel().getSelectedIndex();
 
-			lvGebruikers.getSelectionModel().clearSelection();
+			//lvGebruikers.getSelectionModel().clearSelection();
 			dc.verwijderGebruiker(index);
 			initializeList();
 			Stream.of(inputVoornaam, inputEmail, inputNaam, inputGebruikersnaam, inputWachtwoord)

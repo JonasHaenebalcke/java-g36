@@ -4,12 +4,17 @@ import java.time.LocalDate;
 import java.util.*;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import javafx.collections.ObservableList;
-
+@Entity
+@Table(name = "SessieKalender")
 public class SessieKalender {
 
+	@Transient
 	private Collection<Sessie> sessieLijst;
 	@Id
 	@Column(name = "Id")

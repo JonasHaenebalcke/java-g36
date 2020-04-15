@@ -1,5 +1,8 @@
 package main;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 import domein.GebruikerController;
 import domein.SessieKalenderController;
 import gui.GebruikersSchermController;
@@ -14,8 +17,8 @@ public class StartUp extends Application{
     public void start(Stage primaryStage) {
 		GebruikerController dc = new GebruikerController();
 		dc.geefGebruikersList().forEach(g -> System.out.println(g.toString()));
-		//SessieKalenderController skc = new SessieKalenderController();
-		//skc.geefSessieKalenderList().forEach(g -> System.out.println(g.toString()));
+		SessieKalenderController skc = new SessieKalenderController();
+		skc.geefSessieKalenderList().forEach(g -> System.out.println(g.toString()));
         MenuController root = new MenuController(dc);
         Scene scene = new Scene(root);
         scene.getStylesheets().add("gui/stylesheet.css");

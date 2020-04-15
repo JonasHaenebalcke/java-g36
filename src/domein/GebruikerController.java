@@ -123,6 +123,9 @@ public class GebruikerController {
 				  if (gebruiker.getGebruikersnaam().equals(gebruikersnaam)) {
 				
 				  GenericDaoJpa.startTransaction();
+				  for (Gebruiker g : gebruikerList) {
+						g.fillPersistent();
+					}
 				  gebruiker.wijzigGebruiker(voornaam, familienaam, mailadres, gebruikersnaam,
 				  type, status, profielfoto);
 				  gebruikerRepo.update(gebruiker);
