@@ -1,5 +1,7 @@
 package testen;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.params.provider.Arguments;
@@ -18,7 +20,12 @@ public class GebruikerTest {
 	Gebruiker gebruiker;
 
 	public GebruikerTest() {
-		gebruiker = new Gebruiker("Lucas", "vdh", "lucas@Email.com", "123456lv", TypeGebruiker.Gebruiker, Status.Actief, null);
+		try {
+			gebruiker = new Gebruiker("Lucas", "vdh", "lucas@Email.com", "123456lv", TypeGebruiker.Gebruiker, Status.Actief, null, "123");
+		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Test
