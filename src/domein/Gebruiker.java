@@ -188,7 +188,6 @@ public class Gebruiker implements Serializable {
 
 
 
-	@Transient
 	public Status getStatus() {
 		return status;
 	}
@@ -197,7 +196,6 @@ public class Gebruiker implements Serializable {
 		this.status = status;
 	}
 
-	@Transient
 	public TypeGebruiker getType() {
 		return typeGebruiker;
 	}

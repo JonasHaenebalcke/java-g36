@@ -70,6 +70,9 @@ public class GebruikerController {
 				g.fillPersistent();
 			}
 			GenericDaoJpa.commitTransaction();
+			for (Gebruiker g : gebruikerList) {
+				g.fillTransient();
+			}
 
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -90,8 +93,12 @@ public class GebruikerController {
 			gebruikerRepo.delete(gebruiker);
 			for (Gebruiker g : gebruikerList) {
 				g.fillPersistent();
+				
 			}
 			GenericDaoJpa.commitTransaction();
+			for (Gebruiker g : gebruikerList) {
+				g.fillTransient();
+			}
 
 		} catch (Exception e) {
 			System.err.println("Er ging iets fout bij het verwijderen van de gebruiker.");
@@ -130,6 +137,9 @@ public class GebruikerController {
 				  type, status, profielfoto);
 				  gebruikerRepo.update(gebruiker);
 				  GenericDaoJpa.commitTransaction();
+				  for (Gebruiker g : gebruikerList) {
+						g.fillTransient();
+					}
 				  }
 		 }
 	}

@@ -15,7 +15,7 @@
    <children>
       <AnchorPane prefHeight="500.0" prefWidth="350.0">
          <children>
-            <Button fx:id="btnGebruikerToevoegen" layoutX="124.0" layoutY="436.0" mnemonicParsing="false" onAction="#voegGebruikerToe" text="Gebruiker toevoegen" />
+            <Button fx:id="btnGebruikerToevoegen" layoutX="124.0" layoutY="436.0" mnemonicParsing="false" onAction="#voegGebruikerToeBtn" text="Gebruiker toevoegen" />
             <Label layoutX="150.0" layoutY="35.0" text="Gebruikers">
                <font>
                   <Font size="18.0" />
@@ -46,7 +46,7 @@
             </ImageView>
             <Button fx:id="btnPasAan" layoutX="51.0" layoutY="435.0" mnemonicParsing="false" onAction="#pasGebruikerAan" text="Pas aan" />
             <Button fx:id="btnVerwijder" layoutX="227.0" layoutY="435.0" mnemonicParsing="false" onAction="#verwijderGebruiker" text="Verwijder" />
-            <Button fx:id="btnVoegToe" layoutX="134.0" layoutY="435.0" mnemonicParsing="false" onAction="#voegToe" text="Voeg Toe" />
+            <Button fx:id="btnVoegToe" layoutX="134.0" layoutY="435.0" mnemonicParsing="false" onAction="#voegGebruikerToe" text="Voeg Toe" />
             <Label fx:id="lblError" layoutX="36.0" layoutY="472.0" prefHeight="17.0" prefWidth="270.0" textFill="RED" />
             <Label fx:id="lblWachtwoord" layoutX="39.0" layoutY="330.0" text="Wachtwoord" />
             <Label layoutX="39.0" layoutY="186.0" text="Familienaam" />

@@ -145,7 +145,7 @@ public class GebruikersSchermController extends AnchorPane {
 	}
 
 	@FXML
-	void voegGebruikerToe(ActionEvent event) {
+	void voegGebruikerToeBtn(ActionEvent event) {
 		lblTitle.setText("Voeg gebruiker toe");
 		Stream.of(inputVoornaam, inputEmail, inputNaam, inputGebruikersnaam, inputWachtwoord)
 				.forEach(TextField::clear);
@@ -161,19 +161,19 @@ public class GebruikersSchermController extends AnchorPane {
 	}
 
 	@FXML
-	void voegToe(ActionEvent event) {
+	void voegGebruikerToe(ActionEvent event) {
 		try {
 			if (!inputVoornaam.getText().isBlank() && !inputNaam.getText().isBlank() && !inputEmail.getText().isBlank()
 					&& !inputGebruikersnaam.getText().isBlank() && !inputWachtwoord.getText().isBlank()
 				/*&&!cbxType.getValue().equals("Type") && !cbxStatus.getValue().equals("Status")*/ ) {
 				
+			
 					dc.voegToeGebruiker(inputVoornaam.getText(), inputNaam.getText(), inputEmail.getText(),
 							inputGebruikersnaam.getText(), cbxType.getValue(), cbxStatus.getValue(), "profielfoto",
 							inputWachtwoord.getText());
 					lvGebruikers.getSelectionModel().selectLast();
 					
 					initializeList();
-					cbxType.setValue(cbxType.getValue());
 					inputGebruikersnaam.setEditable(false);
 					
 			} else {
