@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -26,15 +27,18 @@
       <AnchorPane layoutX="350.0" prefHeight="500.0" prefWidth="350.0">
          <children>
             <TextField fx:id="inputNaam" layoutX="39.0" layoutY="203.0" prefHeight="27.0" prefWidth="133.0" promptText="Naam" />
-               <TextField fx:id="inputWachtwoord" layoutX="39.0" layoutY="347.0" prefHeight="27.0" prefWidth="270.0" promptText="wachtwoord" />
             <TextField fx:id="inputVoornaam" layoutX="184.0" layoutY="203.0" prefHeight="27.0" prefWidth="126.0" promptText="Voornaam" />
+            <TextField fx:id="inputEmail" layoutX="39.0" layoutY="251.0" prefHeight="27.0" prefWidth="270.0" promptText="E-mail" />
+            <TextField fx:id="inputGebruikersnaam" layoutX="39.0" layoutY="300.0" prefHeight="27.0" prefWidth="270.0" promptText="Gebruikersnaam" />
+            <PasswordField fx:id="inputWachtwoord" layoutX="39.0" layoutY="347.0" prefHeight="27.0" prefWidth="270.0" promptText="wachtwoord" />
+            <ComboBox fx:id="cbxType" layoutX="39.0" layoutY="385.0" prefHeight="27.0" prefWidth="133.0" promptText="Type" />
+            <ComboBox fx:id="cbxStatus" layoutX="184.0" layoutY="385.0" prefHeight="27.0" prefWidth="126.0" promptText="Status" />
+             
             <Label fx:id="lblTitle" layoutX="88.0" layoutY="37.0" text="Gebruiker aanpassen">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <ComboBox fx:id="cbxType" layoutX="39.0" layoutY="385.0" prefHeight="27.0" prefWidth="133.0" promptText="Type" />
-            <ComboBox fx:id="cbxStatus" layoutX="184.0" layoutY="385.0" prefHeight="27.0" prefWidth="126.0" promptText="Status" />
             <ImageView fx:id="imageProfielfoto" fitHeight="105.0" fitWidth="126.0" layoutX="116.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/default-user.png" />
@@ -43,8 +47,6 @@
             <Button fx:id="btnPasAan" layoutX="51.0" layoutY="435.0" mnemonicParsing="false" onAction="#pasGebruikerAan" text="Pas aan" />
             <Button fx:id="btnVerwijder" layoutX="227.0" layoutY="435.0" mnemonicParsing="false" onAction="#verwijderGebruiker" text="Verwijder" />
             <Button fx:id="btnVoegToe" layoutX="134.0" layoutY="435.0" mnemonicParsing="false" onAction="#voegToe" text="Voeg Toe" />
-            <TextField fx:id="inputEmail" layoutX="39.0" layoutY="251.0" prefHeight="27.0" prefWidth="270.0" promptText="E-mail" />
-            <TextField fx:id="inputGebruikersnaam" layoutX="39.0" layoutY="300.0" prefHeight="27.0" prefWidth="270.0" promptText="Gebruikersnaam" />
             <Label fx:id="lblError" layoutX="36.0" layoutY="472.0" prefHeight="17.0" prefWidth="270.0" textFill="RED" />
             <Label fx:id="lblWachtwoord" layoutX="39.0" layoutY="330.0" text="Wachtwoord" />
             <Label layoutX="39.0" layoutY="186.0" text="Familienaam" />
