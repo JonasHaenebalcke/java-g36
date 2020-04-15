@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Date;
 
 import domein.GebruikerController;
+import domein.PopulateDB;
 import domein.SessieKalenderController;
 import gui.GebruikersSchermController;
 import gui.MenuController;
@@ -15,6 +16,8 @@ public class StartUp extends Application{
 	
 	@Override
     public void start(Stage primaryStage) {
+		PopulateDB populatedb = new PopulateDB();
+		populatedb.run();
 		GebruikerController dc = new GebruikerController();
 		dc.geefGebruikersList().forEach(g -> System.out.println(g.toString()));
 		SessieKalenderController skc = new SessieKalenderController();

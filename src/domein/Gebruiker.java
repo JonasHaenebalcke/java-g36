@@ -180,7 +180,7 @@ public class Gebruiker implements Serializable {
 		this.barcode = barcode;
 		this.aantalKeerAfwezig = aantalKeerAfwezig;
 		
-		
+		setRandomGebruikerID();
 	}
 
 	

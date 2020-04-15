@@ -55,8 +55,8 @@ public class GebruikerController {
 		try {
 			Gebruiker gebruiker = new Gebruiker(voornaam, familienaam, mailadres, gebruikersnaam, type, status,
 					profielfoto, wachtwoord);
-			gebruiker.setRandomGebruikerID();
-			gebruiker.setPasswordHash(wachtwoord);
+//			gebruiker.setRandomGebruikerID();
+//			gebruiker.setPasswordHash(wachtwoord);
 
 			if (geefGebruikersList().stream().map(Gebruiker::getGebruikersnaam).collect(Collectors.toList())
 					.contains(gebruiker.getGebruikersnaam()))

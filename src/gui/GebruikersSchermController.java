@@ -147,6 +147,8 @@ public class GebruikersSchermController extends AnchorPane {
 		lblTitle.setText("Voeg gebruiker toe");
 		Stream.of(inputVoornaam, inputEmail, inputNaam, inputGebruikersnaam, inputWachtwoord)
 				.forEach(TextField::clear);
+		cbxStatus.setValue(Status.Actief);
+		cbxType.setValue(TypeGebruiker.Gebruiker);
 		inputGebruikersnaam.setEditable(true);
 		btnVoegToe.setVisible(true);
 		btnVerwijder.setVisible(false);
