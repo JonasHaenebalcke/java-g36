@@ -5,6 +5,8 @@ import java.util.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -17,6 +19,7 @@ public class SessieKalender {
 	@Transient
 	private Collection<Sessie> sessieLijst;
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "Id")
 	private int sessieKalenderID;
 	@Column(name = "startDate")
@@ -91,6 +94,12 @@ public class SessieKalender {
 			throw new NullPointerException("Sessie lijst is leeg.");
 		else
 			return (ObservableList<Sessie>) sessieLijst;
+	}
+
+	@Override
+	public String toString() {
+		return "SessieKalender [sessieLijst=" + sessieLijst + ", sessieKalenderID=" + sessieKalenderID + ", startDate="
+				+ startDate + ", eindDate=" + eindDate + "]";
 	}
 	
 }

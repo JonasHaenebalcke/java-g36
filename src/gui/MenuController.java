@@ -54,8 +54,11 @@ public class MenuController extends BorderPane{
         }
 
         @FXML
-        void sessiekalenderBeheren(ActionEvent event) {
-
+        void sessiekalenderBeheren(ActionEvent event) throws IOException {
+        	Node node;
+        	FXMLLoader loader = new FXMLLoader(getClass().getResource("SessieKalender.fxml"));
+        	node = (Node) loader.load();
+        	scherm.getChildren().setAll(node);
         }
 
         @FXML
