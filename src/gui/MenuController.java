@@ -2,6 +2,7 @@ package gui;
 
 import java.io.IOException;
 import domein.GebruikerController;
+import domein.SessieKalenderController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,8 +21,10 @@ public class MenuController extends BorderPane{
 	    @FXML
 	    private Button btnGebruikersBeheren;
         
-	    GebruikerController dc;
-        public MenuController(GebruikerController dc) {
+	    public GebruikerController dc;
+	    public SessieKalenderController skc;
+	    
+        public MenuController(GebruikerController dc, SessieKalenderController skc) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Menu.fxml"));
             loader.setRoot(this);
             loader.setController(this);
@@ -32,6 +35,7 @@ public class MenuController extends BorderPane{
                 throw new RuntimeException(ex);
             }
             this.dc = dc;
+            this.skc = skc;
         }
         
         public void initialize() {
@@ -55,10 +59,8 @@ public class MenuController extends BorderPane{
 
         @FXML
         void sessiekalenderBeheren(ActionEvent event) throws IOException {
-        	Node node;
-        	FXMLLoader loader = new FXMLLoader(getClass().getResource("SessieKalender.fxml"));
-        	node = (Node) loader.load();
-        	scherm.getChildren().setAll(node);
+        	SessieKalenderSchermController skcScherm = new SessieKalenderSchermController(this.skc);
+        	scherm.getChildren().setAll(skcScherm);
         }
 
         @FXML

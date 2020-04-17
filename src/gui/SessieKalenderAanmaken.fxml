@@ -5,7 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="307.0" prefWidth="452.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SessieKalenderSchermController">
+<fx:root prefHeight="307.0" prefWidth="452.0" type="AnchorPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane layoutX="-192.0" layoutY="-194.0" prefHeight="200.0" prefWidth="200.0" />
       <Label layoutX="91.0" layoutY="107.0" text="Start Datum" />
@@ -15,4 +15,4 @@
       <Button fx:id="btnVoegSessieKalenderToe" layoutX="192.0" layoutY="224.0" mnemonicParsing="false" onAction="#voegSessieKalenderToe" text="Voeg Toe" />
       <Label fx:id="lblErrorVoegSessieKalenderToe" layoutX="212.0" layoutY="189.0" text="Label" textFill="RED" visible="false" />
    </children>
-</AnchorPane>
+</fx:root>

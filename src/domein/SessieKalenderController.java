@@ -30,7 +30,7 @@ public class SessieKalenderController {
 		this.sessieKalenderRepo = mock;
 	}
 
-	public List<SessieKalender> geefSessieKalenderObservableList() {
+	public ObservableList<SessieKalender> geefSessieKalenderObservableList() {
 		if (sessieKalenderObservableList == null) {
 			sessieKalenderObservableList = FXCollections.observableArrayList(geefSessieKalenderList());
 		}
