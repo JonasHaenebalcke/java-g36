@@ -77,12 +77,16 @@ public class SessieKalenderController {
 
 	public void voegToeSessieKalender(LocalDate startDate, LocalDate eindDate) {
 		try {
+			if(eindDate.getYear() - startDate.getYear() != 1 || eindDate.getYear() < LocalDate.now().getYear() || startDate.getYear() < LocalDate.now().getYear())
+                throw new IllegalArgumentException("Deze sessiekalender bestaat al!");
+                
+            if (geefSessieKalenderList().stream().map(SessieKalender::getStartDate).collect(Collectors.toList())
+                    .contains(startDate) || geefSessieKalenderList().stream().map(SessieKalender::getEindDate).collect(Collectors.toList())
+                    .contains(eindDate))
+                throw new IllegalArgumentException("Deze sessiekalender bestaat al!");
+            
 			SessieKalender sessieKalender = new SessieKalender(startDate, eindDate);
 			// sessieKalender.setSessieKalenderID(); //random id setten?
-
-			if (geefSessieKalenderList().stream().map(SessieKalender::getSessieKalenderID).collect(Collectors.toList())
-					.contains(sessieKalender.getSessieKalenderID()))
-				throw new IllegalArgumentException("Deze sessiekalender bestaat al!");
 
 			sessieKalenderList.add(sessieKalender);
 			GenericDaoJpa.startTransaction();
