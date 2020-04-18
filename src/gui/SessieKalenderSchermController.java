@@ -68,7 +68,6 @@ public class SessieKalenderSchermController extends AnchorPane {
 		loader.setController(this);
 
 		try {
-			System.out.println("hello");
 			loader.load();
 
 		} catch (IOException ex) {
@@ -78,36 +77,32 @@ public class SessieKalenderSchermController extends AnchorPane {
 	}
 
 	private void initialize() {
-		
-		//ALs het in commentaar staat moogt ge er mij niet voor judgen
-		
+
+		// ALs het in commentaar staat moogt ge er mij niet voor judgen
+//
 //		cbMaand.getItems().addAll(FXCollections.observableArrayList( Arrays.asList(Maand.values()).
 //		stream().distinct().
 //		map(m -> m.toString())
 //		.collect(Collectors.toList())));
-		cbMaand.setItems(FXCollections.observableArrayList( Maand.values()));
+		try {
+		cbMaand.setItems(FXCollections.observableArrayList(Maand.values()));
 		
-//		try {
-//			for (SessieKalender sk1 : dc.geefSessieKalenderList()) {
-//				if (sk1.getStartDate().isAfter(LocalDate.now()) && sk1.getEindDate().isBefore(LocalDate.now())) {
-//					this.sk = sk1;
-//				}
-//			}
-//			
-//			lblStartDatum = new Label(sk.getStartDate().toString());
-//			lblStartDatum = new Label(sk.getEindDate().toString());
-////			lvSessies.setItems(sk.geefSessiesMaand(LocalDate.now().getMonthValue()));
-//		} catch (Exception e) {
-//			lblError.setText(e.getMessage());
-//		}
-//	
+//		lvSessies.setItems(sk.geefSessiesMaand(LocalDate.now().getMonthValue()));		
+//
+//		lblStartDatum = new Label(sk.getStartDate().toString());		
+//		lblEindDatum = new Label(sk.getEindDate().toString());
+		} catch (Exception e) {
+		lblError.setVisible(true);
+		lblError.setText(e.getMessage());
+		}
+		
 
 	}
 
 	@FXML
 	void voegSessieKalenderToeBtn(ActionEvent event) {
 		try {
-		
+
 			Scene scene = new Scene(new SessieKalenderAanmakenSchermController(dc), 600, 400);
 			Stage stage = new Stage();
 			stage.setTitle("Sessie Kalender aanmaken");

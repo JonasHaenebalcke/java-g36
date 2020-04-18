@@ -17,13 +17,22 @@ public class SessieKalenderController {
 	private List<SessieKalender> sessieKalenderList;
 	private ObservableList<SessieKalender> sessieKalenderObservableList;
 	private SessieKalenderDao sessieKalenderRepo;
+	private SessieKalender huidigeSessieKalender;
 
-	/*public SessieKalenderDao getSessieKalenderRepo() {
-		return this.sessieKalenderRepo;
-	}*/
-	
+	/*
+	 * public SessieKalenderDao getSessieKalenderRepo() { return
+	 * this.sessieKalenderRepo; }
+	 */
+
 	public SessieKalenderController() {
 		setSessieRepo(new SessieKalenderDaoJpa());
+		
+		for (SessieKalender sk : geefSessieKalenderList()) {
+			if (sk.getStartDate().isBefore(LocalDate.now()) && sk.getEindDate().isAfter(LocalDate.now())) {
+				this.huidigeSessieKalender = sk;
+			}
+		}
+
 	}
 
 	public void setSessieRepo(SessieKalenderDao mock) {
@@ -53,22 +62,23 @@ public class SessieKalenderController {
 			throw new EntityNotFoundException("Er ging iets fout bij het teruggeven van de sessiekalender.");
 		}
 	}
+
 	public void wijzigSessieKalender(int Id, LocalDate startDate, LocalDate eindDate) {
 		for (SessieKalender sessieKalender : sessieKalenderList) {
-			  if (sessieKalender.getSessieKalenderID() == Id) {
-			
-			  GenericDaoJpa.startTransaction();
-			  sessieKalender.wijzigSessieKalender(startDate, eindDate);
-			  sessieKalenderRepo.update(sessieKalender);
-			  GenericDaoJpa.commitTransaction();
-			  }
-	 }
+			if (sessieKalender.getSessieKalenderID() == Id) {
+
+				GenericDaoJpa.startTransaction();
+				sessieKalender.wijzigSessieKalender(startDate, eindDate);
+				sessieKalenderRepo.update(sessieKalender);
+				GenericDaoJpa.commitTransaction();
+			}
+		}
 	}
 
 	public void voegToeSessieKalender(LocalDate startDate, LocalDate eindDate) {
 		try {
 			SessieKalender sessieKalender = new SessieKalender(startDate, eindDate);
-			//sessieKalender.setSessieKalenderID(); //random id setten?
+			// sessieKalender.setSessieKalenderID(); //random id setten?
 
 			if (geefSessieKalenderList().stream().map(SessieKalender::getSessieKalenderID).collect(Collectors.toList())
 					.contains(sessieKalender.getSessieKalenderID()))
@@ -84,9 +94,11 @@ public class SessieKalenderController {
 		}
 	}
 
-	public void voegSessieToe(int index, Gebruiker verantwoordelijke, LocalDate startDatum, LocalDate eindDatum, String titel,
-			String lokaal, int capaciteit, StatusSessie statusSessie, String omschrijving, String gastSpreker) {
-		Sessie sessie = new Sessie(verantwoordelijke, startDatum, eindDatum, titel, lokaal, capaciteit, statusSessie, omschrijving, gastSpreker);
+	public void voegSessieToe(int index, Gebruiker verantwoordelijke, LocalDate startDatum, LocalDate eindDatum,
+			String titel, String lokaal, int capaciteit, StatusSessie statusSessie, String omschrijving,
+			String gastSpreker) {
+		Sessie sessie = new Sessie(verantwoordelijke, startDatum, eindDatum, titel, lokaal, capaciteit, statusSessie,
+				omschrijving, gastSpreker);
 		GenericDaoJpa.startTransaction();
 		geefSessieKalender(index).voegSessieToe(sessie);
 		GenericDaoJpa.commitTransaction();
@@ -97,8 +109,12 @@ public class SessieKalenderController {
 		geefSessieKalender(index).verwijderSessie(sessie);
 		GenericDaoJpa.commitTransaction();
 	}
-	
+
+	public ObservableList<Sessie> geefSessiesVanMaand(Maand maand) {
+		return huidigeSessieKalender.geefSessiesMaand(maand.ordinal() + 1);
+	}
+
 	public void close() {
-        GenericDaoJpa.closePersistency();
-    }
+		GenericDaoJpa.closePersistency();
+	}
 }
