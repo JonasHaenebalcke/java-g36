@@ -19,9 +19,10 @@ public class GebruikerController {
 	private ObservableList<Gebruiker> gebruikerObservableList;
 	private List<Gebruiker> gebruikerList;
 	private GebruikerDao gebruikerRepo;
-	
+
 	public GebruikerController() {
 		setGebruikerRepo(new GebruikerDaoJpa());
+		geefGebruikersList();
 	}
 
 	public void setGebruikerRepo(GebruikerDao mock) {
@@ -66,13 +67,13 @@ public class GebruikerController {
 			gebruikerObservableList.add(gebruiker);
 			GenericDaoJpa.startTransaction();
 			gebruikerRepo.insert(gebruiker);
-			for (Gebruiker g : gebruikerList) {
-				g.fillPersistent();
-			}
+//			for (Gebruiker g : gebruikerList) {
+//				g.fillPersistent();
+//			}
 			GenericDaoJpa.commitTransaction();
-			for (Gebruiker g : gebruikerList) {
-				g.fillTransient();
-			}
+//			for (Gebruiker g : gebruikerList) {
+//				g.fillTransient();
+//			}
 
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -91,14 +92,14 @@ public class GebruikerController {
 			gebruikerObservableList.remove(gebruiker);
 			GenericDaoJpa.startTransaction();
 			gebruikerRepo.delete(gebruiker);
-			for (Gebruiker g : gebruikerList) {
-				g.fillPersistent();
-				
-			}
+//			for (Gebruiker g : gebruikerList) {
+//				g.fillPersistent();
+//				
+//			}
 			GenericDaoJpa.commitTransaction();
-			for (Gebruiker g : gebruikerList) {
-				g.fillTransient();
-			}
+//			for (Gebruiker g : gebruikerList) {
+//				g.fillTransient();
+//			}
 
 		} catch (Exception e) {
 			System.err.println("Er ging iets fout bij het verwijderen van de gebruiker.");
@@ -123,26 +124,37 @@ public class GebruikerController {
 		GenericDaoJpa.closePersistency();
 	}
 
-	public void wijzigGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam, TypeGebruiker type,
-			Status status, String profielfoto) {
-		
-		 for (Gebruiker gebruiker : gebruikerList) {
-				  if (gebruiker.getGebruikersnaam().equals(gebruikersnaam)) {
-				
-				  GenericDaoJpa.startTransaction();
-				  for (Gebruiker g : gebruikerList) {
-						g.fillPersistent();
-					}
-				  gebruiker.wijzigGebruiker(voornaam, familienaam, mailadres, gebruikersnaam,
-				  type, status, profielfoto);
-				  gebruikerRepo.update(gebruiker);
-				  GenericDaoJpa.commitTransaction();
-				  for (Gebruiker g : gebruikerList) {
-						g.fillTransient();
-					}
-				  }
-		 }
+	public void wijzigGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam,
+			TypeGebruiker type, Status status, String profielfoto) {
+
+		for (Gebruiker gebruiker : gebruikerList) {
+			if (gebruiker.getGebruikersnaam().equals(gebruikersnaam)) {
+
+				GenericDaoJpa.startTransaction();
+//				  for (Gebruiker g : gebruikerList) {
+//						g.fillPersistent();
+//					}
+				gebruiker.wijzigGebruiker(voornaam, familienaam, mailadres, gebruikersnaam, type, status, profielfoto);
+				gebruikerRepo.update(gebruiker);
+				GenericDaoJpa.commitTransaction();
+
+//				  for (Gebruiker g : gebruikerList) {
+//						g.fillTransient();
+//					}
+			}
+		}
 	}
 
+	public void startTransaction() {
+		for (Gebruiker g : gebruikerList) {
+			g.fillPersistent();
+		}
+	}
+
+	public void comittTransaction() {
+		for (Gebruiker g : gebruikerList) {
+			g.fillTransient();
+		}
+	}
 
 }

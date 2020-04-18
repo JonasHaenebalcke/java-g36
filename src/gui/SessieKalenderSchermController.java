@@ -43,13 +43,7 @@ public class SessieKalenderSchermController extends AnchorPane {
 	@FXML
 	private Label lblError;
 	@FXML
-	private DatePicker inputStartDatum;
-	@FXML
-	private DatePicker inputEindDatum;
-	@FXML
 	private Button btnVoegSessieKalenderToe;
-	@FXML
-	private Label lblErrorVoegSessieKalenderToe;
 	@FXML
 	private Label lblStartDatum;
 	@FXML
@@ -92,6 +86,7 @@ public class SessieKalenderSchermController extends AnchorPane {
 //		map(m -> m.toString())
 //		.collect(Collectors.toList())));
 		cbMaand.setItems(FXCollections.observableArrayList( Maand.values()));
+		
 //		try {
 //			for (SessieKalender sk1 : dc.geefSessieKalenderList()) {
 //				if (sk1.getStartDate().isAfter(LocalDate.now()) && sk1.getEindDate().isBefore(LocalDate.now())) {
@@ -124,22 +119,4 @@ public class SessieKalenderSchermController extends AnchorPane {
 			System.out.println(e.getMessage());
 		}
 	}
-
-	@FXML
-	void voegSessieKalenderToe(ActionEvent event) {
-
-		try {
-			System.out.println("Voeg sessie Kalender Toe!");
-			System.out.println(inputStartDatum.getValue().toString());
-			System.out.println(inputEindDatum.getValue().toString());
-			if (inputStartDatum.getValue() == null || inputEindDatum.getValue() == null)
-				throw new IllegalArgumentException("Datum is verplicht in te vullen!");
-
-			dc.voegToeSessieKalender(inputStartDatum.getValue(), inputEindDatum.getValue());
-		} catch (Exception e) {
-			lblErrorVoegSessieKalenderToe.setVisible(true);
-			lblErrorVoegSessieKalenderToe.setText(e.getMessage());
-		}
-	}
-
 }

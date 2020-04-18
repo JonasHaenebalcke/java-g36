@@ -4,6 +4,9 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+
+import domein.GebruikerController;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -12,9 +15,10 @@ public class GenericDaoJpa<T> implements GenericDao<T> {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory(PU_NAME);
     protected static final EntityManager em = emf.createEntityManager();
     private final Class<T> type;
+    private static GebruikerController gc = new GebruikerController();
     
     public GenericDaoJpa(Class<T> type) {
-        this.type = type;
+        this.type = type;		
     }
     public static void closePersistency() {
         em.close();
@@ -22,9 +26,11 @@ public class GenericDaoJpa<T> implements GenericDao<T> {
     }
     public static void startTransaction() {
         em.getTransaction().begin();
+        gc.startTransaction();
     }
     public static void commitTransaction() {
         em.getTransaction().commit();
+        gc.comittTransaction();
     }
     public static void rollbackTransaction() {
         em.getTransaction().rollback();
