@@ -32,6 +32,9 @@ public class SessieKalender {
 	}
 	
 	public SessieKalender(LocalDate startDate, LocalDate eindDate) {
+		 if(eindDate.getYear() - startDate.getYear() != 1 ) {
+	            throw new IllegalArgumentException("SessieKalender moet op eenvolgende jaren hebben ");
+		    }
 		setStartDate(startDate);
 		setEindDate(eindDate);
 	}
@@ -67,6 +70,12 @@ public class SessieKalender {
 	}
 
 	public void wijzigSessieKalender(LocalDate startDate, LocalDate eindDate) {
+		if(startDate.isAfter(eindDate)) {
+			throw new IllegalArgumentException("Startdatum kan niet na einddatum liggen");
+		}
+	    if(eindDate.getYear() - startDate.getYear() != 1 ) {
+            throw new IllegalArgumentException("SessieKalender moet op eenvolgende jaren hebben ");
+	    }
 		setStartDate(startDate);
 		setEindDate(eindDate);
 	}
