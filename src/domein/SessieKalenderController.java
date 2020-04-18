@@ -26,10 +26,11 @@ public class SessieKalenderController {
 
 	public SessieKalenderController() {
 		setSessieRepo(new SessieKalenderDaoJpa());
-		
+
 		for (SessieKalender sk : geefSessieKalenderList()) {
 			if (sk.getStartDate().isBefore(LocalDate.now()) && sk.getEindDate().isAfter(LocalDate.now())) {
 				this.huidigeSessieKalender = sk;
+				break;
 			}
 		}
 
@@ -49,13 +50,18 @@ public class SessieKalenderController {
 	public Collection<SessieKalender> geefSessieKalenderList() {
 		if (sessieKalenderList == null) {
 			sessieKalenderList = sessieKalenderRepo.findAll();
+			
 		}
 		return sessieKalenderList;
 	}
 
-	public SessieKalender geefSessieKalender(int index) {
+	public SessieKalender geefSessieKalender(int startJaar) {
 		try {
-			SessieKalender sessieKalender = sessieKalenderList.get(index);
+			SessieKalender sessieKalender = geefSessieKalenderList().stream()
+					.filter(s -> s.getStartDate().getYear() == startJaar).findFirst().get();
+		
+			System.out.println("SESSIEKALENDER");
+			System.out.println(sessieKalender.toString());
 			return sessieKalender;
 		} catch (Exception e) {
 			System.err.println("Er ging iets fout bij het teruggeven van de sessiekalender.");
@@ -77,14 +83,16 @@ public class SessieKalenderController {
 
 	public void voegToeSessieKalender(LocalDate startDate, LocalDate eindDate) {
 		try {
-			if(eindDate.getYear() - startDate.getYear() != 1 || eindDate.getYear() < LocalDate.now().getYear() || startDate.getYear() < LocalDate.now().getYear())
-                throw new IllegalArgumentException("Deze sessiekalender bestaat al!");
-                
-            if (geefSessieKalenderList().stream().map(SessieKalender::getStartDate).collect(Collectors.toList())
-                    .contains(startDate) || geefSessieKalenderList().stream().map(SessieKalender::getEindDate).collect(Collectors.toList())
-                    .contains(eindDate))
-                throw new IllegalArgumentException("Deze sessiekalender bestaat al!");
-            
+			if (eindDate.getYear() - startDate.getYear() != 1 || eindDate.getYear() < LocalDate.now().getYear()
+					|| startDate.getYear() < LocalDate.now().getYear())
+				throw new IllegalArgumentException("Deze sessiekalender bestaat al!");
+
+			if (geefSessieKalenderList().stream().map(SessieKalender::getStartDate).collect(Collectors.toList())
+					.contains(startDate)
+					|| geefSessieKalenderList().stream().map(SessieKalender::getEindDate).collect(Collectors.toList())
+							.contains(eindDate))
+				throw new IllegalArgumentException("Deze sessiekalender bestaat al!");
+
 			SessieKalender sessieKalender = new SessieKalender(startDate, eindDate);
 			// sessieKalender.setSessieKalenderID(); //random id setten?
 
@@ -116,6 +124,10 @@ public class SessieKalenderController {
 
 	public ObservableList<Sessie> geefSessiesVanMaand(Maand maand) {
 		return huidigeSessieKalender.geefSessiesMaand(maand.ordinal() + 1);
+	}
+
+	public SessieKalender getHuidigeSessieKalender() {
+		return huidigeSessieKalender;
 	}
 
 	public void close() {

@@ -10,23 +10,21 @@
 <fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" stylesheets="@stylesheet.css" type="AnchorPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ListView fx:id="lvSessies" layoutX="71.0" layoutY="116.0" prefHeight="255.0" prefWidth="555.0" />
-      <Label fx:id="lblAcademieJaar" layoutX="286.0" layoutY="14.0" text="2020 - 2021">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
       <Button fx:id="btnNieweSessieKlalender" layoutX="72.0" layoutY="404.0" mnemonicParsing="false" onAction="#voegSessieKalenderToeBtn" prefHeight="35.0" prefWidth="150.0" text="Nieuwe Sessie Kalender" />
       <Button fx:id="btnBeheerSessie" layoutX="476.0" layoutY="404.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="150.0" text="Beheer Sessie" />
-      <Label fx:id="lblError" layoutX="329.0" layoutY="391.0" text="lblError" textFill="RED" visible="false">
+      <Label fx:id="lblError" layoutX="72.0" layoutY="450.0" text="lblError" textFill="RED" visible="false">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
-      <Button fx:id="btnRechts" layoutX="424.0" layoutY="19.0" mnemonicParsing="false" text="&gt;" />
-      <Button fx:id="btnLinks" layoutX="249.0" layoutY="19.0" mnemonicParsing="false" text="&lt;" />
-      <Label fx:id="lblEindDatum" layoutX="364.0" layoutY="49.0" text="EindDatum" />
-      <Label fx:id="lblStartDatum" layoutX="274.0" layoutY="48.0" prefHeight="18.0" prefWidth="61.0" text="StartDatum" />
-      <Label layoutX="348.0" layoutY="49.0" text="-" />
+      <Button fx:id="btnRechts" layoutX="424.0" layoutY="19.0" mnemonicParsing="false" onAction="#volgendeSessieKalender" text="&gt;" />
+      <Button fx:id="btnLinks" layoutX="249.0" layoutY="19.0" mnemonicParsing="false" onAction="#vorigeSessieKalender" text="&lt;" />
+      <Label fx:id="lblEindDatum" layoutX="355.0" layoutY="50.0" text="EindDatum" />
+      <Label fx:id="lblStartDatum" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="280.0" layoutY="50.0" prefHeight="18.0" prefWidth="61.0" text="StartDatum" />
+      <Label layoutX="345.0" layoutY="50.0" text="-" />
       <ChoiceBox fx:id="cbMaand" layoutX="273.0" layoutY="81.0" prefWidth="150.0" />
+      <Label fx:id="lblStartJaar" alignment="CENTER_RIGHT" layoutX="280.0" layoutY="20.0" prefHeight="18.0" prefWidth="55.0" text="StartJaar" />
+      <Label layoutX="345.0" layoutY="20.0" text="-" />
+      <Label fx:id="lblEindJaar" layoutX="355.0" layoutY="20.0" text="EindJaar" />
    </children>
 </fx:root>

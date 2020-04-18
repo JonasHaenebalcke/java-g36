@@ -17,7 +17,7 @@ public class StartUp extends Application{
 	@Override
     public void start(Stage primaryStage) {
 		PopulateDB populatedb = new PopulateDB();
-		//populatedb.run();
+//		populatedb.run();
 		GebruikerController dc = new GebruikerController();
 		dc.geefGebruikersList().forEach(g -> System.out.println(g.toString()));
 		SessieKalenderController skc = new SessieKalenderController();

@@ -2,6 +2,7 @@ package gui;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -49,20 +50,26 @@ public class SessieKalenderSchermController extends AnchorPane {
 	@FXML
 	private Label lblEindDatum;
 	@FXML
+	private Label lblStartJaar;
+	@FXML
+	private Label lblEindJaar;
+	@FXML
 	private Button btnLinks;
 	@FXML
 	private Button btnRechts;
 
-	SessieKalender sk;
+	private SessieKalender sk;
 	private SessieKalenderController dc;
 
 	public SessieKalenderSchermController() {
 		this.dc = new SessieKalenderController();
+		sk = dc.getHuidigeSessieKalender();
 		initialize();
 	}
 
 	public SessieKalenderSchermController(SessieKalenderController dc) {
 		this.dc = dc;
+		sk = dc.getHuidigeSessieKalender();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("SessieKalender.fxml"));
 		loader.setRoot(this);
 		loader.setController(this);
@@ -85,17 +92,28 @@ public class SessieKalenderSchermController extends AnchorPane {
 //		map(m -> m.toString())
 //		.collect(Collectors.toList())));
 		try {
-		cbMaand.setItems(FXCollections.observableArrayList(Maand.values()));
-		
-//		lvSessies.setItems(sk.geefSessiesMaand(LocalDate.now().getMonthValue()));		
-//
-//		lblStartDatum = new Label(sk.getStartDate().toString());		
-//		lblEindDatum = new Label(sk.getEindDate().toString());
+			System.out.println("INITIALIZE");
+			lblError.setText("");
+			cbMaand.setItems(FXCollections.observableArrayList(Maand.values()));
+
+			System.out.println(sk.toString());
+//			lvSessies.setItems(sk.geefSessiesMaand(LocalDate.now().getMonthValue()));
+
+			lblStartDatum.setText(sk.getStartDate().format(DateTimeFormatter.ofPattern("MM/dd")));
+			lblEindDatum.setText(sk.getEindDate().format(DateTimeFormatter.ofPattern("MM/dd")));
+			lblStartJaar.setText("" + sk.getStartDate().getYear());
+			;
+			lblEindJaar.setText("" + sk.getEindDate().getYear());
+//			lblStartDatum = new Label(sk.getStartDate().toString());
+//			lblEindDatum = new Label(sk.getEindDate().toString());
+
+		} catch (NullPointerException e) {
+			lblError.setVisible(true);
+			lblError.setText("ERROR " + "Er is geen SessieKalender voor het geselecteerde jaar");
 		} catch (Exception e) {
-		lblError.setVisible(true);
-		lblError.setText(e.getMessage());
+			lblError.setVisible(true);
+			lblError.setText("ERROR " + e.toString());
 		}
-		
 
 	}
 
@@ -111,7 +129,31 @@ public class SessieKalenderSchermController extends AnchorPane {
 		} catch (Exception e) {
 			lblError.setVisible(true);
 			lblError.setText(e.getMessage());
-			System.out.println(e.getMessage());
+			System.err.println(e.getMessage());
+		}
+	}
+
+	@FXML
+	void volgendeSessieKalender(ActionEvent event) {
+		try {
+			sk = dc.geefSessieKalender(sk.getStartDate().getYear() + 1);
+			initialize();
+		} catch (Exception e) {
+			lblError.setVisible(true);
+			lblError.setText(e.getMessage());
+			System.err.println(e.getMessage());
+		}
+	}
+
+	@FXML
+	void vorigeSessieKalender(ActionEvent event) {
+		try {
+			sk = dc.geefSessieKalender(sk.getStartDate().getYear() - 1);
+			initialize();
+		} catch (Exception e) {
+			lblError.setVisible(true);
+			lblError.setText(e.getMessage());
+			System.err.println(e.getMessage());
 		}
 	}
 }
