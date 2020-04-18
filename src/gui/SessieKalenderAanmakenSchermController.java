@@ -24,11 +24,13 @@ public class SessieKalenderAanmakenSchermController extends AnchorPane{
 	
 
 	private SessieKalenderController dc;
+	private SessieKalenderSchermController sc;
 	
 	
-	public SessieKalenderAanmakenSchermController(SessieKalenderController dc) {
+	public SessieKalenderAanmakenSchermController(SessieKalenderController dc, SessieKalenderSchermController sc) {
 		try 
 		{
+			this.sc = sc;
 			this.dc = dc;
 			System.out.println("Laad nieuw voeg sessie kalender toe scherm");
 			FXMLLoader loader = new FXMLLoader();
@@ -46,13 +48,14 @@ public class SessieKalenderAanmakenSchermController extends AnchorPane{
 	@FXML
 	public void voegSessieKalenderToe(ActionEvent event) {
 		try {
-			System.out.println("Voeg sessie Kalender Toe!");
-			System.out.println(inputStartDatum.getValue().toString());
-			System.out.println(inputEindDatum.getValue().toString());
 			if (inputStartDatum.getValue() == null || inputEindDatum.getValue() == null)
 				throw new IllegalArgumentException("Datum is verplicht in te vullen!");
 
 			dc.voegToeSessieKalender(inputStartDatum.getValue(), inputEindDatum.getValue());
+			sc.initialize();
+			
+			Stage stage = (Stage) this.getScene().getWindow();
+			stage.close();
 		} catch (Exception e) {
 			lblErrorVoegSessieKalenderToe.setVisible(true);
 			lblErrorVoegSessieKalenderToe.setText(e.getMessage());

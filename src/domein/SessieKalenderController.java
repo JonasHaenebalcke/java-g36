@@ -50,18 +50,24 @@ public class SessieKalenderController {
 	public Collection<SessieKalender> geefSessieKalenderList() {
 		if (sessieKalenderList == null) {
 			sessieKalenderList = sessieKalenderRepo.findAll();
-			
 		}
 		return sessieKalenderList;
 	}
 
-	public SessieKalender geefSessieKalender(int startJaar) {
+	public SessieKalender geefSessieKalender(boolean volgende) {
 		try {
-			SessieKalender sessieKalender = geefSessieKalenderList().stream()
-					.filter(s -> s.getStartDate().getYear() == startJaar).findFirst().get();
-		
-			System.out.println("SESSIEKALENDER");
-			System.out.println(sessieKalender.toString());
+			SessieKalender sessieKalender;
+			if (volgende) {
+				sessieKalender = geefSessieKalenderList().stream()
+						.filter(s -> s.getStartDate().getYear() > huidigeSessieKalender.getStartDate().getYear())
+						.sorted(Comparator.comparing(SessieKalender::getStartDate)).findFirst().get();
+			} else {
+				sessieKalender = geefSessieKalenderList().stream()
+						.filter(s -> s.getStartDate().getYear() < huidigeSessieKalender.getStartDate().getYear())
+						.sorted(Comparator.comparing(SessieKalender::getStartDate).reversed()).findFirst().get();
+			}
+
+			huidigeSessieKalender = sessieKalender;
 			return sessieKalender;
 		} catch (Exception e) {
 			System.err.println("Er ging iets fout bij het teruggeven van de sessiekalender.");
@@ -72,9 +78,9 @@ public class SessieKalenderController {
 	public void wijzigSessieKalender(int Id, LocalDate startDate, LocalDate eindDate) {
 		for (SessieKalender sessieKalender : sessieKalenderList) {
 			if (sessieKalender.getSessieKalenderID() == Id) {
-
 				GenericDaoJpa.startTransaction();
 				sessieKalender.wijzigSessieKalender(startDate, eindDate);
+				huidigeSessieKalender = sessieKalender;
 				sessieKalenderRepo.update(sessieKalender);
 				GenericDaoJpa.commitTransaction();
 			}
@@ -83,10 +89,6 @@ public class SessieKalenderController {
 
 	public void voegToeSessieKalender(LocalDate startDate, LocalDate eindDate) {
 		try {
-			if (eindDate.getYear() - startDate.getYear() != 1 || eindDate.getYear() < LocalDate.now().getYear()
-					|| startDate.getYear() < LocalDate.now().getYear())
-				throw new IllegalArgumentException("Deze sessiekalender bestaat al!");
-
 			if (geefSessieKalenderList().stream().map(SessieKalender::getStartDate).collect(Collectors.toList())
 					.contains(startDate)
 					|| geefSessieKalenderList().stream().map(SessieKalender::getEindDate).collect(Collectors.toList())
@@ -94,9 +96,9 @@ public class SessieKalenderController {
 				throw new IllegalArgumentException("Deze sessiekalender bestaat al!");
 
 			SessieKalender sessieKalender = new SessieKalender(startDate, eindDate);
-			// sessieKalender.setSessieKalenderID(); //random id setten?
 
 			sessieKalenderList.add(sessieKalender);
+			huidigeSessieKalender = sessieKalender;
 			GenericDaoJpa.startTransaction();
 			sessieKalenderRepo.insert(sessieKalender);
 			GenericDaoJpa.commitTransaction();
@@ -112,18 +114,18 @@ public class SessieKalenderController {
 		Sessie sessie = new Sessie(verantwoordelijke, startDatum, eindDatum, titel, lokaal, capaciteit, statusSessie,
 				omschrijving, gastSpreker);
 		GenericDaoJpa.startTransaction();
-		geefSessieKalender(index).voegSessieToe(sessie);
+		huidigeSessieKalender.voegSessieToe(sessie);
 		GenericDaoJpa.commitTransaction();
 	}
 
 	public void verwijderSessie(int index, Sessie sessie) {
 		GenericDaoJpa.startTransaction();
-		geefSessieKalender(index).verwijderSessie(sessie);
+		huidigeSessieKalender.verwijderSessie(sessie);
 		GenericDaoJpa.commitTransaction();
 	}
 
-	public ObservableList<Sessie> geefSessiesVanMaand(Maand maand) {
-		return huidigeSessieKalender.geefSessiesMaand(maand.ordinal() + 1);
+	public ObservableList<Sessie> geefSessiesMaand(int maand) {
+		return FXCollections.observableArrayList(huidigeSessieKalender.geefSessiesMaand(maand));//maand.ordinal() + 1));
 	}
 
 	public SessieKalender getHuidigeSessieKalender() {

@@ -14,8 +14,11 @@ import domein.Maand;
 import domein.Sessie;
 import domein.SessieKalender;
 import domein.SessieKalenderController;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -25,6 +28,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.scene.control.Label;
 
 import javafx.scene.control.ComboBox;
@@ -63,7 +67,7 @@ public class SessieKalenderSchermController extends AnchorPane {
 
 	public SessieKalenderSchermController() {
 		this.dc = new SessieKalenderController();
-		sk = dc.getHuidigeSessieKalender();
+
 		initialize();
 	}
 
@@ -83,7 +87,7 @@ public class SessieKalenderSchermController extends AnchorPane {
 		initialize();
 	}
 
-	private void initialize() {
+	public void initialize() {
 
 		// ALs het in commentaar staat moogt ge er mij niet voor judgen
 //
@@ -92,12 +96,26 @@ public class SessieKalenderSchermController extends AnchorPane {
 //		map(m -> m.toString())
 //		.collect(Collectors.toList())));
 		try {
+			sk = dc.getHuidigeSessieKalender();
 			System.out.println("INITIALIZE");
 			lblError.setText("");
 			cbMaand.setItems(FXCollections.observableArrayList(Maand.values()));
+			cbMaand.setValue(Maand.valueOf(LocalDate.now().getMonthValue()));
+
+			//gives error, should work maybe?
+//			cbMaand.getSelectionModel().selectedIndexProperty().addListener((observableValue, value, newValue) -> {
+//				if(newValue != null) {
+//					lvSessies.setItems(dc.geefSessiesMaand((int)newValue));
+//				System.out.println(cbMaand.getSelectionModel().getSelectedIndex());
+//				System.out.println(cbMaand.getSelectionModel().getSelectedItem().toString());
+//				}
+//				}
+//			);
 
 			System.out.println(sk.toString());
-//			lvSessies.setItems(sk.geefSessiesMaand(LocalDate.now().getMonthValue()));
+			lvSessies.setItems(dc.geefSessiesMaand(LocalDate.now().getMonthValue()));
+			System.out.println(cbMaand.getSelectionModel().getSelectedIndex());
+			System.out.println(cbMaand.getSelectionModel().getSelectedItem().toString());
 
 			lblStartDatum.setText(sk.getStartDate().format(DateTimeFormatter.ofPattern("MM/dd")));
 			lblEindDatum.setText(sk.getEindDate().format(DateTimeFormatter.ofPattern("MM/dd")));
@@ -114,14 +132,13 @@ public class SessieKalenderSchermController extends AnchorPane {
 			lblError.setVisible(true);
 			lblError.setText("ERROR " + e.toString());
 		}
-
 	}
 
 	@FXML
 	void voegSessieKalenderToeBtn(ActionEvent event) {
 		try {
 
-			Scene scene = new Scene(new SessieKalenderAanmakenSchermController(dc), 600, 400);
+			Scene scene = new Scene(new SessieKalenderAanmakenSchermController(dc, this), 600, 400);
 			Stage stage = new Stage();
 			stage.setTitle("Sessie Kalender aanmaken");
 			stage.setScene(scene);
@@ -136,7 +153,7 @@ public class SessieKalenderSchermController extends AnchorPane {
 	@FXML
 	void volgendeSessieKalender(ActionEvent event) {
 		try {
-			sk = dc.geefSessieKalender(sk.getStartDate().getYear() + 1);
+			dc.geefSessieKalender(true);
 			initialize();
 		} catch (Exception e) {
 			lblError.setVisible(true);
@@ -148,7 +165,7 @@ public class SessieKalenderSchermController extends AnchorPane {
 	@FXML
 	void vorigeSessieKalender(ActionEvent event) {
 		try {
-			sk = dc.geefSessieKalender(sk.getStartDate().getYear() - 1);
+			dc.geefSessieKalender(false);
 			initialize();
 		} catch (Exception e) {
 			lblError.setVisible(true);

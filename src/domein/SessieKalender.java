@@ -28,10 +28,11 @@ public class SessieKalender {
 	private LocalDate eindDate;
 
 	protected SessieKalender() {
-		
+		sessieLijst = new ArrayList<Sessie>();
 	}
 	
 	public SessieKalender(LocalDate startDate, LocalDate eindDate) {
+		this();
 		 if(eindDate.getYear() - startDate.getYear() != 1 ) {
 	            throw new IllegalArgumentException("SessieKalender moet op eenvolgende jaren hebben ");
 		    }
@@ -96,15 +97,15 @@ public class SessieKalender {
 			throw new NullPointerException("De gegeven sessie komt niet voor in deze sessiekalender.");
 	}
 
-	public ObservableList<Sessie> geefSessiesMaand(int maand) {
+	public Collection<Sessie> geefSessiesMaand(int maand) {
 		//ObservableList<Sessie> sessies; //kan nog niet aan "maand" van sessie.
 		/*sessieLijst.forEach( s -> {
 			if()
 		});*/
-		if(sessieLijst.isEmpty() || sessieLijst == null)
-			throw new NullPointerException("Sessie lijst is leeg.");
-		else
-			return (ObservableList<Sessie>) sessieLijst;
+//		if(sessieLijst.isEmpty() || sessieLijst == null)
+//			throw new NullPointerException("Sessie lijst is leeg.");
+//		else
+			return sessieLijst;
 	}
 
 	@Override
