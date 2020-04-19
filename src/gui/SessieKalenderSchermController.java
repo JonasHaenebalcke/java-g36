@@ -41,8 +41,8 @@ public class SessieKalenderSchermController extends AnchorPane {
 	private Label lblAcademieJaar;
 	@FXML
 	private ChoiceBox<Maand> cbMaand;
-	@FXML
-	private Button btnNieweSessieKlalender;
+//	@FXML
+//	private Button btnNieweSessieKlalender;
 	@FXML
 	private Button btnBeheerSessie;
 	@FXML
@@ -61,6 +61,8 @@ public class SessieKalenderSchermController extends AnchorPane {
 	private Button btnLinks;
 	@FXML
 	private Button btnRechts;
+	@FXML
+	private Button btnBeheerSessieKalenders;
 
 	private SessieKalender sk;
 	private SessieKalenderController dc;
@@ -134,21 +136,21 @@ public class SessieKalenderSchermController extends AnchorPane {
 		}
 	}
 
-	@FXML
-	void voegSessieKalenderToeBtn(ActionEvent event) {
-		try {
-
-			Scene scene = new Scene(new SessieKalenderAanmakenSchermController(dc, this), 600, 400);
-			Stage stage = new Stage();
-			stage.setTitle("Sessie Kalender aanmaken");
-			stage.setScene(scene);
-			stage.show();
-		} catch (Exception e) {
-			lblError.setVisible(true);
-			lblError.setText(e.getMessage());
-			System.err.println(e.getMessage());
-		}
-	}
+//	@FXML
+//	void voegSessieKalenderToeBtn(ActionEvent event) {
+//		try {
+//
+//			Scene scene = new Scene(new SessieKalenderAanmakenSchermController(dc, this), 600, 400);
+//			Stage stage = new Stage();
+//			stage.setTitle("Sessie Kalender aanmaken");
+//			stage.setScene(scene);
+//			stage.show();
+//		} catch (Exception e) {
+//			lblError.setVisible(true);
+//			lblError.setText(e.getMessage());
+//			System.err.println(e.getMessage());
+//		}
+//	}
 
 	@FXML
 	void volgendeSessieKalender(ActionEvent event) {
@@ -172,5 +174,20 @@ public class SessieKalenderSchermController extends AnchorPane {
 			lblError.setText(e.getMessage());
 			System.err.println(e.getMessage());
 		}
+	}
+	
+	@FXML
+	void beheerSessieKalenders(ActionEvent event) {
+		try {
+		Scene scene = new Scene(new BeheerSessieKalendersController(dc, this), 700, 400);
+		Stage stage = new Stage();
+		stage.setTitle("Sessie Kalender aanmaken");
+		stage.setScene(scene);
+		stage.show();
+	} catch (Exception e) {
+		lblError.setVisible(true);
+		lblError.setText(e.getMessage());
+		System.err.println(e.getMessage());
+	}
 	}
 }

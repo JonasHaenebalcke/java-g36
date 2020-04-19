@@ -123,6 +123,13 @@ public class SessieKalenderController {
 		huidigeSessieKalender.verwijderSessie(sessie);
 		GenericDaoJpa.commitTransaction();
 	}
+	
+	public void verwijderSessieKalender(SessieKalender sessieKalender) {
+		sessieKalenderList.remove(sessieKalender);
+		GenericDaoJpa.startTransaction();
+		sessieKalenderRepo.delete(sessieKalender);
+		GenericDaoJpa.commitTransaction();
+	}
 
 	public ObservableList<Sessie> geefSessiesMaand(int maand) {
 		return FXCollections.observableArrayList(huidigeSessieKalender.geefSessiesMaand(maand));//maand.ordinal() + 1));

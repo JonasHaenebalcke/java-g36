@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<fx:root prefHeight="366.0" prefWidth="645.0" type="AnchorPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane layoutX="-181.0" layoutY="-208.0" prefHeight="200.0" prefWidth="200.0" />
+      <ListView fx:id="lvSessieKalender" layoutX="23.0" layoutY="49.0" prefHeight="302.0" prefWidth="270.0" />
+      <Label layoutX="114.0" layoutY="23.0" text="Sessie Kalenders" />
+      <DatePicker fx:id="inputStartDatum" layoutX="329.0" layoutY="143.0" prefHeight="26.0" prefWidth="120.0" />
+      <DatePicker fx:id="inputEindDatum" layoutX="484.0" layoutY="143.0" prefHeight="26.0" prefWidth="120.0" />
+      <Label layoutX="357.0" layoutY="114.0" text="Start Datum" />
+      <Label layoutX="513.0" layoutY="114.0" text="Eind Datum" />
+      <Button fx:id="btnPasSessieKalenderAan" layoutX="545.0" layoutY="187.0" mnemonicParsing="false" onAction="#pasSessieKalenderAan" text="Pas Aan" />
+      <Button fx:id="btnVerwijderSessieKalender" layoutX="390.0" layoutY="304.0" mnemonicParsing="false" onAction="#verwijderSessieKalender" text="Verwijder Sessie Kalender" />
+      <Button fx:id="btnMaakNieuweAan" layoutX="331.0" layoutY="188.0" mnemonicParsing="false" onAction="#voegSessieKalenderToe" text="Maak Aan" />
+      <Label fx:id="lblError" layoutX="331.0" layoutY="253.0" text="Error" textFill="RED" visible="false" />
+   </children>
+</fx:root>
