@@ -55,13 +55,13 @@ public class BeheerSessieKalendersController extends AnchorPane {
 		
 		this.sc = sc;
 		this.dc = dc;
-		initialize();
 		System.out.println("Laad nieuw beheer sessiekalender toe scherm");
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("BeheerSessieKalenders.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("BeheerSessieKalenders.fxml"));
+		//loader.setLocation(getClass().getResource("BeheerSessieKalenders.fxml"));
 		loader.setRoot(this);
 		loader.setController(this);
 		loader.load();
+		initialize();
 
 	}
 
@@ -70,7 +70,10 @@ public class BeheerSessieKalendersController extends AnchorPane {
 	private void initialize() {
 //		System.out.println("Observable list enzo");
 //		System.out.println(dc.geefSessieKalenderObservableList().toString());
-		lvSessieKalender.setItems(dc.geefSessieKalenderObservableList());
+		ObservableList<SessieKalender> reee = dc.geefSessieKalenderObservableList();
+		System.out.println(reee);
+		lvSessieKalender.setItems(reee);
+		
 	}
 
 	@FXML
