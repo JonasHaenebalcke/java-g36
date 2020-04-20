@@ -110,8 +110,7 @@ public class SessieKalender {
 
 	@Override
 	public String toString() {
-		return "SessieKalender [sessieLijst=" + sessieLijst + ", sessieKalenderID=" + sessieKalenderID + ", startDate="
-				+ startDate + ", eindDate=" + eindDate + "]";
+		return "startDate=" + startDate + ", eindDate=" + eindDate;
 	}
 	
 }

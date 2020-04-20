@@ -16,7 +16,6 @@
       <Label layoutX="357.0" layoutY="114.0" text="Start Datum" />
       <Label layoutX="513.0" layoutY="114.0" text="Eind Datum" />
       <Button fx:id="btnPasSessieKalenderAan" layoutX="545.0" layoutY="187.0" mnemonicParsing="false" onAction="#pasSessieKalenderAan" text="Pas Aan" />
-      <Button fx:id="btnVerwijderSessieKalender" layoutX="390.0" layoutY="304.0" mnemonicParsing="false" onAction="#verwijderSessieKalender" text="Verwijder Sessie Kalender" />
       <Button fx:id="btnMaakNieuweAan" layoutX="331.0" layoutY="188.0" mnemonicParsing="false" onAction="#voegSessieKalenderToe" text="Maak Aan" />
       <Label fx:id="lblError" layoutX="331.0" layoutY="253.0" text="Error" textFill="RED" visible="false" />
    </children>

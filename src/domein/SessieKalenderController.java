@@ -75,15 +75,21 @@ public class SessieKalenderController {
 		}
 	}
 
-	public void wijzigSessieKalender(int Id, LocalDate startDate, LocalDate eindDate) {
-		for (SessieKalender sessieKalender : sessieKalenderList) {
-			if (sessieKalender.getSessieKalenderID() == Id) {
-				GenericDaoJpa.startTransaction();
-				sessieKalender.wijzigSessieKalender(startDate, eindDate);
-				huidigeSessieKalender = sessieKalender;
-				sessieKalenderRepo.update(sessieKalender);
-				GenericDaoJpa.commitTransaction();
+	public void wijzigSessieKalender(int id, LocalDate startDate, LocalDate eindDate) {
+		try {
+			for (SessieKalender sessieKalender : sessieKalenderList) {
+				if (sessieKalender.getSessieKalenderID() == id) {
+					sessieKalender.wijzigSessieKalender(startDate, eindDate);
+//				huidigeSessieKalender = sessieKalender;
+					sessieKalenderObservableList.stream().filter(s -> s.getSessieKalenderID() == id).findFirst().get()
+							.wijzigSessieKalender(startDate, eindDate);
+					GenericDaoJpa.startTransaction();
+					sessieKalenderRepo.update(sessieKalender);
+					GenericDaoJpa.commitTransaction();
+				}
 			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
 		}
 	}
 
@@ -97,6 +103,7 @@ public class SessieKalenderController {
 
 			SessieKalender sessieKalender = new SessieKalender(startDate, eindDate);
 
+			sessieKalenderObservableList.add(sessieKalender);
 			sessieKalenderList.add(sessieKalender);
 			huidigeSessieKalender = sessieKalender;
 			GenericDaoJpa.startTransaction();
@@ -123,16 +130,21 @@ public class SessieKalenderController {
 		huidigeSessieKalender.verwijderSessie(sessie);
 		GenericDaoJpa.commitTransaction();
 	}
-	
-	public void verwijderSessieKalender(SessieKalender sessieKalender) {
-		sessieKalenderList.remove(sessieKalender);
-		GenericDaoJpa.startTransaction();
-		sessieKalenderRepo.delete(sessieKalender);
-		GenericDaoJpa.commitTransaction();
-	}
+
+//	public void verwijderSessieKalender(SessieKalender sessieKalender) {
+//		try {
+//		sessieKalenderList.remove(sessieKalender);
+//		GenericDaoJpa.startTransaction();
+//		sessieKalenderRepo.delete(sessieKalender);
+//		GenericDaoJpa.commitTransaction();
+//		} catch(Exception e) {
+//			System.err.println(e.getMessage());
+//		}
+//	}
 
 	public ObservableList<Sessie> geefSessiesMaand(int maand) {
-		return FXCollections.observableArrayList(huidigeSessieKalender.geefSessiesMaand(maand));//maand.ordinal() + 1));
+		return FXCollections.observableArrayList(huidigeSessieKalender.geefSessiesMaand(maand));// maand.ordinal() +
+																								// 1));
 	}
 
 	public SessieKalender getHuidigeSessieKalender() {
