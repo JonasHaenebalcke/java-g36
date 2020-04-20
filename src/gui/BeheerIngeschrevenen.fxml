@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="424.0" prefWidth="682.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="BeherenIngeschrevenenScherm">
+   <children>
+      <Button fx:id="btnTerug" layoutX="37.0" layoutY="31.0" mnemonicParsing="false" text="Terug" />
+      <TableView fx:id="tvIngeschrevenen" layoutX="34.0" layoutY="73.0" prefHeight="294.0" prefWidth="620.0">
+        <columns>
+          <TableColumn fx:id="tcVoornaam" prefWidth="124.0" text="Voornaam" />
+          <TableColumn fx:id="tcFamilienaam" prefWidth="132.79998779296875" text="Familienaam" />
+            <TableColumn fx:id="tcGebruikersnaam" prefWidth="131.20001220703125" text="Gebruikersnaam " />
+            <TableColumn fx:id="tcInschrijvingsdatum" prefWidth="135.20001220703125" text="inschrijvingsdatum" />
+            <TableColumn fx:id="tcAanwezig" prefWidth="98.4000244140625" text="Aanwezig" />
+        </columns>
+      </TableView>
+      <Label layoutX="292.0" layoutY="32.0" prefHeight="22.0" prefWidth="110.0" text="Ingeschrevenen">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnVoegToe" layoutX="497.0" layoutY="383.0" mnemonicParsing="false" text="VoegToe" />
+      <Button fx:id="btnVerwijder" layoutX="585.0" layoutY="383.0" mnemonicParsing="false" text="Verwijder" />
+   </children>
+</AnchorPane>
