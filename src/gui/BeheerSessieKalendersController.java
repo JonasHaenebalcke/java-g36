@@ -1,9 +1,13 @@
 package gui;
 
 import java.io.IOException;
+import java.util.Comparator;
 
+import domein.Gebruiker;
 import domein.SessieKalender;
 import domein.SessieKalenderController;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,8 +30,6 @@ public class BeheerSessieKalendersController extends AnchorPane {
 	@FXML
 	private Button btnPasSessieKalenderAan;
 	@FXML
-	private Button btnVerwijderSessieKalender;
-	@FXML
 	private Button btnMaakNieuweAan;
 	@FXML
 	private Label lblError;
@@ -35,45 +37,51 @@ public class BeheerSessieKalendersController extends AnchorPane {
 	private SessieKalenderController dc;
 	private SessieKalenderSchermController sc;
 
-	public BeheerSessieKalendersController(SessieKalenderController dc, SessieKalenderSchermController sc) throws IOException {
-//		try {
-//			this.sc = sc;
-//			this.dc = dc;
-//			initialize();
-//			System.out.println("Laad nieuw beheer sessiekalender toe scherm");
-//			FXMLLoader loader = new FXMLLoader();
-//			loader.setLocation(getClass().getResource("BeheerSessieKalenders.fxml"));
-//			loader.setRoot(this);
-//			loader.setController(this);
-//			loader.load();
-//
-//		} catch (Exception e) {
-//			lblError.setVisible(true);
-//			lblError.setText("ERROR " + e.getMessage());
-//			System.err.println(e.getMessage());
-//		}
-		
-		this.sc = sc;
-		this.dc = dc;
-		System.out.println("Laad nieuw beheer sessiekalender toe scherm");
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("BeheerSessieKalenders.fxml"));
-		//loader.setLocation(getClass().getResource("BeheerSessieKalenders.fxml"));
-		loader.setRoot(this);
-		loader.setController(this);
-		loader.load();
-		initialize();
+	public BeheerSessieKalendersController(SessieKalenderController dc, SessieKalenderSchermController sc)
+			throws IOException {
+		try {
+			this.sc = sc;
+			this.dc = dc;
 
+			System.out.println("Laad nieuw beheer sessiekalender toe scherm");
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("BeheerSessieKalenders.fxml"));
+			loader.setRoot(this);
+			loader.setController(this);
+			loader.load();
+
+		} catch (Exception e) {
+			lblError.setVisible(true);
+			lblError.setText("ERROR " + e.getMessage());
+			System.err.println(e.getMessage());
+		}
+		initialize();
+		addListenerToList();
 	}
 
-//	cbMaand.getItems().addAll(FXCollections.observableArrayList( Arrays.asList(Maand.values()).
-
 	private void initialize() {
-//		System.out.println("Observable list enzo");
-//		System.out.println(dc.geefSessieKalenderObservableList().toString());
-		ObservableList<SessieKalender> reee = dc.geefSessieKalenderObservableList();
-		System.out.println(reee);
-		lvSessieKalender.setItems(reee);
-		
+		try {
+			lvSessieKalender.setItems(dc.geefSessieKalenderObservableList().sorted());
+
+			
+		} catch (Exception e) {
+			lblError.setVisible(true);
+			lblError.setText(e.getMessage());
+		}
+	}
+	
+	private void addListenerToList() {
+		lvSessieKalender.getSelectionModel().selectedItemProperty()
+		.addListener((new ChangeListener<SessieKalender>() {
+			@Override
+			public void changed(ObservableValue<? extends SessieKalender> observable,
+					SessieKalender oldValue, SessieKalender newValue) {
+				if(newValue != null) {
+				inputStartDatum.setValue(newValue.getStartDate());
+				inputEindDatum.setValue(newValue.getEindDate());
+				}
+			}
+		}));
 	}
 
 	@FXML
@@ -88,6 +96,7 @@ public class BeheerSessieKalendersController extends AnchorPane {
 //			Stage stage = (Stage) this.getScene().getWindow();
 //			stage.close();
 		} catch (Exception e) {
+			System.err.println(e.getMessage());
 			lblError.setVisible(true);
 			lblError.setText(e.getMessage());
 		}
@@ -95,15 +104,15 @@ public class BeheerSessieKalendersController extends AnchorPane {
 
 	@FXML
 	public void pasSessieKalenderAan(ActionEvent event) {
-		SessieKalender sessieKalender = lvSessieKalender.getSelectionModel().getSelectedItem();
-		dc.wijzigSessieKalender(sessieKalender.getSessieKalenderID(), inputStartDatum.getValue(), inputEindDatum.getValue());
-	}
-
-	@FXML
-	public void verwijderSessieKalender(ActionEvent event) {
-		SessieKalender sessieKalender = lvSessieKalender.getSelectionModel().getSelectedItem();
-		dc.verwijderSessieKalender(sessieKalender);
-		
-		
+		try {
+			SessieKalender sessieKalender = lvSessieKalender.getSelectionModel().getSelectedItem();
+			dc.wijzigSessieKalender(sessieKalender.getSessieKalenderID(), inputStartDatum.getValue(),
+					inputEindDatum.getValue());
+			initialize();
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			lblError.setVisible(true);
+			lblError.setText(e.getMessage());
+		}
 	}
 }
