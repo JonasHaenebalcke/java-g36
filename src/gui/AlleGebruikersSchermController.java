@@ -40,5 +40,10 @@ public class AlleGebruikersSchermController extends AnchorPane{
     @FXML
     private Button btnZetAanwezig;
     
+    
+    public AlleGebruikersSchermController() {
+		
+	}
 
+    
 }

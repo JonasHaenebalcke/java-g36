@@ -103,6 +103,7 @@ public class Gebruiker implements Serializable {
 	@Column(name = "Type")
 	private String typeDb;
 
+	@Transient
 	private List<GebruikerSessie> gebruikerSessieLijst;
 
 	// Methodes voor Enums te mappen

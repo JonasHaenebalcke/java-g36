@@ -1,9 +1,15 @@
 package gui;
 
+import java.io.IOException;
+
 import domein.Sessie;
+import domein.SessieController;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -61,10 +67,40 @@ public class BeheerSessieSchermController extends AnchorPane{
     @FXML
     private TextArea txtOmschrvijving;
 
+    @FXML
+	private Label lblError;
+    
+    public SessieController sc;
+    
     
     public BeheerSessieSchermController() {
-    	
+    	this.sc = new SessieController();
     }
+
+	public BeheerSessieSchermController(SessieController sc)  {
+		this.sc = sc;
+		
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("Sessie.fxml"));
+		loader.setRoot(this);
+		loader.setController(this);
+		try {	
+			loader.load();
+
+		} catch (IOException ex) {
+			throw new RuntimeException(ex);
+		}
+		initialize();
+	}
+	
+	private void initialize() {
+		//lvSessies.setItems(sc.geefSessies(statusSessie));
+		
+	}
+	
+	@FXML
+    void BeherenIngeschrevenen(ActionEvent event) {
+		
+	}
 }
 
 
