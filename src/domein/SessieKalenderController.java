@@ -18,13 +18,15 @@ public class SessieKalenderController {
 	private ObservableList<SessieKalender> sessieKalenderObservableList;
 	private SessieKalenderDao sessieKalenderRepo;
 	private SessieKalender huidigeSessieKalender;
+	private SessieController sc;
 
 	/*
 	 * public SessieKalenderDao getSessieKalenderRepo() { return
 	 * this.sessieKalenderRepo; }
 	 */
 
-	public SessieKalenderController() {
+	public SessieKalenderController(SessieController sc) {
+		this.sc = sc;
 		setSessieRepo(new SessieKalenderDaoJpa());
 
 		for (SessieKalender sk : geefSessieKalenderList()) {
@@ -116,10 +118,9 @@ public class SessieKalenderController {
 	}
 
 	public void voegSessieToe(int index, Gebruiker verantwoordelijke, LocalDate startDatum, LocalDate eindDatum,
-			String titel, String lokaal, int capaciteit, StatusSessie statusSessie, String omschrijving,
-			String gastSpreker) {
-		Sessie sessie = new Sessie(verantwoordelijke, startDatum, eindDatum, titel, lokaal, capaciteit, statusSessie,
-				omschrijving, gastSpreker);
+			String titel, String lokaal, int capaciteit, String omschrijving, String gastSpreker) {
+		Sessie sessie = new Sessie(verantwoordelijke, titel, lokaal, startDatum, eindDatum, capaciteit, omschrijving,
+				gastSpreker);
 		GenericDaoJpa.startTransaction();
 		huidigeSessieKalender.voegSessieToe(sessie);
 		GenericDaoJpa.commitTransaction();

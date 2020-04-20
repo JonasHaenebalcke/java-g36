@@ -5,6 +5,7 @@ import java.util.Date;
 
 import domein.GebruikerController;
 import domein.PopulateDB;
+import domein.SessieController;
 import domein.SessieKalenderController;
 import gui.GebruikersSchermController;
 import gui.MenuController;
@@ -18,9 +19,10 @@ public class StartUp extends Application{
     public void start(Stage primaryStage) {
 		PopulateDB populatedb = new PopulateDB();
 //		populatedb.run();
+		SessieController sc = new SessieController();
 		GebruikerController dc = new GebruikerController();
 		dc.geefGebruikersList().forEach(g -> System.out.println(g.toString()));
-		SessieKalenderController skc = new SessieKalenderController();
+		SessieKalenderController skc = new SessieKalenderController(sc);
 		skc.geefSessieKalenderList().forEach(g -> System.out.println(g.toString()));
         MenuController root = new MenuController(dc, skc);
         Scene scene = new Scene(root);

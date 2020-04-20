@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import domein.GebruikerController;
 import domein.Maand;
 import domein.Sessie;
+import domein.SessieController;
 import domein.SessieKalender;
 import domein.SessieKalenderController;
 import javafx.beans.value.ChangeListener;
@@ -68,7 +69,7 @@ public class SessieKalenderSchermController extends AnchorPane {
 	private SessieKalenderController dc;
 
 	public SessieKalenderSchermController() {
-		this.dc = new SessieKalenderController();
+		this.dc = new SessieKalenderController(new SessieController());
 
 		initialize();
 	}

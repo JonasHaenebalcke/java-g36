@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
@@ -101,14 +102,15 @@ public class Gebruiker implements Serializable {
 	private int aantalKeerAfwezig;
 	@Column(name = "Type")
 	private String typeDb;
-	
+
+	private List<GebruikerSessie> gebruikerSessieLijst;
 
 	// Methodes voor Enums te mappen
 	@PostLoad
 	public void fillTransient() {
 		this.status = Status.of(statusValue);
 
-		if(this.typeGebruiker == null) {
+		if (this.typeGebruiker == null) {
 			this.typeGebruiker = typeGebruiker.Gebruiker;
 		}
 //		try {
@@ -127,12 +129,13 @@ public class Gebruiker implements Serializable {
 	public void fillPersistent() {
 		if (status != null)
 			this.statusValue = status.getStatus();
-		
+
 		if (this.typeGebruiker == typeGebruiker.Gebruiker)
 			this.typeGebruiker = null;
 	}
 
 	protected Gebruiker() {
+		gebruikerSessieLijst = new ArrayList<GebruikerSessie>();
 	}
 
 	/**
@@ -142,14 +145,15 @@ public class Gebruiker implements Serializable {
 	 * @param mailadres
 	 * @param gebruikersnaam
 	 * @param profielfoto
-	 * @param wachtwoord 
-	 * @throws InvalidKeySpecException 
-	 * @throws NoSuchAlgorithmException 
+	 * @param wachtwoord
+	 * @throws InvalidKeySpecException
+	 * @throws NoSuchAlgorithmException
 	 */
 	public Gebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam, TypeGebruiker type,
-			Status status, String profielfoto, String wachtwoord) throws NoSuchAlgorithmException, InvalidKeySpecException {
+			Status status, String profielfoto, String wachtwoord)
+			throws NoSuchAlgorithmException, InvalidKeySpecException {
+		this();
 
-		
 		setStatus(status);
 		setType(type);
 		setVoornaam(voornaam);
@@ -157,13 +161,13 @@ public class Gebruiker implements Serializable {
 		setMailadres(mailadres);
 		setGebruikersnaam(gebruikersnaam);
 		setProfielfoto(profielfoto);
-		
-		if(type.equals(type.Hoofdverantwoordelijke)) {
+
+		if (type.equals(type.Hoofdverantwoordelijke)) {
 			this.typeDb = type.Verantwoordelijke.toString();
-		}else {
+		} else {
 			this.typeDb = type.toString();
 		}
-		
+
 		this.normalizedUserName = gebruikersnaam.toUpperCase();
 		this.normalizedEmail = mailadres.toUpperCase();
 		this.emailConfirmed = true;
@@ -179,14 +183,9 @@ public class Gebruiker implements Serializable {
 		this.accessFailedCount = 0;
 		this.barcode = barcode;
 		this.aantalKeerAfwezig = aantalKeerAfwezig;
-		
+
 		setRandomGebruikerID();
 	}
-
-	
-
-
-
 
 	public Status getStatus() {
 		return status;
@@ -305,8 +304,8 @@ public class Gebruiker implements Serializable {
 	 * @param gebruikersnaam
 	 * @param profielfoto
 	 */
-	public void wijzigGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam, TypeGebruiker type,
-			Status status, String profielfoto) {
+	public void wijzigGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam,
+			TypeGebruiker type, Status status, String profielfoto) {
 		setStatus(status);
 		setType(type);
 		setVoornaam(voornaam);
@@ -458,11 +457,15 @@ public class Gebruiker implements Serializable {
 
 	@Override
 	public String toString() {
-		return gebruikersnaam +", "+ voornaam +", "+ familienaam +", "+ mailadres +", "+ typeGebruiker +", "+ status ;
-		
-		/*return "Gebruiker [status=" + status + ", type=" + typeGebruiker + ", gebruikerID=" + gebruikerID + ", gebruikersnaam="
-				+ gebruikersnaam + ", voornaam=" + voornaam + ", familienaam=" + familienaam + ", mailadres="
-				+ mailadres + ", profielFoto=" + profielFoto + "]";*/
+		return gebruikersnaam + ", " + voornaam + ", " + familienaam + ", " + mailadres + ", " + typeGebruiker + ", "
+				+ status;
+
+		/*
+		 * return "Gebruiker [status=" + status + ", type=" + typeGebruiker +
+		 * ", gebruikerID=" + gebruikerID + ", gebruikersnaam=" + gebruikersnaam +
+		 * ", voornaam=" + voornaam + ", familienaam=" + familienaam + ", mailadres=" +
+		 * mailadres + ", profielFoto=" + profielFoto + "]";
+		 */
 	}
 
 //	@Override
