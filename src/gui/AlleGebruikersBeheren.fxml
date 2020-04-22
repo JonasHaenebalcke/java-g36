@@ -6,7 +6,6 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="422.0" prefWidth="614.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AlleGebruikersScherm">
    <children>
       <TableView fx:id="tvAlleGebruikers" layoutX="16.0" layoutY="87.0" prefHeight="278.0" prefWidth="580.0">
@@ -18,9 +17,9 @@
          </columns>
       </TableView>
       <TextField fx:id="txtGebruiker" layoutX="158.0" layoutY="50.0" prefHeight="26.0" prefWidth="154.0" promptText="gebruiker" />
-      <Button fx:id="btnZoekGebruiker" layoutX="323.0" layoutY="50.0" mnemonicParsing="false" text="zoek" />
-      <Button fx:id="btnTerug" layoutX="34.0" layoutY="25.0" mnemonicParsing="false" text="Terug" />
-      <Button fx:id="btnSchrijfIn" layoutX="216.0" layoutY="379.0" mnemonicParsing="false" text="Schrijf in" />
-      <Button fx:id="btnZetAanwezig" layoutX="323.0" layoutY="379.0" mnemonicParsing="false" text="Zet aanwezig" />
+      <Button fx:id="btnZoekGebruiker" layoutX="323.0" layoutY="50.0" mnemonicParsing="false" onAction="#zoekGebruiker" text="zoek" />
+      <Button fx:id="btnTerug" layoutX="34.0" layoutY="25.0" mnemonicParsing="false" onAction="#trgBeherenIngeschrevenen" text="Terug" />
+      <Button fx:id="btnSchrijfIn" layoutX="216.0" layoutY="379.0" mnemonicParsing="false" onAction="#schrijfGebruikerIn" text="Schrijf in" />
+      <Button fx:id="btnZetAanwezig" layoutX="323.0" layoutY="379.0" mnemonicParsing="false" onAction="#zetGebruikerAanwezig" text="Zet aanwezig" />
    </children>
 </AnchorPane>

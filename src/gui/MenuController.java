@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -26,11 +27,12 @@ public class MenuController extends BorderPane{
 	    public SessieKalenderController skc;
 	    public SessieController sc;
 	    
-        public MenuController(GebruikerController dc, SessieKalenderController skc) {
+	    
+        public MenuController(GebruikerController dc, SessieKalenderController skc, SessieController sc) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Menu.fxml"));
             loader.setRoot(this);
             loader.setController(this);
-
+          
             try {
                 loader.load();
             } catch (IOException ex) {
@@ -38,6 +40,7 @@ public class MenuController extends BorderPane{
             }
             this.dc = dc;
             this.skc = skc;
+            this.sc = sc;
         }
         
         public void initialize() {
