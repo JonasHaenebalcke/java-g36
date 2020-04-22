@@ -24,7 +24,7 @@ public class StartUp extends Application{
 		dc.geefGebruikersList().forEach(g -> System.out.println(g.toString()));
 		SessieKalenderController skc = new SessieKalenderController(sc);
 		skc.geefSessieKalenderList().forEach(g -> System.out.println(g.toString()));
-        MenuController root = new MenuController(dc, skc);
+        MenuController root = new MenuController(dc, skc, sc);
         Scene scene = new Scene(root);
         scene.getStylesheets().add("gui/stylesheet.css");
         
