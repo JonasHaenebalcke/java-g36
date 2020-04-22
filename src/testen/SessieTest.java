@@ -142,21 +142,23 @@ public class SessieTest {
 		Assertions.assertTrue(sessie.getStartDatum().isBefore(sessie.getEindDatum().plus(-30, ChronoUnit.MINUTES)));
 	}
 	
-	@Test
-	public void wijzigSessie_lokaal_slaagt() {
-		sessie.wijzigSessie("sessie 360 noscopes", "B1.012", LocalDate.now().plus(1, ChronoUnit.DAYS), LocalDate.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS),
-					30, "omschrijving", "gastspreker");
-		Assertions.assertEquals(30, sessie.getCapaciteit());
-	}
 	
 	@Test
-	public void wijzigSessie_lokaal_faalt() {
+	public void wijzigSessie_capaciteit_faalt() {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 			sessie.wijzigSessie("sessie 360 noscopes", "B1.012", LocalDate.now().plus(1, ChronoUnit.DAYS), LocalDate.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS),
 					-2, "omschrijving", "gastspreker");
 		});
 
 		Assertions.assertEquals(20, sessie.getCapaciteit());
+	}
+	
+	
+	@Test
+	public void wijzigSessie_capaciteit_slaagt() {
+		sessie.wijzigSessie("sessie 360 noscopes", "B1.012", LocalDate.now().plus(1, ChronoUnit.DAYS), LocalDate.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS),
+					30, "omschrijving", "gastspreker");
+		Assertions.assertEquals(30, sessie.getCapaciteit());
 	}
 	
 	
