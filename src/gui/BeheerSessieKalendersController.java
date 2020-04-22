@@ -33,6 +33,8 @@ public class BeheerSessieKalendersController extends AnchorPane {
 	private Button btnMaakNieuweAan;
 	@FXML
 	private Label lblError;
+	@FXML
+	private Label lblSucces;
 
 	private SessieKalenderController dc;
 	private SessieKalenderSchermController sc;
@@ -61,6 +63,8 @@ public class BeheerSessieKalendersController extends AnchorPane {
 
 	private void initialize() {
 		try {
+			lblSucces.setVisible(false);
+			lblError.setVisible(false);
 			lvSessieKalender.setItems(dc.geefSessieKalenderObservableList().sorted());
 
 			
@@ -69,6 +73,7 @@ public class BeheerSessieKalendersController extends AnchorPane {
 			lblError.setText(e.getMessage());
 		}
 	}
+	
 	
 	private void addListenerToList() {
 		lvSessieKalender.getSelectionModel().selectedItemProperty()
@@ -87,14 +92,20 @@ public class BeheerSessieKalendersController extends AnchorPane {
 	@FXML
 	public void voegSessieKalenderToe(ActionEvent event) {
 		try {
+			lvSessieKalender.getSelectionModel().clearSelection();
+			initialize();
 			if (inputStartDatum.getValue() == null || inputEindDatum.getValue() == null)
 				throw new IllegalArgumentException("Datum is verplicht in te vullen!");
-
+			
+			System.out.println(inputStartDatum.getValue().toString());
+			
 			dc.voegToeSessieKalender(inputStartDatum.getValue(), inputEindDatum.getValue());
 //			sc.initialize();
 			initialize();
 //			Stage stage = (Stage) this.getScene().getWindow();
 //			stage.close();
+			lblSucces.setVisible(true);
+			lblSucces.setText("Sessie Kalender werd succesvol toegevoegd!");
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			lblError.setVisible(true);
@@ -105,10 +116,15 @@ public class BeheerSessieKalendersController extends AnchorPane {
 	@FXML
 	public void pasSessieKalenderAan(ActionEvent event) {
 		try {
-			SessieKalender sessieKalender = lvSessieKalender.getSelectionModel().getSelectedItem();
-			dc.wijzigSessieKalender(sessieKalender.getSessieKalenderID(), inputStartDatum.getValue(),
+			int skId = lvSessieKalender.getSelectionModel().getSelectedItem().getSessieKalenderID();
+			lvSessieKalender.getSelectionModel().clearSelection();
+			initialize();
+//			SessieKalender sessieKalender = lvSessieKalender.getSelectionModel().getSelectedItem();
+			dc.wijzigSessieKalender(/*sessieKalender.getSessieKalenderID()*/ skId, inputStartDatum.getValue(),
 					inputEindDatum.getValue());
 			initialize();
+			lblSucces.setVisible(true);
+			lblSucces.setText("Sessie Kalender werd succesvol aangepast!");
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			lblError.setVisible(true);

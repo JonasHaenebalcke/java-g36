@@ -78,7 +78,11 @@ public class SessieKalenderController {
 	}
 
 	public void wijzigSessieKalender(int id, LocalDate startDate, LocalDate eindDate) {
-		try {
+//		try {
+		
+		if(LocalDate.now().getYear() == startDate.getYear())
+			throw new IllegalArgumentException("Jaar van huidig sessiekalender mag niet worden aangepast");
+		
 			for (SessieKalender sessieKalender : sessieKalenderList) {
 				if (sessieKalender.getSessieKalenderID() == id) {
 					sessieKalender.wijzigSessieKalender(startDate, eindDate);
@@ -90,20 +94,20 @@ public class SessieKalenderController {
 					GenericDaoJpa.commitTransaction();
 				}
 			}
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-		}
+//		} catch (Exception e) {
+//			System.err.println(e.getMessage());
+//		}
 	}
 
 	public void voegToeSessieKalender(LocalDate startDate, LocalDate eindDate) {
-		try {
-			if (geefSessieKalenderList().stream().map(SessieKalender::getStartDate).collect(Collectors.toList())
-					.contains(startDate)
-					|| geefSessieKalenderList().stream().map(SessieKalender::getEindDate).collect(Collectors.toList())
-							.contains(eindDate))
+//		try {
+			if (geefSessieKalenderList().stream().map(SessieKalender::getStartDate).map(LocalDate::getYear).collect(Collectors.toList())
+					.contains(startDate.getYear())
+					|| geefSessieKalenderList().stream().map(SessieKalender::getEindDate).map(LocalDate::getYear).collect(Collectors.toList())
+							.contains(eindDate.getYear()))
 				throw new IllegalArgumentException("Deze sessiekalender bestaat al!");
 
-			SessieKalender sessieKalender = new SessieKalender(startDate, eindDate);
+				SessieKalender sessieKalender = new SessieKalender(startDate, eindDate);
 
 			sessieKalenderObservableList.add(sessieKalender);
 			sessieKalenderList.add(sessieKalender);
@@ -112,15 +116,15 @@ public class SessieKalenderController {
 			sessieKalenderRepo.insert(sessieKalender);
 			GenericDaoJpa.commitTransaction();
 
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-		}
+//		} catch (Exception e) {
+//			System.err.println(e.getMessage());
+//		}
 	}
 
 	public void voegSessieToe(int index, Gebruiker verantwoordelijke, LocalDate startDatum, LocalDate eindDatum,
 			String titel, String lokaal, int capaciteit, String omschrijving, String gastSpreker) {
 		Sessie sessie = new Sessie(verantwoordelijke, titel, lokaal, startDatum, eindDatum, capaciteit, omschrijving,
-				gastSpreker);
+				gastSpreker);	
 		GenericDaoJpa.startTransaction();
 		huidigeSessieKalender.voegSessieToe(sessie);
 		GenericDaoJpa.commitTransaction();

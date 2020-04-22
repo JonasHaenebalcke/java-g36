@@ -18,5 +18,6 @@
       <Button fx:id="btnPasSessieKalenderAan" layoutX="545.0" layoutY="187.0" mnemonicParsing="false" onAction="#pasSessieKalenderAan" text="Pas Aan" />
       <Button fx:id="btnMaakNieuweAan" layoutX="331.0" layoutY="188.0" mnemonicParsing="false" onAction="#voegSessieKalenderToe" text="Maak Aan" />
       <Label fx:id="lblError" layoutX="331.0" layoutY="253.0" text="Error" textFill="RED" visible="false" />
+      <Label fx:id="lblSucces" layoutX="330.0" layoutY="306.0" text="Succes" textFill="#19ac12" visible="false" />
    </children>
 </fx:root>

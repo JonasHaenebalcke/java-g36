@@ -54,10 +54,10 @@ public class SessieKalender {
 
 	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
-//		if(startDate.isAfter(LocalDate.now()))
-//			this.startDate = startDate;
-//		else
-//			throw new IllegalArgumentException("De startdatum moet in de toekomst liggen.");
+		if(startDate.isAfter(LocalDate.now()))
+			this.startDate = startDate;
+		else
+			throw new IllegalArgumentException("De startdatum moet in de toekomst liggen.");
 	}
 
 	public LocalDate getEindDate() {
@@ -66,10 +66,10 @@ public class SessieKalender {
 
 	public void setEindDate(LocalDate eindDate) {
 		this.eindDate = eindDate;
-//		if(eindDate.isAfter(LocalDate.now()) && eindDate.isAfter(startDate))
-//			this.eindDate = eindDate;
-//		else
-//			throw new IllegalArgumentException("De einddatum moet in de toekomst liggen en na de startdatum komen.");
+		if(eindDate.isAfter(LocalDate.now()) && eindDate.isAfter(startDate))
+			this.eindDate = eindDate;
+		else
+			throw new IllegalArgumentException("De einddatum moet in de toekomst liggen en na de startdatum komen.");
 	}
 
 	public void wijzigSessieKalender(LocalDate startDate, LocalDate eindDate) {

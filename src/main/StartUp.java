@@ -18,7 +18,7 @@ public class StartUp extends Application{
 	@Override
     public void start(Stage primaryStage) {
 		PopulateDB populatedb = new PopulateDB();
-//		populatedb.run();
+//		populatedb.run(); //Als ge db wilt resetten, moet ge setter van startdatumsessiekalender ook aanpassen
 		SessieController sc = new SessieController();
 		GebruikerController dc = new GebruikerController();
 		dc.geefGebruikersList().forEach(g -> System.out.println(g.toString()));
