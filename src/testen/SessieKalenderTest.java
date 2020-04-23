@@ -33,9 +33,9 @@ public class SessieKalenderTest {
 	
 	@Test
 	public void sessieKalender_slaagt() {
-		assertEquals(LocalDate.of(2020, 9, 16), sessieKalender.getStartDate());
-		assertEquals(LocalDate.of(2021, 8, 17), sessieKalender.getEindDate());
-		assertEquals(1, (sessieKalender.getEindDate().getYear() - sessieKalender.getStartDate().getYear()));
+		assertEquals(LocalDate.of(2020, 9, 16), sessieKalender.getStartDatum());
+		assertEquals(LocalDate.of(2021, 8, 17), sessieKalender.getEindDatum());
+		assertEquals(1, (sessieKalender.getEindDatum().getYear() - sessieKalender.getStartDatum().getYear()));
 	}
 	
 	
@@ -241,10 +241,10 @@ public class SessieKalenderTest {
 		// voor 16/09/2020 - 17/8/2021
 		// na 24/9/2020 - 17/8/2021
 		LocalDate startDatum =  LocalDate.of(2020, 9, 24);
-		assertTrue(sessieKalender.getEindDate().isAfter(startDatum));
+		assertTrue(sessieKalender.getEindDatum().isAfter(startDatum));
 		assertTrue(startDatum.isAfter(LocalDate.now()));
-		sessieKalender.wijzigSessieKalender(startDatum, sessieKalender.getEindDate());
-		assertEquals(LocalDate.of(2020, 9, 24), sessieKalender.getStartDate());		
+		sessieKalender.wijzigSessieKalender(startDatum, sessieKalender.getEindDatum());
+		assertEquals(LocalDate.of(2020, 9, 24), sessieKalender.getStartDatum());		
 	}
 
 	@Test
@@ -253,10 +253,10 @@ public class SessieKalenderTest {
 		// faalt 17/9/2019 - 17/8/2021;
 		LocalDate startDatum = LocalDate.of(2019, 9, 17);
 		assertFalse(startDatum.isAfter(LocalDate.now()));
-		assertTrue(sessieKalender.getEindDate().isAfter(startDatum));
-		assertTrue(sessieKalender.getEindDate().isAfter(LocalDate.now()));
-		assertThrows(IllegalArgumentException.class, () -> sessieKalender.wijzigSessieKalender(startDatum, sessieKalender.getEindDate()));
-		assertEquals(LocalDate.of(2020, 9, 16), sessieKalender.getStartDate());
+		assertTrue(sessieKalender.getEindDatum().isAfter(startDatum));
+		assertTrue(sessieKalender.getEindDatum().isAfter(LocalDate.now()));
+		assertThrows(IllegalArgumentException.class, () -> sessieKalender.wijzigSessieKalender(startDatum, sessieKalender.getEindDatum()));
+		assertEquals(LocalDate.of(2020, 9, 16), sessieKalender.getStartDatum());
 	}
 
 	@Test
@@ -265,20 +265,20 @@ public class SessieKalenderTest {
 		// faalt 17/9/2022 - 17/8/2021;
 		LocalDate startDatum = LocalDate.of(2022, 9, 17);
 		assertTrue(startDatum.isAfter(LocalDate.now()));
-		assertFalse(startDatum.isBefore(sessieKalender.getEindDate()));
-		assertTrue(sessieKalender.getEindDate().isAfter(LocalDate.now()));
-		assertThrows(IllegalArgumentException.class, () -> sessieKalender.wijzigSessieKalender(startDatum, sessieKalender.getEindDate()));
-		assertEquals(LocalDate.of(2020, 9, 16), sessieKalender.getStartDate());
+		assertFalse(startDatum.isBefore(sessieKalender.getEindDatum()));
+		assertTrue(sessieKalender.getEindDatum().isAfter(LocalDate.now()));
+		assertThrows(IllegalArgumentException.class, () -> sessieKalender.wijzigSessieKalender(startDatum, sessieKalender.getEindDatum()));
+		assertEquals(LocalDate.of(2020, 9, 16), sessieKalender.getStartDatum());
 	}
 	@Test
 	public void WijzigSessieKalender_einddatumAanpassenCorrect_slaagt() {
 		// voor 16/09/2020 - 17/8/2021
 		// na 16/09/2020 - 3/8/2021
 		LocalDate eindDatum = LocalDate.of(2021, 8, 3);
-		assertTrue(eindDatum.isAfter(sessieKalender.getStartDate()));
-		assertTrue(sessieKalender.getStartDate().isAfter(LocalDate.now()));
-		sessieKalender.wijzigSessieKalender(sessieKalender.getStartDate(), eindDatum);
-		assertEquals(LocalDate.of(2021, 8, 3), sessieKalender.getEindDate());
+		assertTrue(eindDatum.isAfter(sessieKalender.getStartDatum()));
+		assertTrue(sessieKalender.getStartDatum().isAfter(LocalDate.now()));
+		sessieKalender.wijzigSessieKalender(sessieKalender.getStartDatum(), eindDatum);
+		assertEquals(LocalDate.of(2021, 8, 3), sessieKalender.getEindDatum());
 
 	}
 
@@ -287,31 +287,31 @@ public class SessieKalenderTest {
 		// voor 16/09/2020 - 17/8/2021
 		// faalt 16/09/2020 - 15/9/2020
 		LocalDate eindDatum = LocalDate.of(2020, 9, 15);
-		assertFalse(eindDatum.isAfter(sessieKalender.getStartDate()));
-		assertTrue(sessieKalender.getStartDate().isAfter(LocalDate.now()));
+		assertFalse(eindDatum.isAfter(sessieKalender.getStartDatum()));
+		assertTrue(sessieKalender.getStartDatum().isAfter(LocalDate.now()));
 		assertTrue(eindDatum.isAfter(LocalDate.now()));
-		assertThrows(IllegalArgumentException.class, () -> sessieKalender.wijzigSessieKalender(sessieKalender.getStartDate(), eindDatum));
-		assertEquals(LocalDate.of(2021, 8, 17), sessieKalender.getEindDate());
+		assertThrows(IllegalArgumentException.class, () -> sessieKalender.wijzigSessieKalender(sessieKalender.getStartDatum(), eindDatum));
+		assertEquals(LocalDate.of(2021, 8, 17), sessieKalender.getEindDatum());
 	}
 	@Test
 	public void WijzigSessieKalender_einddatumAanpassenNaarVerleden_faalt() {
 		// voor 16/09/2020 - 17/8/2021
 		// faalt 16/09/2020 - 15/9/2019
 		LocalDate eindDatum = LocalDate.of(2019, 9, 15);
-		assertFalse(eindDatum.isAfter(sessieKalender.getStartDate()));
-		assertTrue(sessieKalender.getStartDate().isAfter(LocalDate.now()));
+		assertFalse(eindDatum.isAfter(sessieKalender.getStartDatum()));
+		assertTrue(sessieKalender.getStartDatum().isAfter(LocalDate.now()));
 		assertFalse(eindDatum.isAfter(LocalDate.now()));
-		assertThrows(IllegalArgumentException.class, () -> sessieKalender.wijzigSessieKalender(sessieKalender.getStartDate(), eindDatum));
-		assertEquals(LocalDate.of(2021, 8, 17), sessieKalender.getEindDate());
+		assertThrows(IllegalArgumentException.class, () -> sessieKalender.wijzigSessieKalender(sessieKalender.getStartDatum(), eindDatum));
+		assertEquals(LocalDate.of(2021, 8, 17), sessieKalender.getEindDatum());
 	}
 	
 	@Test
 	public void WijzigSessieKalender_NietOpeenVolgendeJaren_faalt() {
 		// academiejaar 20-21, 16/09/2020 - 17/8/2021
 		// academiejaar 20-21, 16/09/2020 - 17/8/2022
-		assertNotEquals(1, (LocalDate.of(2020, 8, 17)).getYear() - sessieKalender.getStartDate().getYear());
-		assertThrows(IllegalArgumentException.class, () -> sessieKalender.wijzigSessieKalender(sessieKalender.getStartDate(), LocalDate.of(2020, 8, 17)));
-		assertEquals(LocalDate.of(2021, 8, 17), sessieKalender.getEindDate());
+		assertNotEquals(1, (LocalDate.of(2020, 8, 17)).getYear() - sessieKalender.getStartDatum().getYear());
+		assertThrows(IllegalArgumentException.class, () -> sessieKalender.wijzigSessieKalender(sessieKalender.getStartDatum(), LocalDate.of(2020, 8, 17)));
+		assertEquals(LocalDate.of(2021, 8, 17), sessieKalender.getEindDatum());
 	}
 
 }

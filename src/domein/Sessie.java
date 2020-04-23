@@ -24,12 +24,12 @@ public class Sessie {
 	public Sessie(Gebruiker verantwoordelijke, String titel, String lokaal, LocalDate startDatum, LocalDate eindDatum,
 			int capaciteit, String omschrijving, String gastspreker) {
 		this();
-		this.verantwoordelijke = verantwoordelijke;
-		this.titel = titel;
+		setVerantwoordelijke(verantwoordelijke);
+		setTitel(titel);
 		setLokaal(lokaal);
 		setStartDatum(startDatum);
 		setEindDatum(eindDatum);
-		this.capaciteit = capaciteit;
+		setCapaciteit(capaciteit);
 		this.omschrijving = omschrijving;
 		this.gastspreker = gastspreker;
 	}
@@ -73,12 +73,21 @@ public class Sessie {
 	public String getGastspreker() {
 		return gastspreker;
 	}
+	
+	private void setTitel(String titel) {
+		if(titel.isBlank() || titel == null)
+			throw new IllegalArgumentException("Titel kan moet ingevuld zijn.");
+		this.titel = titel;
+	}
 
 	private void setLokaal(String lokaal) {
+		if(titel.isBlank() || titel == null)
+			throw new IllegalArgumentException("Titel kan moet ingevuld zijn.");
 		this.lokaal = lokaal;
 	}
 
 	private void setStartDatum(LocalDate startDatum) {
+		
 		this.startDatum = startDatum;
 	}
 
@@ -86,9 +95,25 @@ public class Sessie {
 		this.eindDatum = eindDatum;
 	}
 
+	private void setCapaciteit(int capaciteit) {
+		this.capaciteit = capaciteit;
+	}
+
+	private void setVerantwoordelijke(Gebruiker verantwoordelijke) {
+		if(titel.isBlank() || titel == null)
+			throw new IllegalArgumentException("Titel kan moet ingevuld zijn.");
+		this.verantwoordelijke = verantwoordelijke;
+	}
+
 	public void wijzigSessie(String titel, String lokaal, LocalDate startDatum, LocalDate eindDatum, int capaciteit,
 			String omschrijving, String gastspreker) {
-		throw new UnsupportedOperationException();
+		setTitel(titel);
+		setLokaal(lokaal);
+		setStartDatum(startDatum);
+		setEindDatum(eindDatum);
+		setCapaciteit(capaciteit);
+		this.omschrijving = omschrijving;
+		this.gastspreker = gastspreker;
 	}
 
 	public void wijzigIngeschrevenen(Gebruiker ingeschrevenen, boolean ingeschreven, boolean aanwezig) {

@@ -15,6 +15,7 @@ import javax.persistence.Transient;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
+
 @Entity
 @Table(name = "SessieKalender")
 public class SessieKalender {
@@ -29,132 +30,118 @@ public class SessieKalender {
 	private LocalDate startDatum;
 	@Column(name = "eindDate")
 	private LocalDate eindDatum;
-	
+
 	@Transient
 	private SimpleStringProperty startDatumProperty = new SimpleStringProperty();
 	@Transient
-    private SimpleStringProperty eindDatumProperty = new SimpleStringProperty();
-    
-
+	private SimpleStringProperty eindDatumProperty = new SimpleStringProperty();
 
 	protected SessieKalender() {
 		sessieLijst = new ArrayList<Sessie>();
 	}
-	
-	public SessieKalender(LocalDate startDate, LocalDate eindDate) {
+
+	public SessieKalender(LocalDate startDatum, LocalDate eindDatum) {
 		this();
-		 if(eindDate.getYear() - startDate.getYear() != 1 ) {
-	            throw new IllegalArgumentException("SessieKalender moet op eenvolgende jaren hebben ");
-		    }
-		setStartDate(startDate);
-		setEindDate(eindDate);
-		
+		setDatums(startDatum, eindDatum);
 	}
-	
-	public void setStringProperties(LocalDate startDate, LocalDate eindDate) {
-		setStartDatum(startDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-		setEindDatum(eindDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+
+	public void setDatums(LocalDate startDatum, LocalDate eindDatum) {
+		if (eindDatum.getYear() - startDatum.getYear() != 1) {
+			throw new IllegalArgumentException("SessieKalender moet op eenvolgende jaren hebben ");
+		}
+		setStartDatum(startDatum);
+		setEindDatum(eindDatum);
+		setStringProperties();
 	}
-	
-	
-	private void setStartDatum(String datum) {
-        startDatumProperty.set(datum);
-    }
 
-    public String getStartDatum() {
-        return startDatumProperty.get();
-    }
+	public void setStringProperties() {
+		setStartDatumProperty(getStartDatum().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+		setEindDatumProperty(getEindDatum().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+	}
 
-    public StringProperty startDatumProperty() {
-        return startDatumProperty;
-    }
+	private void setStartDatumProperty(String datum) {
+		startDatumProperty.set(datum);
+	}
 
-    private void setEindDatum(String datum) {
-        eindDatumProperty.set(datum);
-    }
-    
-    public String eindDatum() {
-        return eindDatumProperty.get();
-    }
+	public StringProperty getStartDatumProperty() {
+		return startDatumProperty;
+	}
 
-    public StringProperty eindDatumProperty() {
-        return eindDatumProperty;
-    }
+	private void setEindDatumProperty(String datum) {
+		eindDatumProperty.set(datum);
+	}
 
-
-	
+	public StringProperty getEindDatumProperty() {
+		return eindDatumProperty;
+	}
 
 	public int getSessieKalenderID() {
 		return this.sessieKalenderID;
 	}
 
-	public void setSessieKalenderID(int id) {
-		this.sessieKalenderID = id;
-	}
-
-	public LocalDate getStartDate() {
+	public LocalDate getStartDatum() {
 		return this.startDatum;
 	}
 
-	public void setStartDate(LocalDate startDate) {
-		this.startDatum = startDate;
-		if(startDate.isAfter(LocalDate.now()))
-			this.startDatum = startDate;
+	public void setStartDatum(LocalDate startDatum) {
+		this.startDatum = startDatum;
+		if (startDatum.isAfter(LocalDate.now()))
+			this.startDatum = startDatum;
 		else
 			throw new IllegalArgumentException("De startdatum moet in de toekomst liggen.");
 	}
 
-	public LocalDate getEindDate() {
+	public LocalDate getEindDatum() {
 		return this.eindDatum;
 	}
 
-	public void setEindDate(LocalDate eindDate) {
-		this.eindDatum = eindDate;
-		if(eindDate.isAfter(LocalDate.now()) && eindDate.isAfter(startDatum))
-			this.eindDatum = eindDate;
+	public void setEindDatum(LocalDate eindDatum) {
+		this.eindDatum = eindDatum;
+		if (eindDatum.isAfter(LocalDate.now()) && eindDatum.isAfter(startDatum))
+			this.eindDatum = eindDatum;
 		else
 			throw new IllegalArgumentException("De einddatum moet in de toekomst liggen en na de startdatum komen.");
 	}
 
-	public void wijzigSessieKalender(LocalDate startDate, LocalDate eindDate) {
-		if(startDate.isAfter(eindDate)) {
+	public void wijzigSessieKalender(LocalDate startDatum, LocalDate eindDatum) {
+		if (startDatum.isAfter(eindDatum)) {
 			throw new IllegalArgumentException("Startdatum kan niet na einddatum liggen");
 		}
-	    if(eindDate.getYear() - startDate.getYear() != 1 ) {
-            throw new IllegalArgumentException("SessieKalender moet op eenvolgende jaren hebben ");
-	    }
-		setStartDate(startDate);
-		setEindDate(eindDate);
+		setDatums(startDatum, eindDatum);
 	}
 
 	public void voegSessieToe(Sessie sessie) {
-		if(sessieLijst.contains(sessie))
+		if (sessieLijst.contains(sessie))
 			throw new IllegalArgumentException("De gegeven sessie komt reeds voor in deze sessiekalender.");
 		else
 			sessieLijst.add(sessie);
 	}
 
 	public void verwijderSessie(Sessie sessie) {
-		if(sessieLijst.contains(sessie)) 
+		if (sessieLijst.contains(sessie))
 			sessieLijst.remove(sessie);
 		else
 			throw new NullPointerException("De gegeven sessie komt niet voor in deze sessiekalender.");
 	}
 
 	public Collection<Sessie> geefSessiesMaand(int maand) {
-		//ObservableList<Sessie> sessies; //kan nog niet aan "maand" van sessie.
-		/*sessieLijst.forEach( s -> {
-			if()
-		});*/
-//		if(sessieLijst.isEmpty() || sessieLijst == null)
-//			throw new NullPointerException("Sessie lijst is leeg.");
-//		else
-			return sessieLijst;
+		Collection<Sessie> sessies = new ArrayList<Sessie>();
+		if (sessieLijst.isEmpty() || sessieLijst == null)
+			throw new NullPointerException("Deze SessieKalender bevat nog geen sessies.");
+
+		for (Sessie sessie : sessieLijst) {
+			if (sessie.getStartDatum().getDayOfMonth() == maand)
+				sessies.add(sessie);
+		}
+		if (sessies.isEmpty() || sessies == null)
+			throw new NullPointerException("Deze SessieKalender bevat nog geen sessies voor deze maand.");
+
+		return sessieLijst;
 	}
 
 	@Override
 	public String toString() {
 		return "startDate=" + startDatum + ", eindDate=" + eindDatum;
 	}
-	
+
 }

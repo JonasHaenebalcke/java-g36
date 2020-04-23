@@ -90,7 +90,7 @@ public class SessieKalenderSchermController extends AnchorPane {
 	private SessieKalenderController dc;
 
 	public SessieKalenderSchermController() {
-		this.dc = new SessieKalenderController(new SessieController());
+		this.dc = new SessieKalenderController();
 
 //		initialize();
 //		initializeSessieKalender();
@@ -144,24 +144,27 @@ public class SessieKalenderSchermController extends AnchorPane {
 	
 
 			System.out.println(sk.toString());
-			lvSessies.setItems(dc.geefSessiesMaand(LocalDate.now().getMonthValue()));
+
 			System.out.println(cbMaand.getSelectionModel().getSelectedIndex());
 			System.out.println(cbMaand.getSelectionModel().getSelectedItem().toString());
 
-			lblStartDatum.setText(sk.getStartDate().format(DateTimeFormatter.ofPattern("MM/dd")));
-			lblEindDatum.setText(sk.getEindDate().format(DateTimeFormatter.ofPattern("MM/dd")));
-			lblStartJaar.setText("" + sk.getStartDate().getYear());
+			lblStartDatum.setText(sk.getStartDatum().format(DateTimeFormatter.ofPattern("MM/dd")));
+			lblEindDatum.setText(sk.getEindDatum().format(DateTimeFormatter.ofPattern("MM/dd")));
+			lblStartJaar.setText("" + sk.getStartDatum().getYear());
 			;
-			lblEindJaar.setText("" + sk.getEindDate().getYear());
+			lblEindJaar.setText("" + sk.getEindDatum().getYear());
 //			lblStartDatum = new Label(sk.getStartDate().toString());
 //			lblEindDatum = new Label(sk.getEindDate().toString());
+			lvSessies.setItems(dc.geefSessiesMaand(LocalDate.now().getMonthValue()));
 			
 			lblSucces.setVisible(false);
 			lblErrorSessies.setVisible(false);
 
 		} catch (NullPointerException e) {
+			System.err.println(e.getMessage());
 			lblErrorSessies.setVisible(true);
-			lblErrorSessies.setText("ERROR " + "Er is geen SessieKalender voor het geselecteerde jaar");
+//			lblErrorSessies.setText("ERROR " + "Er is geen SessieKalender voor het geselecteerde jaar");
+			lblErrorSessies.setText("ERROR " + e.getMessage());
 		} catch (Exception e) {
 			lblErrorSessies.setVisible(true);
 			lblErrorSessies.setText("ERROR " + e.toString());
@@ -175,13 +178,13 @@ public class SessieKalenderSchermController extends AnchorPane {
 //			lvSessieKalender.setItems(dc.geefSessieKalenderObservableList().sorted());
 			
 			tblSessieKalenders.setItems(dc.geefSessieKalenderObservableList().sorted());
-			System.out.println(sk.startDatumProperty());
+			System.out.println(sk.getStartDatumProperty());
 //			colStartDatum.setCellValueFactory(cel -> cel.getValue().startDatumProperty()());
 //			System.out.println(sk.getStartDatumProperty());
-			colStartDatum.setCellValueFactory(cel -> cel.getValue().startDatumProperty());
+			colStartDatum.setCellValueFactory(cel -> cel.getValue().getStartDatumProperty());
 
 
-			colEindDatum.setCellValueFactory(cel -> cel.getValue().eindDatumProperty());
+			colEindDatum.setCellValueFactory(cel -> cel.getValue().getEindDatumProperty());
 		
 		} catch (Exception e) {
 			lblErrorSessieKalender.setVisible(true);
@@ -196,8 +199,8 @@ public class SessieKalenderSchermController extends AnchorPane {
 			public void changed(ObservableValue<? extends SessieKalender> observable,
 					SessieKalender oldValue, SessieKalender newValue) {
 				if(newValue != null) {
-				inputStartDatum.setValue(newValue.getStartDate());
-				inputEindDatum.setValue(newValue.getEindDate());
+				inputStartDatum.setValue(newValue.getStartDatum());
+				inputEindDatum.setValue(newValue.getEindDatum());
 				}
 			}
 		}));

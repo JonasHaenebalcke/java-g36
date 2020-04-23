@@ -19,10 +19,11 @@ public class StartUp extends Application{
     public void start(Stage primaryStage) {
 		PopulateDB populatedb = new PopulateDB();
 //		populatedb.run(); //Als ge db wilt resetten, moet ge setter van startdatumsessiekalender ook aanpassen
+		SessieKalenderController skc = new SessieKalenderController();
 		SessieController sc = new SessieController();
 		GebruikerController dc = new GebruikerController();
 		dc.geefGebruikersList().forEach(g -> System.out.println(g.toString()));
-		SessieKalenderController skc = new SessieKalenderController(sc);
+
 		skc.geefSessieKalenderList().forEach(g -> System.out.println(g.toString()));
         MenuController root = new MenuController(dc, skc, sc);
         Scene scene = new Scene(root);
