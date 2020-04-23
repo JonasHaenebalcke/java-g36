@@ -1,6 +1,7 @@
 package domein;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import javax.persistence.Column;
@@ -11,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 @Entity
 @Table(name = "SessieKalender")
@@ -23,9 +26,16 @@ public class SessieKalender {
 	@Column(name = "Id")
 	private int sessieKalenderID;
 	@Column(name = "startDate")
-	private LocalDate startDate;
+	private LocalDate startDatum;
 	@Column(name = "eindDate")
-	private LocalDate eindDate;
+	private LocalDate eindDatum;
+	
+	@Transient
+	private SimpleStringProperty startDatumProperty = new SimpleStringProperty();
+	@Transient
+    private SimpleStringProperty eindDatumProperty = new SimpleStringProperty();
+    
+
 
 	protected SessieKalender() {
 		sessieLijst = new ArrayList<Sessie>();
@@ -38,8 +48,42 @@ public class SessieKalender {
 		    }
 		setStartDate(startDate);
 		setEindDate(eindDate);
+		
 	}
 	
+	public void setStringProperties(LocalDate startDate, LocalDate eindDate) {
+		setStartDatum(startDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+		setEindDatum(eindDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+	}
+	
+	
+	private void setStartDatum(String datum) {
+        startDatumProperty.set(datum);
+    }
+
+    public String getStartDatum() {
+        return startDatumProperty.get();
+    }
+
+    public StringProperty startDatumProperty() {
+        return startDatumProperty;
+    }
+
+    private void setEindDatum(String datum) {
+        eindDatumProperty.set(datum);
+    }
+    
+    public String eindDatum() {
+        return eindDatumProperty.get();
+    }
+
+    public StringProperty eindDatumProperty() {
+        return eindDatumProperty;
+    }
+
+
+	
+
 	public int getSessieKalenderID() {
 		return this.sessieKalenderID;
 	}
@@ -49,25 +93,25 @@ public class SessieKalender {
 	}
 
 	public LocalDate getStartDate() {
-		return this.startDate;
+		return this.startDatum;
 	}
 
 	public void setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
+		this.startDatum = startDate;
 		if(startDate.isAfter(LocalDate.now()))
-			this.startDate = startDate;
+			this.startDatum = startDate;
 		else
 			throw new IllegalArgumentException("De startdatum moet in de toekomst liggen.");
 	}
 
 	public LocalDate getEindDate() {
-		return this.eindDate;
+		return this.eindDatum;
 	}
 
 	public void setEindDate(LocalDate eindDate) {
-		this.eindDate = eindDate;
-		if(eindDate.isAfter(LocalDate.now()) && eindDate.isAfter(startDate))
-			this.eindDate = eindDate;
+		this.eindDatum = eindDate;
+		if(eindDate.isAfter(LocalDate.now()) && eindDate.isAfter(startDatum))
+			this.eindDatum = eindDate;
 		else
 			throw new IllegalArgumentException("De einddatum moet in de toekomst liggen en na de startdatum komen.");
 	}
@@ -110,7 +154,7 @@ public class SessieKalender {
 
 	@Override
 	public String toString() {
-		return "startDate=" + startDate + ", eindDate=" + eindDate;
+		return "startDate=" + startDatum + ", eindDate=" + eindDatum;
 	}
 	
 }

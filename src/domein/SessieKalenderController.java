@@ -27,6 +27,7 @@ public class SessieKalenderController {
 
 	public SessieKalenderController(SessieController sc) {
 		this.sc = sc;
+		
 		setSessieRepo(new SessieKalenderDaoJpa());
 
 		for (SessieKalender sk : geefSessieKalenderList()) {
@@ -35,7 +36,13 @@ public class SessieKalenderController {
 				break;
 			}
 		}
-
+		setStringProperties();
+	}
+	
+	private void setStringProperties() {
+		for (SessieKalender sessieKalender : geefSessieKalenderList()) {
+			sessieKalender.setStringProperties(sessieKalender.getStartDate(), sessieKalender.getEindDate());
+		}
 	}
 
 	public void setSessieRepo(SessieKalenderDao mock) {
@@ -78,10 +85,11 @@ public class SessieKalenderController {
 	}
 
 	public void wijzigSessieKalender(int id, LocalDate startDate, LocalDate eindDate) {
-//		try {
-		
-		if(LocalDate.now().getYear() == startDate.getYear())
-			throw new IllegalArgumentException("Jaar van huidig sessiekalender mag niet worden aangepast");
+//      try {
+      
+      if((LocalDate.now().getYear() == startDate.getYear() && LocalDate.now().getMonthValue() >= 9) || 
+              (LocalDate.now().getYear() == eindDate.getYear() && LocalDate.now().getMonthValue() < 9))
+          throw new IllegalArgumentException("Jaar van huidig sessiekalender mag niet worden aangepast");
 		
 			for (SessieKalender sessieKalender : sessieKalenderList) {
 				if (sessieKalender.getSessieKalenderID() == id) {
@@ -92,6 +100,7 @@ public class SessieKalenderController {
 					GenericDaoJpa.startTransaction();
 					sessieKalenderRepo.update(sessieKalender);
 					GenericDaoJpa.commitTransaction();
+					setStringProperties();
 				}
 			}
 //		} catch (Exception e) {
@@ -115,7 +124,7 @@ public class SessieKalenderController {
 			GenericDaoJpa.startTransaction();
 			sessieKalenderRepo.insert(sessieKalender);
 			GenericDaoJpa.commitTransaction();
-
+			setStringProperties();
 //		} catch (Exception e) {
 //			System.err.println(e.getMessage());
 //		}
