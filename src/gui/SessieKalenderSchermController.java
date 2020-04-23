@@ -109,6 +109,8 @@ public class SessieKalenderSchermController extends AnchorPane {
 		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
+		inputStartDatum.setEditable(false);
+		inputEindDatum.setEditable(false);
 		initialize();
 		initializeSessieKalender();
 		addListenerToTable();
