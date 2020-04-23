@@ -6,6 +6,7 @@ public class GebruikerSessie {
 	private String gebruikerID;
 	private int sessieID;
 	private Sessie sessie;
+	private Gebruiker ingeschrevene;
 
 	public boolean isAanwezig() {
 		return aanwezig;
@@ -23,11 +24,9 @@ public class GebruikerSessie {
 		return sessie;
 	}
 
-	public Gebruiker getIngeschrevenen() {
-		return ingeschrevenen;
+	public Gebruiker getIngeschrevene() {
+		return ingeschrevene;
 	}
-
-	private Gebruiker ingeschrevenen;
 
 	protected GebruikerSessie() {
 	}
@@ -35,7 +34,7 @@ public class GebruikerSessie {
 	public GebruikerSessie(Sessie sessie, Gebruiker ingeschrevenen) {
 		this.aanwezig = false;
 		this.sessie = sessie;
-		this.ingeschrevenen = ingeschrevenen;
+		this.ingeschrevene = ingeschrevenen;
 	}
 
 	public void wijzigAanwezigheid(boolean aanwezig) {

@@ -1,6 +1,8 @@
 package domein;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,27 +13,39 @@ public class Sessie {
 	private List<GebruikerSessie> gebruikerSessieLijst;
 	private String titel;
 	private String lokaal;
-	private LocalDate eindDatum;
-	private LocalDate startDatum;
+	private LocalDateTime eindDatum;
+	private LocalDateTime startDatum;
 	private int capaciteit;
 	private String omschrijving;
 	private String gastspreker;
 
+	private boolean open;
+
 	protected Sessie() {
 		gebruikerSessieLijst = new ArrayList<GebruikerSessie>();
+		setOpen(false);
 	}
 
-	public Sessie(Gebruiker verantwoordelijke, String titel, String lokaal, LocalDate startDatum, LocalDate eindDatum,
-			int capaciteit, String omschrijving, String gastspreker) {
+	public Sessie(Gebruiker verantwoordelijke, String titel, String lokaal, LocalDateTime startDatum,
+			LocalDateTime eindDatum, int capaciteit, String omschrijving, String gastspreker) {
 		this();
 		setVerantwoordelijke(verantwoordelijke);
-		setTitel(titel);
-		setLokaal(lokaal);
-		setStartDatum(startDatum);
-		setEindDatum(eindDatum);
-		setCapaciteit(capaciteit);
-		this.omschrijving = omschrijving;
-		this.gastspreker = gastspreker;
+//		setTitel(titel);
+//		setLokaal(lokaal);
+//		setStartDatum(startDatum);
+//		setEindDatum(eindDatum);
+//		setCapaciteit(capaciteit);
+//		this.omschrijving = omschrijving;
+//		this.gastspreker = gastspreker;
+		wijzigSessie(titel, lokaal, startDatum, eindDatum, capaciteit, omschrijving, gastspreker, open);
+	}
+
+	private void setOpen(boolean open) {
+		this.open = open;
+	}
+
+	public boolean getOpen() {
+		return open;
 	}
 
 	public StatusSessie getStatusSessie() {
@@ -54,11 +68,11 @@ public class Sessie {
 		return lokaal;
 	}
 
-	public LocalDate getEindDatum() {
+	public LocalDateTime getEindDatum() {
 		return eindDatum;
 	}
 
-	public LocalDate getStartDatum() {
+	public LocalDateTime getStartDatum() {
 		return startDatum;
 	}
 
@@ -73,26 +87,43 @@ public class Sessie {
 	public String getGastspreker() {
 		return gastspreker;
 	}
-	
+
 	private void setTitel(String titel) {
-		if(titel.isBlank() || titel == null)
-			throw new IllegalArgumentException("Titel kan moet ingevuld zijn.");
+		if (titel.isBlank() || titel == null)
+			throw new IllegalArgumentException("Titel moet ingevuld zijn.");
 		this.titel = titel;
 	}
 
 	private void setLokaal(String lokaal) {
-		if(titel.isBlank() || titel == null)
-			throw new IllegalArgumentException("Titel kan moet ingevuld zijn.");
+		if (lokaal.isBlank() || lokaal == null)
+			throw new IllegalArgumentException("Lokaal moet ingevuld zijn.");
 		this.lokaal = lokaal;
 	}
 
-	private void setStartDatum(LocalDate startDatum) {
-		
-		this.startDatum = startDatum;
+	private void setStartDatum(LocalDateTime startDatum) {
+//		this.startDatum = startDatum;
+		if (eindDatum == null) {
+			if (startDatum.isAfter(LocalDateTime.now().plusDays(1)))
+				this.startDatum = startDatum;
+			else
+				throw new IllegalArgumentException("De startdatum moet in de toekomst liggen.");
+		} else {
+			if (
+//					ChronoUnit.MINUTES.between(startDatum, eindDatum) >= 30 &&
+			(startDatum.isAfter(LocalDateTime.now()) || eindDatum.isBefore(LocalDateTime.now())))
+				this.startDatum = startDatum;
+			else
+				throw new IllegalArgumentException(
+						"De startdatum en einddatum moeten beiden in het verleden of in de toekomst liggen.");
+		}
 	}
 
-	private void setEindDatum(LocalDate eindDatum) {
-		this.eindDatum = eindDatum;
+	private void setEindDatum(LocalDateTime eindDatum) {
+//		this.eindDatum = eindDatum;
+		if (eindDatum.isAfter(startDatum))
+			this.eindDatum = eindDatum;
+		else
+			throw new IllegalArgumentException("De einddatum moet na de startdatum liggen.");
 	}
 
 	private void setCapaciteit(int capaciteit) {
@@ -100,13 +131,18 @@ public class Sessie {
 	}
 
 	private void setVerantwoordelijke(Gebruiker verantwoordelijke) {
-		if(titel.isBlank() || titel == null)
-			throw new IllegalArgumentException("Titel kan moet ingevuld zijn.");
+		if (verantwoordelijke == null)
+			throw new IllegalArgumentException("Verantwoordelijke moet geselecteerd zijn.");
 		this.verantwoordelijke = verantwoordelijke;
 	}
 
-	public void wijzigSessie(String titel, String lokaal, LocalDate startDatum, LocalDate eindDatum, int capaciteit,
-			String omschrijving, String gastspreker) {
+	public void wijzigSessie(String titel, String lokaal, LocalDateTime startDatum, LocalDateTime eindDatum,
+			int capaciteit, String omschrijving, String gastspreker, boolean open) {
+		if (!this.open)
+			throw new IllegalArgumentException("De sessie mag niet geopend zijn om deze te kunnen wijzigen.");
+		if (ChronoUnit.MINUTES.between(startDatum, eindDatum) < 30)
+			throw new IllegalArgumentException("De sessie moet een minimumperiode van 30 minuten hebben.");
+
 		setTitel(titel);
 		setLokaal(lokaal);
 		setStartDatum(startDatum);
@@ -114,9 +150,32 @@ public class Sessie {
 		setCapaciteit(capaciteit);
 		this.omschrijving = omschrijving;
 		this.gastspreker = gastspreker;
+		setOpen(open);
 	}
 
-	public void wijzigIngeschrevenen(Gebruiker ingeschrevenen, boolean ingeschreven, boolean aanwezig) {
-		throw new UnsupportedOperationException();
+	public void wijzigIngeschrevenen(Gebruiker ingeschrevene, boolean ingeschreven, boolean aanwezig) {
+		if (!open)
+			throw new IllegalArgumentException("Deze sessie is nog niet open voor inschrijvingen");
+
+		boolean gebruikerGevonden = false;
+		for (GebruikerSessie gebruikerSessie : gebruikerSessieLijst) {
+			if (gebruikerSessie.getIngeschrevene().equals(ingeschrevene)) {
+				gebruikerGevonden = true;
+				if (ingeschreven)
+					gebruikerSessie.wijzigAanwezigheid(aanwezig);
+				else
+					gebruikerSessieLijst.remove(gebruikerSessie);
+				break;
+			}
+		}
+		if (!gebruikerGevonden) {
+			if (ingeschreven) {
+				GebruikerSessie gebruikerSessie = new GebruikerSessie(this, ingeschrevene);
+				gebruikerSessie.wijzigAanwezigheid(aanwezig);
+				gebruikerSessieLijst.add(gebruikerSessie);
+			} else
+				throw new IllegalArgumentException("Gebruiker is al uitgeschreven voor deze sessie");
+		}
+
 	}
 }

@@ -5,6 +5,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import org.junit.jupiter.api.Assertions;
@@ -23,7 +24,7 @@ public class SessieTest {
 	
 	public SessieTest() throws NoSuchAlgorithmException, InvalidKeySpecException {
 		gebruiker = new Gebruiker("Rein", "Daelman", "rein@gmail.com", "752460rd", TypeGebruiker.Hoofdverantwoordelijke, Status.Actief, null, "123");
-		sessie = new Sessie(gebruiker, "titel", "B1.012", LocalDate.now().plus(1, ChronoUnit.DAYS), LocalDate.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS),
+		sessie = new Sessie(gebruiker, "titel", "B1.012", LocalDateTime.now().plus(1, ChronoUnit.DAYS), LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS),
 				20, "omschrijving", "gastspreker");
 	}
 	
@@ -42,7 +43,7 @@ public class SessieTest {
 	
 	@Test
 	public void maakSessie_BeschrijvingNull_slaagt() {
-		sessie = new Sessie(gebruiker, "titel", "B1.012", LocalDate.now().plus(1, ChronoUnit.DAYS), LocalDate.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS),
+		sessie = new Sessie(gebruiker, "titel", "B1.012", LocalDateTime.now().plus(1, ChronoUnit.DAYS), LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS),
 				20, null, "gastspreker");
 		Assertions.assertEquals(gebruiker, sessie.getVerantwoordelijke());
 		Assertions.assertEquals("titel", sessie.getTitel());
@@ -57,7 +58,7 @@ public class SessieTest {
 	
 	@Test
 	public void maakSessie_gastsprekerNull_slaagt() {
-		sessie = new Sessie(gebruiker, "titel", "B1.012", LocalDate.now().plus(1, ChronoUnit.DAYS), LocalDate.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS),
+		sessie = new Sessie(gebruiker, "titel", "B1.012", LocalDateTime.now().plus(1, ChronoUnit.DAYS), LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS),
 				20, "omschrijving", null);
 		Assertions.assertEquals(gebruiker, sessie.getVerantwoordelijke());
 		Assertions.assertEquals("titel", sessie.getTitel());
@@ -73,7 +74,7 @@ public class SessieTest {
 	@Test
 	public void maakSessie_datumNu_faalt() {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			sessie = new Sessie(gebruiker, "titel", "B1.012", LocalDate.now(), LocalDate.now().plus(2, ChronoUnit.HOURS),
+			sessie = new Sessie(gebruiker, "titel", "B1.012", LocalDateTime.now(), LocalDateTime.now().plus(2, ChronoUnit.HOURS),
 					20, "omschrijving", "gastspreker");
 			
 		});
@@ -82,7 +83,7 @@ public class SessieTest {
 	@Test
 	public void maakSessie_EindDatumNetNaStartDatum_faalt() {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			sessie = new Sessie(gebruiker, "titel", "B1.012", LocalDate.now().plus(3, ChronoUnit.DAYS), LocalDate.now().plus(3, ChronoUnit.DAYS).plus(10, ChronoUnit.MINUTES),
+			sessie = new Sessie(gebruiker, "titel", "B1.012", LocalDateTime.now().plus(3, ChronoUnit.DAYS), LocalDateTime.now().plus(3, ChronoUnit.DAYS).plus(10, ChronoUnit.MINUTES),
 					20, "omschrijving", "gastspreker");
 		});
 
@@ -91,8 +92,8 @@ public class SessieTest {
 	
 	@Test
 	public void wijzigSessie_niets_slaagt() {
-		sessie.wijzigSessie("titel", "B1.012", LocalDate.now().plus(1, ChronoUnit.DAYS), LocalDate.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS),
-				20, "omschrijving", "gastspreker");
+		sessie.wijzigSessie("titel", "B1.012", LocalDateTime.now().plus(1, ChronoUnit.DAYS), LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS),
+				20, "omschrijving", "gastspreker", false);
 		
 		Assertions.assertEquals(gebruiker, sessie.getVerantwoordelijke());
 		Assertions.assertEquals("titel", sessie.getTitel());
@@ -107,16 +108,16 @@ public class SessieTest {
 	
 	@Test
 	public void wijzigSessie_Datum_slaagt() {
-		sessie.wijzigSessie("sessie 360 noscopes", "B1.012", LocalDate.now().plus(3, ChronoUnit.DAYS), LocalDate.now().plus(3, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS),
-				20, "omschrijving", "gastspreker");
+		sessie.wijzigSessie("sessie 360 noscopes", "B1.012", LocalDateTime.now().plus(3, ChronoUnit.DAYS), LocalDateTime.now().plus(3, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS),
+				20, "omschrijving", "gastspreker", false);
 		Assertions.assertTrue(sessie.getStartDatum().isBefore(sessie.getEindDatum().plus(-30, ChronoUnit.MINUTES)));
 	}
 	
 	@Test
 	public void wijzigSessie_EindDatumVoorStartDatum_faalt() {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			sessie.wijzigSessie("sessie 360 noscopes", "B1.012", LocalDate.now().plus(3, ChronoUnit.DAYS), LocalDate.now().plus(3, ChronoUnit.DAYS).plus(-1, ChronoUnit.HOURS),
-					20, "omschrijving", "gastspreker");
+			sessie.wijzigSessie("sessie 360 noscopes", "B1.012", LocalDateTime.now().plus(3, ChronoUnit.DAYS), LocalDateTime.now().plus(3, ChronoUnit.DAYS).plus(-1, ChronoUnit.HOURS),
+					20, "omschrijving", "gastspreker", false);
 		});
 
 		Assertions.assertTrue(sessie.getStartDatum().isBefore(sessie.getEindDatum().plus(-30, ChronoUnit.MINUTES)));
@@ -125,8 +126,8 @@ public class SessieTest {
 	@Test
 	public void wijzigSessie_EindDatumNetNaStartDatum_faalt() {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			sessie.wijzigSessie("sessie 360 noscopes", "B1.012", LocalDate.now().plus(3, ChronoUnit.DAYS), LocalDate.now().plus(3, ChronoUnit.DAYS).plus(10, ChronoUnit.MINUTES),
-					20, "omschrijving", "gastspreker");
+			sessie.wijzigSessie("sessie 360 noscopes", "B1.012", LocalDateTime.now().plus(3, ChronoUnit.DAYS), LocalDateTime.now().plus(3, ChronoUnit.DAYS).plus(10, ChronoUnit.MINUTES),
+					20, "omschrijving", "gastspreker", false);
 		});
 
 		Assertions.assertTrue(sessie.getStartDatum().isBefore(sessie.getEindDatum().plus(-30, ChronoUnit.MINUTES)));
@@ -135,8 +136,8 @@ public class SessieTest {
 	@Test
 	public void wijzigSessie_StartDatumReedsGepasseerd_faalt() {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			sessie.wijzigSessie("sessie 360 noscopes", "B1.012", LocalDate.now().plus(-5, ChronoUnit.HOURS), LocalDate.now(),
-					20, "omschrijving", "gastspreker");
+			sessie.wijzigSessie("sessie 360 noscopes", "B1.012", LocalDateTime.now().plus(-5, ChronoUnit.HOURS), LocalDateTime.now(),
+					20, "omschrijving", "gastspreker", false);
 		});
 
 		Assertions.assertTrue(sessie.getStartDatum().isBefore(sessie.getEindDatum().plus(-30, ChronoUnit.MINUTES)));
@@ -146,8 +147,8 @@ public class SessieTest {
 	@Test
 	public void wijzigSessie_capaciteit_faalt() {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			sessie.wijzigSessie("sessie 360 noscopes", "B1.012", LocalDate.now().plus(1, ChronoUnit.DAYS), LocalDate.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS),
-					-2, "omschrijving", "gastspreker");
+			sessie.wijzigSessie("sessie 360 noscopes", "B1.012", LocalDateTime.now().plus(1, ChronoUnit.DAYS), LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS),
+					-2, "omschrijving", "gastspreker", false);
 		});
 
 		Assertions.assertEquals(20, sessie.getCapaciteit());
@@ -156,8 +157,8 @@ public class SessieTest {
 	
 	@Test
 	public void wijzigSessie_capaciteit_slaagt() {
-		sessie.wijzigSessie("sessie 360 noscopes", "B1.012", LocalDate.now().plus(1, ChronoUnit.DAYS), LocalDate.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS),
-					30, "omschrijving", "gastspreker");
+		sessie.wijzigSessie("sessie 360 noscopes", "B1.012", LocalDateTime.now().plus(1, ChronoUnit.DAYS), LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS),
+					30, "omschrijving", "gastspreker", false);
 		Assertions.assertEquals(30, sessie.getCapaciteit());
 	}
 	

@@ -1,6 +1,7 @@
 package domein;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -122,7 +123,7 @@ public class SessieKalenderController {
 //		}
 	}
 
-	public void voegSessieToe(int index, Gebruiker verantwoordelijke, LocalDate startDatum, LocalDate eindDatum,
+	public void voegSessieToe(int index, Gebruiker verantwoordelijke, LocalDateTime startDatum, LocalDateTime eindDatum,
 			String titel, String lokaal, int capaciteit, String omschrijving, String gastSpreker) {
 		Sessie sessie = new Sessie(verantwoordelijke, titel, lokaal, startDatum, eindDatum, capaciteit, omschrijving,
 				gastSpreker);
