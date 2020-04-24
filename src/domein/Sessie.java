@@ -2,9 +2,17 @@ package domein;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.Transient;
+
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class Sessie {
 
@@ -20,6 +28,18 @@ public class Sessie {
 	private String gastspreker;
 
 	private boolean open;
+	
+	@Transient
+	private SimpleStringProperty titelProperty = new SimpleStringProperty();
+	@Transient
+	private SimpleStringProperty duurProperty = new SimpleStringProperty();
+	@Transient
+	private SimpleStringProperty startDatumSessieProperty = new SimpleStringProperty();
+	@Transient
+	private SimpleStringProperty eindDatumSessieProperty = new SimpleStringProperty();
+
+	
+	
 
 	protected Sessie() {
 		gebruikerSessieLijst = new ArrayList<GebruikerSessie>();
@@ -136,6 +156,45 @@ public class Sessie {
 		this.verantwoordelijke = verantwoordelijke;
 	}
 
+
+	
+	private void setDuurSessieProperty(String duur) {
+		duurProperty.set(duur);
+	}
+
+	public StringProperty getDuurSessieProperty() {
+		return duurProperty;
+	}
+	
+	private void setTitelSessieProperty(String titel) {
+		titelProperty.set(titel);
+	}
+
+	public StringProperty getTitelSessieProperty() {
+		return titelProperty;
+	}
+	
+	private void setStartDatumSessieProperty(String startdatum) {
+		startDatumSessieProperty.set(startdatum);
+	}
+
+	public StringProperty getStartDatumSessieProperty() {
+		return startDatumSessieProperty;
+	}
+
+	private void setEindDatumSessieProperty(String einddatum) {
+		eindDatumSessieProperty.set(einddatum);
+	}
+
+	public StringProperty getEindDatumSessieProperty() {
+		return eindDatumSessieProperty;
+	}
+	
+	public void setStringProperties() {
+		setStartDatumSessieProperty(getStartDatum().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+		setEindDatumSessieProperty(getEindDatum().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+		//setDuurSessieProperty();
+	}
 	public void wijzigSessie(String titel, String lokaal, LocalDateTime startDatum, LocalDateTime eindDatum,
 			int capaciteit, String omschrijving, String gastspreker, boolean open) {
 		if (!this.open)

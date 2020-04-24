@@ -73,19 +73,18 @@ public class BeherenIngeschrevenenSchermController extends AnchorPane{
     	
     	// sessie selecteren en in huigedeSessie steken
     	tcAanwezig.setCellFactory( kolom -> new CheckBoxTableCell<>());
-//    	sc.geefGebruikerSessiesObservable().forEach((GebruikerSessie gs) -> {
-//    		tcVoornaam.setCellValueFactory(new PropertyValueFactory<Gebruiker, String>( gs.getIngeschrevenen().getVoornaam()));
-//			tcFamilienaam.setCellValueFactory(new PropertyValueFactory<Gebruiker, String>( gs.getIngeschrevenen().getFamilienaam()));
-//			tcGebruikersnaam.setCellValueFactory(new PropertyValueFactory<Gebruiker, String>( gs.getIngeschrevenen().getGebruikersnaam()));
-//			//tcInschrijvingsdatum.setCellValueFactory();
+    	// moet gebruikerSessies zijn, niet alle gebruikers
+    	sc.geefGebruikerSessiesObservable().forEach((GebruikerSessie gs) -> {  // geeft observable van GebruikerSessie mee
+    		tcVoornaam.setCellValueFactory(new PropertyValueFactory<Gebruiker, String>( gs.getIngeschrevene().getVoornaam()));
+			tcFamilienaam.setCellValueFactory(new PropertyValueFactory<Gebruiker, String>( gs.getIngeschrevene().getFamilienaam()));
+			tcGebruikersnaam.setCellValueFactory(new PropertyValueFactory<Gebruiker, String>( gs.getIngeschrevene().getGebruikersnaam()));
+			//tcInschrijvingsdatum.setCellValueFactory();
 			
 		/*	tcAanwezig.setCellValueFactory(CheckBoxTableCell.forTableColumn(new Callback<>(){
 
     	})); */ 
-		// geeft observable van GebruikerSessie mee
-    	// moet gebruikerSessies zijn
-    	
-    //	});
+	
+    	});
     }
     @FXML
     void trgBeherenSessies(ActionEvent event) {
