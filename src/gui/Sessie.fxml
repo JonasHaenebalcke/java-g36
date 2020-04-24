@@ -30,44 +30,45 @@
               </columns>
             </TableView>
             <TextField fx:id="txtSessie" layoutX="28.0" layoutY="76.0" promptText="sessie" />
-            <Button fx:id="btnZoek" layoutX="188.0" layoutY="76.0" mnemonicParsing="false" onAction="#pasSessieAan" text="Zoek" />
+            <Button fx:id="btnZoek" layoutX="188.0" layoutY="76.0" mnemonicParsing="false" onAction="#zoekSessie" text="Zoek" />
+            <Label fx:id="lblErrorSessies" layoutX="38.0" layoutY="653.0" prefHeight="26.0" prefWidth="401.0" textFill="RED" />
 			</children>
 		</AnchorPane>
 		<AnchorPane layoutX="442.0" prefHeight="714.0" prefWidth="894.0">
 			<children>
-				<Label layoutX="161.0" layoutY="29.0" text="Details sessie">
+				<Label layoutX="161.0" layoutY="33.0" text="Details sessie">
 					<font>
 						<Font size="18.0" />
 					</font>
 				</Label>
-				<Label layoutX="39.0" layoutY="53.0" text="Titel" />
-				<Label layoutX="36.0" layoutY="104.0" text="Gastspreker" />
-				<Label layoutX="38.0" layoutY="211.0" text="Startdatum" />
-				<Label layoutX="205.0" layoutY="211.0" text="Einddatum" />
-				<Label layoutX="40.0" layoutY="275.0" text="Startuur" />
-				<Label layoutX="202.0" layoutY="274.0" text="Einduur" />
-				<Label layoutX="37.0" layoutY="315.0" text="Max. aantal plaaten" />
-				<Label fx:id="lblMedia" layoutX="413.0" layoutY="125.0" text="Media" />
-				<TextField fx:id="txtGastspreker" layoutX="37.0" layoutY="122.0" prefHeight="26.0" prefWidth="352.0" promptText="Gastspreker" />
-				<TextField fx:id="txtTitel" layoutX="37.0" layoutY="72.0" prefHeight="26.0" prefWidth="352.0" promptText="Titel" />
-				<DatePicker fx:id="dpEinddatum" layoutX="203.0" layoutY="229.0" prefHeight="26.0" prefWidth="131.0" promptText="dd/mm/yyyy" />
-				<DatePicker fx:id="dpStartdatum" layoutX="38.0" layoutY="230.0" prefHeight="26.0" prefWidth="131.0" promptText="dd/mm/yyyy" />
-				<TextField fx:id="txtCapaciteit" layoutX="146.0" layoutY="311.0" prefHeight="22.0" prefWidth="46.0" />
-				<TextField fx:id="txtStartuur" layoutX="90.0" layoutY="271.0" prefHeight="26.0" prefWidth="50.0" promptText="00:00" />
-				<TextField fx:id="txtEinduur" layoutX="253.0" layoutY="270.0" prefHeight="26.0" prefWidth="46.0" promptText="00:00" />
-				<Label layoutX="37.0" layoutY="349.0" text="Lokaal" />
-				<TextField fx:id="txtLokaal" layoutX="80.0" layoutY="346.0" prefHeight="18.0" prefWidth="58.0" />
-				<Button fx:id="btnPasAan" layoutX="52.0" layoutY="488.0" mnemonicParsing="false" onAction="#pasSessieAan" text="Pas aan" />
-				<Button fx:id="btnVoegToe" layoutX="168.0" layoutY="488.0" mnemonicParsing="false" onAction="#voegSessieToe" text="Voeg Toe" />
-				<Button fx:id="btnVerwijder" layoutX="301.0" layoutY="488.0" mnemonicParsing="false" onAction="#verwijderSessie" text="Verwijder" />
-				<Label layoutX="36.0" layoutY="387.0" text="Omschrijving" />
+				<Label layoutX="39.0" layoutY="96.0" text="Titel" />
+				<Label layoutX="36.0" layoutY="147.0" text="Gastspreker" />
+				<Label layoutX="38.0" layoutY="254.0" text="Startdatum" />
+				<Label layoutX="218.0" layoutY="254.0" text="Einddatum" />
+				<Label layoutX="40.0" layoutY="318.0" text="Startuur" />
+				<Label layoutX="219.0" layoutY="317.0" text="Einduur" />
+				<Label layoutX="37.0" layoutY="358.0" text="Max. aantal plaaten" />
+				<Label fx:id="lblMedia" layoutX="413.0" layoutY="114.0" text="Media" />
+				<TextField fx:id="txtGastspreker" layoutX="37.0" layoutY="165.0" prefHeight="26.0" prefWidth="352.0" promptText="Gastspreker" />
+				<TextField fx:id="txtTitel" layoutX="37.0" layoutY="115.0" prefHeight="26.0" prefWidth="352.0" promptText="Titel" />
+				<DatePicker fx:id="dpEinddatum" layoutX="216.0" layoutY="272.0" prefHeight="26.0" prefWidth="131.0" promptText="dd/mm/yyyy" />
+				<DatePicker fx:id="dpStartdatum" layoutX="38.0" layoutY="273.0" prefHeight="26.0" prefWidth="131.0" promptText="dd/mm/yyyy" />
+				<TextField fx:id="txtCapaciteit" layoutX="146.0" layoutY="354.0" prefHeight="22.0" prefWidth="46.0" />
+				<TextField fx:id="txtStartuur" layoutX="90.0" layoutY="314.0" prefHeight="26.0" prefWidth="50.0" promptText="00:00" />
+				<TextField fx:id="txtEinduur" layoutX="270.0" layoutY="313.0" prefHeight="26.0" prefWidth="46.0" promptText="00:00" />
+				<Label layoutX="37.0" layoutY="392.0" text="Lokaal" />
+				<TextField fx:id="txtLokaal" layoutX="80.0" layoutY="389.0" prefHeight="18.0" prefWidth="58.0" />
+				<Button fx:id="btnPasAan" layoutX="52.0" layoutY="531.0" mnemonicParsing="false" onAction="#pasSessieAan" text="Pas aan" />
+				<Button fx:id="btnVoegToe" layoutX="168.0" layoutY="531.0" mnemonicParsing="false" onAction="#voegSessieToe" text="Voeg Toe" />
+				<Button fx:id="btnVerwijder" layoutX="301.0" layoutY="531.0" mnemonicParsing="false" onAction="#verwijderSessie" text="Verwijder" />
+				<Label layoutX="36.0" layoutY="430.0" text="Omschrijving" />
 				<Label fx:id="lblFeedback" layoutX="412.0" layoutY="304.0" text="Feedback" />
-				<Label layoutX="36.0" layoutY="156.0" text="Verantwoordelijke" />
+				<Label layoutX="36.0" layoutY="199.0" text="Verantwoordelijke" />
 				<Button fx:id="btnBeherenIngeschrevenen" layoutX="413.0" layoutY="72.0" mnemonicParsing="false" onAction="#beherenIngeschrevenen" prefHeight="26.0" prefWidth="161.0" text="Beheren ingeschrevenen" />
-				<TextArea fx:id="txtOmschrvijving" layoutX="38.0" layoutY="405.0" prefHeight="63.0" prefWidth="352.0" />
-            <Label fx:id="lblError" layoutX="370.0" layoutY="24.0" prefHeight="18.0" prefWidth="375.0" />
-            <ComboBox fx:id="cbxVerantwoordelijke" layoutX="37.0" layoutY="173.0" prefHeight="18.0" prefWidth="171.0" promptText="naam verantwoordelijke" />
-            <TableView fx:id="tvMedia" layoutX="414.0" layoutY="146.0" prefHeight="150.0" prefWidth="457.0">
+				<TextArea fx:id="txtOmschrvijving" layoutX="38.0" layoutY="448.0" prefHeight="63.0" prefWidth="352.0" />
+            <Label fx:id="lblErrorDetailsSessie" layoutX="344.0" layoutY="24.0" prefHeight="26.0" prefWidth="401.0" textFill="RED" />
+            <ComboBox fx:id="cbxVerantwoordelijke" layoutX="37.0" layoutY="216.0" prefHeight="18.0" prefWidth="171.0" promptText="naam verantwoordelijke" />
+            <TableView fx:id="tvMedia" layoutX="414.0" layoutY="132.0" prefHeight="164.0" prefWidth="458.0">
               <columns>
                 <TableColumn fx:id="colMediaTitel" prefWidth="236.80010986328125" resizable="false" text="Titel" />
                 <TableColumn fx:id="colMediaLink" maxWidth="220.0" prefWidth="220.0" resizable="false" text="Link" />
@@ -81,6 +82,11 @@
                   <TableColumn fx:id="colDatumFeedback" prefWidth="74.39990234375" resizable="false" text="Datum" />
               </columns>
             </TableView>
+            <Label fx:id="lblSucces" layoutX="48.0" layoutY="64.0" prefHeight="18.0" prefWidth="335.0" textFill="#4bbd64">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
 			</children>
 		</AnchorPane>
 	</children>

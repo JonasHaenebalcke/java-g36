@@ -1,5 +1,6 @@
 package gui;
 
+import java.io.Console;
 import java.io.IOException;
 import java.time.LocalDate;
 import domein.Gebruiker;
@@ -40,6 +41,8 @@ public class BeheerSessieSchermController extends AnchorPane {
 	private ComboBox<StatusSessie> cbxStatusSessie;
 
 	@FXML
+	private Label lblMedia;
+	@FXML
 	private TableView<? /* Media */> tvMedia;
 	@FXML
 	private TableColumn<? /* Media */, String> colMediaTitel;
@@ -47,41 +50,7 @@ public class BeheerSessieSchermController extends AnchorPane {
 	private TableColumn<? /* Media */, String> colMediaLink;
 
 	@FXML
-	private TextField txtGastspreker;
-
-	@FXML
-	private TextField txtTitel;
-
-	@FXML
-	private DatePicker dpEinddatum;
-	@FXML
-	private DatePicker dpStartdatum;
-
-	@FXML
-	private TextField txtCapaciteit;
-
-	@FXML
-	private TextField txtStartuur;
-
-	@FXML
-	private TextField txtEinduur;
-
-	@FXML
-	private TextField txtLokaal;
-
-	@FXML
-	private Button btnPasAan;
-	@FXML
-	private Button btnVoegToe;
-	@FXML
-	private Button btnVerwijder;
-
-	@FXML
-	private Button btnZoek;
-
-	@FXML
-	private TextField txtSessie;
-
+	private Label lblFeedback;
 	@FXML
 	private TableView<?/* Feedback */> tvFeedback;
 	@FXML
@@ -94,6 +63,37 @@ public class BeheerSessieSchermController extends AnchorPane {
 	private TableColumn<? /* Feedback */, LocalDate> colDatumFeedback;
 
 	@FXML
+	private Label lblSucces;
+	@FXML
+	private TextField txtGastspreker;
+	@FXML
+	private TextField txtTitel;
+	@FXML
+	private DatePicker dpEinddatum;
+	@FXML
+	private DatePicker dpStartdatum;
+	@FXML
+	private TextField txtCapaciteit;
+	@FXML
+	private TextField txtStartuur;
+	@FXML
+	private TextField txtEinduur;
+	@FXML
+	private TextField txtLokaal;
+
+	@FXML
+	private Button btnPasAan;
+	@FXML
+	private Button btnVoegToe;
+	@FXML
+	private Button btnVerwijder;
+
+	@FXML
+	private Button btnZoek;
+	@FXML
+	private TextField txtSessie;
+
+	@FXML
 	private ComboBox<Gebruiker> cbxVerantwoordelijke;
 
 	@FXML
@@ -103,13 +103,9 @@ public class BeheerSessieSchermController extends AnchorPane {
 	private TextArea txtOmschrvijving;
 
 	@FXML
-	private Label lblError;
-
+	private Label lblErrorSessies;
 	@FXML
-	private Label lblMedia;
-
-	@FXML
-	private Label lblFeedback;
+	private Label lblErrorDetailsSessie;
 
 	private SessieController sc;
 	private Sessie sessie;
@@ -130,21 +126,28 @@ public class BeheerSessieSchermController extends AnchorPane {
 		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
+
 		initialize();
 	}
 
 	private void initialize() {
 		cbxStatusSessie.setItems(FXCollections.observableArrayList(StatusSessie.values()));
-		//tvSessies.setItems(sc.geefSessiesObservable(StatusSessie.nietOpen));
-		colTitelSessie.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
-		colStartSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
-		ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
-		colDuurSessie.setCellValueFactory(cel -> cel.getValue().getDuurSessieProperty());
+		try {
+			tvSessies.setItems(sc.geefSessiesObservable(StatusSessie.nietOpen));
+			colTitelSessie.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
+			colStartSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
+			ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
+			colDuurSessie.setCellValueFactory(cel -> cel.getValue().getDuurSessieProperty());
 
-		lblFeedback.setVisible(false);
-		tvFeedback.setVisible(false);
-		// textWaardeSessieInvullen();
+			textWaardeSessieInvullen();
 
+		} catch (NullPointerException e) {
+			lblErrorSessies.setVisible(true);
+			lblErrorSessies.setText(e.getMessage());
+		} catch (Exception e) {
+			lblErrorSessies.setVisible(true);
+			lblErrorSessies.setText(e.toString());
+		}
 	}
 
 	void textWaardeSessieInvullen() {
@@ -160,31 +163,40 @@ public class BeheerSessieSchermController extends AnchorPane {
 				txtCapaciteit.setText(Integer.toString(newV.getCapaciteit()));
 				txtLokaal.setText(newV.getLokaal());
 				txtOmschrvijving.setText(newV.getOmschrijving());
-				
+
 				// tvMedia.setItems();
 				// colMediaTitel.setCellValueFactory(cel -> cel.getValue());
 				// colMediaLink.setCellValueFactory(cel -> cel.getValue());
 
-//				tvFeedback.setItems();
+				if (newV.getStatusSessie().name().equals(StatusSessie.open.toString())
+						|| newV.getStatusSessie().name().equals(StatusSessie.gesloten.toString())) {
+					lblFeedback.setVisible(true);
+					tvFeedback.setVisible(true);
+					// tvFeedback.setItems();
 //				colAuteurFeedback.setCellValueFactory();
 //				colScoreFeedback.setCellValueFactory();
 //				colFeedback.setCellValueFactory(cel -> cel.getValue());
 //				colDatumFeedback.setCellValueFactory();
-				
+				}
 			}
-
 		});
-
 	}
 
 	@FXML
 	void geefSessiesGekozenStatus(ActionEvent event) {
-		tvSessies.setItems(sc.geefSessiesObservable((cbxStatusSessie.getValue())));
-		if (cbxStatusSessie.getValue() == StatusSessie.open/* cbxStatusSessie.getSelectionModel().equals(StatusSessie.open)|| cbxStatusSessie.selectionModelProperty().equals(StatusSessie.gesloten)*/) {
-			lblFeedback.setVisible(true);
-			tvFeedback.setVisible(true);
+		try {
+			System.out.print(cbxStatusSessie.getValue().name()+ " ");
+			if (cbxStatusSessie.getValue().name().equals(StatusSessie.open.toString()) ||
+					cbxStatusSessie.getValue().name().equals(StatusSessie.gesloten.toString()) ) {
+				tvSessies.setItems(sc.geefSessiesObservable((cbxStatusSessie.getValue())));
+				lblFeedback.setVisible(true);
+				tvFeedback.setVisible(true);
+				
+			}
+		} catch (NullPointerException e) {
+			lblErrorDetailsSessie.setVisible(true);
+			lblErrorDetailsSessie.setText(e.getMessage());
 		}
-
 	}
 
 	@FXML
@@ -205,16 +217,25 @@ public class BeheerSessieSchermController extends AnchorPane {
 			if (!txtTitel.getText().isBlank() && !txtLokaal.getText().isBlank() && (dpStartdatum.getValue() != null)
 					&& (dpEinddatum.getValue() != null) && !txtStartuur.getText().isBlank()
 					&& !txtEinduur.getText().isBlank() && !txtCapaciteit.getText().isBlank()) {
+				if (!txtCapaciteit.getText().matches("[0-1000]")) {
 
-				sc.wijzigSessie(cbxVerantwoordelijke.getValue(), txtTitel.getText(), txtLokaal.getText(),
-						dpStartdatum.getValue(), dpEinddatum.getValue(), Integer.parseInt(txtCapaciteit.getText()),
-						txtOmschrvijving.getText(), txtGastspreker.getText());
-				initialize();
+					sc.wijzigSessie(cbxVerantwoordelijke.getValue(), txtTitel.getText(), txtLokaal.getText(),
+							dpStartdatum.getValue(), dpEinddatum.getValue(), Integer.parseInt(txtCapaciteit.getText()),
+							txtOmschrvijving.getText(), txtGastspreker.getText());
+					initialize();
+					lblSucces.setVisible(true);
+					lblSucces.setText("De sessie werd succesvol aangepast");
+				} else {
+					lblErrorDetailsSessie
+							.setText("De capaciteit van het aantal personen moet een geheel getal boven 0 zijn.");
+				}
 			} else {
-				lblError.setText("Tekstvakken mogen niet leeg zijn");
+				lblErrorDetailsSessie.setVisible(true);
+				lblErrorDetailsSessie.setText("Tekstvakken mogen niet leeg zijn");
 			}
 		} catch (Exception e) {
-			lblError.setText(e.getMessage());
+			lblErrorDetailsSessie.setVisible(true);
+			lblErrorDetailsSessie.setText(e.getMessage());
 		}
 	}
 
@@ -224,8 +245,11 @@ public class BeheerSessieSchermController extends AnchorPane {
 			Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
 			sc.verwijderSessie(sessie);
 			initialize();
+			lblSucces.setVisible(true);
+			lblSucces.setText("De sessie werd succesvol verwijderd");
 		} catch (Exception e) {
-			lblError.setText(e.getMessage());
+			lblErrorDetailsSessie.setVisible(true);
+			lblErrorDetailsSessie.setText(e.getMessage());
 			System.out.print(e.getMessage());
 		}
 	}
@@ -236,17 +260,36 @@ public class BeheerSessieSchermController extends AnchorPane {
 			if (!txtTitel.getText().isBlank() && !txtLokaal.getText().isBlank() && (dpStartdatum.getValue() != null)
 					&& (dpEinddatum.getValue() != null) && !txtStartuur.getText().isBlank()
 					&& !txtEinduur.getText().isBlank() && !txtCapaciteit.getText().isBlank()) {
-				sc.voegSessieToe(cbxVerantwoordelijke.getValue(), txtTitel.getText(), txtLokaal.getText(),
-						dpStartdatum.getValue(), dpEinddatum.getValue(), Integer.parseInt(txtCapaciteit.getText()),
-						txtOmschrvijving.getText(), txtGastspreker.getText());
+				if (!txtCapaciteit.getText().matches("[0-1000]")) {
 
-				tvSessies.getSelectionModel().selectLast();
-				initialize();
+					sc.voegSessieToe(cbxVerantwoordelijke.getValue(), txtTitel.getText(), txtLokaal.getText(),
+							dpStartdatum.getValue(), dpEinddatum.getValue(), Integer.parseInt(txtCapaciteit.getText()),
+							txtOmschrvijving.getText(), txtGastspreker.getText());
+
+					tvSessies.getSelectionModel().selectLast();
+					initialize();
+					lblSucces.setVisible(true);
+					lblSucces.setText("De sessie werd succesvol toegevoegd");
+				} else {
+					lblErrorDetailsSessie
+							.setText("De capaciteit van het aantal personen moet een geheel getal boven 0 zijn.");
+				}
 			} else {
-				lblError.setText("Tekstvakken mogen niet leeg zijn");
+				lblErrorDetailsSessie.setVisible(true);
+				lblErrorDetailsSessie.setText("Tekstvakken mogen niet leeg zijn");
 			}
 		} catch (Exception e) {
-			lblError.setText(e.getMessage());
+			lblErrorDetailsSessie.setVisible(true);
+			lblErrorDetailsSessie.setText(e.getMessage());
+		}
+	}
+
+	@FXML
+	void zoekSessie(ActionEvent event) {
+		try {
+
+		} catch (Exception e) {
+
 		}
 	}
 

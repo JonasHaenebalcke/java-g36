@@ -12,9 +12,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -48,7 +50,16 @@ public class BeherenIngeschrevenenSchermController extends AnchorPane{
 
     @FXML
     private Button btnVerwijder;
+    
+    @FXML
+    private TextField txtGebruiker;
 
+    @FXML
+    private Button btnZoekGebruiker;
+
+    @FXML
+    private Label lblError;
+    
     private SessieController sc; 
     private GebruikerController gc; 
     
@@ -101,5 +112,10 @@ public class BeherenIngeschrevenenSchermController extends AnchorPane{
     void voegIngeschrevenenToe(ActionEvent event) {
     	// gaat naar scherm alleGebruikers
     	
+    }
+
+    @FXML
+    void zoekGebruiker(ActionEvent event) {
+
     }
 }
