@@ -5,22 +5,16 @@ import java.time.LocalDate;
 import domein.Gebruiker;
 import domein.GebruikerController;
 import domein.GebruikerSessie;
-import domein.Sessie;
 import domein.SessieController;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.CheckBoxTableCell;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.util.Callback;
 
 public class BeherenIngeschrevenenSchermController extends AnchorPane{
 
@@ -28,20 +22,15 @@ public class BeherenIngeschrevenenSchermController extends AnchorPane{
     private Button btnTerug;
 
     @FXML
-    private TableView<Gebruiker> tvIngeschrevenen;
-
+    private TableView<GebruikerSessie> tvIngeschrevenen;
     @FXML
     private TableColumn<Gebruiker, String> tcVoornaam;
-
     @FXML
     private TableColumn<Gebruiker, String> tcFamilienaam;
-
     @FXML
     private TableColumn<Gebruiker, String> tcGebruikersnaam;
-
     @FXML
     private TableColumn<Gebruiker, LocalDate> tcInschrijvingsdatum;
-
     @FXML
     private TableColumn<Gebruiker, Boolean> tcAanwezig;
 
@@ -71,31 +60,36 @@ public class BeherenIngeschrevenenSchermController extends AnchorPane{
     	this.sc = sc;
     	
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("BeheerIngeschrevenen.fxml"));
-    	
-    	//loader.setRoot(this);
+    	loader.setRoot(this);
 		loader.setController(this);
 		try {	
 			loader.load();
-
 		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
+    //	tvIngeschrevenen.setItems(sc.geefGebruikerSessiesObservable());
+//    	tcVoornaam.setCellValueFactory(cel -> cel.getValue());
+//    	tcFamilienaam.setCellValueFactory(cel -> cel.getValue());
+//    	tcGebruikersnaam.setCellValueFactory(cel -> cel.getValue());
+//    	tcInschrijvingsdatum.setCellValueFactory(arg0);
+//    	tcAanwezig.setCellValueFactory(arg0);
     	
+//    	// sessie selecteren en in huigedeSessie steken
     	
-    	// sessie selecteren en in huigedeSessie steken
-    	tcAanwezig.setCellFactory( kolom -> new CheckBoxTableCell<>());
-    	// moet gebruikerSessies zijn, niet alle gebruikers
-    	sc.geefGebruikerSessiesObservable().forEach((GebruikerSessie gs) -> {  // geeft observable van GebruikerSessie mee
-    		tcVoornaam.setCellValueFactory(new PropertyValueFactory<Gebruiker, String>( gs.getIngeschrevene().getVoornaam()));
-			tcFamilienaam.setCellValueFactory(new PropertyValueFactory<Gebruiker, String>( gs.getIngeschrevene().getFamilienaam()));
-			tcGebruikersnaam.setCellValueFactory(new PropertyValueFactory<Gebruiker, String>( gs.getIngeschrevene().getGebruikersnaam()));
-			//tcInschrijvingsdatum.setCellValueFactory();
+//    	tcAanwezig.setCellFactory( kolom -> new CheckBoxTableCell<>());
+    	
+//    	// moet gebruikerSessies zijn, niet alle gebruikers
+//    	sc.geefGebruikerSessiesObservable().forEach((GebruikerSessie gs) -> {  // geeft observable van GebruikerSessie mee
+//    		tcVoornaam.setCellValueFactory(new PropertyValueFactory<Gebruiker, String>( gs.getIngeschrevene().getVoornaam()));
+//			tcFamilienaam.setCellValueFactory(new PropertyValueFactory<Gebruiker, String>( gs.getIngeschrevene().getFamilienaam()));
+//			tcGebruikersnaam.setCellValueFactory(new PropertyValueFactory<Gebruiker, String>( gs.getIngeschrevene().getGebruikersnaam()));
+//			//tcInschrijvingsdatum.setCellValueFactory();
 			
 		/*	tcAanwezig.setCellValueFactory(CheckBoxTableCell.forTableColumn(new Callback<>(){
 
     	})); */ 
 	
-    	});
+    //	});
     }
     @FXML
     void trgBeherenSessies(ActionEvent event) {
@@ -104,8 +98,8 @@ public class BeherenIngeschrevenenSchermController extends AnchorPane{
 
     @FXML
     void verwijderIngeschrevenen(ActionEvent event) {
-    	Gebruiker gebruiker = tvIngeschrevenen.getSelectionModel().getSelectedItem();
-    	sc.wijzigIngeschrevenen(gebruiker, false, false);  	
+    	GebruikerSessie gebruiker = tvIngeschrevenen.getSelectionModel().getSelectedItem();
+    	sc.wijzigIngeschrevenen(gebruiker.getIngeschrevene(), false, false);  	
     }
 
     @FXML

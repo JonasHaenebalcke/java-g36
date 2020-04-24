@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.gluonhq.charm.glisten.control.TextField?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -27,12 +27,12 @@
       </Label>
       <Button fx:id="btnVoegToe" layoutX="649.0" layoutY="504.0" mnemonicParsing="false" onAction="#voegIngeschrevenenToe" text="VoegToe" />
       <Button fx:id="btnVerwijder" layoutX="761.0" layoutY="504.0" mnemonicParsing="false" onAction="#verwijderIngeschrevenen" text="Verwijder" />
-      <TextField fx:id="txtGebruiker" layoutX="335.0" layoutY="68.0" />
       <Button fx:id="btnZoekGebruiker" layoutX="504.0" layoutY="68.0" mnemonicParsing="false" onAction="#zoekGebruiker" text="Zoek" />
       <Label fx:id="lblError" layoutX="525.0" layoutY="30.0" prefHeight="27.0" prefWidth="334.0" textFill="RED">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
+      <TextField fx:id="txtSessie" layoutX="279.0" layoutY="68.0" prefHeight="26.0" prefWidth="214.0" />
    </children>
 </AnchorPane>

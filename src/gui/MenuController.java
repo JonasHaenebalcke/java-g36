@@ -8,7 +8,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -22,6 +21,11 @@ public class MenuController extends BorderPane{
 	
 	    @FXML
 	    private Button btnGebruikersBeheren;
+	    
+	   /* @FXML
+	    private Button btnIngeschrevenenBeheren;
+*/
+	   
         
 	    public GebruikerController dc;
 	    public SessieKalenderController skc;
@@ -73,4 +77,9 @@ public class MenuController extends BorderPane{
         	BeheerSessieSchermController bSessieScherm = new BeheerSessieSchermController(this.sc);
         	scherm.getChildren().setAll(bSessieScherm);
         }
+        @FXML
+	    void IngeschrevenenBeheren(ActionEvent event) throws IOException{
+        	BeherenIngeschrevenenSchermController bIngeschrevenenScherm = new BeherenIngeschrevenenSchermController(this.sc);
+        	scherm.getChildren().setAll(bIngeschrevenenScherm);
+	    }
     }

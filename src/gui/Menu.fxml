@@ -7,11 +7,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
-
+<?import javafx.scene.text.Font?>
 
 <fx:root stylesheets="@stylesheet.css" type="BorderPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <AnchorPane fx:id="scherm" prefHeight="500.0" prefWidth="700.0" />
+      <AnchorPane fx:id="scherm" prefHeight="700.0" prefWidth="1320.0" />
    </center>
    <left>
       <VBox prefHeight="500.0" prefWidth="200.0" style="-fx-background-color: #0081c5#0081c5;" BorderPane.alignment="CENTER">
@@ -21,12 +21,26 @@
                   <Image url="@images/Itlablogo.png" />
                </image>
                <VBox.margin>
-                  <Insets left="3.0" top="10.0" />
+                  <Insets left="3.0" top="20.0" />
                </VBox.margin>
             </ImageView>
-            <Button id="btnMenu" fx:id="btnGebruikersBeheren" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#gebruikersBeheren" prefHeight="50.0" prefWidth="200.0" text="Gebruikers beheren" textFill="WHITE" />
-            <Button id="btnMenu" fx:id="btnSessiekalenderBeheren" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#sessiekalenderBeheren" prefHeight="50.0" prefWidth="200.0" text="Sessiekalender beheren" textFill="WHITE" />
-            <Button id="btnMenu" fx:id="btnSessiesBeheren" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#sessiesBeheren" prefHeight="50.0" prefWidth="200.0" text="Sessies beheren" textFill="WHITE" />
+            <Button id="btnMenu" fx:id="btnGebruikersBeheren" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#gebruikersBeheren" prefHeight="50.0" prefWidth="200.0" text="Gebruikers beheren" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font></Button>
+            <Button id="btnMenu" fx:id="btnSessiekalenderBeheren" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#sessiekalenderBeheren" prefHeight="50.0" prefWidth="200.0" text="Sessiekalender beheren" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font></Button>
+            <Button id="btnMenu" fx:id="btnSessiesBeheren" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#sessiesBeheren" prefHeight="50.0" prefWidth="200.0" text="Sessies beheren" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font></Button>
+            <Button id="btnMenu" fx:id="btnIngeschrevenenBeheren" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#IngeschrevenenBeheren" prefHeight="50.0" prefWidth="200.0" text="Ingeschrevenen beheren" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
          </children>
       </VBox>
    </left>
