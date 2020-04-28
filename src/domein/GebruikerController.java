@@ -9,6 +9,8 @@ import repository.GebruikerDaoJpa;
 import repository.GenericDaoJpa;
 import javafx.collections.*;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 //import java.beans.PropertyChangeEvent;
 //import java.beans.PropertyChangeListener;
 //import java.beans.PropertyChangeSupport;
@@ -154,6 +156,30 @@ public class GebruikerController {
 	public void comittTransaction() {
 		for (Gebruiker g : gebruikerList) {
 			g.fillTransient();
+		}
+	}
+
+	public void meldAan(String gebruikersnaam, String wachtwoord)
+			throws NoSuchAlgorithmException, InvalidKeySpecException {
+
+		boolean flagGebruikersnaam = false;
+		boolean flagWachtwoord = false;
+
+		for (Gebruiker g : geefGebruikersList()) {
+			if (gebruikersnaam.equalsIgnoreCase(g.getGebruikersnaam())
+					|| gebruikersnaam.equalsIgnoreCase(g.getMailadres())) {
+				flagGebruikersnaam = true;
+			}
+			if(PasswordHasher.verifyPasswordHash(g.getPasswordHash(), wachtwoord)) {
+				flagWachtwoord = true;
+			}
+		}
+
+		if (!flagGebruikersnaam) {
+			throw new IllegalArgumentException("Gebruikersnaam is niet gevonden");
+		}
+		if (!flagWachtwoord) {
+			throw new IllegalArgumentException("Wachtwoord is niet geldig!");
 		}
 	}
 

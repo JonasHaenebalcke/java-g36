@@ -63,6 +63,10 @@ public class PasswordHasher {
 	 * big-endian.)
 	 */
 
+	
+	//GENEREER WACHTWOORD
+	
+	
 	/***
 	 * hashes a password
 	 * 
@@ -99,5 +103,101 @@ public class PasswordHasher {
 		byte[] salt = new byte[16];
 		sr.nextBytes(salt);
 		return salt;
+	}
+	
+	
+	
+	
+	
+	
+	//CONTROLEER WACHTWOORD
+	
+	
+	/***
+	 * checks of the password matches the 
+	 * @param hashedPassword the hashed password of the user
+	 * @param providedPassword the password the user has entered
+	 * @return
+	 */	
+	public static boolean verifyPasswordHash(String hashedPassword, String providedPassword) {
+		boolean confirmed = false;
+		if (hashedPassword == null) {
+			throw new IllegalArgumentException("Gelieve een gehashed wachtwoord mee te geven");
+		}
+		if (providedPassword == null) {
+			throw new IllegalArgumentException("Gelieve een wachtwoord mee te geven");
+		}
+		byte[] decodedHashedPassword = Base64.getDecoder().decode(hashedPassword);
+		if (decodedHashedPassword.length == 0) {
+			return confirmed;
+		}
+
+		switch (decodedHashedPassword[0]) {
+		//the only one we are able too check (v2)
+		case 0x00:
+			try {
+				return verifyHashedPasswordV2(decodedHashedPassword, providedPassword);
+			} catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				throw new IllegalArgumentException("Er ging iets mis bij het controleren van het wachtwoord..");
+			}
+		case 0x01:
+			//cannot check this type (v3)
+			return false;
+		default:
+			return false;
+		}
+	}
+	/***
+	 * deconstructes the password and checked is they are equal
+	 * @param hashedPassword the hashed password of the user
+	 * @param password the entered password of the user
+	 * @return controls if the are equal, if they are it returns a true else a false
+	 * @throws InvalidKeySpecException
+	 * @throws NoSuchAlgorithmException
+	 */
+	private static boolean verifyHashedPasswordV2(byte[] hashedPassword, String password)
+			throws InvalidKeySpecException, NoSuchAlgorithmException {
+		char[] chars = password.toCharArray();
+		int Pbkdf2IterCount = 1000; // default for Rfc2898DeriveBytes
+		int Pbkdf2SubkeyLength = 256 / 8; // 256 bits
+		int SaltSize = 128 / 8; // 128 bits
+
+		// We know ahead of time the exact length of a valid hashed password payload.
+		if (hashedPassword.length != 1 + SaltSize + Pbkdf2SubkeyLength) {
+			return false; // bad size
+		}
+
+		byte[] salt = new byte[SaltSize];
+		System.arraycopy(hashedPassword, 1, salt, 0, salt.length);
+
+		byte[] expectedSubkey = new byte[Pbkdf2SubkeyLength];
+		System.arraycopy(hashedPassword, 1 + salt.length, expectedSubkey, 0, expectedSubkey.length);
+
+		// Hash the incoming password and verify it
+		PBEKeySpec spec = new PBEKeySpec(chars, salt, Pbkdf2IterCount, 256);
+		SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+		byte[] actualSubkey = skf.generateSecret(spec).getEncoded();
+		return byteArraysEqual(actualSubkey, expectedSubkey);
+	}
+	
+	/***
+	 * checkes if two arrays are equal
+	 * @param a byte array "a"
+	 * @param b byte array "b"
+	 * @return "true" is equal of false if not
+	 */
+	private static boolean byteArraysEqual(byte[] a, byte[] b) {
+		if (a == null && b == null) {
+			return true;
+		}
+		if (a == null || b == null || a.length != b.length) {
+			return false;
+		}
+		boolean areSame = true;
+		for (int i = 0; i < a.length; i++) {
+			areSame &= (a[i] == b[i]);
+		}
+		return areSame;
 	}
 }
