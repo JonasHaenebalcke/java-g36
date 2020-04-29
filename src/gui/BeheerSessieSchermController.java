@@ -1,8 +1,10 @@
 package gui;
 
-import java.io.Console;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import domein.Gebruiker;
 import domein.Sessie;
 import domein.SessieController;
@@ -14,10 +16,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -25,7 +27,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 public class BeheerSessieSchermController extends AnchorPane {
-
+	
 	@FXML
 	private TableView<Sessie> tvSessies;
 	@FXML
@@ -107,9 +109,12 @@ public class BeheerSessieSchermController extends AnchorPane {
 	@FXML
 	private Label lblErrorDetailsSessie;
 
+	@FXML
+	private CheckBox checkboxOpenVrInSchrijvingen;
+	
 	private SessieController sc;
-	private Sessie sessie;
-
+	private Boolean isOpenVrInschrijvingen;
+	
 	public BeheerSessieSchermController() {
 		this.sc = new SessieController();
 	}
@@ -138,8 +143,8 @@ public class BeheerSessieSchermController extends AnchorPane {
 			colStartSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
 			ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
 			colDuurSessie.setCellValueFactory(cel -> cel.getValue().getDuurSessieProperty());
-
 			textWaardeSessieInvullen();
+			
 
 		} catch (NullPointerException e) {
 			lblErrorSessies.setVisible(true);
@@ -163,7 +168,8 @@ public class BeheerSessieSchermController extends AnchorPane {
 				txtCapaciteit.setText(Integer.toString(newV.getCapaciteit()));
 				txtLokaal.setText(newV.getLokaal());
 				txtOmschrvijving.setText(newV.getOmschrijving());
-
+//				checkboxOpenVrInSchrijvingen.setSelected(newV.getOpenVoorInschrijvingen());
+				
 				// tvMedia.setItems();
 				// colMediaTitel.setCellValueFactory(cel -> cel.getValue());
 				// colMediaLink.setCellValueFactory(cel -> cel.getValue());
@@ -185,13 +191,12 @@ public class BeheerSessieSchermController extends AnchorPane {
 	@FXML
 	void geefSessiesGekozenStatus(ActionEvent event) {
 		try {
-			System.out.print(cbxStatusSessie.getValue().name()+ " ");
-			if (cbxStatusSessie.getValue().name().equals(StatusSessie.open.toString()) ||
-					cbxStatusSessie.getValue().name().equals(StatusSessie.gesloten.toString()) ) {
+			System.out.print(cbxStatusSessie.getValue().name() + " ");
+			if (cbxStatusSessie.getValue().name().equals(StatusSessie.open.toString()) || cbxStatusSessie.getValue().name().equals(StatusSessie.gesloten.toString())) 
+			{
 				tvSessies.setItems(sc.geefSessiesObservable((cbxStatusSessie.getValue())));
 				lblFeedback.setVisible(true);
 				tvFeedback.setVisible(true);
-				
 			}
 		} catch (NullPointerException e) {
 			lblErrorDetailsSessie.setVisible(true);
@@ -200,14 +205,14 @@ public class BeheerSessieSchermController extends AnchorPane {
 	}
 
 	@FXML
-	void beherenIngeschrevenen(ActionEvent event) {
-		// Sessie sessie = lvSessies.getSelectionModel().getSelectedItem();
-		// sc.setHuidigeSessie(sessie);
+	void beherenIngeschrevenen(ActionEvent event) throws IOException {
+//		 Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
+//		 sc.setHuidigeSessie(sessie);
 
 		BeherenIngeschrevenenSchermController bIngeschrevenenScherm = new BeherenIngeschrevenenSchermController(sc);
-		// this.getChildren().add(bIngeschrevenenScherm);
+		this.getChildren().setAll(bIngeschrevenenScherm);
+		
 	}
-
 	@FXML
 	void pasSessieAan(ActionEvent event) {
 		cbxVerantwoordelijke.setDisable(true);
@@ -218,21 +223,30 @@ public class BeheerSessieSchermController extends AnchorPane {
 					&& (dpEinddatum.getValue() != null) && !txtStartuur.getText().isBlank()
 					&& !txtEinduur.getText().isBlank() && !txtCapaciteit.getText().isBlank()) {
 				if (!txtCapaciteit.getText().matches("[0-1000]")) {
-
-					sc.wijzigSessie(cbxVerantwoordelijke.getValue(), txtTitel.getText(), txtLokaal.getText(),
-							dpStartdatum.getValue(), dpEinddatum.getValue(), Integer.parseInt(txtCapaciteit.getText()),
-							txtOmschrvijving.getText(), txtGastspreker.getText());
+					if(txtStartuur.getText().matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$") && txtEinduur.getText().matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$")) {
+						
+						isOpenVrInschrijvingen = checkboxOpenVrInSchrijvingen.isSelected();
+				/*	 sc.wijzigSessie(cbxVerantwoordelijke.getValue(), txtTitel.getText(), txtLokaal.getText(),
+	                            zetOmNaarDateTime(dpStartdatum.getValue(), txtStartuur.getText()), zetOmNaarDateTime(dpEinddatum.getValue(), txtEinduur.getText()), Integer.parseInt(txtCapaciteit.getText()),
+	                            txtOmschrvijving.getText(), txtGastspreker.getText(), isOpenVrInschrijvingen);
+					 */
 					initialize();
 					lblSucces.setVisible(true);
 					lblSucces.setText("De sessie werd succesvol aangepast");
-				} else {
-					lblErrorDetailsSessie
-							.setText("De capaciteit van het aantal personen moet een geheel getal boven 0 zijn.");
+					} else {
+						lblErrorDetailsSessie.setText("Je startuur en einduur moet op deze manier geschreven worden 00:00");	
+					}
+					} else {
+					lblErrorDetailsSessie.setText("De capaciteit van het aantal personen moet een geheel getal boven 0 zijn.");
 				}
 			} else {
 				lblErrorDetailsSessie.setVisible(true);
 				lblErrorDetailsSessie.setText("Tekstvakken mogen niet leeg zijn");
 			}
+		} catch (DateTimeParseException e) {
+            lblErrorDetailsSessie.setVisible(true);
+            lblErrorDetailsSessie.setText("Uur moet van geschreven worden als volgt: hh:mm");
+		
 		} catch (Exception e) {
 			lblErrorDetailsSessie.setVisible(true);
 			lblErrorDetailsSessie.setText(e.getMessage());
@@ -243,7 +257,7 @@ public class BeheerSessieSchermController extends AnchorPane {
 	void verwijderSessie(ActionEvent event) {
 		try {
 			Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
-			sc.verwijderSessie(sessie);
+		//	sc.verwijderHuidigeSessie(/*sessie*/);
 			initialize();
 			lblSucces.setVisible(true);
 			lblSucces.setText("De sessie werd succesvol verwijderd");
@@ -261,23 +275,31 @@ public class BeheerSessieSchermController extends AnchorPane {
 					&& (dpEinddatum.getValue() != null) && !txtStartuur.getText().isBlank()
 					&& !txtEinduur.getText().isBlank() && !txtCapaciteit.getText().isBlank()) {
 				if (!txtCapaciteit.getText().matches("[0-1000]")) {
-
-					sc.voegSessieToe(cbxVerantwoordelijke.getValue(), txtTitel.getText(), txtLokaal.getText(),
-							dpStartdatum.getValue(), dpEinddatum.getValue(), Integer.parseInt(txtCapaciteit.getText()),
-							txtOmschrvijving.getText(), txtGastspreker.getText());
+					if(txtStartuur.getText().matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$") && txtEinduur.getText().matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$")) {
+						 
+						isOpenVrInschrijvingen = checkboxOpenVrInSchrijvingen.isSelected();
+						/*sc.voegSessieToe(cbxVerantwoordelijke.getValue(), txtTitel.getText(), txtLokaal.getText(),
+	                            zetOmNaarDateTime(dpStartdatum.getValue(), txtStartuur.getText()), zetOmNaarDateTime(dpEinddatum.getValue(), txtEinduur.getText()), Integer.parseInt(txtCapaciteit.getText()),
+	                            txtOmschrvijving.getText(), txtGastspreker.getText(), isOpenVrInschrijvingen);
+	                 */
 
 					tvSessies.getSelectionModel().selectLast();
 					initialize();
 					lblSucces.setVisible(true);
 					lblSucces.setText("De sessie werd succesvol toegevoegd");
-				} else {
-					lblErrorDetailsSessie
-							.setText("De capaciteit van het aantal personen moet een geheel getal boven 0 zijn.");
+					} else {
+						lblErrorDetailsSessie.setText("Je startuur en einduur moet op deze manier geschreven worden 00:00");	
+					}
+					} else {
+					lblErrorDetailsSessie.setText("De capaciteit van het aantal personen moet een geheel getal boven 0 zijn.");
 				}
 			} else {
 				lblErrorDetailsSessie.setVisible(true);
 				lblErrorDetailsSessie.setText("Tekstvakken mogen niet leeg zijn");
 			}
+		} catch (DateTimeParseException e) {
+            lblErrorDetailsSessie.setVisible(true);
+            lblErrorDetailsSessie.setText("Uur moet van geschreven worden als volgt: hh:mm");
 		} catch (Exception e) {
 			lblErrorDetailsSessie.setVisible(true);
 			lblErrorDetailsSessie.setText(e.getMessage());
@@ -287,11 +309,25 @@ public class BeheerSessieSchermController extends AnchorPane {
 	@FXML
 	void zoekSessie(ActionEvent event) {
 		try {
-
+			String sessieTitel = txtSessie.getText();
+			
+			tvSessies.getItems().stream()
+			.filter(sessie -> sessie.getTitel()== sessieTitel)
+			.findAny()
+			.ifPresent(item -> 
+			{
+				tvSessies.getSelectionModel().select(item);
+				tvSessies.scrollTo(item);
+			});
 		} catch (Exception e) {
 
 		}
 	}
+	
+	private LocalDateTime zetOmNaarDateTime(LocalDate datum, String uur) {
+        LocalDateTime res = LocalDateTime.parse(datum.toString() + uur, DateTimeFormatter.ofPattern("yyyy-MM-ddHH:mm"));
+        return res;
+    }
 
 	// regex voor start-en einduur ^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$
 }
