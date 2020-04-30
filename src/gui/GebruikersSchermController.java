@@ -7,6 +7,7 @@ import domein.Gebruiker;
 import domein.GebruikerController;
 import domein.Status;
 import domein.TypeGebruiker;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -18,6 +19,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -28,7 +31,19 @@ public class GebruikersSchermController extends AnchorPane {
 	private Button btnVoegToe;
 
 	@FXML
-	private ListView<Gebruiker> lvGebruikers;
+	private TableView<Gebruiker> tvGebruikers;
+
+	@FXML
+	private TableColumn<Gebruiker, String> colNaam;
+
+	@FXML
+	private TableColumn<Gebruiker, String> colVoornaam;
+
+	@FXML
+	private TableColumn<Gebruiker, String> colEmail;
+	
+	@FXML
+    private TableColumn<Gebruiker, String> colType;
 
 	@FXML
 	private TextField inputNaam;
@@ -103,7 +118,7 @@ public class GebruikersSchermController extends AnchorPane {
 		cbxStatus.setItems(FXCollections.observableArrayList(Status.values()));
 		cbxType.setItems(FXCollections.observableArrayList(TypeGebruiker.values()));
 
-		lvGebruikers();
+		tvGebruikers();
 		btnPasAan.setVisible(false);
 		btnVerwijder.setVisible(false);
 		lblTitle.setText("Voeg gebruiker toe");
@@ -121,17 +136,18 @@ public class GebruikersSchermController extends AnchorPane {
 
 			dc.wijzigGebruiker(inputVoornaam.getText(), inputNaam.getText(), inputEmail.getText(),
 					inputGebruikersnaam.getText(), cbxType.getValue(), cbxStatus.getValue(), "profielfoto");
-			initializeList();
+			
 			cbxType.setValue(cbxType.getValue());
 		} catch (Exception e) {
 			lblError.setText(e.getMessage());
 		}
+		initializeList();
 	}
 
 	@FXML
 	private void verwijderGebruiker(ActionEvent event) {
 		try {
-			int index = lvGebruikers.getSelectionModel().getSelectedIndex();
+			int index = tvGebruikers.getSelectionModel().getSelectedIndex();
 
 			//lvGebruikers.getSelectionModel().clearSelection();
 			dc.verwijderGebruiker(index);
@@ -171,7 +187,7 @@ public class GebruikersSchermController extends AnchorPane {
 					dc.voegToeGebruiker(inputVoornaam.getText(), inputNaam.getText(), inputEmail.getText(),
 							inputGebruikersnaam.getText(), cbxType.getValue(), cbxStatus.getValue(), "profielfoto",
 							inputWachtwoord.getText());
-					lvGebruikers.getSelectionModel().selectLast();
+					tvGebruikers.getSelectionModel().selectLast();
 					
 					initializeList();
 					inputGebruikersnaam.setEditable(false);
@@ -185,8 +201,8 @@ public class GebruikersSchermController extends AnchorPane {
 		}
 	}
 
-	void lvGebruikers() {
-		lvGebruikers.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Gebruiker>() {
+	void tvGebruikers() {
+		tvGebruikers.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Gebruiker>() {
 
 			@Override
 			public void changed(ObservableValue<? extends Gebruiker> observable, Gebruiker oldValue,
@@ -212,7 +228,11 @@ public class GebruikersSchermController extends AnchorPane {
 	}
 
 	void initializeList() {
-		lvGebruikers.setItems(dc.geefGebruikersObservableList());
+		tvGebruikers.setItems(dc.geefGebruikersObservableList());
+		colNaam.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getFamilienaam()));
+		colVoornaam.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getVoornaam()));
+		colEmail.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getMailadres()));
+		colType.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getType().toString()));
 		
 	}
 
