@@ -1,5 +1,6 @@
 package domein;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -7,6 +8,14 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import javafx.beans.property.IntegerProperty;
@@ -14,21 +23,38 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Sessie {
+@SuppressWarnings("serial")
+//@Entity
+@Table(name = "Sessie")
+public class Sessie implements Serializable {
 
+//	@Transient
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "StatusSessie")
 	private StatusSessie statusSessie;
+//	@Column(name = "StatusSessie")
+//	private int statusSessieValue;
+	@Transient
 	private Gebruiker verantwoordelijke;
+	@OneToMany(mappedBy = "")
 	private List<GebruikerSessie> gebruikerSessieLijst;
+	@Column(name = "Titel")
 	private String titel;
+	@Column(name = "Lokaal")
 	private String lokaal;
+	@Column(name = "EindDatum")
 	private LocalDateTime eindDatum;
+	@Column(name = "StartDatum")
 	private LocalDateTime startDatum;
+	@Column(name = "Capaciteit")
 	private int capaciteit;
+	@Column(name = "Beschrijving")
 	private String omschrijving;
+	@Column(name = "Gastspreker")
 	private String gastspreker;
 
-	private boolean open;
-	
+//	private boolean openVoorInschrijving;
+
 	@Transient
 	private SimpleStringProperty titelProperty = new SimpleStringProperty();
 	@Transient
@@ -38,34 +64,42 @@ public class Sessie {
 	@Transient
 	private SimpleStringProperty eindDatumSessieProperty = new SimpleStringProperty();
 
-	
-	
-
 	protected Sessie() {
 		gebruikerSessieLijst = new ArrayList<GebruikerSessie>();
-		setOpen(false);
+		zetInschrijvingenOpen(false);
 	}
 
 	public Sessie(Gebruiker verantwoordelijke, String titel, String lokaal, LocalDateTime startDatum,
 			LocalDateTime eindDatum, int capaciteit, String omschrijving, String gastspreker) {
 		this();
 		setVerantwoordelijke(verantwoordelijke);
-//		setTitel(titel);
-//		setLokaal(lokaal);
-//		setStartDatum(startDatum);
-//		setEindDatum(eindDatum);
-//		setCapaciteit(capaciteit);
-//		this.omschrijving = omschrijving;
-//		this.gastspreker = gastspreker;
-		wijzigSessie(titel, lokaal, startDatum, eindDatum, capaciteit, omschrijving, gastspreker, open);
+		wijzigSessie(titel, lokaal, startDatum, eindDatum, capaciteit, omschrijving, gastspreker, false);
+	}
+	
+//	@PostLoad
+//	public void fillTransient() {
+//		this.statusSessie = StatusSessie.of(statusSessieValue);
+//	}
+//
+//	@PrePersist
+//	public void fillPersistent() {
+//		if (statusSessie != null)
+//			this.statusSessieValue = statusSessie.getStatus();
+//
+//		if (this.typeGebruiker == typeGebruiker.Gebruiker)
+//			this.typeGebruiker = null;
+//	}
+
+	private void zetInschrijvingenOpen(boolean open) {
+//		this.openVoorInschrijving = open;
+		if (!open)
+			statusSessie = StatusSessie.nietOpen;
+		else
+			statusSessie = StatusSessie.InschrijvingenOpen;
 	}
 
-	private void setOpen(boolean open) {
-		this.open = open;
-	}
-
-	public boolean getOpen() {
-		return open;
+	public boolean isInschrijvingenOpen() {
+		return statusSessie == StatusSessie.InschrijvingenOpen;
 	}
 
 	public StatusSessie getStatusSessie() {
@@ -123,7 +157,7 @@ public class Sessie {
 	private void setStartDatum(LocalDateTime startDatum) {
 //		this.startDatum = startDatum;
 		if (eindDatum == null) {
-			if (startDatum.isAfter(LocalDateTime.now().plusDays(1)))
+			if (startDatum.isAfter(LocalDateTime.now().plusHours(24)))
 				this.startDatum = startDatum;
 			else
 				throw new IllegalArgumentException("De startdatum moet in de toekomst liggen.");
@@ -140,10 +174,10 @@ public class Sessie {
 
 	private void setEindDatum(LocalDateTime eindDatum) {
 //		this.eindDatum = eindDatum;
-		if (eindDatum.isAfter(startDatum))
+		if (eindDatum.isAfter(startDatum) && ChronoUnit.MINUTES.between(startDatum, eindDatum) >= 30)
 			this.eindDatum = eindDatum;
 		else
-			throw new IllegalArgumentException("De einddatum moet na de startdatum liggen.");
+			throw new IllegalArgumentException("De einddatum moet minstens 30 minuten na de startdatum liggen.");
 	}
 
 	private void setCapaciteit(int capaciteit) {
@@ -156,8 +190,6 @@ public class Sessie {
 		this.verantwoordelijke = verantwoordelijke;
 	}
 
-
-	
 	private void setDuurSessieProperty(String duur) {
 		duurProperty.set(duur);
 	}
@@ -165,7 +197,7 @@ public class Sessie {
 	public StringProperty getDuurSessieProperty() {
 		return duurProperty;
 	}
-	
+
 	private void setTitelSessieProperty(String titel) {
 		titelProperty.set(titel);
 	}
@@ -173,7 +205,7 @@ public class Sessie {
 	public StringProperty getTitelSessieProperty() {
 		return titelProperty;
 	}
-	
+
 	private void setStartDatumSessieProperty(String startdatum) {
 		startDatumSessieProperty.set(startdatum);
 	}
@@ -189,15 +221,17 @@ public class Sessie {
 	public StringProperty getEindDatumSessieProperty() {
 		return eindDatumSessieProperty;
 	}
-	
+
 	public void setStringProperties() {
 		setStartDatumSessieProperty(getStartDatum().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 		setEindDatumSessieProperty(getEindDatum().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-		//setDuurSessieProperty();
+		// setDuurSessieProperty();
 	}
+
 	public void wijzigSessie(String titel, String lokaal, LocalDateTime startDatum, LocalDateTime eindDatum,
 			int capaciteit, String omschrijving, String gastspreker, boolean open) {
-		if (!this.open)
+//		if (!getOpenVoorInschrijving()) //afh van commentaar vd prof
+		if (statusSessie == StatusSessie.open || statusSessie == StatusSessie.gesloten)
 			throw new IllegalArgumentException("De sessie mag niet geopend zijn om deze te kunnen wijzigen.");
 		if (ChronoUnit.MINUTES.between(startDatum, eindDatum) < 30)
 			throw new IllegalArgumentException("De sessie moet een minimumperiode van 30 minuten hebben.");
@@ -209,11 +243,33 @@ public class Sessie {
 		setCapaciteit(capaciteit);
 		this.omschrijving = omschrijving;
 		this.gastspreker = gastspreker;
-		setOpen(open);
+		zetInschrijvingenOpen(open);
+	}
+
+	public boolean isGebruikerIngeschreven(Gebruiker ingeschrevene) {
+		boolean ingeschreven = false;
+		for (GebruikerSessie gebruikerSessie : gebruikerSessieLijst) {
+			if (gebruikerSessie.getIngeschrevene().equals(ingeschrevene)) {
+				ingeschreven = true;
+				break;
+			}
+		}
+		return ingeschreven;
+	}
+
+	public boolean isGebruikerAanwezig(Gebruiker ingeschrevene) {
+		boolean aanwezig = false;
+		for (GebruikerSessie gebruikerSessie : gebruikerSessieLijst) {
+			if (gebruikerSessie.getIngeschrevene().equals(ingeschrevene) && gebruikerSessie.isAanwezig()) {
+				aanwezig = true;
+				break;
+			}
+		}
+		return aanwezig;
 	}
 
 	public void wijzigIngeschrevenen(Gebruiker ingeschrevene, boolean ingeschreven, boolean aanwezig) {
-		if (!open)
+		if (!isInschrijvingenOpen())
 			throw new IllegalArgumentException("Deze sessie is nog niet open voor inschrijvingen");
 
 		boolean gebruikerGevonden = false;
@@ -236,5 +292,15 @@ public class Sessie {
 				throw new IllegalArgumentException("Gebruiker is al uitgeschreven voor deze sessie");
 		}
 
+	}
+
+	@Override
+	public String toString() {
+		return "Sessie [statusSessie=" + statusSessie + ", verantwoordelijke=" + verantwoordelijke
+				+ ", gebruikerSessieLijst=" + gebruikerSessieLijst + ", titel=" + titel + ", lokaal=" + lokaal
+				+ ", eindDatum=" + eindDatum + ", startDatum=" + startDatum + ", capaciteit=" + capaciteit
+				+ ", omschrijving=" + omschrijving + ", gastspreker=" + gastspreker + ", titelProperty=" + titelProperty
+				+ ", duurProperty=" + duurProperty + ", startDatumSessieProperty=" + startDatumSessieProperty
+				+ ", eindDatumSessieProperty=" + eindDatumSessieProperty + "]";
 	}
 }

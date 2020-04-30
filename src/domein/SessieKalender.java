@@ -44,6 +44,13 @@ public class SessieKalender {
 		this();
 		setDatums(startDatum, eindDatum);
 	}
+	
+	public SessieKalender(LocalDate startDatum, LocalDate eindDatum, boolean bool) {
+		this();
+		this.startDatum = startDatum;
+		this.eindDatum = eindDatum;
+		setStringProperties();
+	}
 
 	public void setDatums(LocalDate startDatum, LocalDate eindDatum) {
 		if (eindDatum.getYear() - startDatum.getYear() != 1) {
@@ -84,7 +91,6 @@ public class SessieKalender {
 	}
 
 	public void setStartDatum(LocalDate startDatum) {
-		this.startDatum = startDatum;
 		if (startDatum.isAfter(LocalDate.now()))
 			this.startDatum = startDatum;
 		else
@@ -96,7 +102,6 @@ public class SessieKalender {
 	}
 
 	public void setEindDatum(LocalDate eindDatum) {
-		this.eindDatum = eindDatum;
 		if (eindDatum.isAfter(LocalDate.now()) && eindDatum.isAfter(startDatum))
 			this.eindDatum = eindDatum;
 		else

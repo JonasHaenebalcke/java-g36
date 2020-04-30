@@ -21,6 +21,7 @@ public class GebruikerController {
 	private ObservableList<Gebruiker> gebruikerObservableList;
 	private List<Gebruiker> gebruikerList;
 	private GebruikerDao gebruikerRepo;
+	private Gebruiker ingelogdeVerantwoordelijke;
 
 	public GebruikerController() {
 		setGebruikerRepo(new GebruikerDaoJpa());
@@ -31,18 +32,18 @@ public class GebruikerController {
 		gebruikerRepo = mock;
 	}
 
-	public ObservableList<Gebruiker> geefGebruikersObservableList() {
-		if (gebruikerObservableList == null) {
-			gebruikerObservableList = FXCollections.observableArrayList(geefGebruikersList());
-		}
-		return gebruikerObservableList;
-	}
-
 	public List<Gebruiker> geefGebruikersList() {
 		if (gebruikerList == null) {
 			gebruikerList = gebruikerRepo.findAll();
 		}
 		return gebruikerList;
+	}
+
+	public ObservableList<Gebruiker> geefGebruikersObservableList() {
+		if (gebruikerObservableList == null) {
+			gebruikerObservableList = FXCollections.observableArrayList(geefGebruikersList());
+		}
+		return gebruikerObservableList;
 	}
 
 	/**
@@ -110,16 +111,10 @@ public class GebruikerController {
 
 	/**
 	 * 
-	 * @param id
+	 * 
 	 */
-	public Gebruiker geefGebruiker(int index) {
-		try {
-			Gebruiker gebruiker = gebruikerList.get(index);
-			return gebruiker;
-		} catch (Exception e) {
-			System.err.println("Er ging iets fout bij het teruggeven van de gebruiker.");
-			throw new EntityNotFoundException("Er ging iets fout bij het teruggeven van de gebruiker.");
-		}
+	public Gebruiker geefIngelogdeVerantwoordelijke() {
+		return ingelogdeVerantwoordelijke;
 	}
 
 	public void close() {
@@ -169,17 +164,17 @@ public class GebruikerController {
 			if (gebruikersnaam.equalsIgnoreCase(g.getGebruikersnaam())
 					|| gebruikersnaam.equalsIgnoreCase(g.getMailadres())) {
 				flagGebruikersnaam = true;
-			}
-			if(PasswordHasher.verifyPasswordHash(g.getPasswordHash(), wachtwoord)) {
-				flagWachtwoord = true;
+				if(g.getType().equals(TypeGebruiker.Gebruiker))
+					throw new IllegalArgumentException("Gebruiker is geen (Hoofd)Verantwoordelijke en heeft geen toegang tot de applicatie.");
+				if(PasswordHasher.verifyPasswordHash(g.getPasswordHashJava(), wachtwoord)) {
+					flagWachtwoord = true;
+					ingelogdeVerantwoordelijke = g;
+					break;
+				}
 			}
 		}
-
-		if (!flagGebruikersnaam) {
-			throw new IllegalArgumentException("Gebruikersnaam is niet gevonden");
-		}
-		if (!flagWachtwoord) {
-			throw new IllegalArgumentException("Wachtwoord is niet geldig!");
+		if (!flagGebruikersnaam || !flagWachtwoord) {
+			throw new IllegalArgumentException("Gebruikersnaam of wachtwoord is incorrect");
 		}
 	}
 

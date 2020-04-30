@@ -98,7 +98,7 @@ public class BeherenIngeschrevenenSchermController extends AnchorPane {
 	private void initialize() {
 		cbxStatusSessie.setItems(FXCollections.observableArrayList(StatusSessie.values()));
 		try {
-			tvSessies.setItems(sc.geefSessiesObservable(StatusSessie.nietOpen));
+			tvSessies.setItems(sc.geefSessiesObservable());
 			colTitelSessie.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
 			colStartSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
 			ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
@@ -177,7 +177,7 @@ public class BeherenIngeschrevenenSchermController extends AnchorPane {
 			System.out.print(cbxStatusSessie.getValue().name() + " ");
 			if (cbxStatusSessie.getValue().name().equals(StatusSessie.open.toString())	|| cbxStatusSessie.getValue().name().equals(StatusSessie.gesloten.toString()))
 			{
-				tvSessies.setItems(sc.geefSessiesObservable((cbxStatusSessie.getValue())));
+				tvSessies.setItems(sc.geefSessiesObservable());
 
 			}
 		} catch (NullPointerException e) {

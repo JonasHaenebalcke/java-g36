@@ -56,6 +56,9 @@ public class Gebruiker implements Serializable {
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "IsHoofdverantwoordelijke")
 	private TypeGebruiker typeGebruiker;
+	
+	@Column(name = "PasswordHashJava")
+	private String passwordHashJava;
 
 	// Data die binnenkomt via databank
 	@Id
@@ -163,8 +166,8 @@ public class Gebruiker implements Serializable {
 		setGebruikersnaam(gebruikersnaam);
 		setProfielfoto(profielfoto);
 
-		if (type.equals(type.Hoofdverantwoordelijke)) {
-			this.typeDb = type.Verantwoordelijke.toString();
+		if (type.equals(TypeGebruiker.Hoofdverantwoordelijke)) {
+			this.typeDb = TypeGebruiker.Verantwoordelijke.toString();
 		} else {
 			this.typeDb = type.toString();
 		}
@@ -186,7 +189,16 @@ public class Gebruiker implements Serializable {
 		this.aantalKeerAfwezig = aantalKeerAfwezig;
 
 		setRandomGebruikerID();
+		setPasswordHashJava(wachtwoord);
 	}
+	
+	public String getPasswordHashJava() {
+        return passwordHashJava;
+    }
+
+    public void setPasswordHashJava(String passwordHashJava) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        this.passwordHashJava = PasswordHasher.getPasswordHash(passwordHashJava);
+    }
 
 	public Status getStatus() {
 		return status;
