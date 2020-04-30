@@ -122,7 +122,7 @@ public class PasswordHasher {
 	public static boolean verifyPasswordHash(String hashedPassword, String providedPassword) {
 		boolean confirmed = false;
 		if (hashedPassword == null) {
-			throw new IllegalArgumentException("Gelieve een gehashed wachtwoord mee te geven");
+			throw new IllegalArgumentException("Dit is een ongeldige gebruiker, gelieve deze opnieuw aan te maken!");
 		}
 		if (providedPassword == null) {
 			throw new IllegalArgumentException("Gelieve een wachtwoord mee te geven");

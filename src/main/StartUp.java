@@ -20,14 +20,15 @@ public class StartUp extends Application {
 	public void start(Stage primaryStage) {
 		PopulateDB populatedb = new PopulateDB();
 //		populatedb.run(); //Als ge db wilt resetten, moet ge setter van startdatumsessiekalender ook aanpassen
+		GebruikerController gc = new GebruikerController();
 		SessieKalenderController skc = new SessieKalenderController();
-		SessieController sc = new SessieController();
-		GebruikerController dc = new GebruikerController();
-		dc.geefGebruikersList().forEach(g -> System.out.println(g.toString()));
+		SessieController sc = new SessieController(gc);
+		gc.geefGebruikersList().forEach(g -> System.out.println(g.toString()));
 
 		skc.geefSessieKalenderList().forEach(g -> System.out.println(g.toString()));
+//		sc.geefSessies().forEach(s -> System.out.println(s.toString()));
 //        MenuController root = new MenuController(dc, skc, sc);
-		MeldAanSchermController root = new MeldAanSchermController(dc, skc, sc);
+		MeldAanSchermController root = new MeldAanSchermController(gc, skc, sc);
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add("gui/stylesheet.css");
 		primaryStage.setMaximized(true);
