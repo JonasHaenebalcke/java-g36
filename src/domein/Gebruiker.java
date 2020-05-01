@@ -55,7 +55,9 @@ public class Gebruiker implements Serializable {
 	private Status status;
 
 	@Enumerated(EnumType.ORDINAL)
-	@Column(name = "IsHoofdverantwoordelijke")
+//	@Column(name = "IsHoofdverantwoordelijke")
+//	@Enumerated(EnumType.STRING)
+	@Column(name = "TypeGebruiker")
 	private TypeGebruiker typeGebruiker;
 	
 	@Column(name = "PasswordHashJava")
@@ -104,8 +106,8 @@ public class Gebruiker implements Serializable {
 	private String barcode;
 	@Column(name = "AantalKeerAfwezig")
 	private int aantalKeerAfwezig;
-	@Column(name = "Type")
-	private String typeDb;
+//	@Column(name = "Type")
+//	private String typeDb;
 	@Transient
 //	@OneToMany(mappedBy = "verantwoordelijke")
 	private List<Sessie> OpenTeZettenSessies;
@@ -121,9 +123,9 @@ public class Gebruiker implements Serializable {
 	public void fillTransient() {
 		this.status = Status.of(statusValue);
 
-		if (this.typeGebruiker == null) {
-			this.typeGebruiker = typeGebruiker.Gebruiker;
-		}
+//		if (this.typeGebruiker == null) {
+//			this.typeGebruiker = typeGebruiker.Gebruiker;
+//		}
 //		try {
 //			if (this.typeGebruiker.toString().equalsIgnoreCase("Verantwoordelijke")) {
 //				this.typeGebruiker = typeGebruiker.Hoofdverantwoordelijke;
@@ -141,8 +143,8 @@ public class Gebruiker implements Serializable {
 		if (status != null)
 			this.statusValue = status.getStatus();
 
-		if (this.typeGebruiker == typeGebruiker.Gebruiker)
-			this.typeGebruiker = null;
+//		if (this.typeGebruiker == typeGebruiker.Gebruiker)
+//			this.typeGebruiker = null;
 	}
 
 	protected Gebruiker() {
@@ -172,12 +174,12 @@ public class Gebruiker implements Serializable {
 		setMailadres(mailadres);
 		setGebruikersnaam(gebruikersnaam);
 		setProfielfoto(profielfoto);
-
-		if (type.equals(TypeGebruiker.Hoofdverantwoordelijke)) {
-			this.typeDb = TypeGebruiker.Verantwoordelijke.toString();
-		} else {
-			this.typeDb = type.toString();
-		}
+		this.typeGebruiker = type;
+//		if (type.equals(TypeGebruiker.Hoofdverantwoordelijke)) {
+//			this.typeDb = TypeGebruiker.Verantwoordelijke.toString();
+//		} else {
+//			this.typeDb = type.toString();
+//		}
 
 		this.normalizedUserName = gebruikersnaam.toUpperCase();
 		this.normalizedEmail = mailadres.toUpperCase();
@@ -463,13 +465,13 @@ public class Gebruiker implements Serializable {
 		this.aantalKeerAfwezig = aantalKeerAfwezig;
 	}
 
-	public String getTypeDb() {
-		return typeDb;
-	}
+//	public String getTypeDb() {
+//		return typeGebruiker;
+//	}
 
-	public void setTypeDb(String typeDb) {
-		this.typeDb = typeDb;
-	}
+//	public void setTypeDb(String typeDb) {
+//		this.typeDb = typeDb;
+//	}
 
 	public void setGebruikerID(String gebruikerID) {
 		this.gebruikerID = gebruikerID;

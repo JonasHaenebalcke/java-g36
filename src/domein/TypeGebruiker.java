@@ -4,21 +4,21 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 public enum TypeGebruiker{
-	/*,*/ Verantwoordelijke(0), Hoofdverantwoordelijke(1), Gebruiker(null);
+	/*,*/ Verantwoordelijke(0), Hoofdverantwoordelijke(1), Gebruiker(2);
 
 //	Gebruiker,
 //	Verantwoordelijke,
 //	Hoofdverantwoordelijke
 
-	private Object code;
+	private int value;
 
-	private TypeGebruiker(Object code) {
-		this.code = code;
+	private TypeGebruiker(int value) {
+		this.value = value;
 	}
 	
 
-	public Object getCode() {
-		return code;
+	public int getValue() {
+		return value;
 	}
 
 //	public static Type of(Object type) {
