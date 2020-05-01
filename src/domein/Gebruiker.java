@@ -17,6 +17,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
@@ -105,9 +106,15 @@ public class Gebruiker implements Serializable {
 	private int aantalKeerAfwezig;
 	@Column(name = "Type")
 	private String typeDb;
-
 	@Transient
+//	@OneToMany(mappedBy = "verantwoordelijke")
+	private List<Sessie> OpenTeZettenSessies;
+	@Transient
+//	@OneToMany(mappedBy = "ingeschrevene")
 	private List<GebruikerSessie> gebruikerSessieLijst;
+	@Transient
+//	@OneToMany(mappedBy = "auteur")
+	private List<Feedback> feedbackLijst;
 
 	// Methodes voor Enums te mappen
 	@PostLoad

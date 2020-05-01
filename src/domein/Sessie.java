@@ -12,6 +12,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
@@ -29,15 +34,22 @@ import javafx.beans.property.StringProperty;
 public class Sessie implements Serializable {
 
 //	@Transient
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "SessieID")
+	private int sessieID;
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "StatusSessie")
 	private StatusSessie statusSessie;
 //	@Column(name = "StatusSessie")
 //	private int statusSessieValue;
-	@Transient
+	@ManyToOne
+	@JoinColumn(name = "VerantwoordelijkeId")
 	private Gebruiker verantwoordelijke;
-	@OneToMany(mappedBy = "")
+	@OneToMany(mappedBy = "sessie")
 	private List<GebruikerSessie> gebruikerSessieLijst;
+	@OneToMany(mappedBy = "sessie")
+	private List<Feedback> feedbackLijst;
 	@Column(name = "Titel")
 	private String titel;
 	@Column(name = "Lokaal")
@@ -52,6 +64,9 @@ public class Sessie implements Serializable {
 	private String omschrijving;
 	@Column(name = "Gastspreker")
 	private String gastspreker;
+	@ManyToOne
+	@JoinColumn(name = "SessieKalender")
+	private SessieKalender sessieKalender;
 
 //	private boolean openVoorInschrijving;
 
@@ -75,7 +90,7 @@ public class Sessie implements Serializable {
 		setVerantwoordelijke(verantwoordelijke);
 		wijzigSessie(titel, lokaal, startDatum, eindDatum, capaciteit, omschrijving, gastspreker, false);
 	}
-	
+
 //	@PostLoad
 //	public void fillTransient() {
 //		this.statusSessie = StatusSessie.of(statusSessieValue);
@@ -89,6 +104,27 @@ public class Sessie implements Serializable {
 //		if (this.typeGebruiker == typeGebruiker.Gebruiker)
 //			this.typeGebruiker = null;
 //	}
+
+	public List<Feedback> getFeedbackLijst() {
+//		List<Feedback> feedbackLijst = new ArrayList<Feedback>();
+//		for (GebruikerSessie gebruikerSessie : gebruikerSessieLijst) {
+//			Feedback feedback = gebruikerSessie.getFeedback();
+//			if(feedback != null)
+//				feedbackLijst.add(feedback);
+//		}
+		return feedbackLijst;
+	}
+
+	public void addFeedback(Gebruiker auteur, String content, int score) {
+		feedbackLijst.add(new Feedback(auteur, this, content, score));
+	}
+
+	public void wijzigFeedback(int feedbackID, String content, int score) {
+		for (Feedback feedback : feedbackLijst) {
+			if (feedback.getFeedbackID() == feedbackID)
+				feedback.wijzigFeedback(content, score);
+		}
+	}
 
 	private void zetInschrijvingenOpen(boolean open) {
 //		this.openVoorInschrijving = open;
@@ -292,6 +328,14 @@ public class Sessie implements Serializable {
 				throw new IllegalArgumentException("Gebruiker is al uitgeschreven voor deze sessie");
 		}
 
+	}
+
+	public int geefGemiddeldeScore() {
+		int res = 0;
+		for (Feedback feedback : getFeedbackLijst()) {
+			res += feedback.getScore();
+		}
+		return res / getFeedbackLijst().size();
 	}
 
 	@Override

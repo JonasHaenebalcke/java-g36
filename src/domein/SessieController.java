@@ -29,6 +29,24 @@ public class SessieController {
 		sessieRepo = mock;
 	}
 
+	public List<Sessie> geefSessies() {
+		if (sessieLijst == null) {
+//			sessieLijst = sessieRepo.findAll();
+		}
+		return sessieLijst;
+	}
+	
+	public ObservableList<Sessie> geefSessiesObservable() {
+		if (gebruikerObservableList == null) {
+			gebruikerObservableList = FXCollections.observableArrayList(geefSessies());
+		}
+		return gebruikerObservableList;
+	}
+	 
+	public ObservableList<GebruikerSessie> geefGebruikerSessiesObservable() {
+		return FXCollections.observableArrayList(huidigeSessie.getGebruikerSessieLijst());
+	 }
+
 	public void setHuidigeSessie(Sessie sessie) {
 		this.huidigeSessie = sessie;
 	}
@@ -53,24 +71,14 @@ public class SessieController {
 	public void wijzigIngeschrevenen(Gebruiker ingeschrevene, boolean ingeschreven, boolean aanwezig) {
 		huidigeSessie.wijzigIngeschrevenen(ingeschrevene, ingeschreven, aanwezig);
 	}
-
-	public List<Sessie> geefSessies() {
-		if (sessieLijst == null) {
-//			sessieLijst = sessieRepo.findAll();
-		}
-		return sessieLijst;
+	
+	public void addFeedback(Gebruiker auteur, String content, int score) {
+		huidigeSessie.addFeedback(auteur, content, score);
 	}
 	
-	public ObservableList<Sessie> geefSessiesObservable() {
-		if (gebruikerObservableList == null) {
-			gebruikerObservableList = FXCollections.observableArrayList(geefSessies());
-		}
-		return gebruikerObservableList;
+	public void wijzigFeedback(int feedbackID, String content, int score) {
+		huidigeSessie.wijzigFeedback(feedbackID, content, score);
 	}
-	 
-	public ObservableList<GebruikerSessie> geefGebruikerSessiesObservable() {
-		return FXCollections.observableArrayList(huidigeSessie.getGebruikerSessieLijst());
-	 }
 
 	public void close() {
 		GenericDaoJpa.closePersistency();
