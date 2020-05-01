@@ -63,7 +63,9 @@ public class BeheerSessieSchermController extends AnchorPane {
 	private TableColumn<? /* Feedback */, String> colFeedback;
 	@FXML
 	private TableColumn<? /* Feedback */, LocalDate> colDatumFeedback;
-
+	@FXML
+	private Label lblGemiddeldeScore;
+	 
 	@FXML
 	private Label lblSucces;
 	@FXML
@@ -100,6 +102,8 @@ public class BeheerSessieSchermController extends AnchorPane {
 
 	@FXML
 	private Button btnBeherenIngeschrevenen;
+    @FXML
+    private Button btnBeherenHerringeringen;
 
 	@FXML
 	private TextArea txtOmschrvijving;
@@ -111,9 +115,9 @@ public class BeheerSessieSchermController extends AnchorPane {
 
 	@FXML
 	private CheckBox checkboxOpenVrInSchrijvingen;
-	
+
+   
 	private SessieController sc;
-	private Boolean isOpenVrInschrijvingen;
 	
 	public BeheerSessieSchermController() {
 		this.sc = new SessieController();
@@ -143,9 +147,13 @@ public class BeheerSessieSchermController extends AnchorPane {
 			colStartSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
 			ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
 			colDuurSessie.setCellValueFactory(cel -> cel.getValue().getDuurSessieProperty());
-			textWaardeSessieInvullen();
 			
-
+			textWaardeSessieInvullen();
+			btnPasAan.setDisable(true);
+			btnVerwijder.setDisable(true);
+			btnBeherenIngeschrevenen.setDisable(true);
+			
+		
 		} catch (NullPointerException e) {
 			lblErrorSessies.setVisible(true);
 			lblErrorSessies.setText(e.getMessage());
@@ -156,6 +164,7 @@ public class BeheerSessieSchermController extends AnchorPane {
 	}
 
 	void textWaardeSessieInvullen() {
+		sc.setHuidigeSessie(tvSessies.getSelectionModel().getSelectedItem());
 		tvSessies.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Sessie>() {
 
 			@Override
@@ -168,7 +177,10 @@ public class BeheerSessieSchermController extends AnchorPane {
 				txtCapaciteit.setText(Integer.toString(newV.getCapaciteit()));
 				txtLokaal.setText(newV.getLokaal());
 				txtOmschrvijving.setText(newV.getOmschrijving());
-//				checkboxOpenVrInSchrijvingen.setSelected(newV.getOpenVoorInschrijvingen());
+				checkboxOpenVrInSchrijvingen.setSelected(newV.isInschrijvingenOpen());
+				
+				cbxVerantwoordelijke.setDisable(true);
+				btnVoegToe.setDisable(true);
 				
 				// tvMedia.setItems();
 				// colMediaTitel.setCellValueFactory(cel -> cel.getValue());
@@ -176,13 +188,17 @@ public class BeheerSessieSchermController extends AnchorPane {
 
 				if (newV.getStatusSessie().name().equals(StatusSessie.open.toString())
 						|| newV.getStatusSessie().name().equals(StatusSessie.gesloten.toString())) {
-					lblFeedback.setVisible(true);
-					tvFeedback.setVisible(true);
-					// tvFeedback.setItems();
-//				colAuteurFeedback.setCellValueFactory();
-//				colScoreFeedback.setCellValueFactory();
-//				colFeedback.setCellValueFactory(cel -> cel.getValue());
-//				colDatumFeedback.setCellValueFactory();
+					
+//					tvFeedback.setItems();
+//					colAuteurFeedback.setCellValueFactory();
+//					colScoreFeedback.setCellValueFactory();
+//					colFeedback.setCellValueFactory(cel -> cel.getValue());
+//					colDatumFeedback.setCellValueFactory();
+//					lblGemiddeldeScore.setText();
+				} else {
+					lblFeedback.setVisible(false);
+					tvFeedback.setVisible(false);
+					lblGemiddeldeScore.setVisible(false);
 				}
 			}
 		});
@@ -192,9 +208,9 @@ public class BeheerSessieSchermController extends AnchorPane {
 	void geefSessiesGekozenStatus(ActionEvent event) {
 		try {
 			System.out.print(cbxStatusSessie.getValue().name() + " ");
+				tvSessies.setItems(sc.geefSessiesObservable()); 
 			if (cbxStatusSessie.getValue().name().equals(StatusSessie.open.toString()) || cbxStatusSessie.getValue().name().equals(StatusSessie.gesloten.toString())) 
 			{
-				tvSessies.setItems(sc.geefSessiesObservable());
 				lblFeedback.setVisible(true);
 				tvFeedback.setVisible(true);
 			}
@@ -205,38 +221,27 @@ public class BeheerSessieSchermController extends AnchorPane {
 	}
 
 	@FXML
-	void beherenIngeschrevenen(ActionEvent event) throws IOException {
-//		 Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
-//		 sc.setHuidigeSessie(sessie);
-
-		BeherenIngeschrevenenSchermController bIngeschrevenenScherm = new BeherenIngeschrevenenSchermController(sc);
-		this.getChildren().setAll(bIngeschrevenenScherm);
-		
-	}
-	@FXML
 	void pasSessieAan(ActionEvent event) {
 		cbxVerantwoordelijke.setDisable(true);
 		try {
-			// Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
-			// textWaardeSessieInvullen();
 			if (!txtTitel.getText().isBlank() && !txtLokaal.getText().isBlank() && (dpStartdatum.getValue() != null)
 					&& (dpEinddatum.getValue() != null) && !txtStartuur.getText().isBlank()
 					&& !txtEinduur.getText().isBlank() && !txtCapaciteit.getText().isBlank()) {
 				if (!txtCapaciteit.getText().matches("[0-1000]")) {
-					if(txtStartuur.getText().matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$") && txtEinduur.getText().matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$")) {
+					//if(txtStartuur.getText().matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$") && txtEinduur.getText().matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$")) {
 						
-						isOpenVrInschrijvingen = checkboxOpenVrInSchrijvingen.isSelected();
-				/*	 sc.wijzigSessie(cbxVerantwoordelijke.getValue(), txtTitel.getText(), txtLokaal.getText(),
+						Boolean isOpenVrInschrijvingen = checkboxOpenVrInSchrijvingen.isSelected();
+					 sc.wijzigSessie(cbxVerantwoordelijke.getValue(), txtTitel.getText(), txtLokaal.getText(),
 	                            zetOmNaarDateTime(dpStartdatum.getValue(), txtStartuur.getText()), zetOmNaarDateTime(dpEinddatum.getValue(), txtEinduur.getText()), Integer.parseInt(txtCapaciteit.getText()),
 	                            txtOmschrvijving.getText(), txtGastspreker.getText(), isOpenVrInschrijvingen);
-					 */
+					 
 					initialize();
 					lblSucces.setVisible(true);
 					lblSucces.setText("De sessie werd succesvol aangepast");
-					} else {
+					} /*else {
 						lblErrorDetailsSessie.setText("Je startuur en einduur moet op deze manier geschreven worden 00:00");	
 					}
-					} else {
+					}*/ else {
 					lblErrorDetailsSessie.setText("De capaciteit van het aantal personen moet een geheel getal boven 0 zijn.");
 				}
 			} else {
@@ -256,8 +261,7 @@ public class BeheerSessieSchermController extends AnchorPane {
 	@FXML
 	void verwijderSessie(ActionEvent event) {
 		try {
-			Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
-		//	sc.verwijderHuidigeSessie(/*sessie*/);
+			sc.verwijderHuidigeSessie();
 			initialize();
 			lblSucces.setVisible(true);
 			lblSucces.setText("De sessie werd succesvol verwijderd");
@@ -273,24 +277,24 @@ public class BeheerSessieSchermController extends AnchorPane {
 		try {
 			if (!txtTitel.getText().isBlank() && !txtLokaal.getText().isBlank() && (dpStartdatum.getValue() != null)
 					&& (dpEinddatum.getValue() != null) && !txtStartuur.getText().isBlank()
-					&& !txtEinduur.getText().isBlank() && !txtCapaciteit.getText().isBlank()) {
+					&& !txtEinduur.getText().isBlank()  && !txtCapaciteit.getText().isBlank()) {
 				if (!txtCapaciteit.getText().matches("[0-1000]")) {
-					if(txtStartuur.getText().matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$") && txtEinduur.getText().matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$")) {
+					//if(txtStartuur.getText().matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$") && txtEinduur.getText().matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$")) {
 						 
-						isOpenVrInschrijvingen = checkboxOpenVrInSchrijvingen.isSelected();
-						/*sc.voegSessieToe(cbxVerantwoordelijke.getValue(), txtTitel.getText(), txtLokaal.getText(),
+					//Boolean isOpenVrInschrijvingen = checkboxOpenVrInSchrijvingen.isSelected();
+						sc.voegSessieToe(cbxVerantwoordelijke.getValue(), txtTitel.getText(), txtLokaal.getText(),
 	                            zetOmNaarDateTime(dpStartdatum.getValue(), txtStartuur.getText()), zetOmNaarDateTime(dpEinddatum.getValue(), txtEinduur.getText()), Integer.parseInt(txtCapaciteit.getText()),
-	                            txtOmschrvijving.getText(), txtGastspreker.getText(), isOpenVrInschrijvingen);
-	                 */
-
+	                            txtOmschrvijving.getText(), txtGastspreker.getText());
+	                 
 					tvSessies.getSelectionModel().selectLast();
 					initialize();
 					lblSucces.setVisible(true);
 					lblSucces.setText("De sessie werd succesvol toegevoegd");
-					} else {
-						lblErrorDetailsSessie.setText("Je startuur en einduur moet op deze manier geschreven worden 00:00");	
+					} /*else {
+						lblErrorDetailsSessie.setText("Je startuur en einduur moet op deze manier geschreven worden hh:mm");	
 					}
-					} else {
+					}*/ 
+				else {
 					lblErrorDetailsSessie.setText("De capaciteit van het aantal personen moet een geheel getal boven 0 zijn.");
 				}
 			} else {
@@ -312,7 +316,7 @@ public class BeheerSessieSchermController extends AnchorPane {
 			String sessieTitel = txtSessie.getText();
 			
 			tvSessies.getItems().stream()
-			.filter(sessie -> sessie.getTitel()== sessieTitel)
+			.filter(sessie -> sessie.getTitel() == sessieTitel)
 			.findAny()
 			.ifPresent(item -> 
 			{
@@ -320,9 +324,25 @@ public class BeheerSessieSchermController extends AnchorPane {
 				tvSessies.scrollTo(item);
 			});
 		} catch (Exception e) {
-
+			lblErrorDetailsSessie.setText(e.getMessage());
 		}
 	}
+
+	@FXML
+	void beherenIngeschrevenen(ActionEvent event) throws IOException {
+		 Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
+		 sc.setHuidigeSessie(sessie);
+
+		BeherenIngeschrevenenSchermController bIngeschrevenenScherm = new BeherenIngeschrevenenSchermController(sc);
+		this.getChildren().setAll(bIngeschrevenenScherm);
+		
+	}
+	@FXML
+	void beherenHerinneringen(ActionEvent event) {
+		 Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
+		 sc.setHuidigeSessie(sessie);
+		 // .. nog code toevoegen
+    }
 	
 	private LocalDateTime zetOmNaarDateTime(LocalDate datum, String uur) {
         LocalDateTime res = LocalDateTime.parse(datum.toString() + uur, DateTimeFormatter.ofPattern("yyyy-MM-ddHH:mm"));
