@@ -21,16 +21,16 @@ import javafx.collections.ObservableList;
 @Table(name = "SessieKalender")
 public class SessieKalender {
 
-	@Transient
-//	@OneToMany(mappedBy = "sessieKalender")
+//	@Transient
+	@OneToMany(mappedBy = "sessieKalender")
 	private Collection<Sessie> sessieLijst;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "Id")
+	@Column(name = "sessieKalenderID")
 	private int sessieKalenderID;
-	@Column(name = "startDate")
+	@Column(name = "StartDatum")
 	private LocalDate startDatum;
-	@Column(name = "eindDate")
+	@Column(name = "EindDatum")
 	private LocalDate eindDatum;
 
 	@Transient

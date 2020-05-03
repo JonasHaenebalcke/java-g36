@@ -35,11 +35,11 @@ public class PopulateDB {
 		SessieKalenderDaoJpa skdao = new SessieKalenderDaoJpa();
 		SessieKalenderDaoJpa.startTransaction();
 		try {
-			SessieKalender sk1 = new SessieKalender(LocalDate.of(2019, 9, 25), LocalDate.of(2020, 6, 15), true);
+//			SessieKalender sk1 = new SessieKalender(LocalDate.of(2019, 9, 25), LocalDate.of(2020, 6, 15), true);
 			SessieKalender sk2 = new SessieKalender(LocalDate.of(2020, 9, 25), LocalDate.of(2021, 6, 15), true);
 			SessieKalender sk3 = new SessieKalender(LocalDate.of(2021, 9, 25), LocalDate.of(2022, 6, 15), true);
 			
-		skdao.insert(sk1);
+//		skdao.insert(sk1);
 		skdao.insert(sk2);
 		skdao.insert(sk3);
 		} catch(Exception e) {

@@ -55,8 +55,6 @@ public class Gebruiker implements Serializable {
 	private Status status;
 
 	@Enumerated(EnumType.ORDINAL)
-//	@Column(name = "IsHoofdverantwoordelijke")
-//	@Enumerated(EnumType.STRING)
 	@Column(name = "TypeGebruiker")
 	private TypeGebruiker typeGebruiker;
 	
@@ -108,14 +106,14 @@ public class Gebruiker implements Serializable {
 	private int aantalKeerAfwezig;
 //	@Column(name = "Type")
 //	private String typeDb;
-	@Transient
-//	@OneToMany(mappedBy = "verantwoordelijke")
+//	@Transient
+	@OneToMany(mappedBy = "verantwoordelijke")
 	private List<Sessie> OpenTeZettenSessies;
-	@Transient
-//	@OneToMany(mappedBy = "ingeschrevene")
+//	@Transient
+	@OneToMany(mappedBy = "ingeschrevene")
 	private List<GebruikerSessie> gebruikerSessieLijst;
-	@Transient
-//	@OneToMany(mappedBy = "auteur")
+//	@Transient
+	@OneToMany(mappedBy = "auteur")
 	private List<Feedback> feedbackLijst;
 
 	// Methodes voor Enums te mappen

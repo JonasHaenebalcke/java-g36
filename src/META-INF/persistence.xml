@@ -8,6 +8,9 @@
 		
 		<class>domein.Gebruiker</class>
 		<class>domein.SessieKalender</class>
+		<class>domein.Sessie</class>
+        <class>domein.GebruikerSessie</class>
+        <class>domein.Feedback</class>
 
 		<properties>
 			<!-- var connectionString = @"Server=40.68.196.74;Database=ItLabTest;user 

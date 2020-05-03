@@ -21,7 +21,7 @@ public enum TypeGebruiker{
 		return value;
 	}
 
-//	public static Type of(Object type) {
+//	public static Type of(int type) {
 //		return Arrays.stream(Type.values()).filter(p -> p.getType() == type).findFirst()
 //				.orElseThrow(IllegalArgumentException::new);
 //	}

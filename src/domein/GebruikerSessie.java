@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -28,14 +29,15 @@ public class GebruikerSessie implements Serializable{
 //	private int sessieID;
 	@EmbeddedId
 	GebruikerSessieId id;
-	
+	@MapsId("SessieID")
 	@ManyToOne
-	@JoinColumn(name="SessieID")
+//	@JoinColumn(name="SessieID")
 	private Sessie sessie;
+	@MapsId("GebruikerID")
 	@ManyToOne
-	@JoinColumn(name="GebruikerID")
+//	@JoinColumn(name="GebruikerID")
 	private Gebruiker ingeschrevene;
-	
+	@Column(name = "InschrijvingsDatum")
 	private LocalDateTime inschrijvingsDatum;
 	
 //	private Feedback feedback;
@@ -93,6 +95,6 @@ public class GebruikerSessie implements Serializable{
 
 @Embeddable
 class GebruikerSessieId {
-    int sessieID;
-    String gebruikerId;
+    int SessieID;
+    String GebruikerID;
 }

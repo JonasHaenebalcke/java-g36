@@ -29,7 +29,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 @SuppressWarnings("serial")
-//@Entity
+@Entity
 @Table(name = "Sessie")
 public class Sessie implements Serializable {
 
@@ -65,7 +65,7 @@ public class Sessie implements Serializable {
 	@Column(name = "Gastspreker")
 	private String gastspreker;
 	@ManyToOne
-	@JoinColumn(name = "SessieKalender")
+	@JoinColumn(name = "SessieKalenderID")
 	private SessieKalender sessieKalender;
 
 //	private boolean openVoorInschrijving;

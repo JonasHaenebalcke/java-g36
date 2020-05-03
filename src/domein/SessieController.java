@@ -31,7 +31,7 @@ public class SessieController {
 
 	public List<Sessie> geefSessies() {
 		if (sessieLijst == null) {
-//			sessieLijst = sessieRepo.findAll();
+			sessieLijst = sessieRepo.findAll();
 		}
 		return sessieLijst;
 	}
