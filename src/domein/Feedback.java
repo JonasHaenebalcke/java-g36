@@ -2,6 +2,7 @@ package domein;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 @SuppressWarnings("serial")
 @Entity
@@ -36,6 +43,17 @@ public class Feedback implements Serializable{
     @Column(name = "Score")
     public int score;
 
+
+	@Transient
+	private SimpleStringProperty feedbackAuteurProperty = new SimpleStringProperty();
+	@Transient
+	private SimpleStringProperty scoreProperty = new SimpleStringProperty();
+	@Transient
+	private SimpleStringProperty feedbackProperty = new SimpleStringProperty();
+	@Transient
+	private SimpleStringProperty datumFeedbackroperty = new SimpleStringProperty();
+	
+    
     public Feedback() { }
 
     public Feedback(Gebruiker auteur, Sessie sessie, String content, int score)
@@ -94,4 +112,40 @@ public class Feedback implements Serializable{
 		this.tekst = content;
 		setScore(score);
 	}    
+	
+	private void setFeedbackAuteurProperty(String auteur) {
+		feedbackAuteurProperty.set(auteur);
+	}
+
+	public StringProperty getFeedbackAuteurProperty() {
+		return feedbackAuteurProperty;
+	}
+
+	private void setScoreProperty(String score) {
+		scoreProperty.set(score);
+	}
+
+	public StringProperty getScoreProperty() {
+		return scoreProperty;
+	}
+
+	private void setFeedbackProperty(String feedback) {
+		feedbackProperty.set(feedback);
+	}
+
+	public StringProperty getFeedbackProperty() {
+		return feedbackProperty;
+	}
+	
+	private void setDatumFeedbackroperty(String datum) {
+		datumFeedbackroperty.set(datum);
+	}
+
+	public StringProperty getDatumFeedbackroperty() {
+		return datumFeedbackroperty;
+	}
+
+	public void setStringProperties() {
+		setDatumFeedbackroperty(getTimeWritten().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+	}
 }

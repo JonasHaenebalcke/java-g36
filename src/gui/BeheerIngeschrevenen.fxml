@@ -21,24 +21,24 @@
             <ComboBox fx:id="cbxStatusSessie" layoutX="438.0" layoutY="84.0" onAction="#geefSessiesGekozenStatus" prefHeight="26.0" prefWidth="117.0" promptText="Status sessies" />
          </children>
       </AnchorPane>
-		<AnchorPane layoutX="565.0" layoutY="1.0" prefHeight="714.0" prefWidth="758.0">
+		<AnchorPane layoutX="565.0" layoutY="1.0" prefHeight="714.0" prefWidth="788.0">
 			<children>
 				<TableView fx:id="tvIngeschrevenen" layoutX="115.0" layoutY="125.0" prefHeight="538.0" prefWidth="642.0">
 					<columns>
-                  <TableColumn fx:id="tcIngeschreven" prefWidth="91.2000732421875" text="Ingeschreven" />
-						<TableColumn fx:id="tcAanwezig" prefWidth="103.20001220703125" text="Aanwezig" />
-						<TableColumn fx:id="tcVoornaam" prefWidth="144.800048828125" text="Voornaam" />
-						<TableColumn fx:id="tcFamilienaam" prefWidth="155.20001220703125" text="Familienaam" />
-						<TableColumn fx:id="tcInschrijvingsdatum" prefWidth="142.4000244140625" text="inschrijvingsdatum" />
+                  <TableColumn fx:id="tcIngeschreven" prefWidth="87.20001220703125" resizable="false" text="Ingeschreven" />
+						<TableColumn fx:id="tcAanwezig" prefWidth="78.39996337890625" resizable="false" text="Aanwezig" />
+						<TableColumn fx:id="tcVoornaam" prefWidth="158.39996337890625" resizable="false" text="Voornaam" />
+						<TableColumn fx:id="tcFamilienaam" prefWidth="187.19989013671875" resizable="false" text="Familienaam" />
+						<TableColumn fx:id="tcInschrijvingsdatum" prefWidth="131.2000732421875" resizable="false" text="inschrijvingsdatum" />
 					</columns>
 				</TableView>
-				<Label layoutX="369.0" layoutY="29.0" prefHeight="27.0" prefWidth="135.0" text="Ingeschrevenen">
+				<Label fx:id="lbltitelTabelGebruikers" layoutX="369.0" layoutY="29.0" prefHeight="27.0" prefWidth="135.0" text="Ingeschrevenen">
 					<font>
 						<Font size="18.0" />
 					</font>
 				</Label>
-				<Button fx:id="btnVoegToe" layoutX="10.0" layoutY="206.0" mnemonicParsing="false" onAction="#voegIngeschrevenenToe" prefHeight="26.0" prefWidth="94.0" text="Schrijf in" />
-				<Button fx:id="btnVerwijder" layoutX="10.0" layoutY="279.0" mnemonicParsing="false" onAction="#zetGebruikerAanwezig" prefHeight="26.0" prefWidth="94.0" text="Zet aanwezig" />
+				<Button fx:id="btnSchrijfGebruikerIn" layoutX="10.0" layoutY="206.0" mnemonicParsing="false" onAction="#voegIngeschrevenenToe" prefHeight="26.0" prefWidth="94.0" text="Schrijf in" />
+				<Button fx:id="btnZetGebruikerAanwezig" layoutX="10.0" layoutY="279.0" mnemonicParsing="false" onAction="#zetGebruikerAanwezig" prefHeight="26.0" prefWidth="94.0" text="Zet aanwezig" />
 				<Button fx:id="btnZoekGebruiker" layoutX="528.0" layoutY="85.0" mnemonicParsing="false" onAction="#zoekGebruiker" text="Zoek" />
 				<Label fx:id="lblError" layoutX="279.0" layoutY="56.0" prefHeight="27.0" prefWidth="334.0" textFill="RED">
 					<font>
@@ -46,16 +46,16 @@
 					</font>
 				</Label>
 				<TextField fx:id="txtGebruiker" layoutX="303.0" layoutY="85.0" prefHeight="26.0" prefWidth="214.0" promptText="Gebruiker" />
-            <ComboBox fx:id="cbxStatusGebruiker" layoutX="607.0" layoutY="85.0" onAction="#geefGebruikersGekozenStatus" prefHeight="26.0" prefWidth="149.0" promptText="Status gebruikers" />
+            <ComboBox fx:id="cbxStatusGebruiker" layoutX="622.0" layoutY="85.0" onAction="#geefGebruikersGekozenStatus" prefHeight="26.0" prefWidth="135.0" promptText="Status gebruikers" />
             <Button fx:id="btnBeherenSessie" layoutX="10.0" layoutY="356.0" mnemonicParsing="false" onAction="#GaNaarBeherenSessie" text="Beheren sessie" />
 			</children>
 		</AnchorPane>
-      <TableView layoutX="38.0" layoutY="126.0" prefHeight="530.0" prefWidth="518.0">
+      <TableView layoutX="16.0" layoutY="126.0" prefHeight="530.0" prefWidth="540.0">
          <columns>
-            <TableColumn fx:id="colTitelSessie" prefWidth="183.19997787475586" resizable="false" text="Titel" />
-            <TableColumn fx:id="colStartSessie" minWidth="20.0" prefWidth="104.00001525878906" resizable="false" text="Start" />
-            <TableColumn fx:id="ColEindSessie" prefWidth="118.4000244140625" resizable="false" text="Eind" />
-            <TableColumn fx:id="colDuurSessie" prefWidth="112.800048828125" resizable="false" text="Duur" />
+            <TableColumn fx:id="colTitelSessie" prefWidth="245.5999813079834" resizable="false" text="Titel" />
+            <TableColumn fx:id="colStartSessie" minWidth="20.0" prefWidth="104.800048828125" resizable="false" text="Start" />
+            <TableColumn fx:id="ColEindSessie" prefWidth="97.5999755859375" resizable="false" text="Eind" />
+            <TableColumn fx:id="colDuurSessie" prefWidth="93.59994506835938" resizable="false" text="Duur" />
          </columns>
       </TableView>
       <TextField fx:id="txtSessie" layoutX="199.0" layoutY="85.0" promptText="Sessie" />
