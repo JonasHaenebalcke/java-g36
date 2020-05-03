@@ -13,11 +13,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "GebruikerSessie")
-public class GebruikerSessie implements Serializable{
-	
+public class GebruikerSessie implements Serializable {
+
 	@Column(name = "Aanwezig")
 	private boolean aanwezig;
 //	@Id
@@ -28,16 +31,19 @@ public class GebruikerSessie implements Serializable{
 //	private int sessieID;
 	@EmbeddedId
 	GebruikerSessieId id;
-	
+
 	@ManyToOne
-	@JoinColumn(name="SessieID")
+	@JoinColumn(name = "SessieID")
 	private Sessie sessie;
 	@ManyToOne
-	@JoinColumn(name="GebruikerID")
+	@JoinColumn(name = "GebruikerID")
 	private Gebruiker ingeschrevene;
-	
+
 	private LocalDateTime inschrijvingsDatum;
-	
+
+	@Transient
+	private SimpleStringProperty inschrijvingsDatumProperty = new SimpleStringProperty();
+
 //	private Feedback feedback;
 
 	protected GebruikerSessie() {
@@ -49,7 +55,7 @@ public class GebruikerSessie implements Serializable{
 		this.ingeschrevene = ingeschrevenen;
 		inschrijvingsDatum = LocalDateTime.now();
 	}
-	
+
 	public LocalDateTime getInschrijvingsDatum() {
 		return inschrijvingsDatum;
 	}
@@ -77,7 +83,7 @@ public class GebruikerSessie implements Serializable{
 	public void wijzigAanwezigheid(boolean aanwezig) {
 		this.aanwezig = aanwezig;
 	}
-	
+
 //	public void addFeedback(String content, int score) {
 //		feedback = new Feedback(content, score);
 //	}
@@ -89,10 +95,18 @@ public class GebruikerSessie implements Serializable{
 //	public void wijzigFeedback(String content, int score) {
 //		feedback.wijzigFeedback(content, score);
 //	}
+
+	private void setInschrijvingsDatumProperty(String inschrijvingsdatum) {
+		inschrijvingsDatumProperty.set(inschrijvingsdatum);
+	}
+
+	public StringProperty getInschrijvingsDatumProperty() {
+		return inschrijvingsDatumProperty;
+	}
 }
 
 @Embeddable
 class GebruikerSessieId {
-    int sessieID;
-    String gebruikerId;
+	int sessieID;
+	String gebruikerId;
 }

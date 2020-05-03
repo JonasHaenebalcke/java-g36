@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+
+import domein.Feedback;
 import domein.Gebruiker;
 import domein.Sessie;
 import domein.SessieController;
@@ -54,17 +56,19 @@ public class BeheerSessieSchermController extends AnchorPane {
 	@FXML
 	private Label lblFeedback;
 	@FXML
-	private TableView<?/* Feedback */> tvFeedback;
+	private TableView<Feedback > tvFeedback;
 	@FXML
-	private TableColumn<? /* Feedback */, ?> colAuteurFeedback;
+	private TableColumn< Feedback , String> colAuteurFeedback;
 	@FXML
-	private TableColumn<? /* Feedback */, Integer> colScoreFeedback;
+	private TableColumn< Feedback, String> colScoreFeedback;
 	@FXML
-	private TableColumn<? /* Feedback */, String> colFeedback;
+	private TableColumn<Feedback, String> colFeedback;
 	@FXML
-	private TableColumn<? /* Feedback */, LocalDate> colDatumFeedback;
+	private TableColumn<Feedback, String> colDatumFeedback;
 	@FXML
 	private Label lblGemiddeldeScore;
+	   @FXML
+	    private Label lblGemiddeldeScoreWergave;
 	 
 	@FXML
 	private Label lblSucces;
@@ -98,7 +102,7 @@ public class BeheerSessieSchermController extends AnchorPane {
 	private TextField txtSessie;
 
 	@FXML
-	private ComboBox<Gebruiker> cbxVerantwoordelijke;
+	private ComboBox<Gebruiker> cbxVerantwoordelijke; // <String>
 
 	@FXML
 	private Button btnBeherenIngeschrevenen;
@@ -157,9 +161,11 @@ public class BeheerSessieSchermController extends AnchorPane {
 		} catch (NullPointerException e) {
 			lblErrorSessies.setVisible(true);
 			lblErrorSessies.setText(e.getMessage());
+			System.out.println(e.getMessage());
 		} catch (Exception e) {
 			lblErrorSessies.setVisible(true);
 			lblErrorSessies.setText(e.toString());
+			System.out.println(e.getMessage());
 		}
 	}
 
@@ -189,12 +195,12 @@ public class BeheerSessieSchermController extends AnchorPane {
 				if (newV.getStatusSessie().name().equals(StatusSessie.open.toString())
 						|| newV.getStatusSessie().name().equals(StatusSessie.gesloten.toString())) {
 					
-//					tvFeedback.setItems();
-//					colAuteurFeedback.setCellValueFactory();
-//					colScoreFeedback.setCellValueFactory();
-//					colFeedback.setCellValueFactory(cel -> cel.getValue());
-//					colDatumFeedback.setCellValueFactory();
-//					lblGemiddeldeScore.setText();
+					tvFeedback.setItems(FXCollections.observableArrayList(newV.getFeedbackLijst()));
+					colAuteurFeedback.setCellValueFactory(cel ->cel.getValue().getFeedbackAuteurProperty());
+					colScoreFeedback.setCellValueFactory(cel -> cel.getValue().getScoreProperty());
+					colFeedback.setCellValueFactory(cel -> cel.getValue().getFeedbackProperty());
+					colDatumFeedback.setCellValueFactory(cel -> cel.getValue().getDatumFeedbackroperty());
+					lblGemiddeldeScoreWergave.setText(Integer.toString(newV.geefGemiddeldeScore()));
 				} else {
 					lblFeedback.setVisible(false);
 					tvFeedback.setVisible(false);
@@ -341,7 +347,7 @@ public class BeheerSessieSchermController extends AnchorPane {
 	void beherenHerinneringen(ActionEvent event) {
 		 Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
 		 sc.setHuidigeSessie(sessie);
-		 // .. nog code toevoegen
+		 // .. nog code toevoegen om naar anders scherm te verwijzen
     }
 	
 	private LocalDateTime zetOmNaarDateTime(LocalDate datum, String uur) {
