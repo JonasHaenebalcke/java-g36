@@ -131,19 +131,19 @@ public class SessieKalender {
 			throw new NullPointerException("De gegeven sessie komt niet voor in deze sessiekalender.");
 	}
 
-	public Collection<Sessie> geefSessiesMaand(int maand) {
+	public Collection<Sessie> geefSessiesMaand(Number maand) {
 		Collection<Sessie> sessies = new ArrayList<Sessie>();
 		if (sessieLijst.isEmpty() || sessieLijst == null)
 			throw new NullPointerException("Deze SessieKalender bevat nog geen sessies.");
 
 		for (Sessie sessie : sessieLijst) {
-			if (sessie.getStartDatum().getDayOfMonth() == maand)
+			if (sessie.getStartDatum().getDayOfMonth() ==(int) maand -1)
 				sessies.add(sessie);
 		}
 		if (sessies.isEmpty() || sessies == null)
 			throw new NullPointerException("Deze SessieKalender bevat nog geen sessies voor deze maand.");
 
-		return sessieLijst;
+		return sessies;
 	}
 
 	@Override

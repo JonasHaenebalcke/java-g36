@@ -149,8 +149,13 @@ public class SessieKalenderController {
 //		}
 //	}
 
-	public ObservableList<Sessie> geefSessiesMaand(int maand) {
+	public ObservableList<Sessie> geefSessiesMaand(Number maand) {
+		try {
+			
 		return FXCollections.observableArrayList(huidigeSessieKalender.geefSessiesMaand(maand));
+		} catch(Exception e) {
+			throw new IllegalArgumentException(e.getMessage());
+		}
 	}
 
 	public SessieKalender getHuidigeSessieKalender() {
