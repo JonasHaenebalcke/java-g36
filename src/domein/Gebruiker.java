@@ -57,7 +57,7 @@ public class Gebruiker implements Serializable {
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "TypeGebruiker")
 	private TypeGebruiker typeGebruiker;
-	
+
 	@Column(name = "PasswordHashJava")
 	private String passwordHashJava;
 
@@ -198,14 +198,14 @@ public class Gebruiker implements Serializable {
 		setRandomGebruikerID();
 		setPasswordHashJava(wachtwoord);
 	}
-	
-	public String getPasswordHashJava() {
-        return passwordHashJava;
-    }
 
-    public void setPasswordHashJava(String passwordHashJava) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        this.passwordHashJava = PasswordHasher.getPasswordHash(passwordHashJava);
-    }
+	public String getPasswordHashJava() {
+		return passwordHashJava;
+	}
+
+	public void setPasswordHashJava(String passwordHashJava) throws NoSuchAlgorithmException, InvalidKeySpecException {
+		this.passwordHashJava = PasswordHasher.getPasswordHash(passwordHashJava);
+	}
 
 	public Status getStatus() {
 		return status;
@@ -301,6 +301,8 @@ public class Gebruiker implements Serializable {
 			throw new NullPointerException("Gebruikersnaam mag niet leeg zijn!");
 		if (!gebruikersnaam.matches("[0-9]{6}[a-z]{2}"))
 			throw new IllegalArgumentException("Gebruikersnaam moet 6 cijfers gevolgd door 2 initialen");
+		if (this.gebruikersnaam != null)
+			throw new IllegalArgumentException("Gebruikersnaam kan niet worden gewijzigd!");
 		this.gebruikersnaam = gebruikersnaam;
 	}
 
@@ -324,14 +326,13 @@ public class Gebruiker implements Serializable {
 	 * @param gebruikersnaam
 	 * @param profielfoto
 	 */
-	public void wijzigGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam,
-			TypeGebruiker type, Status status, String profielfoto) {
+	public void wijzigGebruiker(String voornaam, String familienaam, String mailadres, TypeGebruiker type,
+			Status status, String profielfoto) {
 		setStatus(status);
 		setType(type);
 		setVoornaam(voornaam);
 		setFamilienaam(familienaam);
 		setMailadres(mailadres);
-		setGebruikersnaam(gebruikersnaam);
 		setProfielfoto(profielfoto);
 	}
 

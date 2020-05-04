@@ -56,37 +56,35 @@ public class GebruikerController {
 	 */
 	public void voegToeGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam,
 			TypeGebruiker type, Status status, String profielfoto, String wachtwoord) {
+
+		Gebruiker gebruiker;
 		try {
-			Gebruiker gebruiker = new Gebruiker(voornaam, familienaam, mailadres, gebruikersnaam, type, status,
-					profielfoto, wachtwoord);
+			gebruiker = new Gebruiker(voornaam, familienaam, mailadres, gebruikersnaam, type, status, profielfoto,
+					wachtwoord);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			throw new IllegalArgumentException("Er ging iets mis bij het maken van de gebruiker");
+		}
 //			gebruiker.setRandomGebruikerID();
 //			gebruiker.setPasswordHash(wachtwoord);
 
-			if (geefGebruikersList().stream().map(Gebruiker::getGebruikersnaam).collect(Collectors.toList())
-					.contains(gebruiker.getGebruikersnaam()))
-				throw new IllegalArgumentException("Deze gebruiker bestaat al!");
+		if (geefGebruikersList().stream().map(Gebruiker::getGebruikersnaam).collect(Collectors.toList())
+				.contains(gebruiker.getGebruikersnaam()))
+			throw new IllegalArgumentException("Deze gebruiker bestaat al!");
 
+		try {
 			gebruikerList.add(gebruiker);
 			gebruikerObservableList.add(gebruiker);
 			GenericDaoJpa.startTransaction();
 			gebruikerRepo.insert(gebruiker);
-//			for (Gebruiker g : gebruikerList) {
-//				g.fillPersistent();
-//			}
 			GenericDaoJpa.commitTransaction();
-//			for (Gebruiker g : gebruikerList) {
-//				g.fillTransient();
-//			}
 
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
+			throw new IllegalArgumentException("Er ging iets mis bij het opslaan van de nieuwe gebruiker");
 		}
 	}
 
-	/**
-	 * 
-	 * @param id
-	 */
 	public void verwijderGebruiker(int index) {
 		try {
 			Gebruiker gebruiker = gebruikerList.get(index);
@@ -95,24 +93,15 @@ public class GebruikerController {
 			gebruikerObservableList.remove(gebruiker);
 			GenericDaoJpa.startTransaction();
 			gebruikerRepo.delete(gebruiker);
-//			for (Gebruiker g : gebruikerList) {
-//				g.fillPersistent();
-//				
-//			}
+
 			GenericDaoJpa.commitTransaction();
-//			for (Gebruiker g : gebruikerList) {
-//				g.fillTransient();
-//			}
 
 		} catch (Exception e) {
-			System.err.println("Er ging iets fout bij het verwijderen van de gebruiker.");
+			System.err.println(e.getMessage());
+			throw new IllegalArgumentException("Er ging iets fout bij het verwijderen van de gebruiker.");
 		}
 	}
 
-	/**
-	 * 
-	 * 
-	 */
 	public Gebruiker geefIngelogdeVerantwoordelijke() {
 		return ingelogdeVerantwoordelijke;
 	}
@@ -127,17 +116,17 @@ public class GebruikerController {
 		for (Gebruiker gebruiker : gebruikerList) {
 			if (gebruiker.getGebruikersnaam().equals(gebruikersnaam)) {
 
-				GenericDaoJpa.startTransaction();
-//				  for (Gebruiker g : gebruikerList) {
-//						g.fillPersistent();
-//					}
-				gebruiker.wijzigGebruiker(voornaam, familienaam, mailadres, gebruikersnaam, type, status, profielfoto);
-				gebruikerRepo.update(gebruiker);
-				GenericDaoJpa.commitTransaction();
-
-//				  for (Gebruiker g : gebruikerList) {
-//						g.fillTransient();
-//					}
+				try {
+					GenericDaoJpa.startTransaction();
+					gebruiker.wijzigGebruiker(voornaam, familienaam, mailadres, type, status, profielfoto);
+					gebruikerRepo.update(gebruiker);
+					GenericDaoJpa.commitTransaction();
+					break;
+				} catch (Exception e) {
+					System.err.println(e.getMessage());
+					throw new IllegalArgumentException(
+							"Er ging iets fout bij het opslaan van de gewijzigde gebruiker.");
+				}
 			}
 		}
 	}
@@ -164,9 +153,10 @@ public class GebruikerController {
 			if (gebruikersnaam.equalsIgnoreCase(g.getGebruikersnaam())
 					|| gebruikersnaam.equalsIgnoreCase(g.getMailadres())) {
 				flagGebruikersnaam = true;
-				if(g.getType().equals(TypeGebruiker.Gebruiker))
-					throw new IllegalArgumentException("Gebruiker is geen (Hoofd)Verantwoordelijke en heeft geen toegang tot de applicatie.");
-				if(PasswordHasher.verifyPasswordHash(g.getPasswordHashJava(), wachtwoord)) {
+				if (g.getType().equals(TypeGebruiker.Gebruiker))
+					throw new IllegalArgumentException(
+							"Gebruiker is geen (Hoofd)Verantwoordelijke en heeft geen toegang tot de applicatie.");
+				if (PasswordHasher.verifyPasswordHash(g.getPasswordHashJava(), wachtwoord)) {
 					flagWachtwoord = true;
 					ingelogdeVerantwoordelijke = g;
 					break;

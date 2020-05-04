@@ -72,7 +72,7 @@ public class Sessie implements Serializable {
 
 	@Transient
 	private SimpleStringProperty titelProperty = new SimpleStringProperty();
-	
+
 	@Transient
 	private SimpleStringProperty startDatumSessieProperty = new SimpleStringProperty();
 	@Transient
@@ -119,9 +119,12 @@ public class Sessie implements Serializable {
 	}
 
 	public void wijzigFeedback(int feedbackID, String content, int score) {
+
 		for (Feedback feedback : feedbackLijst) {
-			if (feedback.getFeedbackID() == feedbackID)
+			if (feedback.getFeedbackID() == feedbackID) {
 				feedback.wijzigFeedback(content, score);
+				break;
+			}
 		}
 	}
 
@@ -216,6 +219,8 @@ public class Sessie implements Serializable {
 	}
 
 	private void setCapaciteit(int capaciteit) {
+		if(capaciteit < 0)
+			throw new IllegalArgumentException("Capaciteit kan geen negatief getal zijn.");
 		this.capaciteit = capaciteit;
 	}
 
@@ -272,7 +277,7 @@ public class Sessie implements Serializable {
 		this.gastspreker = gastspreker;
 		zetInschrijvingenOpen(open);
 		setStringProperties();
-		
+
 	}
 
 	public boolean isGebruikerIngeschreven(Gebruiker ingeschrevene) {
@@ -337,7 +342,7 @@ public class Sessie implements Serializable {
 				+ ", gebruikerSessieLijst=" + gebruikerSessieLijst + ", titel=" + titel + ", lokaal=" + lokaal
 				+ ", eindDatum=" + eindDatum + ", startDatum=" + startDatum + ", capaciteit=" + capaciteit
 				+ ", omschrijving=" + omschrijving + ", gastspreker=" + gastspreker + ", titelProperty=" + titelProperty
-				+  ", startDatumSessieProperty=" + startDatumSessieProperty
-				+ ", eindDatumSessieProperty=" + eindDatumSessieProperty + "]";
+				+ ", startDatumSessieProperty=" + startDatumSessieProperty + ", eindDatumSessieProperty="
+				+ eindDatumSessieProperty + "]";
 	}
 }

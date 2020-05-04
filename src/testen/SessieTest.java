@@ -24,7 +24,7 @@ public class SessieTest {
 	
 	public SessieTest() throws NoSuchAlgorithmException, InvalidKeySpecException {
 		gebruiker = new Gebruiker("Rein", "Daelman", "rein@gmail.com", "752460rd", TypeGebruiker.Hoofdverantwoordelijke, Status.Actief, null, "123");
-		sessie = new Sessie(gebruiker, "titel", "B1.012", LocalDateTime.now().plus(1, ChronoUnit.DAYS), LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS),
+		sessie = new Sessie(gebruiker, "titel", "B1.012", LocalDateTime.now().plus(1, ChronoUnit.DAYS).plusMinutes(5), LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS).plusMinutes(5),
 				20, "omschrijving", "gastspreker");
 	}
 	
@@ -33,8 +33,11 @@ public class SessieTest {
 		Assertions.assertEquals(gebruiker, sessie.getVerantwoordelijke());
 		Assertions.assertEquals("titel", sessie.getTitel());
 		Assertions.assertEquals("B1.012", sessie.getLokaal());
-		Assertions.assertEquals(LocalDate.now().plus(1, ChronoUnit.DAYS), sessie.getStartDatum());
-		Assertions.assertEquals(LocalDate.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS), sessie.getEindDatum());
+		Assertions.assertEquals(LocalDate.now().plus(1, ChronoUnit.DAYS), sessie.getStartDatum().toLocalDate());
+		Assertions.assertEquals(LocalDateTime.now().plus(1, ChronoUnit.DAYS).getHour(), sessie.getStartDatum().getHour());
+		Assertions.assertEquals(LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS).toLocalDate(), sessie.getEindDatum().toLocalDate());
+		Assertions.assertEquals(LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS).getHour(), sessie.getEindDatum().getHour());
+
 		Assertions.assertEquals(20, sessie.getCapaciteit());
 		Assertions.assertEquals("omschrijving", sessie.getOmschrijving());
 		Assertions.assertEquals("gastspreker", sessie.getGastspreker());
@@ -43,13 +46,15 @@ public class SessieTest {
 	
 	@Test
 	public void maakSessie_BeschrijvingNull_slaagt() {
-		sessie = new Sessie(gebruiker, "titel", "B1.012", LocalDateTime.now().plus(1, ChronoUnit.DAYS), LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS),
+		sessie = new Sessie(gebruiker, "titel", "B1.012", LocalDateTime.now().plus(1, ChronoUnit.DAYS).plusMinutes(5), LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS).plusMinutes(5),
 				20, null, "gastspreker");
 		Assertions.assertEquals(gebruiker, sessie.getVerantwoordelijke());
 		Assertions.assertEquals("titel", sessie.getTitel());
 		Assertions.assertEquals("B1.012", sessie.getLokaal());
-		Assertions.assertEquals(LocalDate.now().plus(1, ChronoUnit.DAYS), sessie.getStartDatum());
-		Assertions.assertEquals(LocalDate.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS), sessie.getEindDatum());
+		Assertions.assertEquals(LocalDate.now().plus(1, ChronoUnit.DAYS), sessie.getStartDatum().toLocalDate());
+		Assertions.assertEquals(LocalDateTime.now().plus(1, ChronoUnit.DAYS).getHour(), sessie.getStartDatum().getHour());
+		Assertions.assertEquals(LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS).toLocalDate(), sessie.getEindDatum().toLocalDate());
+		Assertions.assertEquals(LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS).getHour(), sessie.getEindDatum().getHour());
 		Assertions.assertEquals(20, sessie.getCapaciteit());
 		Assertions.assertEquals(null, sessie.getOmschrijving());
 		Assertions.assertEquals("gastspreker", sessie.getGastspreker());
@@ -58,13 +63,15 @@ public class SessieTest {
 	
 	@Test
 	public void maakSessie_gastsprekerNull_slaagt() {
-		sessie = new Sessie(gebruiker, "titel", "B1.012", LocalDateTime.now().plus(1, ChronoUnit.DAYS), LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS),
+		sessie = new Sessie(gebruiker, "titel", "B1.012", LocalDateTime.now().plus(1, ChronoUnit.DAYS).plusMinutes(5), LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS).plusMinutes(5),
 				20, "omschrijving", null);
 		Assertions.assertEquals(gebruiker, sessie.getVerantwoordelijke());
 		Assertions.assertEquals("titel", sessie.getTitel());
 		Assertions.assertEquals("B1.012", sessie.getLokaal());
-		Assertions.assertEquals(LocalDate.now().plus(1, ChronoUnit.DAYS), sessie.getStartDatum());
-		Assertions.assertEquals(LocalDate.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS), sessie.getEindDatum());
+		Assertions.assertEquals(LocalDate.now().plus(1, ChronoUnit.DAYS), sessie.getStartDatum().toLocalDate());
+		Assertions.assertEquals(LocalDateTime.now().plus(1, ChronoUnit.DAYS).getHour(), sessie.getStartDatum().getHour());
+		Assertions.assertEquals(LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS).toLocalDate(), sessie.getEindDatum().toLocalDate());
+		Assertions.assertEquals(LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS).getHour(), sessie.getEindDatum().getHour());
 		Assertions.assertEquals(20, sessie.getCapaciteit());
 		Assertions.assertEquals("omschrijving", sessie.getOmschrijving());
 		Assertions.assertEquals(null, sessie.getGastspreker());
@@ -83,7 +90,7 @@ public class SessieTest {
 	@Test
 	public void maakSessie_EindDatumNetNaStartDatum_faalt() {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			sessie = new Sessie(gebruiker, "titel", "B1.012", LocalDateTime.now().plus(3, ChronoUnit.DAYS), LocalDateTime.now().plus(3, ChronoUnit.DAYS).plus(10, ChronoUnit.MINUTES),
+			sessie = new Sessie(gebruiker, "titel", "B1.012", LocalDateTime.now().plusDays(3), LocalDateTime.now().plusDays(3).plusMinutes(10),
 					20, "omschrijving", "gastspreker");
 		});
 
@@ -92,14 +99,14 @@ public class SessieTest {
 	
 	@Test
 	public void wijzigSessie_niets_slaagt() {
-		sessie.wijzigSessie("titel", "B1.012", LocalDateTime.now().plus(1, ChronoUnit.DAYS), LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS),
+		sessie.wijzigSessie("titel", "B1.012", LocalDateTime.now().plus(1, ChronoUnit.DAYS).plusMinutes(5), LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS).plusMinutes(5),
 				20, "omschrijving", "gastspreker", false);
 		
 		Assertions.assertEquals(gebruiker, sessie.getVerantwoordelijke());
 		Assertions.assertEquals("titel", sessie.getTitel());
 		Assertions.assertEquals("B1.012", sessie.getLokaal());
-		Assertions.assertEquals(LocalDate.now(), sessie.getStartDatum());
-		Assertions.assertEquals(LocalDate.now().plusDays(1), sessie.getEindDatum());
+		Assertions.assertEquals(LocalDate.now().plusDays(1), sessie.getStartDatum().toLocalDate());
+		Assertions.assertEquals(LocalDateTime.now().plusDays(1).plusHours(2).toLocalDate(), sessie.getEindDatum().toLocalDate());
 		Assertions.assertEquals(20, sessie.getCapaciteit());
 		Assertions.assertEquals("omschrijving", sessie.getOmschrijving());
 		Assertions.assertEquals("gastspreker", sessie.getGastspreker());
