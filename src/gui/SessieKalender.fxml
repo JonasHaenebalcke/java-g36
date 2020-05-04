@@ -4,7 +4,6 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -17,8 +16,7 @@
             <Font size="15.0" />
          </font>
       </Label>
-      <ListView fx:id="lvSessies" layoutX="500.0" layoutY="154.0" prefHeight="350.0" prefWidth="700.0" />
-      <Button fx:id="btnBeheerSessie" layoutX="790.0" layoutY="537.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="150.0" text="Beheer Sessie" />
+      <Button fx:id="btnBeheerSessie" layoutX="790.0" layoutY="537.0" mnemonicParsing="false" onAction="#beheerSessie" prefHeight="35.0" prefWidth="150.0" text="Beheer Sessie" />
       <Button fx:id="btnRechts" layoutX="935.0" layoutY="72.0" mnemonicParsing="false" onAction="#volgendeSessieKalender" text="&gt;" />
       <Button fx:id="btnLinks" layoutX="760.0" layoutY="72.0" mnemonicParsing="false" onAction="#vorigeSessieKalender" text="&lt;" />
       <Label fx:id="lblEindDatum" layoutX="873.0" layoutY="103.0" text="EindDatum" />
@@ -57,6 +55,14 @@
             <TableColumn fx:id="colStartDatum" prefWidth="174.39990234375" text="Start Datum" />
             <TableColumn fx:id="colEindDatum" prefWidth="176.0001220703125" text="Eind Datum" />
          </columns>
+      </TableView>
+      <TableView fx:id="tblSessies" layoutX="500.0" layoutY="154.0" prefHeight="350.0" prefWidth="675.0">
+        <columns>
+          <TableColumn fx:id="colTitel" prefWidth="150.0" text="Titel" />
+          <TableColumn fx:id="colDuur" prefWidth="175.0" text="Duur" />
+            <TableColumn fx:id="colStartDatumSessie" prefWidth="175.0" text="Start Datum" />
+            <TableColumn fx:id="colEindDatumSessie" prefWidth="175.0" text="Eind Datum" />
+        </columns>
       </TableView>
    </children>
 </fx:root>
