@@ -39,8 +39,6 @@ import javafx.scene.control.DatePicker;
 
 public class SessieKalenderSchermController extends AnchorPane {
 	@FXML
-	private ListView<Sessie> lvSessies;// DataType String?
-	@FXML
 	private Label lblAcademieJaar;
 	@FXML
 	private ChoiceBox<Maand> cbMaand;
@@ -85,9 +83,22 @@ public class SessieKalenderSchermController extends AnchorPane {
 	@FXML
 	private TableColumn<SessieKalender,String> colEindDatum;
 	
+	@FXML
+	private TableView<Sessie> tblSessies;// DataType String?
+	@FXML
+	private TableColumn<Sessie,String> colTitel;
+	@FXML
+	private TableColumn<Sessie,String> colDuur;
+	@FXML
+	private TableColumn<Sessie,String> colStartDatumSessie;
+	@FXML
+	private TableColumn<Sessie,String> colEindDatumSessie;
+	
+	
 
 	private SessieKalender sk;
 	private SessieKalenderController dc;
+	private SessieController sc;
 
 	public SessieKalenderSchermController() {
 		this.dc = new SessieKalenderController();
@@ -96,8 +107,9 @@ public class SessieKalenderSchermController extends AnchorPane {
 //		initializeSessieKalender();
 	}
 
-	public SessieKalenderSchermController(SessieKalenderController dc) {
+	public SessieKalenderSchermController(SessieKalenderController dc, SessieController sc) {
 		this.dc = dc;
+		this.sc = sc;
 		sk = dc.getHuidigeSessieKalender();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("SessieKalender.fxml"));
 		loader.setRoot(this);
@@ -112,7 +124,8 @@ public class SessieKalenderSchermController extends AnchorPane {
 		inputStartDatum.setEditable(false);
 		inputEindDatum.setEditable(false);
 		initialize();
-		initializeSessieKalender();
+		initializeSessieKalenderTable();
+		initalizeSessieTable(LocalDate.now().getMonthValue());
 		addListenerToTable();
 	}
 	
@@ -155,7 +168,7 @@ public class SessieKalenderSchermController extends AnchorPane {
 			lblEindJaar.setText("" + sk.getEindDatum().getYear());
 //			lblStartDatum = new Label(sk.getStartDate().toString());
 //			lblEindDatum = new Label(sk.getEindDate().toString());
-			lvSessies.setItems(dc.geefSessiesMaand(LocalDate.now().getMonthValue()));
+//			lvSessies.setItems(dc.geefSessiesMaand(LocalDate.now().getMonthValue()));
 			
 			lblSucces.setVisible(false);
 			lblErrorSessies.setVisible(false);
@@ -171,7 +184,7 @@ public class SessieKalenderSchermController extends AnchorPane {
 		}
 	}
 
-	private void initializeSessieKalender() {
+	private void initializeSessieKalenderTable() {
 		try {
 			lblSucces.setVisible(false);
 			lblErrorSessieKalender.setVisible(false);
@@ -189,7 +202,20 @@ public class SessieKalenderSchermController extends AnchorPane {
 		} catch (Exception e) {
 			lblErrorSessieKalender.setVisible(true);
 			lblErrorSessieKalender.setText(e.getMessage());
+
 		}
+	}
+	
+	private void initalizeSessieTable(int maand) {
+		sc.geefSessies().forEach(s -> s.setStringProperties());
+		System.out.println(dc.geefSessiesMaand(maand));
+		tblSessies.setItems(dc.geefSessiesMaand(maand));
+		
+		colTitel.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
+//		colDuur.setCellValueFactory(cel -> cel.getValue().getDuurSessieProperty());
+		colStartDatumSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
+		colEindDatumSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
+		
 	}
 
 	private void addListenerToTable() {
@@ -210,7 +236,7 @@ public class SessieKalenderSchermController extends AnchorPane {
 	public void voegSessieKalenderToe(ActionEvent event) {
 		try {
 			tblSessieKalenders.getSelectionModel().clearSelection();
-			initializeSessieKalender();
+			initializeSessieKalenderTable();
 			if (inputStartDatum.getValue() == null || inputEindDatum.getValue() == null)
 				throw new IllegalArgumentException("Datum is verplicht in te vullen!");
 
@@ -218,7 +244,7 @@ public class SessieKalenderSchermController extends AnchorPane {
 
 			dc.voegToeSessieKalender(inputStartDatum.getValue(), inputEindDatum.getValue());
 //			sc.initialize();
-			initializeSessieKalender();
+			initializeSessieKalenderTable();
 //			Stage stage = (Stage) this.getScene().getWindow();
 //			stage.close();
 			inputStartDatum.setValue(null);
@@ -238,14 +264,14 @@ public class SessieKalenderSchermController extends AnchorPane {
 			int skId = tblSessieKalenders.getSelectionModel().getSelectedItem().getSessieKalenderID();
 			tblSessieKalenders.getSelectionModel().clearSelection();
 
-			initializeSessieKalender();
+			initializeSessieKalenderTable();
 //			SessieKalender sessieKalender = lvSessieKalender.getSelectionModel().getSelectedItem();
 			dc.wijzigSessieKalender(/* sessieKalender.getSessieKalenderID() */ skId, inputStartDatum.getValue(),
 					inputEindDatum.getValue());
 			
 			inputStartDatum.setValue(null);
 			inputEindDatum.setValue(null);
-			initializeSessieKalender();
+			initializeSessieKalenderTable();
 			lblSucces.setVisible(true);
 			lblSucces.setText("Sessie Kalender werd succesvol aangepast!");
 		} catch (Exception e) {
@@ -295,6 +321,11 @@ public class SessieKalenderSchermController extends AnchorPane {
 			lblErrorSessies.setText(e.getMessage());
 			System.err.println(e.getMessage());
 		}
+	}
+	
+	@FXML
+	public void beheerSessie(ActionEvent event) {
+		System.out.println("beheer sessie");
 	}
 
 //	@FXML
