@@ -50,7 +50,7 @@
             <Button fx:id="btnBeherenSessie" layoutX="10.0" layoutY="356.0" mnemonicParsing="false" onAction="#GaNaarBeherenSessie" text="Beheren sessie" />
 			</children>
 		</AnchorPane>
-      <TableView layoutX="16.0" layoutY="126.0" prefHeight="530.0" prefWidth="540.0">
+      <TableView fx:id="tvSessies" layoutX="16.0" layoutY="126.0" prefHeight="530.0" prefWidth="540.0">
          <columns>
             <TableColumn fx:id="colTitelSessie" prefWidth="245.5999813079834" resizable="false" text="Titel" />
             <TableColumn fx:id="colStartSessie" minWidth="20.0" prefWidth="140.79998779296875" resizable="false" text="Start" />

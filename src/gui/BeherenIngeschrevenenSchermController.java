@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import org.mockito.exceptions.verification.NeverWantedButInvoked;
@@ -43,9 +44,7 @@ public class BeherenIngeschrevenenSchermController extends AnchorPane {
 	private TableColumn<Sessie, String> colStartSessie;
 	@FXML
 	private TableColumn<Sessie, String> ColEindSessie;
-	/*@FXML
-	private TableColumn<Sessie, String> colDuurSessie;
-*/
+	
 	@FXML
 	private ComboBox<StatusSessie> cbxStatusSessie;
 
@@ -111,12 +110,11 @@ public class BeherenIngeschrevenenSchermController extends AnchorPane {
 	private void initialize() {
 		cbxStatusSessie.setItems(FXCollections.observableArrayList(StatusSessie.values()));
 		try {
-			tvSessies.setItems(sc.geefSessiesObservable());
+			tvSessies.setItems(sc.geefSessiesObservable().sorted(Comparator.comparing(Sessie::getStartDatum)));
 			colTitelSessie.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
 			colStartSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
 			ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
-		//	colDuurSessie.setCellValueFactory(cel -> cel.getValue().getDuurSessieProperty());
-
+	
 			cbxStatusGebruiker.setItems(FXCollections.observableArrayList());
 			
 			tabelwaardeGebruikersInvullen();
@@ -171,7 +169,7 @@ public class BeherenIngeschrevenenSchermController extends AnchorPane {
 
 	@FXML
 	void geefGebruikersGekozenStatus(ActionEvent event) {
-		tvIngeschrevenen.setItems(sc.geefGebruikerSessiesObservable());
+		tvIngeschrevenen.setItems(sc.geefGebruikerSessiesObservable().sorted());
 		lbltitelTabelGebruikers.setText(""); // hang af van wat gekozen
 	}
 
@@ -181,7 +179,9 @@ public class BeherenIngeschrevenenSchermController extends AnchorPane {
 			System.out.print(cbxStatusSessie.getValue().name() + " ");
 			if (cbxStatusSessie.getValue().name().equals(StatusSessie.open.toString())	|| cbxStatusSessie.getValue().name().equals(StatusSessie.gesloten.toString()))
 			{
-				tvSessies.setItems(sc.geefSessiesObservable());
+				tvSessies.setItems(sc.geefSessiesObservable());// nog aanpassen
+				
+				initialize();
 			}
 		} catch (NullPointerException e) {
 			lblError.setText(e.getMessage());
@@ -222,7 +222,7 @@ public class BeherenIngeschrevenenSchermController extends AnchorPane {
 	
 		String gebruikersnaam = txtGebruiker.getText();
 		
-    	if(gebruikersnaam.matches(".*@+.*\\.+.*")) {
+    /*	if(gebruikersnaam.matches(".*@+.*\\.+.*")) {
     		tvIngeschrevenen.getItems().stream()
             .filter(gebruiker -> gebruiker.getIngeschrevene().getMailadres() == gebruikersnaam)
             .findAny()
@@ -239,21 +239,21 @@ public class BeherenIngeschrevenenSchermController extends AnchorPane {
                 tvIngeschrevenen.getSelectionModel().select(item);
                 tvIngeschrevenen.scrollTo(item);
             });
-    	}
+    	}*/
 	}
 	
 	@FXML
     void zoekSessie(ActionEvent event) {
 		String sessieTitel = txtSessie.getText();
 		
-		tvSessies.getItems().stream()
+		/*tvSessies.getItems().stream()
 		.filter(sessie -> sessie.getTitel()== sessieTitel)
 		.findAny()
 		.ifPresent(item -> 
 		{
 			tvSessies.getSelectionModel().select(item);
 			tvSessies.scrollTo(item);
-		});
+		});*/
     }
 
 }

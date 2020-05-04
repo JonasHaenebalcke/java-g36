@@ -3,8 +3,10 @@ package gui;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -149,8 +151,9 @@ public class BeheerSessieSchermController extends AnchorPane {
 
 	private void initialize() {
 		cbxStatusSessie.setItems(FXCollections.observableArrayList(StatusSessie.values()));
+		//cbxVerantwoordelijke.setItems(FXCollections.observableArrayList()); combobox vullen met alle verantwoordelijken
 		try {
-			tblSessies.setItems(sc.geefSessiesObservable());
+			tblSessies.setItems(sc.geefSessiesObservable().sorted(Comparator.comparing(Sessie::getStartDatum)));
 			colTitelSessie.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
 			colStartSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
 			ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
@@ -186,7 +189,11 @@ public class BeheerSessieSchermController extends AnchorPane {
 				txtLokaal.setText(newV.getLokaal());
 				txtOmschrvijving.setText(newV.getOmschrijving());
 				checkboxOpenVrInSchrijvingen.setSelected(newV.isInschrijvingenOpen());
-				
+				dpEinddatum.setValue(newV.getEindDatum().toLocalDate());
+				dpStartdatum.setValue(newV.getStartDatum().toLocalDate());
+				txtEinduur.setText(newV.getEindDatum().format(DateTimeFormatter.ofPattern( "HH:mm"))); 
+				txtStartuur.setText(newV.getStartDatum().format(DateTimeFormatter.ofPattern( "HH:mm")));
+						
 				cbxVerantwoordelijke.setDisable(true);
 				btnVoegToe.setDisable(true);
 				
@@ -198,7 +205,7 @@ public class BeheerSessieSchermController extends AnchorPane {
 				if (newV.getStatusSessie().name().equals(StatusSessie.open.toString())
 						|| newV.getStatusSessie().name().equals(StatusSessie.gesloten.toString())) {
 					
-					tvFeedback.setItems(FXCollections.observableArrayList(newV.getFeedbackLijst()));
+					tvFeedback.setItems(FXCollections.observableArrayList(newV.getFeedbackLijst()).sorted(Comparator.comparing(Feedback::getTimeWritten)));
 					colAuteurFeedback.setCellValueFactory(cel ->cel.getValue().getFeedbackAuteurProperty());
 					colScoreFeedback.setCellValueFactory(cel -> cel.getValue().getScoreProperty());
 					colFeedback.setCellValueFactory(cel -> cel.getValue().getFeedbackProperty());
@@ -219,7 +226,7 @@ public class BeheerSessieSchermController extends AnchorPane {
 	void geefSessiesGekozenStatus(ActionEvent event) {
 		try {
 			System.out.println(cbxStatusSessie.getValue().name() + " ");
-				tblSessies.setItems(sc.geefSessiesObservable()); 
+				tblSessies.setItems(sc.geefSessiesObservable()); // nog aanpassen 
 			if (cbxStatusSessie.getValue().name().equals(StatusSessie.open.toString()) || cbxStatusSessie.getValue().name().equals(StatusSessie.gesloten.toString())) 
 			{
 				lblFeedback.setVisible(true);
@@ -246,7 +253,7 @@ public class BeheerSessieSchermController extends AnchorPane {
 			if (!txtTitel.getText().isBlank() && !txtLokaal.getText().isBlank() && (dpStartdatum.getValue() != null)
 					&& (dpEinddatum.getValue() != null) && !txtStartuur.getText().isBlank()
 					&& !txtEinduur.getText().isBlank() && !txtCapaciteit.getText().isBlank()) {
-				if (!txtCapaciteit.getText().matches("[0-1000]")) {
+				if (!txtCapaciteit.getText().matches("[0-100000]")) {
 					//if(txtStartuur.getText().matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$") && txtEinduur.getText().matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$")) {
 						
 						Boolean isOpenVrInschrijvingen = checkboxOpenVrInSchrijvingen.isSelected();
@@ -370,6 +377,8 @@ public class BeheerSessieSchermController extends AnchorPane {
     void voegSessieToeButton(ActionEvent event) {
     	Stream.of(txtTitel, txtStartuur, txtEinduur, txtCapaciteit, txtLokaal, txtOmschrvijving, txtGastspreker)
     	.forEach(f -> f.clear());
+    	btnBeherenHerringeringen.setDisable(true);
+    	btnBeherenIngeschrevenen.setDisable(true);
     	cbxVerantwoordelijke.setDisable(false);
     	checkboxOpenVrInSchrijvingen.setSelected(false);
     	btnVoegToe.setDisable(false);
@@ -384,6 +393,7 @@ public class BeheerSessieSchermController extends AnchorPane {
         LocalDateTime res = LocalDateTime.parse(datum.toString() + uur, DateTimeFormatter.ofPattern("yyyy-MM-ddHH:mm"));
         return res;
     }
+	
 
 	// regex voor start-en einduur ^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$
 }
