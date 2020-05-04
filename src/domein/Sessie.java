@@ -72,8 +72,7 @@ public class Sessie implements Serializable {
 
 	@Transient
 	private SimpleStringProperty titelProperty = new SimpleStringProperty();
-	@Transient
-	private SimpleStringProperty duurProperty = new SimpleStringProperty();
+	
 	@Transient
 	private SimpleStringProperty startDatumSessieProperty = new SimpleStringProperty();
 	@Transient
@@ -226,14 +225,6 @@ public class Sessie implements Serializable {
 		this.verantwoordelijke = verantwoordelijke;
 	}
 
-	private void setDuurSessieProperty(String duur) {
-		duurProperty.set(duur);
-	}
-
-	public StringProperty getDuurSessieProperty() {
-		return duurProperty;
-	}
-
 	private void setTitelSessieProperty(String titel) {
 		titelProperty.set(titel);
 	}
@@ -261,7 +252,7 @@ public class Sessie implements Serializable {
 	public void setStringProperties() {
 		setStartDatumSessieProperty(getStartDatum().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 		setEindDatumSessieProperty(getEindDatum().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-		// setDuurSessieProperty();
+		setTitelSessieProperty(getTitel());
 	}
 
 	public void wijzigSessie(String titel, String lokaal, LocalDateTime startDatum, LocalDateTime eindDatum,
@@ -280,6 +271,8 @@ public class Sessie implements Serializable {
 		this.omschrijving = omschrijving;
 		this.gastspreker = gastspreker;
 		zetInschrijvingenOpen(open);
+		setStringProperties();
+		
 	}
 
 	public boolean isGebruikerIngeschreven(Gebruiker ingeschrevene) {
@@ -344,7 +337,7 @@ public class Sessie implements Serializable {
 				+ ", gebruikerSessieLijst=" + gebruikerSessieLijst + ", titel=" + titel + ", lokaal=" + lokaal
 				+ ", eindDatum=" + eindDatum + ", startDatum=" + startDatum + ", capaciteit=" + capaciteit
 				+ ", omschrijving=" + omschrijving + ", gastspreker=" + gastspreker + ", titelProperty=" + titelProperty
-				+ ", duurProperty=" + duurProperty + ", startDatumSessieProperty=" + startDatumSessieProperty
+				+  ", startDatumSessieProperty=" + startDatumSessieProperty
 				+ ", eindDatumSessieProperty=" + eindDatumSessieProperty + "]";
 	}
 }

@@ -32,6 +32,7 @@ public class SessieController {
 	public List<Sessie> geefSessies() {
 		if (sessieLijst == null) {
 			sessieLijst = sessieRepo.findAll();
+			sessieLijst.forEach(sessie -> sessie.setStringProperties());
 		}
 		return sessieLijst;
 	}
@@ -39,7 +40,9 @@ public class SessieController {
 	public ObservableList<Sessie> geefSessiesObservable() {
 		if (gebruikerObservableList == null) {
 			gebruikerObservableList = FXCollections.observableArrayList(geefSessies());
+			
 		}
+		System.out.println(gebruikerObservableList);
 		return gebruikerObservableList;
 	}
 	 

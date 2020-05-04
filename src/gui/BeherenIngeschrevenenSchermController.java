@@ -43,9 +43,9 @@ public class BeherenIngeschrevenenSchermController extends AnchorPane {
 	private TableColumn<Sessie, String> colStartSessie;
 	@FXML
 	private TableColumn<Sessie, String> ColEindSessie;
-	@FXML
+	/*@FXML
 	private TableColumn<Sessie, String> colDuurSessie;
-
+*/
 	@FXML
 	private ComboBox<StatusSessie> cbxStatusSessie;
 
@@ -115,7 +115,7 @@ public class BeherenIngeschrevenenSchermController extends AnchorPane {
 			colTitelSessie.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
 			colStartSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
 			ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
-			colDuurSessie.setCellValueFactory(cel -> cel.getValue().getDuurSessieProperty());
+		//	colDuurSessie.setCellValueFactory(cel -> cel.getValue().getDuurSessieProperty());
 
 			cbxStatusGebruiker.setItems(FXCollections.observableArrayList());
 			

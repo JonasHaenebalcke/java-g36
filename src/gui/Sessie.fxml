@@ -21,18 +21,18 @@
 						<Font size="18.0" />
 					</font>
 				</Label>
-            <ComboBox fx:id="cbxStatusSessie" layoutX="332.0" layoutY="75.0" onAction="#geefSessiesGekozenStatus" prefHeight="26.0" prefWidth="117.0" promptText="Status sessies" />
-            <TableView layoutX="15.0" layoutY="116.0" prefHeight="530.0" prefWidth="435.0">
+            <ComboBox fx:id="cbxStatusSessie" layoutX="312.0" layoutY="75.0" onAction="#geefSessiesGekozenStatus" prefHeight="26.0" prefWidth="138.0" promptText="Status sessies" />
+            <TableView fx:id="tblSessies" layoutX="15.0" layoutY="116.0" prefHeight="530.0" prefWidth="435.0">
               <columns>
                 <TableColumn fx:id="colTitelSessie" prefWidth="195.99997520446777" resizable="false" text="Titel" />
-                <TableColumn fx:id="colStartSessie" minWidth="20.0" prefWidth="80.80001831054688" resizable="false" text="Start" />
-                  <TableColumn fx:id="ColEindSessie" prefWidth="87.20001220703125" resizable="false" text="Eind" />
-                  <TableColumn fx:id="colDuurSessie" prefWidth="71.20001220703125" resizable="false" text="Duur" />
+                <TableColumn fx:id="colStartSessie" minWidth="20.0" prefWidth="114.4000244140625" resizable="false" text="Start" />
+                  <TableColumn fx:id="ColEindSessie" prefWidth="124.0" resizable="false" text="Eind" />
               </columns>
             </TableView>
             <TextField fx:id="txtSessie" layoutX="16.0" layoutY="76.0" prefHeight="26.0" prefWidth="161.0" promptText="sessie" />
             <Button fx:id="btnZoek" layoutX="188.0" layoutY="76.0" mnemonicParsing="false" onAction="#zoekSessie" text="Zoek" />
             <Label fx:id="lblErrorSessies" layoutX="38.0" layoutY="653.0" prefHeight="26.0" prefWidth="401.0" textFill="RED" />
+            <Button fx:id="btnVoegSessieToe" layoutX="157.0" layoutY="679.0" mnemonicParsing="false" onAction="#voegSessieToeButton" text="Nieuwe sessie toevoegen" />
 			</children>
 		</AnchorPane>
 		<AnchorPane layoutX="442.0" prefHeight="714.0" prefWidth="894.0">

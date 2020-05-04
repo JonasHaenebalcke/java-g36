@@ -53,9 +53,8 @@
       <TableView layoutX="16.0" layoutY="126.0" prefHeight="530.0" prefWidth="540.0">
          <columns>
             <TableColumn fx:id="colTitelSessie" prefWidth="245.5999813079834" resizable="false" text="Titel" />
-            <TableColumn fx:id="colStartSessie" minWidth="20.0" prefWidth="104.800048828125" resizable="false" text="Start" />
-            <TableColumn fx:id="ColEindSessie" prefWidth="97.5999755859375" resizable="false" text="Eind" />
-            <TableColumn fx:id="colDuurSessie" prefWidth="93.59994506835938" resizable="false" text="Duur" />
+            <TableColumn fx:id="colStartSessie" minWidth="20.0" prefWidth="140.79998779296875" resizable="false" text="Start" />
+            <TableColumn fx:id="ColEindSessie" prefWidth="153.60006713867188" resizable="false" text="Eind" />
          </columns>
       </TableView>
       <TextField fx:id="txtSessie" layoutX="199.0" layoutY="85.0" promptText="Sessie" />
