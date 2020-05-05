@@ -82,4 +82,10 @@ public class MenuController extends BorderPane{
         	BeherenIngeschrevenenSchermController bIngeschrevenenScherm = new BeherenIngeschrevenenSchermController(this.sc);
         	scherm.getChildren().setAll(bIngeschrevenenScherm);
 	    }
+        
+        @FXML
+        void statistieken(ActionEvent event) throws IOException{
+        	StatistiekenSchermController statiestiekenScherm = new StatistiekenSchermController(this.dc, this.sc);
+        	scherm.getChildren().setAll(statiestiekenScherm);
+        }
     }
