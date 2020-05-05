@@ -112,9 +112,9 @@ public class StatistiekenSchermController extends AnchorPane{
 	    	tvSessies.setVisible(true);
 	    	tvSessies.setItems(sc.geefSessiesObservable());
 	    	colVerantwoordelijke.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getVerantwoordelijke().getFamilienaam() + " " + cel.getValue().getVerantwoordelijke().getVoornaam()));
-	    	colTitel.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getTitel()));
-	    	colStart.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getStartDatum().toString()));
-	    	colEind.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getEindDatum().toString()));
+	    	colTitel.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
+	    	colStart.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
+	    	colEind.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
 	    	colAantalDeelnemers.setCellValueFactory(cel -> new ReadOnlyStringWrapper("Moet nog veranderd worden"));
 	    }
 	    
