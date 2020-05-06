@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
@@ -73,7 +72,7 @@ public class BeheerSessieSchermController extends AnchorPane {
 	private TableColumn<Feedback, String> colDatumFeedback;
 	@FXML
 	private Label lblGemiddeldeScore;
-
+	 
 	@FXML
 	private Label lblGemiddeldeScoreWergave;
 
@@ -84,8 +83,8 @@ public class BeheerSessieSchermController extends AnchorPane {
 	@FXML
 	private TextField txtTitel;
 
-	@FXML
-	private Label lblVerantwoordelijke;
+    @FXML
+    private Label lblVerantwoordelijke;
 	@FXML
 	private DatePicker dpEinddatum;
 	@FXML
@@ -179,12 +178,14 @@ public class BeheerSessieSchermController extends AnchorPane {
 	}
 
 	void textWaardeSessieInvullen() {
-
+		
+		
 		tblSessies.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Sessie>() {
-
+			
 			@Override
 			public void changed(ObservableValue<? extends Sessie> sessieObs, Sessie oldV, Sessie newV) {
-				// sc.setHuidigeSessie(tblSessies.getSelectionModel().getSelectedItem());
+				//sc.setHuidigeSessie(tblSessies.getSelectionModel().getSelectedItem());
+				
 				if (newV == null)
 					return;
 				btnPasAan.setDisable(false);
@@ -203,6 +204,7 @@ public class BeheerSessieSchermController extends AnchorPane {
 				txtEinduur.setText(newV.getEindDatum().format(DateTimeFormatter.ofPattern("HH:mm")));
 				txtStartuur.setText(newV.getStartDatum().format(DateTimeFormatter.ofPattern("HH:mm")));
 
+				
 				btnVoegToe.setDisable(true);
 
 				// tvMedia.setItems();
@@ -229,9 +231,9 @@ public class BeheerSessieSchermController extends AnchorPane {
 			}
 		});
 	}
-
+	
 	private void textWaardeSessieInvullen(Sessie sessie) {
-
+		
 	}
 
 	@FXML
@@ -261,7 +263,7 @@ public class BeheerSessieSchermController extends AnchorPane {
 
 	@FXML
 	void pasSessieAan(ActionEvent event) {
-
+		
 		try {
 			if (!txtTitel.getText().isBlank() && !txtLokaal.getText().isBlank() && (dpStartdatum.getValue() != null)
 					&& (dpEinddatum.getValue() != null) && !txtStartuur.getText().isBlank()
@@ -281,18 +283,20 @@ public class BeheerSessieSchermController extends AnchorPane {
 				lblSucces.setVisible(true);
 				lblSucces.setText("De sessie werd succesvol aangepast");
 				lblErrorDetailsSessie.setVisible(false);
-			} else {
+			} 
+			else {
 				lblErrorDetailsSessie.setVisible(true);
 				lblErrorDetailsSessie.setText("Tekstvakken mogen niet leeg zijn");
 			}
-		} catch (NumberFormatException e) {
+		}	catch(NumberFormatException e) {
 			lblErrorDetailsSessie.setText("Capaciteit moet een positief geheel getal zijn.");
-
+		
 		} catch (IllegalArgumentException e) {
 			lblErrorDetailsSessie.setVisible(true);
 			lblErrorDetailsSessie.setText(e.getMessage());
-
-		} catch (DateTimeParseException e) {
+			
+		} 
+		catch (DateTimeParseException e) {
 			lblErrorDetailsSessie.setVisible(true);
 			lblErrorDetailsSessie.setText("Uur moet van geschreven worden als volgt: HH:mm");
 
@@ -305,7 +309,7 @@ public class BeheerSessieSchermController extends AnchorPane {
 	@FXML
 	void verwijderSessie(ActionEvent event) {
 		try {
-
+			
 			sc.verwijderHuidigeSessie();
 			initialize();
 			lblSucces.setVisible(true);
@@ -342,19 +346,20 @@ public class BeheerSessieSchermController extends AnchorPane {
 				lblSucces.setVisible(true);
 				lblSucces.setText("De sessie werd succesvol toegevoegd");
 				lblErrorDetailsSessie.setVisible(false);
-			} else {
+			} 
+			else {
 				lblErrorDetailsSessie.setVisible(true);
 				lblErrorDetailsSessie.setText("Tekstvakken mogen niet leeg zijn");
-
+			
 			}
-			/*
-			 * } catch (IllegalArgumentException e) {
-			 * lblErrorDetailsSessie.setVisible(true);
-			 * lblErrorDetailsSessie.setText(e.getMessage());
-			 */
-		} catch (NumberFormatException e) {
-			lblErrorDetailsSessie.setText("Capaciteit moet een positief geheel getal zijn.");
-
+		/*} catch (IllegalArgumentException e) {
+			lblErrorDetailsSessie.setVisible(true);
+			lblErrorDetailsSessie.setText(e.getMessage());
+			*/
+		} catch(NumberFormatException e) {
+				lblErrorDetailsSessie.setText("Capaciteit moet een positief geheel getal zijn.");
+			
+			
 		} catch (DateTimeParseException e) {
 			lblErrorDetailsSessie.setVisible(true);
 			lblErrorDetailsSessie.setText("Uur moet van geschreven worden als volgt: HH:mm");
@@ -408,7 +413,7 @@ public class BeheerSessieSchermController extends AnchorPane {
 				.forEach(f -> f.clear());
 		dpEinddatum.setValue(null);
 		dpStartdatum.setValue(null);
-
+		
 		btnBeherenHerringeringen.setDisable(true);
 		btnBeherenIngeschrevenen.setDisable(true);
 		checkboxOpenVrInSchrijvingen.setSelected(false);
