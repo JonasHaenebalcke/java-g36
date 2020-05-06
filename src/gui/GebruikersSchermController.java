@@ -80,8 +80,7 @@ public class GebruikersSchermController extends AnchorPane {
 
 	@FXML
 	private Label lblError;
-	@FXML
-	private Label lblWachtwoord;
+	
 
 
 	private GebruikerController dc;
@@ -120,7 +119,7 @@ public class GebruikersSchermController extends AnchorPane {
 		btnVerwijder.setVisible(false);
 		lblTitle.setText("Voeg gebruiker toe");
 		
-		lblWachtwoord.setVisible(true);
+	
 		btnVoegToe.setVisible(true);
 		btnGebruikerToevoegen.setVisible(true);
 	}
@@ -169,7 +168,7 @@ public class GebruikersSchermController extends AnchorPane {
 		btnVerwijder.setVisible(false);
 		btnPasAan.setVisible(false);
 		
-		lblWachtwoord.setVisible(true);
+	
 		initializeList();
 	}
 
@@ -209,7 +208,7 @@ public class GebruikersSchermController extends AnchorPane {
 				btnPasAan.setVisible(true);
 				btnVerwijder.setVisible(true);
 				
-				lblWachtwoord.setVisible(false);
+				
 				btnGebruikerToevoegen.setVisible(true);
 				inputVoornaam.setText(newValue.getVoornaam());
 				inputNaam.setText(newValue.getFamilienaam());
