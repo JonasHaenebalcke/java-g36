@@ -46,6 +46,11 @@
                   <Font size="14.0" />
                </font>
             </Button>
+            <Button id="btnMenu" fx:id="btnIngeschrevenenBeheren11" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#aankondigingen" prefHeight="50.0" prefWidth="200.0" text="Aankondigingen" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
          </children>
       </VBox>
    </left>
