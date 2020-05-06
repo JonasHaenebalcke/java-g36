@@ -58,8 +58,7 @@
       </TableView>
       <TableView fx:id="tblSessies" layoutX="500.0" layoutY="154.0" prefHeight="350.0" prefWidth="675.0">
         <columns>
-          <TableColumn fx:id="colTitel" prefWidth="150.0" text="Titel" />
-          <TableColumn fx:id="colDuur" prefWidth="175.0" text="Duur" />
+          <TableColumn fx:id="colTitel" prefWidth="325.0" text="Titel" />
             <TableColumn fx:id="colStartDatumSessie" prefWidth="175.0" text="Start Datum" />
             <TableColumn fx:id="colEindDatumSessie" prefWidth="175.0" text="Eind Datum" />
         </columns>

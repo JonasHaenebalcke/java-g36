@@ -68,8 +68,6 @@ public class Sessie implements Serializable {
 	@JoinColumn(name = "SessieKalenderID")
 	private SessieKalender sessieKalender;
 
-//	private boolean openVoorInschrijving;
-
 	@Transient
 	private SimpleStringProperty titelProperty = new SimpleStringProperty();
 
@@ -80,7 +78,7 @@ public class Sessie implements Serializable {
 
 	protected Sessie() {
 		gebruikerSessieLijst = new ArrayList<GebruikerSessie>();
-		zetInschrijvingenOpen(false);
+		statusSessie = StatusSessie.nietOpen;
 	}
 
 	public Sessie(Gebruiker verantwoordelijke, String titel, String lokaal, LocalDateTime startDatum,
@@ -129,9 +127,8 @@ public class Sessie implements Serializable {
 	}
 
 	private void zetInschrijvingenOpen(boolean open) {
-//		this.openVoorInschrijving = open;
-		if (!open)
-			statusSessie = StatusSessie.nietOpen;
+		if (!open && statusSessie != StatusSessie.nietOpen)
+			throw new IllegalArgumentException("Sessie kan niet terug gesloten worden");
 		else
 			statusSessie = StatusSessie.InschrijvingenOpen;
 	}
@@ -193,33 +190,44 @@ public class Sessie implements Serializable {
 	}
 
 	private void setStartDatum(LocalDateTime startDatum) {
-//		this.startDatum = startDatum;
 		if (eindDatum == null) {
-			if (startDatum.isAfter(LocalDateTime.now().plusHours(24)))
-				this.startDatum = startDatum;
-			else
-				throw new IllegalArgumentException("De startdatum moet in de toekomst liggen.");
+			if (startDatum.toLocalDate().isBefore(LocalDate.now().plusDays(1)))
+				throw new IllegalArgumentException("De startdatum moet minstens 1 dag in de toekomst liggen.");
 		} else {
-			if (
-//					ChronoUnit.MINUTES.between(startDatum, eindDatum) >= 30 &&
-			(startDatum.isAfter(LocalDateTime.now()) || eindDatum.isBefore(LocalDateTime.now())))
-				this.startDatum = startDatum;
+			if (startDatum.isBefore(LocalDateTime.now()))
+				throw new IllegalArgumentException("De startdatum mag niet in het verleden liggen.");
+		}
+	}
+
+	private void setStartUur(LocalDateTime startUur) {
+		if (eindDatum == null) {
+			if (startUur.isAfter(LocalDateTime.now().plusHours(24)))
+				this.startDatum = startUur;
 			else
-				throw new IllegalArgumentException(
-						"De startdatum en einddatum moeten beiden in het verleden of in de toekomst liggen.");
+				throw new IllegalArgumentException("Het startuur moet minstens 24 uur in de toekomst liggen.");
+		} else {
+			if (startUur.isAfter(LocalDateTime.now()))
+				this.startDatum = startUur;
+			else
+				throw new IllegalArgumentException("Het startuur mag niet in het verleden liggen.");
 		}
 	}
 
 	private void setEindDatum(LocalDateTime eindDatum) {
-//		this.eindDatum = eindDatum;
-		if (eindDatum.isAfter(startDatum) && ChronoUnit.MINUTES.between(startDatum, eindDatum) >= 30)
-			this.eindDatum = eindDatum;
+		if (!(ChronoUnit.DAYS.between(startDatum.toLocalDate(), eindDatum.toLocalDate()) == 0
+				|| ChronoUnit.DAYS.between(startDatum.toLocalDate(), eindDatum.toLocalDate()) == 1))
+			throw new IllegalArgumentException("De einddatum moet op dezelfde dag of 1 dag na de startdatum liggen.");
+	}
+
+	private void setEindUur(LocalDateTime eindUur) {
+		if (eindUur.isAfter(startDatum) && ChronoUnit.MINUTES.between(startDatum, eindUur) >= 30)
+			this.eindDatum = eindUur;
 		else
-			throw new IllegalArgumentException("De einddatum moet minstens 30 minuten na de startdatum liggen.");
+			throw new IllegalArgumentException("Het einduur moet minstens 30 minuten na het startuur liggen.");
 	}
 
 	private void setCapaciteit(int capaciteit) {
-		if(capaciteit < 0)
+		if (capaciteit < 0)
 			throw new IllegalArgumentException("Capaciteit kan geen negatief getal zijn.");
 		this.capaciteit = capaciteit;
 	}
@@ -235,6 +243,10 @@ public class Sessie implements Serializable {
 	}
 
 	public StringProperty getTitelSessieProperty() {
+		if (titelProperty == null) {
+			titelProperty = new SimpleStringProperty();
+			setTitelSessieProperty(getTitel());
+		}
 		return titelProperty;
 	}
 
@@ -243,6 +255,10 @@ public class Sessie implements Serializable {
 	}
 
 	public StringProperty getStartDatumSessieProperty() {
+		if (startDatumSessieProperty == null) {
+			startDatumSessieProperty = new SimpleStringProperty();
+			setStartDatumSessieProperty(getStartDatum().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+		}
 		return startDatumSessieProperty;
 	}
 
@@ -251,6 +267,10 @@ public class Sessie implements Serializable {
 	}
 
 	public StringProperty getEindDatumSessieProperty() {
+		if (eindDatumSessieProperty == null) {
+			eindDatumSessieProperty = new SimpleStringProperty();
+			setEindDatumSessieProperty(getEindDatum().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+		}
 		return eindDatumSessieProperty;
 	}
 
@@ -260,18 +280,30 @@ public class Sessie implements Serializable {
 		setTitelSessieProperty(getTitel());
 	}
 
-	public void wijzigSessie(String titel, String lokaal, LocalDateTime startDatum, LocalDateTime eindDatum,
-			int capaciteit, String omschrijving, String gastspreker, boolean open) {
-//		if (!getOpenVoorInschrijving()) //afh van commentaar vd prof
-		if (statusSessie == StatusSessie.open || statusSessie == StatusSessie.gesloten)
-			throw new IllegalArgumentException("De sessie mag niet geopend zijn om deze te kunnen wijzigen.");
+	private void setDatums(LocalDateTime startDatum, LocalDateTime eindDatum) {
+		
+		if (!(ChronoUnit.DAYS.between(startDatum.toLocalDate(), eindDatum.toLocalDate()) == 0
+				|| ChronoUnit.DAYS.between(startDatum.toLocalDate(), eindDatum.toLocalDate()) == 1))
+			throw new IllegalArgumentException("De einddatum moet op dezelfde dag of 1 dag na de startdatum liggen.");
+		setStartDatum(startDatum);
+		setEindDatum(eindDatum);
+
 		if (ChronoUnit.MINUTES.between(startDatum, eindDatum) < 30)
 			throw new IllegalArgumentException("De sessie moet een minimumperiode van 30 minuten hebben.");
+		setStartUur(startDatum);
+		setEindUur(eindDatum);
+	}
+
+	public void wijzigSessie(String titel, String lokaal, LocalDateTime startDatum, LocalDateTime eindDatum,
+			int capaciteit, String omschrijving, String gastspreker, boolean open) {
+
+		if (statusSessie == StatusSessie.open || statusSessie == StatusSessie.gesloten)
+			throw new IllegalArgumentException("De sessie mag niet geopend zijn om deze te kunnen wijzigen.");
+		
+		setDatums(startDatum, eindDatum);
 
 		setTitel(titel);
 		setLokaal(lokaal);
-		setStartDatum(startDatum);
-		setEindDatum(eindDatum);
 		setCapaciteit(capaciteit);
 		this.omschrijving = omschrijving;
 		this.gastspreker = gastspreker;

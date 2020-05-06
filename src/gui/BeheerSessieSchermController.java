@@ -151,6 +151,11 @@ public class BeheerSessieSchermController extends AnchorPane {
 		initialize();
 	}
 
+	public BeheerSessieSchermController(SessieController sc, Sessie sessie) {
+		this(sc);
+		textWaardeSessieInvullen(sessie);
+	}
+
 	private void initialize() {
 		cbxStatusSessie.setItems(FXCollections.observableArrayList(StatusSessie.values()));
 		// degene die ingelogd is maakt de sessie aan, dus niet kunnen kieze
@@ -224,6 +229,10 @@ public class BeheerSessieSchermController extends AnchorPane {
 				}
 			}
 		});
+	}
+	
+	private void textWaardeSessieInvullen(Sessie sessie) {
+		
 	}
 
 	@FXML

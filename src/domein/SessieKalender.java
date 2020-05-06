@@ -4,11 +4,13 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -46,7 +48,7 @@ public class SessieKalender {
 		this();
 		setDatums(startDatum, eindDatum);
 	}
-	
+
 	public SessieKalender(LocalDate startDatum, LocalDate eindDatum, boolean bool) {
 		this();
 		this.startDatum = startDatum;
@@ -137,7 +139,7 @@ public class SessieKalender {
 			throw new NullPointerException("Deze SessieKalender bevat nog geen sessies.");
 
 		for (Sessie sessie : sessieLijst) {
-			if (sessie.getStartDatum().getDayOfMonth() ==(int) maand -1)
+			if (sessie.getStartDatum().getMonthValue() == (int) maand)
 				sessies.add(sessie);
 		}
 		if (sessies.isEmpty() || sessies == null)
@@ -148,7 +150,11 @@ public class SessieKalender {
 
 	@Override
 	public String toString() {
-		return "startDate=" + startDatum + ", eindDate=" + eindDatum;
+		sessieLijst.size();
+		return sessieLijst.toString();
+//		return "SessieKalender [sessieLijst=" + sessieLijst + ", sessieKalenderID=" + sessieKalenderID + ", startDatum="
+//				+ startDatum + ", eindDatum=" + eindDatum + ", startDatumProperty=" + startDatumProperty
+//				+ ", eindDatumProperty=" + eindDatumProperty + "]";
 	}
 
 }
