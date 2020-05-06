@@ -152,7 +152,6 @@ public class BeherenIngeschrevenenSchermController extends AnchorPane {
 			tcVoornaam.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getIngeschrevene().getVoornaam()));
 			tcFamilienaam.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getIngeschrevene().getFamilienaam()));
 			tcInschrijvingsdatum.setCellValueFactory(cel -> cel.getValue().getInschrijvingsDatumProperty());
-			//tcAanwezig.setCellValueFactory(cel -> new ReadOnlyBooleanWrapper(cel.getValue().isAanwezig()));
 			tcIngeschreven.setCellFactory(column -> new CheckBoxTableCell<>());
 			tcAanwezig.setCellFactory(column -> new CheckBoxTableCell<>());
 			
@@ -186,6 +185,9 @@ public class BeherenIngeschrevenenSchermController extends AnchorPane {
 
 			}
 		});
+		
+	//	tvIngeschrevenen.getSelectionModel().selectedItemProperty().addListener();
+	
 	}
 
 	@FXML
