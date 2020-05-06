@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Observable;
 
 import org.mockito.exceptions.verification.NeverWantedButInvoked;
 
@@ -16,9 +17,12 @@ import domein.Sessie;
 import domein.SessieController;
 import domein.Status;
 import domein.StatusSessie;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.BooleanPropertyBase;
 import javafx.beans.property.ReadOnlyBooleanWrapper;
 import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -32,7 +36,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
 
 public class BeherenIngeschrevenenSchermController extends AnchorPane {
 
@@ -52,6 +58,8 @@ public class BeherenIngeschrevenenSchermController extends AnchorPane {
     private Label lbltitelTabelGebruikers;
 	@FXML
 	private TableView<GebruikerSessie> tvIngeschrevenen;
+	  @FXML
+	    private TableColumn<GebruikerSessie,Boolean> tcIngeschreven;
 	@FXML
 	private TableColumn<GebruikerSessie, String> tcVoornaam;
 	@FXML
@@ -130,22 +138,51 @@ public class BeherenIngeschrevenenSchermController extends AnchorPane {
 	}
 
 	private void tabelwaardeGebruikersInvullen() {
-		sc.setHuidigeSessie(tvSessies.getSelectionModel().getSelectedItem());
+		
+		//sc.setHuidigeSessie(tvSessies.getSelectionModel().getSelectedItem());
 		
 		tvSessies.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Sessie>() {
 
 			@Override
 			public void changed(ObservableValue<? extends Sessie> sessieObs, Sessie oldV, Sessie newV) {
-
+				sc.setHuidigeSessie(newV);
 			tvIngeschrevenen.setItems(sc.geefGebruikerSessiesObservable());
 //	    	// moet gebruiker van gekozen Sessies zijn, niet alle gebruikers
 			
 			tcVoornaam.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getIngeschrevene().getVoornaam()));
 			tcFamilienaam.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getIngeschrevene().getFamilienaam()));
 			tcInschrijvingsdatum.setCellValueFactory(cel -> cel.getValue().getInschrijvingsDatumProperty());
-			tcAanwezig.setCellValueFactory(cel -> new ReadOnlyBooleanWrapper(cel.getValue().isAanwezig()));
+			//tcAanwezig.setCellValueFactory(cel -> new ReadOnlyBooleanWrapper(cel.getValue().isAanwezig()));
+			tcIngeschreven.setCellFactory(column -> new CheckBoxTableCell<>());
+			tcAanwezig.setCellFactory(column -> new CheckBoxTableCell<>());
 			
-//    		tcAanwezig.setCellFactory( kolom -> new CheckBoxTableCell<>());
+			tcAanwezig.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<GebruikerSessie, Boolean>, ObservableValue<Boolean>>() {
+ 	            @Override
+ 	            public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<GebruikerSessie, Boolean> gs) {
+ 	              Boolean b ;
+ 	            	if(gs.getValue().getIngeschrevene().getVoornaam().equals("Rein")) {
+ 	                	b= true;
+ 	                } else {
+ 	                	b=false;
+ 	                }
+ 	            	return new SimpleBooleanProperty(b);
+ 	            }
+ 	        });
+   		
+//    		 tcIngeschreven.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<GebruikerSessie, Boolean>, ObservableValue<Boolean>>() {
+//    	            @Override
+//    	            public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<GebruikerSessie, Boolean> gs) {
+//    	                return new SimpleBooleanProperty(gs.getValue().isAanwezig());
+//    	            }
+//    	        });
+			
+			
+			 tcIngeschreven.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<GebruikerSessie, Boolean>, ObservableValue<Boolean>>() {
+ 	            @Override
+ 	            public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<GebruikerSessie, Boolean> gs) {
+ 	                return new SimpleBooleanProperty(true);
+ 	            }
+ 	        });
 
 			}
 		});

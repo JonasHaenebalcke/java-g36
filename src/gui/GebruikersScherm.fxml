@@ -3,7 +3,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -38,7 +37,6 @@
             <TextField fx:id="inputVoornaam" layoutX="258.0" layoutY="272.0" prefHeight="27.0" prefWidth="126.0" promptText="Voornaam" />
             <TextField fx:id="inputEmail" layoutX="113.0" layoutY="327.0" prefHeight="27.0" prefWidth="270.0" promptText="E-mail" />
             <TextField fx:id="inputGebruikersnaam" layoutX="113.0" layoutY="382.0" prefHeight="27.0" prefWidth="270.0" promptText="Gebruikersnaam" />
-            <PasswordField fx:id="inputWachtwoord" layoutX="113.0" layoutY="436.0" prefHeight="27.0" prefWidth="270.0" promptText="wachtwoord" />
             <ComboBox fx:id="cbxType" layoutX="113.0" layoutY="482.0" prefHeight="27.0" prefWidth="133.0" promptText="Type" />
             <ComboBox fx:id="cbxStatus" layoutX="258.0" layoutY="482.0" prefHeight="27.0" prefWidth="126.0" promptText="Status" />
              
@@ -56,7 +54,6 @@
             <Button fx:id="btnVerwijder" layoutX="301.0" layoutY="540.0" mnemonicParsing="false" onAction="#verwijderGebruiker" text="Verwijder" />
             <Button fx:id="btnVoegToe" layoutX="208.0" layoutY="540.0" mnemonicParsing="false" onAction="#voegGebruikerToe" text="Voeg Toe" />
             <Label fx:id="lblError" layoutX="110.0" layoutY="538.0" prefHeight="17.0" prefWidth="270.0" textFill="RED" />
-            <Label fx:id="lblWachtwoord" layoutX="113.0" layoutY="419.0" text="Wachtwoord" />
             <Label layoutX="113.0" layoutY="255.0" text="Familienaam" />
             <Label layoutX="258.0" layoutY="255.0" text="Voornaam" />
             <Label layoutX="113.0" layoutY="310.0" text="Mailadres" />

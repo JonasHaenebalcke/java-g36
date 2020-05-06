@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 
 import domein.Feedback;
 import domein.Gebruiker;
+import domein.GebruikerController;
 import domein.Sessie;
 import domein.SessieController;
 import domein.StatusSessie;
@@ -127,6 +128,7 @@ public class BeheerSessieSchermController extends AnchorPane {
 	private CheckBox checkboxOpenVrInSchrijvingen;
 
 	private Gebruiker verantwoordelijke;
+	private GebruikerController ingelogde;
 
 	private SessieController sc;
 
@@ -211,8 +213,10 @@ public class BeheerSessieSchermController extends AnchorPane {
 				// colMediaTitel.setCellValueFactory(cel -> cel.getValue());
 				// colMediaLink.setCellValueFactory(cel -> cel.getValue());
 
-				if (newV.getStatusSessie().name().equals(StatusSessie.open.toString())
-						|| newV.getStatusSessie().name().equals(StatusSessie.gesloten.toString())) {
+				if (newV.getStatusSessie() == StatusSessie.open
+						|| newV.getStatusSessie() == StatusSessie.gesloten 
+						|| newV.getEindDatum().isBefore(LocalDateTime.now())
+						) {
 
 					tvFeedback.setItems(FXCollections.observableArrayList(newV.getFeedbackLijst())
 							.sorted(Comparator.comparing(Feedback::getTimeWritten)));
@@ -241,8 +245,8 @@ public class BeheerSessieSchermController extends AnchorPane {
 		try {
 			System.out.println(cbxStatusSessie.getValue().name() + " ");
 			tblSessies.setItems(sc.geefSessiesObservable()); // nog aanpassen
-			if (cbxStatusSessie.getValue().name().equals(StatusSessie.open.toString())
-					|| cbxStatusSessie.getValue().name().equals(StatusSessie.gesloten.toString())) {
+			if (cbxStatusSessie.getValue() == StatusSessie.open
+					|| cbxStatusSessie.getValue() == StatusSessie.gesloten) {
 				lblFeedback.setVisible(true);
 				tvFeedback.setVisible(true);
 				lblGemiddeldeScore.setVisible(true);
@@ -335,7 +339,8 @@ public class BeheerSessieSchermController extends AnchorPane {
 
 				// Boolean isOpenVrInschrijvingen = checkboxOpenVrInSchrijvingen.isSelected();
 				// bij nieuwe sessie is de ingelogde persoon ge verantwoordelijke
-				sc.voegSessieToe(verantwoordelijke, txtTitel.getText(), txtLokaal.getText(),
+			
+				sc.voegSessieToe(ingelogde.geefIngelogdeVerantwoordelijke(), txtTitel.getText(), txtLokaal.getText(),
 						zetOmNaarDateTime(dpStartdatum.getValue(), txtStartuur.getText()),
 						zetOmNaarDateTime(dpEinddatum.getValue(), txtEinduur.getText()),
 						Integer.parseInt(txtCapaciteit.getText()), txtOmschrvijving.getText(),

@@ -83,9 +83,6 @@ public class GebruikersSchermController extends AnchorPane {
 	@FXML
 	private Label lblWachtwoord;
 
-	@FXML
-//	private TextField inputWachtwoord;
-	private PasswordField  inputWachtwoord;
 
 	private GebruikerController dc;
 
@@ -122,7 +119,7 @@ public class GebruikersSchermController extends AnchorPane {
 		btnPasAan.setVisible(false);
 		btnVerwijder.setVisible(false);
 		lblTitle.setText("Voeg gebruiker toe");
-		inputWachtwoord.setVisible(true);
+		
 		lblWachtwoord.setVisible(true);
 		btnVoegToe.setVisible(true);
 		btnGebruikerToevoegen.setVisible(true);
@@ -152,7 +149,7 @@ public class GebruikersSchermController extends AnchorPane {
 			//lvGebruikers.getSelectionModel().clearSelection();
 			dc.verwijderGebruiker(index);
 			initializeList();
-			Stream.of(inputVoornaam, inputEmail, inputNaam, inputGebruikersnaam, inputWachtwoord)
+			Stream.of(inputVoornaam, inputEmail, inputNaam, inputGebruikersnaam)
 					.forEach(TextField::clear);
 		} catch (Exception e) {
 			lblError.setText(e.getMessage());
@@ -163,7 +160,7 @@ public class GebruikersSchermController extends AnchorPane {
 	@FXML
 	void voegGebruikerToeBtn(ActionEvent event) {
 		lblTitle.setText("Voeg gebruiker toe");
-		Stream.of(inputVoornaam, inputEmail, inputNaam, inputGebruikersnaam, inputWachtwoord)
+		Stream.of(inputVoornaam, inputEmail, inputNaam, inputGebruikersnaam)
 				.forEach(TextField::clear);
 		cbxStatus.setValue(Status.Actief);
 		cbxType.setValue(TypeGebruiker.Gebruiker);
@@ -171,7 +168,7 @@ public class GebruikersSchermController extends AnchorPane {
 		btnVoegToe.setVisible(true);
 		btnVerwijder.setVisible(false);
 		btnPasAan.setVisible(false);
-		inputWachtwoord.setVisible(true);
+		
 		lblWachtwoord.setVisible(true);
 		initializeList();
 	}
@@ -180,13 +177,13 @@ public class GebruikersSchermController extends AnchorPane {
 	void voegGebruikerToe(ActionEvent event) {
 		try {
 			if (!inputVoornaam.getText().isBlank() && !inputNaam.getText().isBlank() && !inputEmail.getText().isBlank()
-					&& !inputGebruikersnaam.getText().isBlank() && !inputWachtwoord.getText().isBlank()
+					&& !inputGebruikersnaam.getText().isBlank()
 				/*&&!cbxType.getValue().equals("Type") && !cbxStatus.getValue().equals("Status")*/ ) {
 				
 			
 					dc.voegToeGebruiker(inputVoornaam.getText(), inputNaam.getText(), inputEmail.getText(),
-							inputGebruikersnaam.getText(), cbxType.getValue(), cbxStatus.getValue(), "profielfoto",
-							inputWachtwoord.getText());
+							inputGebruikersnaam.getText(), cbxType.getValue(), cbxStatus.getValue(), "profielfoto"
+							);
 					tvGebruikers.getSelectionModel().selectLast();
 					
 					initializeList();
@@ -211,7 +208,7 @@ public class GebruikersSchermController extends AnchorPane {
 				btnVoegToe.setVisible(false);
 				btnPasAan.setVisible(true);
 				btnVerwijder.setVisible(true);
-				inputWachtwoord.setVisible(false);
+				
 				lblWachtwoord.setVisible(false);
 				btnGebruikerToevoegen.setVisible(true);
 				inputVoornaam.setText(newValue.getVoornaam());

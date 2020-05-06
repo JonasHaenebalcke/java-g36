@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -125,10 +124,6 @@ public class Sessie implements Serializable {
 				break;
 			}
 		}
-	}
-
-	public int getSessieID() {
-		return sessieID;
 	}
 
 	private void zetInschrijvingenOpen(boolean open) {
@@ -286,7 +281,7 @@ public class Sessie implements Serializable {
 	}
 
 	private void setDatums(LocalDateTime startDatum, LocalDateTime eindDatum) {
-
+		
 		if (!(ChronoUnit.DAYS.between(startDatum.toLocalDate(), eindDatum.toLocalDate()) == 0
 				|| ChronoUnit.DAYS.between(startDatum.toLocalDate(), eindDatum.toLocalDate()) == 1))
 			throw new IllegalArgumentException("De einddatum moet op dezelfde dag of 1 dag na de startdatum liggen.");
@@ -304,7 +299,7 @@ public class Sessie implements Serializable {
 
 		if (statusSessie == StatusSessie.open || statusSessie == StatusSessie.gesloten)
 			throw new IllegalArgumentException("De sessie mag niet geopend zijn om deze te kunnen wijzigen.");
-
+		
 		setDatums(startDatum, eindDatum);
 
 		setTitel(titel);
@@ -349,10 +344,8 @@ public class Sessie implements Serializable {
 				gebruikerGevonden = true;
 				if (ingeschreven)
 					gebruikerSessie.wijzigAanwezigheid(aanwezig);
-				else {
+				else
 					gebruikerSessieLijst.remove(gebruikerSessie);
-					ingeschrevene.verwijderGebruikerSessie(gebruikerSessie);
-				}
 				break;
 			}
 		}
@@ -361,24 +354,10 @@ public class Sessie implements Serializable {
 				GebruikerSessie gebruikerSessie = new GebruikerSessie(this, ingeschrevene);
 				gebruikerSessie.wijzigAanwezigheid(aanwezig);
 				gebruikerSessieLijst.add(gebruikerSessie);
-				ingeschrevene.addGebruikerSessie(gebruikerSessie);
 			} else
 				throw new IllegalArgumentException("Gebruiker is al uitgeschreven voor deze sessie");
 		}
 
-	}
-
-	public int geefAantalDeelnemers() {
-		return gebruikerSessieLijst.size();
-	}
-
-	public int geefAantalAanwezigen() {
-		int res = 0;
-		for (GebruikerSessie gs : gebruikerSessieLijst) {
-			if (gs.isAanwezig())
-				res++;
-		}
-		return res;
 	}
 
 	public int geefGemiddeldeScore() {
@@ -397,5 +376,10 @@ public class Sessie implements Serializable {
 				+ ", omschrijving=" + omschrijving + ", gastspreker=" + gastspreker + ", titelProperty=" + titelProperty
 				+ ", startDatumSessieProperty=" + startDatumSessieProperty + ", eindDatumSessieProperty="
 				+ eindDatumSessieProperty + "]";
+	}
+
+	public int getSessieID() {
+		// TODO Auto-generated method stub
+		return sessieID;
 	}
 }

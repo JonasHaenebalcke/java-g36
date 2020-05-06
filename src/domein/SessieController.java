@@ -14,7 +14,6 @@ public class SessieController {
 	private Sessie huidigeSessie;
 	private GebruikerController gc;
 	private ObservableList<Sessie> sessieObservableList;
-	private ObservableList<GebruikerSessie> gebruikerSessieObservableList;
 	private GenericDao<Sessie> sessieRepo;
 
 	public SessieController() {
@@ -49,6 +48,7 @@ public class SessieController {
 	}
 
 	public ObservableList<GebruikerSessie> geefGebruikerSessiesObservable() {
+		
 		return FXCollections.observableArrayList(huidigeSessie.getGebruikerSessieLijst());
 	}
 
@@ -108,7 +108,6 @@ public class SessieController {
 
 	public void wijzigIngeschrevenen(Gebruiker ingeschrevene, boolean ingeschreven, boolean aanwezig) {
 		huidigeSessie.wijzigIngeschrevenen(ingeschrevene, ingeschreven, aanwezig);
-		gebruikerSessieObservableList = FXCollections.observableArrayList(huidigeSessie.getGebruikerSessieLijst());
 	}
 
 	public void addFeedback(Gebruiker auteur, String content, int score) {
