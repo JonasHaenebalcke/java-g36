@@ -89,8 +89,6 @@ public class SessieKalenderSchermController extends AnchorPane {
 	@FXML
 	private TableColumn<Sessie, String> colTitel;
 	@FXML
-	private TableColumn<Sessie, String> colDuur;
-	@FXML
 	private TableColumn<Sessie, String> colStartDatumSessie;
 	@FXML
 	private TableColumn<Sessie, String> colEindDatumSessie;
@@ -149,15 +147,15 @@ public class SessieKalenderSchermController extends AnchorPane {
 //		);
 		try {
 			sk = dc.getHuidigeSessieKalender();
-			System.out.println("INITIALIZE");
+//			System.out.println("INITIALIZE");
 			lblErrorSessies.setText("");
 			cbMaand.setItems(FXCollections.observableArrayList(Maand.values()));
 			cbMaand.setValue(Maand.valueOf(LocalDate.now().getMonthValue()));
 
-			System.out.println(sk.toString());
-
-			System.out.println(cbMaand.getSelectionModel().getSelectedIndex());
-			System.out.println(cbMaand.getSelectionModel().getSelectedItem().toString());
+//			System.out.println(sk.toString());
+//
+//			System.out.println(cbMaand.getSelectionModel().getSelectedIndex());
+//			System.out.println(cbMaand.getSelectionModel().getSelectedItem().toString());
 
 			lblStartDatum.setText(sk.getStartDatum().format(DateTimeFormatter.ofPattern("MM/dd")));
 			lblEindDatum.setText(sk.getEindDatum().format(DateTimeFormatter.ofPattern("MM/dd")));
@@ -189,7 +187,7 @@ public class SessieKalenderSchermController extends AnchorPane {
 //			lvSessieKalender.setItems(dc.geefSessieKalenderObservableList().sorted());
 
 			tblSessieKalenders.setItems(dc.geefSessieKalenderObservableList().sorted());
-			System.out.println(sk.getStartDatumProperty());
+//			System.out.println(sk.getStartDatumProperty());
 //			colStartDatum.setCellValueFactory(cel -> cel.getValue().startDatumProperty()());
 //			System.out.println(sk.getStartDatumProperty());
 			colStartDatum.setCellValueFactory(cel -> cel.getValue().getStartDatumProperty());
@@ -211,6 +209,7 @@ public class SessieKalenderSchermController extends AnchorPane {
 
 			colTitel.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
 //		colDuur.setCellValueFactory(cel -> cel.getValue().getDuurSessieProperty());
+			
 			colStartDatumSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
 			colEindDatumSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
 		} catch (Exception e) {
@@ -239,7 +238,9 @@ public class SessieKalenderSchermController extends AnchorPane {
 				@Override
 				public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 					lblErrorSessies.setVisible(false);
-					initalizeSessieTable(newValue);
+					int temp = (int) newValue + 1;
+//					Number ret = (Number) temp;
+					initalizeSessieTable((Number) temp);
 				}
 			});
 		} catch (Exception e) {
@@ -257,7 +258,7 @@ public class SessieKalenderSchermController extends AnchorPane {
 			if (inputStartDatum.getValue() == null || inputEindDatum.getValue() == null)
 				throw new IllegalArgumentException("Datum is verplicht in te vullen!");
 
-			System.out.println(inputStartDatum.getValue().toString());
+//			System.out.println(inputStartDatum.getValue().toString());
 
 			dc.voegToeSessieKalender(inputStartDatum.getValue(), inputEindDatum.getValue());
 //			sc.initialize();
@@ -324,8 +325,9 @@ public class SessieKalenderSchermController extends AnchorPane {
 
 	@FXML
 	public void beheerSessie(ActionEvent event) {
-		System.out.println("beheer sessie");    	
-		Scene scene = new Scene(new BeheerSessieSchermController(this.sc));
+		System.out.println("beheer sessie");    
+		Sessie sessie = tblSessies.getSelectionModel().getSelectedItem();
+		Scene scene = new Scene(new BeheerSessieSchermController(this.sc, sessie));
     	Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 		stage.setTitle("IT LAB");
 		stage.setScene(scene);
