@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -23,7 +24,7 @@ public class MeldAanSchermController extends AnchorPane {
 	@FXML
 	private TextField inputGebruikersnaam;
 	@FXML
-	private TextField inputWachtwoord;
+	private PasswordField inputWachtwoord;
 	@FXML
 	private Label lblError;
 

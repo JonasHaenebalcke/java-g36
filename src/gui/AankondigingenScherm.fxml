@@ -11,8 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<fx:root prefHeight="940.0" prefWidth="1475.0" type="AnchorPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1">
+<fx:root prefHeight="940.0" prefWidth="1475.0" type="AnchorPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TableView fx:id="tvSessies" layoutX="88.0" layoutY="110.0" prefHeight="328.0" prefWidth="811.0">
         <columns>
@@ -31,26 +30,26 @@
           <TableColumn fx:id="colDatumAankondiging" prefWidth="137.1077880859375" text="Datum" />
         </columns>
       </TableView>
-      <Label layoutX="990.0" layoutY="618.0" text="Herinnering">
+      <Label layoutX="947.0" layoutY="622.0" text="Herinnering">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <CheckBox fx:id="cbHerinnering" layoutX="1087.0" layoutY="622.0" mnemonicParsing="false" />
-      <Label layoutX="1128.0" layoutY="619.0" text="Dagen op voorhand">
+      <CheckBox fx:id="cbHerinnering" layoutX="1044.0" layoutY="626.0" mnemonicParsing="false" />
+      <Label layoutX="1073.0" layoutY="622.0" text="Dagen op voorhand">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <ComboBox fx:id="cbxDagenOpVoorhand" layoutX="1285.0" layoutY="616.0" prefHeight="27.0" prefWidth="84.0" promptText="Aantal" />
-      <Label layoutX="1108.0" layoutY="210.0" text="Aankondiging">
+      <ComboBox fx:id="cbxDagenOpVoorhand" layoutX="1243.0" layoutY="621.0" prefHeight="27.0" prefWidth="82.0" promptText="Aantal" />
+      <Label layoutX="1065.0" layoutY="214.0" text="Aankondiging">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <TextArea fx:id="txtAankondiging" layoutX="990.0" layoutY="321.0" prefHeight="270.0" prefWidth="379.0" promptText="Typ hier je aankondiging ..." />
-      <Button layoutX="1145.0" layoutY="678.0" mnemonicParsing="false" onAction="#aankondigingPlaatsen" text="Plaatsen" />
-      <TextField fx:id="txtTitel" layoutX="992.0" layoutY="266.0" prefHeight="27.0" prefWidth="376.0" promptText="Titel" />
+      <TextArea fx:id="txtAankondiging" layoutX="947.0" layoutY="325.0" prefHeight="270.0" prefWidth="379.0" promptText="Typ hier je aankondiging ..." />
+      <Button layoutX="1102.0" layoutY="682.0" mnemonicParsing="false" onAction="#aankondigingPlaatsen" text="Plaatsen" />
+      <TextField fx:id="txtTitel" layoutX="949.0" layoutY="270.0" prefHeight="27.0" prefWidth="376.0" promptText="Titel" />
       <Label layoutX="474.0" layoutY="39.0" text="Sessies">
          <font>
             <Font size="24.0" />
@@ -61,7 +60,7 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <Button layoutX="89.0" layoutY="461.0" mnemonicParsing="false" onAction="#beheerIngeschrevenen" text="Beheer ingeschrevenen" />
+      <Button layoutX="89.0" layoutY="461.0" mnemonicParsing="false" onAction="#beheerIngeschrevenen" text="Beheer sessies" />
       <Label fx:id="lblError" alignment="CENTER" layoutX="994.0" layoutY="753.0" prefHeight="82.0" prefWidth="370.0" />
       <TextField fx:id="txtZoek" layoutX="90.0" layoutY="71.0" promptText="Zoek" />
       <Button layoutX="273.0" layoutY="71.0" mnemonicParsing="false" onAction="#zoek" text="Zoek" />

@@ -9,11 +9,11 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<fx:root prefHeight="940.0" prefWidth="1475.0" type="AnchorPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="754.0" prefWidth="1522.0" type="AnchorPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Button layoutX="134.0" layoutY="68.0" mnemonicParsing="false" onAction="#geefStatistiekenGebruikers" prefHeight="54.0" prefWidth="186.0" text="Gebruikers" />
       <Button layoutX="382.0" layoutY="69.0" mnemonicParsing="false" onAction="#geefStatistiekenSessies" prefHeight="54.0" prefWidth="186.0" text="Sessies" />
-      <TableView fx:id="tvGebruikers" layoutX="133.0" layoutY="164.0" prefHeight="545.0" prefWidth="1207.0">
+      <TableView fx:id="tvGebruikers" layoutX="133.0" layoutY="164.0" prefHeight="430.0" prefWidth="1207.0">
         <columns>
           <TableColumn fx:id="colNaam" prefWidth="223.08766174316406" text="Naam" />
           <TableColumn fx:id="colVoornaam" minWidth="8.569778442382812" prefWidth="246.412353515625" text="Voornaam" />
@@ -22,7 +22,7 @@
             <TableColumn fx:id="colAantalFeedbacks" minWidth="8.569778442382812" prefWidth="226.1722412109375" text="Aantal Feedbacks" />
         </columns>
       </TableView>
-      <GridPane layoutX="453.0" layoutY="763.0" prefHeight="107.0" prefWidth="563.0">
+      <GridPane layoutX="438.0" layoutY="632.0" prefHeight="110.0" prefWidth="570.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -33,15 +33,15 @@
           <RowConstraints maxHeight="53.0" minHeight="10.0" prefHeight="53.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label fx:id="lblStatistiek1" text="Label" />
-            <Label fx:id="lblStatistiek2" text="Label" GridPane.rowIndex="1" />
-            <Label fx:id="lblStatistiek1Value" text="Label" GridPane.columnIndex="1" />
-            <Label fx:id="lblStatistiek2Value" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="lblStatistiek1" text="Omschrijving" />
+            <Label fx:id="lblStatistiek2" text="Omschrijving" GridPane.rowIndex="1" />
+            <Label fx:id="lblStatistiek1Value" text="Waarde" GridPane.columnIndex="1" />
+            <Label fx:id="lblStatistiek2Value" text="Waarde" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Button mnemonicParsing="false" onAction="#slaEersteStatiestiekOp" text="Opslaan" GridPane.columnIndex="2" />
             <Button mnemonicParsing="false" onAction="#SlaTweedeStatistiekOp" text="Opslaan" GridPane.columnIndex="2" GridPane.rowIndex="1" />
          </children>
       </GridPane>
-      <TableView fx:id="tvSessies" layoutX="133.0" layoutY="164.0" prefHeight="545.0" prefWidth="1207.0">
+      <TableView fx:id="tvSessies" layoutX="133.0" layoutY="164.0" prefHeight="430.0" prefWidth="1207.0">
          <columns>
             <TableColumn fx:id="colVerantwoordelijke" prefWidth="223.08766174316406" text="Verantwoordelijke" />
             <TableColumn fx:id="colTitel" minWidth="8.569778442382812" prefWidth="246.412353515625" text="Titel" />

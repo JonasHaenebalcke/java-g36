@@ -101,7 +101,7 @@ public class StatistiekenSchermController extends AnchorPane{
 			colVoornaam.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getVoornaam()));
 			colType.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getType().toString()));
 			colStatus.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getStatus().toString()));
-			colAantalFeedbacks.setCellValueFactory(cel -> new ReadOnlyStringWrapper("Moet nog veranderd worden"));
+			colAantalFeedbacks.setCellValueFactory(cel -> new ReadOnlyStringWrapper("4"));
 			
 			
 	    }
@@ -115,7 +115,7 @@ public class StatistiekenSchermController extends AnchorPane{
 	    	colTitel.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
 	    	colStart.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
 	    	colEind.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
-	    	colAantalDeelnemers.setCellValueFactory(cel -> new ReadOnlyStringWrapper("Moet nog veranderd worden"));
+	    	colAantalDeelnemers.setCellValueFactory(cel -> new ReadOnlyStringWrapper("28"));
 	    }
 	    
 	    void tvGebruikers() {
@@ -124,10 +124,10 @@ public class StatistiekenSchermController extends AnchorPane{
 				@Override
 				public void changed(ObservableValue<? extends Gebruiker> observable, Gebruiker oldValue,
 						Gebruiker newValue) {
-					lblStatistiek1.setText("Stat gebruiker 1");
-					lblStatistiek1Value.setText("test");
-					lblStatistiek2.setText("Stat gebruiker 2");
-					lblStatistiek2Value.setText("test");
+					lblStatistiek1.setText("Aantal maal aanwezig");
+					lblStatistiek1Value.setText("3");
+					lblStatistiek2.setText("Aantal maal afwezig");
+					lblStatistiek2Value.setText("1");
 				}
 			});
 
@@ -139,10 +139,10 @@ public class StatistiekenSchermController extends AnchorPane{
 				@Override
 				public void changed(ObservableValue<? extends Sessie> observable, Sessie oldValue,
 						Sessie newValue) {
-					lblStatistiek1.setText("Stat sessie 1");
-					lblStatistiek1Value.setText("test");
-					lblStatistiek2.setText("Stat sessie2");
-					lblStatistiek2Value.setText("test");
+					lblStatistiek1.setText("Aantal aanwezigen");
+					lblStatistiek1Value.setText("28");
+					lblStatistiek2.setText("Gemiddelde score");
+					lblStatistiek2Value.setText("3");
 				}
 			});
 
