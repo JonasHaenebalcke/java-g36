@@ -127,10 +127,10 @@ public class Sessie implements Serializable {
 	}
 
 	private void zetInschrijvingenOpen(boolean open) {
-		if (!open && statusSessie != StatusSessie.nietOpen)
-			throw new IllegalArgumentException("Sessie kan niet terug gesloten worden");
-		else
+		if (open && statusSessie == StatusSessie.nietOpen)
 			statusSessie = StatusSessie.InschrijvingenOpen;
+		else if (!open && statusSessie != StatusSessie.nietOpen)
+			throw new IllegalArgumentException("Sessie kan niet terug gesloten worden");
 	}
 
 	public boolean isInschrijvingenOpen() {
@@ -214,9 +214,9 @@ public class Sessie implements Serializable {
 	}
 
 	private void setEindDatum(LocalDateTime eindDatum) {
-		if (!(ChronoUnit.DAYS.between(startDatum.toLocalDate(), eindDatum.toLocalDate()) == 0
-				|| ChronoUnit.DAYS.between(startDatum.toLocalDate(), eindDatum.toLocalDate()) == 1))
-			throw new IllegalArgumentException("De einddatum moet op dezelfde dag of 1 dag na de startdatum liggen.");
+//		if (!(ChronoUnit.DAYS.between(startDatum.toLocalDate(), eindDatum.toLocalDate()) == 0
+//				|| ChronoUnit.DAYS.between(startDatum.toLocalDate(), eindDatum.toLocalDate()) == 1))
+//			throw new IllegalArgumentException("De einddatum moet op dezelfde dag of 1 dag na de startdatum liggen.");
 	}
 
 	private void setEindUur(LocalDateTime eindUur) {

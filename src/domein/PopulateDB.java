@@ -18,11 +18,11 @@ public class PopulateDB {
 
 		try {
 			gebruikerdao.insert(new Gebruiker("Katrien", "Maasens", "katrien.maasen@student.hogent.be", "123456km",
-					TypeGebruiker.Hoofdverantwoordelijke, Status.Actief, "", "123"));
+					TypeGebruiker.Hoofdverantwoordelijke, Status.Actief, ""));
 			gebruikerdao.insert(new Gebruiker("Lotte", "koekens", "lotte.koekens@hogent.be", "123478lk",
-					TypeGebruiker.Verantwoordelijke, Status.Actief, "", "123"));
+					TypeGebruiker.Verantwoordelijke, Status.Actief, ""));
 			gebruikerdao.insert(new Gebruiker("Tim", "timmers", "tim.timmers@hogent.be", "123468lk",
-					TypeGebruiker.Gebruiker, Status.Actief, "images/Lucas.png", "123"));
+					TypeGebruiker.Gebruiker, Status.Actief, "images/Lucas.png"));
 		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -57,7 +57,7 @@ public class SessieController {
 
 	public void wijzigSessie(Gebruiker verantwoordelijke, String titel, String lokaal, LocalDateTime startDatum,
 			LocalDateTime eindDatum, int capaciteit, String omschrijving, String gastspreker, boolean open) {
-		try {
+//		try {
 			GenericDaoJpa.startTransaction();
 
 			huidigeSessie.wijzigSessie(titel, lokaal, startDatum, eindDatum, capaciteit, omschrijving, gastspreker,
@@ -65,10 +65,10 @@ public class SessieController {
 
 			sessieRepo.update(huidigeSessie);
 			GenericDaoJpa.commitTransaction();
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-			throw new IllegalArgumentException("Er ging iets mis bij het opslaan van de gewijzigde sessie.");
-		}
+//		} catch (Exception e) {
+//			System.err.println(e.getMessage());
+//			throw new IllegalArgumentException("Er ging iets mis bij het opslaan van de gewijzigde sessie.");
+//		}
 	}
 
 	public void voegSessieToe(Gebruiker verantwoordelijke, String titel, String lokaal, LocalDateTime startDatum,
@@ -101,6 +101,7 @@ public class SessieController {
 			GenericDaoJpa.commitTransaction();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
+			throw new IllegalArgumentException("Er ging iets mis bij het verwijderen van de sessie");
 		}
 	}
 

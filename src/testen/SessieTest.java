@@ -23,7 +23,7 @@ public class SessieTest {
 	Gebruiker gebruiker;
 	
 	public SessieTest() throws NoSuchAlgorithmException, InvalidKeySpecException {
-		gebruiker = new Gebruiker("Rein", "Daelman", "rein@gmail.com", "752460rd", TypeGebruiker.Hoofdverantwoordelijke, Status.Actief, null, "123");
+		gebruiker = new Gebruiker("Rein", "Daelman", "rein@gmail.com", "752460rd", TypeGebruiker.Hoofdverantwoordelijke, Status.Actief, null);
 		sessie = new Sessie(gebruiker, "titel", "B1.012", LocalDateTime.now().plus(1, ChronoUnit.DAYS).plusMinutes(5), LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS).plusMinutes(5),
 				20, "omschrijving", "gastspreker");
 	}
@@ -164,7 +164,7 @@ public class SessieTest {
 	
 	@Test
 	public void wijzigSessie_capaciteit_slaagt() {
-		sessie.wijzigSessie("sessie 360 noscopes", "B1.012", LocalDateTime.now().plus(1, ChronoUnit.DAYS), LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS),
+		sessie.wijzigSessie("titel", "B1.012", LocalDateTime.now().plus(1, ChronoUnit.DAYS).plusMinutes(5), LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS).plusMinutes(5),
 					30, "omschrijving", "gastspreker", false);
 		Assertions.assertEquals(30, sessie.getCapaciteit());
 	}

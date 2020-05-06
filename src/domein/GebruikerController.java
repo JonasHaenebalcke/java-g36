@@ -46,27 +46,11 @@ public class GebruikerController {
 		return gebruikerObservableList;
 	}
 
-	/**
-	 * 
-	 * @param voornaam
-	 * @param familienaam
-	 * @param mailadres
-	 * @param gebruikersnaam
-	 * @param profielfoto
-	 */
 	public void voegToeGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam,
-			TypeGebruiker type, Status status, String profielfoto, String wachtwoord) {
+			TypeGebruiker type, Status status, String profielfoto, String wachtwoord) throws NoSuchAlgorithmException, InvalidKeySpecException {
 
 		Gebruiker gebruiker;
-		try {
-			gebruiker = new Gebruiker(voornaam, familienaam, mailadres, gebruikersnaam, type, status, profielfoto,
-					wachtwoord);
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-			throw new IllegalArgumentException("Er ging iets mis bij het maken van de gebruiker");
-		}
-//			gebruiker.setRandomGebruikerID();
-//			gebruiker.setPasswordHash(wachtwoord);
+			gebruiker = new Gebruiker(voornaam, familienaam, mailadres, gebruikersnaam, type, status, profielfoto);
 
 		if (geefGebruikersList().stream().map(Gebruiker::getGebruikersnaam).collect(Collectors.toList())
 				.contains(gebruiker.getGebruikersnaam()))
@@ -116,17 +100,17 @@ public class GebruikerController {
 		for (Gebruiker gebruiker : gebruikerList) {
 			if (gebruiker.getGebruikersnaam().equals(gebruikersnaam)) {
 
-				try {
+//				try {
 					GenericDaoJpa.startTransaction();
 					gebruiker.wijzigGebruiker(voornaam, familienaam, mailadres, type, status, profielfoto);
 					gebruikerRepo.update(gebruiker);
 					GenericDaoJpa.commitTransaction();
 					break;
-				} catch (Exception e) {
-					System.err.println(e.getMessage());
-					throw new IllegalArgumentException(
-							"Er ging iets fout bij het opslaan van de gewijzigde gebruiker.");
-				}
+//				} catch (Exception e) {
+//					System.err.println(e.getMessage());
+//					throw new IllegalArgumentException(
+//							"Er ging iets fout bij het opslaan van de gewijzigde gebruiker.");
+//				}
 			}
 		}
 	}

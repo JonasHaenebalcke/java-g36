@@ -21,7 +21,7 @@ public class GebruikerTest {
 
 	public GebruikerTest() {
 		try {
-			gebruiker = new Gebruiker("Lucas", "vdh", "lucas@Email.com", "123456lv", TypeGebruiker.Gebruiker, Status.Actief, null, "123");
+			gebruiker = new Gebruiker("Lucas", "vdh", "lucas@Email.com", "123456lv", TypeGebruiker.Gebruiker, Status.Actief, null);
 		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

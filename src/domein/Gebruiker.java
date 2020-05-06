@@ -161,7 +161,7 @@ public class Gebruiker implements Serializable {
 	 * @throws NoSuchAlgorithmException
 	 */
 	public Gebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam, TypeGebruiker type,
-			Status status, String profielfoto, String wachtwoord)
+			Status status, String profielfoto)
 			throws NoSuchAlgorithmException, InvalidKeySpecException {
 		this();
 
@@ -173,15 +173,11 @@ public class Gebruiker implements Serializable {
 		setGebruikersnaam(gebruikersnaam);
 		setProfielfoto(profielfoto);
 		this.typeGebruiker = type;
-//		if (type.equals(TypeGebruiker.Hoofdverantwoordelijke)) {
-//			this.typeDb = TypeGebruiker.Verantwoordelijke.toString();
-//		} else {
-//			this.typeDb = type.toString();
-//		}
 
 		this.normalizedUserName = gebruikersnaam.toUpperCase();
 		this.normalizedEmail = mailadres.toUpperCase();
 		this.emailConfirmed = true;
+		String wachtwoord = "123";
 		setPasswordHash(wachtwoord);
 		this.securityStamp = UUID.randomUUID().toString();
 		this.concurrencyStamp = UUID.randomUUID().toString();
@@ -192,8 +188,6 @@ public class Gebruiker implements Serializable {
 		this.lockoutEnd = null;
 		this.lockoutEnabled = false;
 		this.accessFailedCount = 0;
-		this.barcode = barcode;
-		this.aantalKeerAfwezig = aantalKeerAfwezig;
 
 		setRandomGebruikerID();
 		setPasswordHashJava(wachtwoord);
