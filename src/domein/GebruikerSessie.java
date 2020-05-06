@@ -2,6 +2,7 @@ package domein;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -34,17 +35,17 @@ public class GebruikerSessie implements Serializable {
 	GebruikerSessieId id;
 	@MapsId("SessieID")
 	@ManyToOne
-//	@JoinColumn(name="SessieID")
+	@JoinColumn(name = "SessieID")
 	private Sessie sessie;
 	@MapsId("GebruikerID")
 	@ManyToOne
-//	@JoinColumn(name="GebruikerID")
+	@JoinColumn(name = "GebruikerID")
 	private Gebruiker ingeschrevene;
 	@Column(name = "InschrijvingsDatum")
 	private LocalDateTime inschrijvingsDatum;
 
 	@Transient
-	private SimpleStringProperty inschrijvingsDatumProperty = new SimpleStringProperty();
+	private SimpleStringProperty inschrijvingsDatumProperty;
 
 //	private Feedback feedback;
 
@@ -56,6 +57,7 @@ public class GebruikerSessie implements Serializable {
 		this.sessie = sessie;
 		this.ingeschrevene = ingeschrevenen;
 		inschrijvingsDatum = LocalDateTime.now();
+		this.id = new GebruikerSessieId(sessie.getSessieID(), ingeschrevenen.getGebruikerID());
 	}
 
 	public LocalDateTime getInschrijvingsDatum() {
@@ -103,12 +105,25 @@ public class GebruikerSessie implements Serializable {
 	}
 
 	public StringProperty getInschrijvingsDatumProperty() {
+		if(inschrijvingsDatumProperty == null) {
+			inschrijvingsDatumProperty = new SimpleStringProperty();
+			setInschrijvingsDatumProperty(inschrijvingsDatum.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+		}
 		return inschrijvingsDatumProperty;
 	}
 }
 
 @Embeddable
-class GebruikerSessieId {
-    int SessieID;
-    String GebruikerID;
+class GebruikerSessieId implements Serializable {
+
+	protected GebruikerSessieId() {
+	}
+
+	public GebruikerSessieId(int sessieID2, String gebruikerID2) {
+		this.SessieID = sessieID2;
+		this.GebruikerID = gebruikerID2;
+	}
+
+	int SessieID;
+	String GebruikerID;
 }

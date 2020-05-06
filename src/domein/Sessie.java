@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -124,6 +125,10 @@ public class Sessie implements Serializable {
 				break;
 			}
 		}
+	}
+	
+	public int getSessieID() {
+		return sessieID;
 	}
 
 	private void zetInschrijvingenOpen(boolean open) {
@@ -358,6 +363,19 @@ public class Sessie implements Serializable {
 				throw new IllegalArgumentException("Gebruiker is al uitgeschreven voor deze sessie");
 		}
 
+	}
+	
+	public int geefAantalDeelnemers() {
+		return gebruikerSessieLijst.size();
+	}
+	
+	public int geefAantalAanwezigen() {
+		int res = 0;
+		for (GebruikerSessie gs : gebruikerSessieLijst) {
+			if(gs.isAanwezig())
+				res++;
+		}
+		return res;
 	}
 
 	public int geefGemiddeldeScore() {
