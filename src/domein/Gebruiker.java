@@ -161,8 +161,7 @@ public class Gebruiker implements Serializable {
 	 * @throws NoSuchAlgorithmException
 	 */
 	public Gebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam, TypeGebruiker type,
-			Status status, String profielfoto)
-			throws NoSuchAlgorithmException, InvalidKeySpecException {
+			Status status, String profielfoto) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		this();
 
 		setStatus(status);
@@ -199,6 +198,18 @@ public class Gebruiker implements Serializable {
 
 	public void setPasswordHashJava(String passwordHashJava) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		this.passwordHashJava = PasswordHasher.getPasswordHash(passwordHashJava);
+	}
+
+	public List<GebruikerSessie> getGebruikerSessieLijst() {
+		return gebruikerSessieLijst;
+	}
+
+	public void addGebruikerSessie(GebruikerSessie gebruikerSessie) {
+		gebruikerSessieLijst.add(gebruikerSessie);
+	}
+	
+	public void verwijderGebruikerSessie(GebruikerSessie gebruikerSessie) {
+		gebruikerSessieLijst.remove(gebruikerSessie);
 	}
 
 	public Status getStatus() {

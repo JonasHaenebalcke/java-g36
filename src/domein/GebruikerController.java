@@ -45,9 +45,13 @@ public class GebruikerController {
 		}
 		return gebruikerObservableList;
 	}
+	
+	public ObservableList<GebruikerSessie> geefGebruikerSessiesObservable(Gebruiker gebruiker) {
+		return FXCollections.observableArrayList(gebruiker.getGebruikerSessieLijst());
+	}
 
 	public void voegToeGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam,
-			TypeGebruiker type, Status status, String profielfoto, String wachtwoord) throws NoSuchAlgorithmException, InvalidKeySpecException {
+			TypeGebruiker type, Status status, String profielfoto) throws NoSuchAlgorithmException, InvalidKeySpecException {
 
 		Gebruiker gebruiker;
 			gebruiker = new Gebruiker(voornaam, familienaam, mailadres, gebruikersnaam, type, status, profielfoto);
