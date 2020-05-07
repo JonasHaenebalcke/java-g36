@@ -7,6 +7,7 @@ import javax.persistence.EntityNotFoundException;
 import repository.GebruikerDao;
 import repository.GebruikerDaoJpa;
 import repository.GenericDaoJpa;
+import javafx.beans.InvalidationListener;
 import javafx.collections.*;
 
 import java.security.NoSuchAlgorithmException;
@@ -46,8 +47,13 @@ public class GebruikerController {
 		return gebruikerObservableList;
 	}
 	
-	public ObservableList<GebruikerSessie> geefGebruikerSessiesObservable(Gebruiker gebruiker) {
-		return FXCollections.observableArrayList(gebruiker.getGebruikerSessieLijst());
+	public ObservableList<Sessie> geefSessiesGebruikerObservable(Gebruiker gebruiker) {
+		
+		List<Sessie> se = new ArrayList<Sessie>();
+		System.out.println(gebruiker);
+			
+		gebruiker.getGebruikerSessieLijst().forEach(sessie -> se.add(sessie.getSessie()));
+		return FXCollections.observableArrayList(se);
 	}
 
 	public void voegToeGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam,

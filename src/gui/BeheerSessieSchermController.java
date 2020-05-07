@@ -114,7 +114,7 @@ public class BeheerSessieSchermController extends AnchorPane {
 	@FXML
 	private Button btnBeherenIngeschrevenen;
 	@FXML
-	private Button btnBeherenHerringeringen;
+	private Button btnBeherenAankondigingen;
 
 	@FXML
 	private TextArea txtOmschrvijving;
@@ -213,7 +213,8 @@ public class BeheerSessieSchermController extends AnchorPane {
 
 				if (newV.getStatusSessie() == StatusSessie.open || newV.getStatusSessie() == StatusSessie.gesloten
 						|| newV.getEindDatum().isBefore(LocalDateTime.now())) {
-
+					
+					//System.out.println("FeedbackLijst:" + sessieObs.getValue().getFeedbackLijst()); // {IndirectList: not instantiated}
 					tvFeedback.setItems(FXCollections.observableArrayList(newV.getFeedbackLijst())
 							.sorted(Comparator.comparing(Feedback::getTimeWritten)));
 					colAuteurFeedback.setCellValueFactory(cel -> cel.getValue().getFeedbackAuteurProperty());
@@ -221,6 +222,9 @@ public class BeheerSessieSchermController extends AnchorPane {
 					colFeedback.setCellValueFactory(cel -> cel.getValue().getFeedbackProperty());
 					colDatumFeedback.setCellValueFactory(cel -> cel.getValue().getDatumFeedbackroperty());
 					lblGemiddeldeScore.setVisible(true);
+					lblFeedback.setVisible(true);
+					tvFeedback.setVisible(true);
+					lblGemiddeldeScoreWergave.setVisible(true);
 					lblGemiddeldeScoreWergave.setText(Integer.toString(newV.geefGemiddeldeScore()));
 				} else {
 					lblFeedback.setVisible(false);
@@ -331,10 +335,9 @@ public class BeheerSessieSchermController extends AnchorPane {
 				// if(txtStartuur.getText().matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$") &&
 				// txtEinduur.getText().matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$")) {
 
-				// Boolean isOpenVrInschrijvingen = checkboxOpenVrInSchrijvingen.isSelected();
 				// bij nieuwe sessie is de ingelogde persoon ge verantwoordelijke
-
-				sc.voegSessieToe(ingelogde.geefIngelogdeVerantwoordelijke(), txtTitel.getText(), txtLokaal.getText(),
+				//System.out.println("Ingelogde: " + ingelogde.geefIngelogdeVerantwoordelijke());
+				sc.voegSessieToe(/*ingelogde.geefIngelogdeVerantwoordelijke()*/ verantwoordelijke, txtTitel.getText(), txtLokaal.getText(),
 						zetOmNaarDateTime(dpStartdatum.getValue(), txtStartuur.getText()),
 						zetOmNaarDateTime(dpEinddatum.getValue(), txtEinduur.getText()),
 						Integer.parseInt(txtCapaciteit.getText()), txtOmschrvijving.getText(),
@@ -399,10 +402,11 @@ public class BeheerSessieSchermController extends AnchorPane {
 	}
 
 	@FXML
-	void beherenHerinneringen(ActionEvent event) {
+	void beherenAankondigingen(ActionEvent event) {
 		Sessie sessie = tblSessies.getSelectionModel().getSelectedItem();
 		sc.setHuidigeSessie(sessie);
-		// .. nog code toevoegen om naar anders scherm te verwijzen
+		AankondigingenSchermController asc = new AankondigingenSchermController(sc);
+		this.getChildren().setAll(asc);
 	}
 
 	@FXML
@@ -412,15 +416,17 @@ public class BeheerSessieSchermController extends AnchorPane {
 		dpEinddatum.setValue(null);
 		dpStartdatum.setValue(null);
 
-		btnBeherenHerringeringen.setDisable(true);
+		btnBeherenAankondigingen.setDisable(true);
 		btnBeherenIngeschrevenen.setDisable(true);
 		checkboxOpenVrInSchrijvingen.setSelected(false);
 		btnVoegToe.setDisable(false);
 		btnPasAan.setDisable(true);
 		btnVerwijder.setDisable(true);
 		tvFeedback.setVisible(false);
+		lblFeedback.setVisible(false);
 		lblGemiddeldeScoreWergave.setVisible(false);
 		lblGemiddeldeScore.setVisible(false);
+		lblSucces.setVisible(false);
 	}
 
 	private LocalDateTime zetOmNaarDateTime(LocalDate datum, String uur) {

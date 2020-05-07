@@ -92,7 +92,7 @@
             </Label>
             <Label layoutX="41.0" layoutY="535.0" prefHeight="18.0" prefWidth="204.0" text="Sessie openzetten voor inschrijvingen" />
             <CheckBox fx:id="checkboxOpenVrInSchrijvingen" layoutX="251.0" layoutY="535.0" mnemonicParsing="false" />
-            <Button fx:id="btnBeherenHerringeringen" layoutX="230.0" layoutY="569.0" mnemonicParsing="false" onAction="#beherenHerinneringen" prefHeight="26.0" prefWidth="149.0" text="Beheren herinneringen" />
+            <Button fx:id="btnBeherenAankondigingen" layoutX="230.0" layoutY="569.0" mnemonicParsing="false" onAction="#beherenAankondigingen" prefHeight="26.0" prefWidth="149.0" text="Beheren aankondigingen" />
             <Label fx:id="lblGemiddeldeScore" layoutX="705.0" layoutY="304.0" prefHeight="18.0" prefWidth="105.0" text="Gemiddelde score: " />
             <Label fx:id="lblGemiddeldeScoreWergave" layoutX="811.0" layoutY="303.0" prefHeight="18.0" prefWidth="58.0" />
             <Label fx:id="lblVerantwoordelijke" layoutX="150.0" layoutY="211.0" prefHeight="18.0" prefWidth="232.0" />

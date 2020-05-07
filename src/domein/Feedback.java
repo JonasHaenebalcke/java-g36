@@ -22,7 +22,7 @@ import javafx.beans.property.StringProperty;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "GebruikerSessie")
+@Table(name = "Feedback")
 public class Feedback implements Serializable{
 
 	@Id

@@ -159,7 +159,7 @@ public class BeherenIngeschrevenenSchermController extends AnchorPane {
  	            @Override
  	            public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<GebruikerSessie, Boolean> gs) {
  	              Boolean b ;
- 	            	if(gs.getValue().getIngeschrevene().getVoornaam().equals("Rein")) {
+ 	            	if(gs.getValue().isAanwezig()) {//  .getIngeschrevene().getVoornaam().equals("Rein")) {
  	                	b= true;
  	                } else {
  	                	b=false;
@@ -178,16 +178,51 @@ public class BeherenIngeschrevenenSchermController extends AnchorPane {
 			
 			 tcIngeschreven.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<GebruikerSessie, Boolean>, ObservableValue<Boolean>>() {
  	            @Override
+ 	            
  	            public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<GebruikerSessie, Boolean> gs) {
- 	                return new SimpleBooleanProperty(true);
+// 	                return new SimpleBooleanProperty(true);
+ 	            	Boolean b ;
+ 	            	if(gs.getValue() != null) {//  .getIngeschrevene().getVoornaam().equals("Rein")) {
+ 	                	b= true;
+ 	                } else {
+ 	                	b=false;
+ 	                }
+ 	            	return new SimpleBooleanProperty(b);
  	            }
  	        });
 
 			}
 		});
 		
-	//	tvIngeschrevenen.getSelectionModel().selectedItemProperty().addListener();
+		txtWaardeInvullenGebruikerGekozen();
 	
+	}
+
+	private void txtWaardeInvullenGebruikerGekozen() {
+//		tvIngeschrevenen.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Gebruiker>() {
+//
+//			@Override
+//			public void changed(ObservableValue<? extends Gebruiker> gebruikerObs, Gebruiker oldV, Gebruiker newV) {
+//				tvSessies.setItems(gc.geefSessiesGebruikerObservable(newV));
+//				colTitelSessie.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
+//				colStartSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
+//				ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
+//			}
+//		});
+		tvIngeschrevenen.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<GebruikerSessie>() {
+			
+			@Override
+			public void changed(ObservableValue<? extends GebruikerSessie> gebruikerObs, GebruikerSessie oldV, GebruikerSessie newV) {
+				System.out.println("selected: "+tvIngeschrevenen.getSelectionModel().getSelectedItem().getIngeschrevene());
+				System.out.println("Gebruiker: " + newV.getIngeschrevene());
+				System.out.println("lijst: "+ gc.geefSessiesGebruikerObservable(newV.getIngeschrevene()));
+				tvSessies.setItems(gc.geefSessiesGebruikerObservable(newV.getIngeschrevene()));
+				colTitelSessie.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
+				colStartSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
+				ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
+			}
+		});
+		
 	}
 
 	@FXML
