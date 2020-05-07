@@ -213,6 +213,7 @@ public class SessieKalenderSchermController extends AnchorPane {
 			colStartDatumSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
 			colEindDatumSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
 		} catch (Exception e) {
+			tblSessies.getItems().clear();
 			lblErrorSessies.setVisible(true);
 			lblErrorSessies.setText(e.getMessage());
 		}
@@ -244,9 +245,9 @@ public class SessieKalenderSchermController extends AnchorPane {
 				}
 			});
 		} catch (Exception e) {
-			tblSessies.setItems(null);
 			lblErrorSessies.setVisible(true);
 			lblErrorSessies.setText(e.getMessage());
+			System.err.println(e.getMessage());
 		}
 	}
 
