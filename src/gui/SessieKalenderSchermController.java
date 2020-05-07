@@ -326,13 +326,16 @@ public class SessieKalenderSchermController extends AnchorPane {
 
 	@FXML
 	public void beheerSessie(ActionEvent event) {
-		System.out.println("beheer sessie");    
 		Sessie sessie = tblSessies.getSelectionModel().getSelectedItem();
-		Scene scene = new Scene(new BeheerSessieSchermController(this.sc, sessie));
-    	Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		stage.setTitle("IT LAB");
-		stage.setScene(scene);
-		stage.show();
+		this.getChildren().setAll(new BeheerSessieSchermController(this.sc, sessie));
+		
+//		System.out.println("beheer sessie");    
+//		Sessie sessie = tblSessies.getSelectionModel().getSelectedItem();
+//		Scene scene = new Scene(new BeheerSessieSchermController(this.sc, sessie));
+//    	Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//		stage.setTitle("IT LAB");
+//		stage.setScene(scene);
+//		stage.show();
 	}
 
 //	@FXML
