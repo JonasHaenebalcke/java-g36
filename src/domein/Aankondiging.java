@@ -59,18 +59,18 @@ public class Aankondiging implements Serializable{
 		if(sessie==null) {
 			throw new IllegalArgumentException("Sessie moet ingevuld zijn");
 		}
-		this.sessie = sessie;
-		
+		this.sessie = sessie;	
 	}
 
 	public Sessie getSessie() {
 		return sessie;
 	}
+	
 	public boolean isVerzonden() {
 		return isVerzonden;
 	}
 
-	public void setVerzonden(boolean isVerzonden) {
+	private void setVerzonden(boolean isVerzonden) {
 		if(this.isVerzonden) {
 			throw new IllegalArgumentException("Aankondiging is al verzonden");
 		}
@@ -81,7 +81,7 @@ public class Aankondiging implements Serializable{
 		return titel;
 	}
 
-	public void setTitel(String titel) {
+	private void setTitel(String titel) {
 		if(titel == null || titel.isBlank()) {
 			throw new IllegalArgumentException("Gelieve de titel in te vullen!");
 		}
@@ -92,7 +92,7 @@ public class Aankondiging implements Serializable{
 		return aankondingingTekst;
 	}
 
-	public void setAankondingingTekst(String aankondingingTekst) {
+	private void setAankondingingTekst(String aankondingingTekst) {
 		if(aankondingingTekst == null || aankondingingTekst.isBlank()) {
 		throw new IllegalArgumentException("Gelieve je aankondiging in te vullen!");
 	}
@@ -107,11 +107,21 @@ public class Aankondiging implements Serializable{
 		return publicist;
 	}
 
-	public void setPublicist(Gebruiker publicist) {
+	private void setPublicist(Gebruiker publicist) {
 		if(publicist==null) {
 			throw new IllegalArgumentException("Gelieve een publicist mee te geven");
 		}
 		this.publicist = publicist;
+	}
+	
+	public void wijzigAankondiging(String titel, String aankondigingTekst, boolean isVerzonden) {
+		if(isVerzonden) {
+			throw new IllegalArgumentException("Je kan de aankondiging niet meer aanpassen, want hij is al verzonden");
+		} else {
+			setTitel(titel);
+			setAankondingingTekst(aankondigingTekst);
+			setVerzonden(isVerzonden);
+		}
 	}
 
 	@Override
