@@ -225,10 +225,14 @@ public class GebruikersSchermController extends AnchorPane {
 
 	void initializeList() {
 		tvGebruikers.setItems(dc.geefGebruikersObservableList());
-		colNaam.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getFamilienaam()));
-		colVoornaam.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getVoornaam()));
-		colEmail.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getMailadres()));
-		colType.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getType().toString()));
+		try {
+			colNaam.setCellValueFactory(cel -> cel.getValue().getNaamProperty());
+			colVoornaam.setCellValueFactory(cel -> cel.getValue().getVoorNaamProperty());
+			colEmail.setCellValueFactory(cel -> cel.getValue().getEmailProperty());
+			colType.setCellValueFactory(cel -> cel.getValue().getTypeProperty());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 

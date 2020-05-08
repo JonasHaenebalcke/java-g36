@@ -115,7 +115,16 @@ public class Gebruiker implements Serializable {
 //	@Transient
 	@OneToMany(mappedBy = "auteur")
 	private List<Feedback> feedbackLijst;
-
+	
+	@Transient
+	private SimpleStringProperty voorNaamProperty;
+	@Transient
+	private SimpleStringProperty naamProperty;
+	@Transient
+	private SimpleStringProperty typeProperty;
+	@Transient
+	private SimpleStringProperty emailProperty;
+	
 	// Methodes voor Enums te mappen
 	@PostLoad
 	public void fillTransient() {
@@ -190,8 +199,64 @@ public class Gebruiker implements Serializable {
 
 		setRandomGebruikerID();
 		setPasswordHashJava(wachtwoord);
+		setStringProperties();
 	}
 
+	public StringProperty getVoorNaamProperty() {
+		if (voorNaamProperty == null) {
+			voorNaamProperty = new SimpleStringProperty();
+			setVoorNaamProperty();
+		}
+		return voorNaamProperty;
+	}
+
+	private void setVoorNaamProperty() {
+		voorNaamProperty.set(getVoornaam());
+	}
+
+	public StringProperty getNaamProperty() {
+		if (naamProperty == null) {
+			naamProperty = new SimpleStringProperty();
+			setNaamProperty();
+		}
+		return naamProperty;
+	}
+
+	private void setNaamProperty() {
+		naamProperty.set(getVoornaam());
+	}
+
+	public StringProperty getTypeProperty() {
+		if (typeProperty == null) {
+			typeProperty = new SimpleStringProperty();
+			setTypeProperty();
+		}
+		return typeProperty;
+	}
+
+	private void setTypeProperty() {
+		typeProperty.set(getType().toString());
+		}
+
+	public StringProperty getEmailProperty() {
+		if (emailProperty == null) {
+			emailProperty = new SimpleStringProperty();
+			setEmailProperty();
+		}
+		return emailProperty;
+	}
+
+	private void setEmailProperty() {
+		emailProperty.set(getMailadres());
+	}
+	
+	private void setStringProperties() {
+		setNaamProperty();
+		setVoorNaamProperty();
+		setTypeProperty();
+		setEmailProperty();
+	}
+	
 	public String getPasswordHashJava() {
 		return passwordHashJava;
 	}
@@ -339,6 +404,8 @@ public class Gebruiker implements Serializable {
 		setFamilienaam(familienaam);
 		setMailadres(mailadres);
 		setProfielfoto(profielfoto);
+		
+		setStringProperties();
 	}
 
 	public int getStatusValue() {
@@ -492,6 +559,10 @@ public class Gebruiker implements Serializable {
 		 * ", voornaam=" + voornaam + ", familienaam=" + familienaam + ", mailadres=" +
 		 * mailadres + ", profielFoto=" + profielFoto + "]";
 		 */
+	}
+
+	public void addFeedback(Feedback feedback) {
+		feedbackLijst.add(feedback);
 	}
 
 //	@Override

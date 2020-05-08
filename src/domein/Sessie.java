@@ -69,12 +69,11 @@ public class Sessie implements Serializable {
 	private SessieKalender sessieKalender;
 
 	@Transient
-	private SimpleStringProperty titelProperty = new SimpleStringProperty();
-
+	private SimpleStringProperty titelProperty;
 	@Transient
-	private SimpleStringProperty startDatumSessieProperty = new SimpleStringProperty();
+	private SimpleStringProperty startDatumSessieProperty;
 	@Transient
-	private SimpleStringProperty eindDatumSessieProperty = new SimpleStringProperty();
+	private SimpleStringProperty eindDatumSessieProperty;
 
 	protected Sessie() {
 		gebruikerSessieLijst = new ArrayList<GebruikerSessie>();
@@ -113,7 +112,9 @@ public class Sessie implements Serializable {
 	}
 
 	public void addFeedback(Gebruiker auteur, String content, int score) {
-		feedbackLijst.add(new Feedback(auteur, this, content, score));
+		Feedback feedback = new Feedback(auteur, this, content, score);
+		feedbackLijst.add(feedback);
+		auteur.addFeedback(feedback);
 	}
 
 	public void wijzigFeedback(int feedbackID, String content, int score) {
@@ -345,6 +346,7 @@ public class Sessie implements Serializable {
 				if (ingeschreven)
 					gebruikerSessie.wijzigAanwezigheid(aanwezig);
 				else
+					ingeschrevene.verwijderGebruikerSessie(gebruikerSessie);
 					gebruikerSessieLijst.remove(gebruikerSessie);
 				break;
 			}
@@ -353,6 +355,7 @@ public class Sessie implements Serializable {
 			if (ingeschreven) {
 				GebruikerSessie gebruikerSessie = new GebruikerSessie(this, ingeschrevene);
 				gebruikerSessie.wijzigAanwezigheid(aanwezig);
+				ingeschrevene.addGebruikerSessie(gebruikerSessie);
 				gebruikerSessieLijst.add(gebruikerSessie);
 			} else
 				throw new IllegalArgumentException("Gebruiker is al uitgeschreven voor deze sessie");

@@ -41,7 +41,7 @@ public class AankondigingController {
 		this.gekozenAankondiging = aankondiging;
 	}
 
-	public void wijzigAankondiding(String titel, String aankondiging, boolean isVerzonden) {
+	public void wijzigAankondiging(String titel, String aankondiging, boolean isVerzonden) {
 		try {
 			
 

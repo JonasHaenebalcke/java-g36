@@ -35,7 +35,6 @@ public class SessieController {
 	public List<Sessie> geefSessies() {
 		if (sessieLijst == null) {
 			sessieLijst = sessieRepo.findAll();
-			sessieLijst.forEach(sessie -> sessie.setStringProperties());
 		}
 		return sessieLijst;
 	}
