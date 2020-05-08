@@ -5,6 +5,7 @@ import java.util.*;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import repository.GenericDao;
 import repository.GenericDaoJpa;
 
@@ -15,6 +16,7 @@ public class SessieController {
 	private GebruikerController gc;
 	private ObservableList<Sessie> sessieObservableList;
 	private GenericDao<Sessie> sessieRepo;
+	private FilteredList<Sessie> sessieFilteredLijst;
 
 	public SessieController() {
 		gc = new GebruikerController();
@@ -41,14 +43,18 @@ public class SessieController {
 	public ObservableList<Sessie> geefSessiesObservable() {
 		if (sessieObservableList == null) {
 			sessieObservableList = FXCollections.observableArrayList(geefSessies());
-
 		}
-		System.out.println(sessieObservableList);
 		return sessieObservableList;
 	}
 
+	public FilteredList<Sessie> geefSessiesFiltered() {
+		if (sessieFilteredLijst == null) {
+			sessieFilteredLijst = new FilteredList<>(geefSessiesObservable(), p -> true);
+		}
+		return sessieFilteredLijst;
+	}
+
 	public ObservableList<GebruikerSessie> geefGebruikerSessiesObservable() {
-		
 		return FXCollections.observableArrayList(huidigeSessie.getGebruikerSessieLijst());
 	}
 
@@ -56,20 +62,16 @@ public class SessieController {
 		this.huidigeSessie = sessie;
 	}
 
-	public void wijzigSessie(/*Gebruiker verantwoordelijke,*/ String titel, String lokaal, LocalDateTime startDatum,
-			LocalDateTime eindDatum, int capaciteit, String omschrijving, String gastspreker, boolean open) {
+	public void wijzigSessie(String titel, String lokaal, LocalDateTime startDatum, LocalDateTime eindDatum,
+			int capaciteit, String omschrijving, String gastspreker, boolean open) {
+		huidigeSessie.wijzigSessie(titel, lokaal, startDatum, eindDatum, capaciteit, omschrijving, gastspreker, open);
 		try {
-			//GenericDaoJpa.startTransaction();
-
-			huidigeSessie.wijzigSessie(titel, lokaal, startDatum, eindDatum, capaciteit, omschrijving, gastspreker,
-					open);
 			GenericDaoJpa.startTransaction();
 			sessieRepo.update(huidigeSessie);
 			GenericDaoJpa.commitTransaction();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
-			throw new IllegalArgumentException(e.getMessage());
-		//	throw new IllegalArgumentException("Er ging iets mis bij het opslaan van de gewijzigde sessie.");
+			throw new IllegalArgumentException("Er ging iets mis bij het opslaan van de gewijzigde sessie.");
 		}
 	}
 

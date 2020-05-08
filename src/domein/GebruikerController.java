@@ -4,28 +4,24 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
-import repository.GebruikerDao;
-import repository.GebruikerDaoJpa;
+import repository.GenericDao;
 import repository.GenericDaoJpa;
 import javafx.beans.InvalidationListener;
 import javafx.collections.*;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-//import java.beans.PropertyChangeEvent;
-//import java.beans.PropertyChangeListener;
-//import java.beans.PropertyChangeSupport;
 import java.util.*;
 
 public class GebruikerController {
 
 	private ObservableList<Gebruiker> gebruikerObservableList;
 	private List<Gebruiker> gebruikerList;
-	private GebruikerDao gebruikerRepo;
+	private GenericDao gebruikerRepo;
 	private Gebruiker ingelogdeVerantwoordelijke;
 
 	public GebruikerController() {
-		setGebruikerRepo(new GebruikerDaoJpa());
+		setGebruikerRepo(new GenericDaoJpa(Gebruiker.class));
 		geefGebruikersList();
 	}
 
@@ -37,7 +33,7 @@ public class GebruikerController {
 		this.ingelogdeVerantwoordelijke = ingelogdeVerantwoordelijke;
 	}
 
-	public void setGebruikerRepo(GebruikerDao mock) {
+	public void setGebruikerRepo(GenericDaoJpa mock) {
 		gebruikerRepo = mock;
 	}
 

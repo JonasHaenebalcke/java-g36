@@ -6,15 +6,13 @@ import java.time.LocalDate;
 import java.util.Date;
 
 
-import repository.GebruikerDaoJpa;
+import repository.GenericDao;
 import repository.GenericDaoJpa;
-import repository.SessieKalenderDao;
-import repository.SessieKalenderDaoJpa;
 
 public class PopulateDB {
 	public void run() {
-		GebruikerDaoJpa gebruikerdao = new GebruikerDaoJpa();
-		GebruikerDaoJpa.startTransaction();
+		GenericDao gebruikerdao = new GenericDaoJpa(Gebruiker.class);
+		GenericDaoJpa.startTransaction();
 
 		try {
 			gebruikerdao.insert(new Gebruiker("Katrien", "Maasens", "katrien.maasen@student.hogent.be", "123456km",
@@ -24,16 +22,15 @@ public class PopulateDB {
 			gebruikerdao.insert(new Gebruiker("Tim", "timmers", "tim.timmers@hogent.be", "123468lk",
 					TypeGebruiker.Gebruiker, Status.Actief, "images/Lucas.png"));
 		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		GebruikerDaoJpa.commitTransaction();
+		GenericDaoJpa.commitTransaction();
 		
 		
 		
-		SessieKalenderDaoJpa skdao = new SessieKalenderDaoJpa();
-		SessieKalenderDaoJpa.startTransaction();
+		GenericDao skdao = new GenericDaoJpa(SessieKalender.class);
+		GenericDaoJpa.startTransaction();
 		try {
 //			SessieKalender sk1 = new SessieKalender(LocalDate.of(2019, 9, 25), LocalDate.of(2020, 6, 15), true);
 			SessieKalender sk2 = new SessieKalender(LocalDate.of(2020, 9, 25), LocalDate.of(2021, 6, 15), true);
@@ -45,6 +42,6 @@ public class PopulateDB {
 		} catch(Exception e) {
 			System.err.println(e.toString());
 		}
-		SessieKalenderDaoJpa.commitTransaction();
+		GenericDaoJpa.commitTransaction();
 	}
 }

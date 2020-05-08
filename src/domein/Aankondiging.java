@@ -115,7 +115,7 @@ public class Aankondiging implements Serializable{
 	}
 	
 	public void wijzigAankondiging(String titel, String aankondigingTekst, boolean isVerzonden) {
-		if(isVerzonden) {
+		if(this.isVerzonden) {
 			throw new IllegalArgumentException("Je kan de aankondiging niet meer aanpassen, want hij is al verzonden");
 		} else {
 			setTitel(titel);

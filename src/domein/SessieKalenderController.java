@@ -9,25 +9,19 @@ import javax.persistence.EntityNotFoundException;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import repository.GenericDao;
 import repository.GenericDaoJpa;
-import repository.SessieKalenderDao;
-import repository.SessieKalenderDaoJpa;
 
 public class SessieKalenderController {
 
 	private List<SessieKalender> sessieKalenderList;
 	private ObservableList<SessieKalender> sessieKalenderObservableList;
-	private SessieKalenderDao sessieKalenderRepo;
+	private GenericDao sessieKalenderRepo;
 	private SessieKalender huidigeSessieKalender;
-
-	/*
-	 * public SessieKalenderDao getSessieKalenderRepo() { return
-	 * this.sessieKalenderRepo; }
-	 */
 
 	public SessieKalenderController() {
 
-		setSessieRepo(new SessieKalenderDaoJpa());
+		setSessieRepo(new GenericDaoJpa(SessieKalender.class));
 
 		for (SessieKalender sk : geefSessieKalenderList()) {
 			if (sk.getStartDatum().isBefore(LocalDate.now()) && sk.getEindDatum().isAfter(LocalDate.now())) {
@@ -38,7 +32,7 @@ public class SessieKalenderController {
 		}
 	}
 
-	public void setSessieRepo(SessieKalenderDao mock) {
+	public void setSessieRepo(GenericDaoJpa mock) {
 		this.sessieKalenderRepo = mock;
 	}
 
