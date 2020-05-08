@@ -14,11 +14,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 
 public class MenuController extends BorderPane {
 
 	@FXML
-	private AnchorPane scherm;
+	private GridPane scherm;
 
 	@FXML
 	private Button btnGebruikersBeheren;
@@ -94,6 +95,9 @@ public class MenuController extends BorderPane {
 				this.sc);
 		scherm.getChildren().setAll(bIngeschrevenenScherm);
 	}
+	   
+	
+	    
 
 	@FXML
 	void statistieken(ActionEvent event) throws IOException {

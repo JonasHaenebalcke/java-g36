@@ -24,8 +24,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 
-public class GebruikersSchermController extends AnchorPane {
+public class GebruikersSchermController extends GridPane {
 
 	@FXML
 	private Button btnVoegToe;

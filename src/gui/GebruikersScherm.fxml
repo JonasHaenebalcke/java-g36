@@ -8,57 +8,137 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1320.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GebruikersSchermController">
+<GridPane minHeight="500.0" minWidth="800.0" prefHeight="700.0" prefWidth="1320.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GebruikersSchermController">
+  <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
+    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="70.0" prefWidth="100.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
+    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="25.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" percentHeight="80.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+  </rowConstraints>
    <children>
-      <AnchorPane prefHeight="698.0" prefWidth="834.0">
+      <TableView fx:id="tvGebruikers" prefHeight="528.0" prefWidth="771.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <columns>
+          <TableColumn fx:id="colNaam" prefWidth="129.79888343811035" text="Naam" />
+          <TableColumn fx:id="colVoornaam" minWidth="0.0" prefWidth="142.201171875" text="Voornaam" />
+            <TableColumn fx:id="colEmail" prefWidth="347.2010803222656" text="E-mail" />
+            <TableColumn fx:id="colType" prefWidth="150.2989501953125" text="Type" />
+        </columns>
+      </TableView>
+      <Label text="Gebruikers" GridPane.columnIndex="1">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnGebruikerToevoegen" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#voegGebruikerToeBtn" text="Gebruiker toevoegen" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <GridPane prefHeight="535.0" prefWidth="307.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+        <columnConstraints>
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" percentHeight="40.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
          <children>
-            <Label layoutX="355.0" layoutY="30.0" text="Gebruikers">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <TableView fx:id="tvGebruikers" layoutX="25.0" layoutY="67.0" prefHeight="528.0" prefWidth="771.0">
-              <columns>
-                <TableColumn fx:id="colNaam" prefWidth="129.79888343811035" text="Naam" />
-                <TableColumn fx:id="colVoornaam" minWidth="0.0" prefWidth="142.201171875" text="Voornaam" />
-                  <TableColumn fx:id="colEmail" prefWidth="347.2010803222656" text="E-mail" />
-                  <TableColumn fx:id="colType" prefWidth="150.2989501953125" text="Type" />
-              </columns>
-            </TableView>
-            <Button fx:id="btnGebruikerToevoegen" layoutX="333.0" layoutY="625.0" mnemonicParsing="false" onAction="#voegGebruikerToeBtn" text="Gebruiker toevoegen" />
-         </children>
-      </AnchorPane>
-      <AnchorPane layoutX="814.0" layoutY="2.0" prefHeight="700.0" prefWidth="459.0">
-         <children>
-            <TextField fx:id="inputNaam" layoutX="113.0" layoutY="272.0" prefHeight="27.0" prefWidth="133.0" promptText="Naam" />
-            <TextField fx:id="inputVoornaam" layoutX="258.0" layoutY="272.0" prefHeight="27.0" prefWidth="126.0" promptText="Voornaam" />
-            <TextField fx:id="inputEmail" layoutX="113.0" layoutY="327.0" prefHeight="27.0" prefWidth="270.0" promptText="E-mail" />
-            <TextField fx:id="inputGebruikersnaam" layoutX="113.0" layoutY="382.0" prefHeight="27.0" prefWidth="270.0" promptText="Gebruikersnaam" />
-            <ComboBox fx:id="cbxType" layoutX="113.0" layoutY="482.0" prefHeight="27.0" prefWidth="133.0" promptText="Type" />
-            <ComboBox fx:id="cbxStatus" layoutX="258.0" layoutY="482.0" prefHeight="27.0" prefWidth="126.0" promptText="Status" />
-             
-            <Label fx:id="lblTitle" layoutX="159.0" layoutY="77.0" text="Gebruiker aanpassen">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <ImageView fx:id="imageProfielfoto" fitHeight="105.0" fitWidth="126.0" layoutX="190.0" layoutY="129.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imageProfielfoto" fitHeight="105.0" fitWidth="126.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/default-user.png" />
                </image>
             </ImageView>
-            <Button fx:id="btnPasAan" layoutX="125.0" layoutY="540.0" mnemonicParsing="false" onAction="#pasGebruikerAan" text="Pas aan" />
-            <Button fx:id="btnVerwijder" layoutX="301.0" layoutY="540.0" mnemonicParsing="false" onAction="#verwijderGebruiker" text="Verwijder" />
-            <Button fx:id="btnVoegToe" layoutX="208.0" layoutY="540.0" mnemonicParsing="false" onAction="#voegGebruikerToe" text="Voeg Toe" />
-            <Label fx:id="lblError" layoutX="110.0" layoutY="538.0" prefHeight="17.0" prefWidth="270.0" textFill="RED" />
-            <Label layoutX="113.0" layoutY="255.0" text="Familienaam" />
-            <Label layoutX="258.0" layoutY="255.0" text="Voornaam" />
-            <Label layoutX="113.0" layoutY="310.0" text="Mailadres" />
-            <Label layoutX="113.0" layoutY="365.0" text="Gebruikersnaam" />
+            <GridPane prefWidth="244.0" GridPane.rowIndex="1">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="7.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Familienaam" />
+                  <Label text="Voornaam" GridPane.columnIndex="2" />
+                  <TextField fx:id="inputNaam" prefHeight="27.0" prefWidth="135.0" promptText="Naam" GridPane.rowIndex="1" />
+                  <TextField fx:id="inputVoornaam" prefHeight="27.0" prefWidth="135.0" promptText="Voornaam" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+            <GridPane GridPane.rowIndex="2">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Mailadres" />
+                  <TextField fx:id="inputEmail" prefHeight="27.0" prefWidth="270.0" promptText="E-mail" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+            <GridPane GridPane.rowIndex="3">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Gebruikersnaam" />
+                  <TextField fx:id="inputGebruikersnaam" prefHeight="27.0" prefWidth="270.0" promptText="Gebruikersnaam" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+            <GridPane GridPane.rowIndex="4">
+              <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="7.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <ComboBox fx:id="cbxType" prefHeight="27.0" prefWidth="150.0" promptText="Type" />
+                  <ComboBox fx:id="cbxStatus" prefHeight="27.0" prefWidth="150.0" promptText="Status" GridPane.columnIndex="2" />
+               </children>
+            </GridPane>
+            <GridPane GridPane.rowIndex="5">
+              <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button fx:id="btnPasAan" mnemonicParsing="false" onAction="#pasGebruikerAan" text="Pas aan" />
+                  <Button fx:id="btnVoegToe" mnemonicParsing="false" onAction="#voegGebruikerToe" text="Voeg Toe" GridPane.columnIndex="1" />
+                  <Button fx:id="btnVerwijder" mnemonicParsing="false" onAction="#verwijderGebruiker" text="Verwijder" GridPane.columnIndex="2" />
+               </children>
+            </GridPane>
          </children>
-      </AnchorPane>
+      </GridPane>
+      <Label fx:id="lblError" contentDisplay="CENTER" prefHeight="37.0" prefWidth="356.0" textAlignment="CENTER" textFill="RED" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+       
+                              <Label fx:id="lblTitle" text="Gebruiker aanpassen" GridPane.columnIndex="3">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
    </children>
-</AnchorPane>
+</GridPane>
