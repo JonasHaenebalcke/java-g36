@@ -57,6 +57,25 @@ public class SessieController {
 		return FXCollections.observableArrayList(huidigeSessie.getGebruikerSessieLijst());
 	}
 
+	public void changeFilter(String filter, StatusSessie status) {
+		sessieFilteredLijst.setPredicate(sessie -> {
+			if ((filter == null || filter.isBlank()) && status == null)
+				return true;
+			String lowercase = filter.toLowerCase();
+			return ((sessie.getTitel().toLowerCase().contains(lowercase)
+					|| sessie.getVerantwoordelijke().getVoornaam().toLowerCase().contains(lowercase)
+					|| sessie.getVerantwoordelijke().getFamilienaam().toLowerCase().contains(lowercase)
+					|| sessie.getGastspreker().toLowerCase().contains(lowercase)
+					|| sessie.getEindDatum().toString().toLowerCase().contains(lowercase)
+					|| sessie.getStartDatum().toString().toLowerCase().contains(lowercase)
+					)
+					&&
+					sessie.getStatusSessie() == status
+					)
+					;
+		});
+	}
+
 	public void setHuidigeSessie(Sessie sessie) {
 		this.huidigeSessie = sessie;
 	}
