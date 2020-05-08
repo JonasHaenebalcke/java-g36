@@ -19,13 +19,13 @@ public class StartUp extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		PopulateDB populatedb = new PopulateDB();
-//		populatedb.run(); //Als ge db wilt resetten, moet ge eerst dotnet runnen
+//		populatedb.run(); // Als ge db wilt resetten, moet ge eerst dotnet runnen
 		GebruikerController gc = new GebruikerController();
 		SessieKalenderController skc = new SessieKalenderController();
 		SessieController sc = new SessieController(gc);
-		gc.geefGebruikersList().forEach(g -> System.out.println(g.toString()));
+//		gc.geefGebruikersList().forEach(g -> System.out.println(g.toString()));
 
-		skc.geefSessieKalenderList().forEach(g -> System.out.println(g.toString()));
+//		skc.geefSessieKalenderList().forEach(g -> System.out.println(g.toString()));
 //		sc.geefSessies().forEach(s -> System.out.println(s.toString()));
 //        MenuController root = new MenuController(dc, skc, sc);
 		MeldAanSchermController root = new MeldAanSchermController(gc, skc, sc);

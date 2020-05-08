@@ -29,6 +29,14 @@ public class GebruikerController {
 		geefGebruikersList();
 	}
 
+	public Gebruiker getIngelogdeVerantwoordelijke() {
+		return ingelogdeVerantwoordelijke;
+	}
+
+	public void setIngelogdeVerantwoordelijke(Gebruiker ingelogdeVerantwoordelijke) {
+		this.ingelogdeVerantwoordelijke = ingelogdeVerantwoordelijke;
+	}
+
 	public void setGebruikerRepo(GebruikerDao mock) {
 		gebruikerRepo = mock;
 	}
@@ -46,21 +54,22 @@ public class GebruikerController {
 		}
 		return gebruikerObservableList;
 	}
-	
+
 	public ObservableList<Sessie> geefSessiesGebruikerObservable(Gebruiker gebruiker) {
-		
+
 		List<Sessie> se = new ArrayList<Sessie>();
 		System.out.println(gebruiker);
-			
+
 		gebruiker.getGebruikerSessieLijst().forEach(sessie -> se.add(sessie.getSessie()));
 		return FXCollections.observableArrayList(se);
 	}
 
 	public void voegToeGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam,
-			TypeGebruiker type, Status status, String profielfoto) throws NoSuchAlgorithmException, InvalidKeySpecException {
+			TypeGebruiker type, Status status, String profielfoto)
+			throws NoSuchAlgorithmException, InvalidKeySpecException {
 
 		Gebruiker gebruiker;
-			gebruiker = new Gebruiker(voornaam, familienaam, mailadres, gebruikersnaam, type, status, profielfoto);
+		gebruiker = new Gebruiker(voornaam, familienaam, mailadres, gebruikersnaam, type, status, profielfoto);
 
 		if (geefGebruikersList().stream().map(Gebruiker::getGebruikersnaam).collect(Collectors.toList())
 				.contains(gebruiker.getGebruikersnaam()))
@@ -96,10 +105,6 @@ public class GebruikerController {
 		}
 	}
 
-	public Gebruiker geefIngelogdeVerantwoordelijke() {
-		return ingelogdeVerantwoordelijke;
-	}
-
 	public void close() {
 		GenericDaoJpa.closePersistency();
 	}
@@ -111,11 +116,11 @@ public class GebruikerController {
 			if (gebruiker.getGebruikersnaam().equals(gebruikersnaam)) {
 
 //				try {
-					GenericDaoJpa.startTransaction();
-					gebruiker.wijzigGebruiker(voornaam, familienaam, mailadres, type, status, profielfoto);
-					gebruikerRepo.update(gebruiker);
-					GenericDaoJpa.commitTransaction();
-					break;
+				GenericDaoJpa.startTransaction();
+				gebruiker.wijzigGebruiker(voornaam, familienaam, mailadres, type, status, profielfoto);
+				gebruikerRepo.update(gebruiker);
+				GenericDaoJpa.commitTransaction();
+				break;
 //				} catch (Exception e) {
 //					System.err.println(e.getMessage());
 //					throw new IllegalArgumentException(
@@ -147,12 +152,12 @@ public class GebruikerController {
 			if (gebruikersnaam.equalsIgnoreCase(g.getGebruikersnaam())
 					|| gebruikersnaam.equalsIgnoreCase(g.getMailadres())) {
 				flagGebruikersnaam = true;
-				if (g.getType().equals(TypeGebruiker.Gebruiker))
+				if (g.getType().equals(TypeGebruiker.Gebruiker) || !g.getStatus().equals(Status.Actief))
 					throw new IllegalArgumentException(
-							"Gebruiker is geen (Hoofd)Verantwoordelijke en heeft geen toegang tot de applicatie.");
+							"Gebruiker is geen (Hoofd)Verantwoordelijke of heeft geen toegang tot de applicatie.");
 				if (PasswordHasher.verifyPasswordHash(g.getPasswordHashJava(), wachtwoord)) {
 					flagWachtwoord = true;
-					ingelogdeVerantwoordelijke = g;
+					setIngelogdeVerantwoordelijke(g);
 					break;
 				}
 			}

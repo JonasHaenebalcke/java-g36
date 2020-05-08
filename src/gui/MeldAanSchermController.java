@@ -12,6 +12,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 import domein.GebruikerController;
 import domein.SessieController;
@@ -49,12 +51,9 @@ public class MeldAanSchermController extends AnchorPane {
 
 	// Event Listener on Button[#btnMeldAan].onAction
 	@FXML
-	public void meldAan(ActionEvent event) {
+	public void meldAan(ActionEvent event) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		try {
-			System.out.println(inputGebruikersnaam.getText());
-			System.out.println(inputWachtwoord.getText());
-			dc.meldAan(inputGebruikersnaam.getText(), inputWachtwoord.getText());
-			
+			dc.meldAan(inputGebruikersnaam.getText(), inputWachtwoord.getText());			
 
 			Scene scene = new Scene(new MenuController(dc, skc, sc));
 			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
