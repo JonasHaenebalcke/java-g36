@@ -115,17 +115,19 @@ public class GebruikerController {
 		for (Gebruiker gebruiker : gebruikerList) {
 			if (gebruiker.getGebruikersnaam().equals(gebruikersnaam)) {
 
-//				try {
-				GenericDaoJpa.startTransaction();
+				try {
 				gebruiker.wijzigGebruiker(voornaam, familienaam, mailadres, type, status, profielfoto);
+				GenericDaoJpa.startTransaction();
+			
 				gebruikerRepo.update(gebruiker);
 				GenericDaoJpa.commitTransaction();
 				break;
-//				} catch (Exception e) {
-//					System.err.println(e.getMessage());
+				} catch (Exception e) {
+					System.err.println(e.getMessage());
+					throw new IllegalArgumentException(e.getMessage());
 //					throw new IllegalArgumentException(
 //							"Er ging iets fout bij het opslaan van de gewijzigde gebruiker.");
-//				}
+				}
 			}
 		}
 	}

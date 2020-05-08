@@ -43,9 +43,10 @@ public class AankondigingController {
 
 	public void wijzigAankondiding(String titel, String aankondiging, boolean isVerzonden) {
 		try {
-			GenericDaoJpa.startTransaction();
+			
 
 			gekozenAankondiging.wijzigAankondiging(titel, aankondiging, isVerzonden);
+			GenericDaoJpa.startTransaction();
 			aankondigingRepo.update(gekozenAankondiging);
 			GenericDaoJpa.commitTransaction();
 		} catch (Exception e) {
@@ -58,22 +59,20 @@ public class AankondigingController {
 			Gebruiker publicist) {
 		try {
 			Aankondiging newAankondiging = new Aankondiging(titel, aankondiging, sessie, publicist, isVerzonden);
-			if (!sessie.isInschrijvingenOpen() ) {
-				throw new IllegalArgumentException(
-						"Aankondiging kan niet aangemaakt worden want sessie is nog niet open voor inschrijvingen");
-			}
+			
 //			if( publicist.getStatus().equals(Status.NietActief) 
 //					||publicist.getStatus().equals(Status.Geblokkeerd)) {
 //				throw new IllegalArgumentException("De publicist is niet actief of geblokeerd");
 //			}
-			GenericDaoJpa.startTransaction();
 			aankondigingLijst.add(newAankondiging);
 			aankondigingObservableList.add(newAankondiging);
+			GenericDaoJpa.startTransaction();
 			aankondigingRepo.insert(newAankondiging);
 			GenericDaoJpa.commitTransaction();
 		}
 		catch (Exception e) {
-			throw new IllegalArgumentException("Er ging iets fout bij het aanmaken van de aankondiging");
+			throw new IllegalArgumentException(e.getMessage());
+			//throw new IllegalArgumentException("Er ging iets fout bij het aanmaken van de aankondiging");
 		}
 	}
 
@@ -96,6 +95,9 @@ public class AankondigingController {
 	public void verzendAankondiging(int index) {
 		try {
 			Aankondiging aankondiging = aankondigingLijst.get(index);
+			if(!aankondiging.getSessie().isInschrijvingenOpen()) {
+				throw new IllegalAccessException("aankondiging kan niet worden verzonden want sessie is niet open voor ingeschrijving");
+			}
 			if (aankondiging.isVerzonden()) {
 				throw new IllegalArgumentException("Je hebt deze aankondiging al verzonden");
 			}

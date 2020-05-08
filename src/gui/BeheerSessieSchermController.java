@@ -127,17 +127,17 @@ public class BeheerSessieSchermController extends AnchorPane {
 	@FXML
 	private CheckBox checkboxOpenVrInSchrijvingen;
 
-	private Gebruiker verantwoordelijke;
-	private GebruikerController ingelogde;
-
+	private GebruikerController gc; 
 	private SessieController sc;
 
 	public BeheerSessieSchermController() {
 		this.sc = new SessieController();
+		this.gc = new GebruikerController();
 	}
 
-	public BeheerSessieSchermController(SessieController sc) {
+	public BeheerSessieSchermController(SessieController sc, GebruikerController gc) {
 		this.sc = sc;
+		this.gc = gc;
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("Sessie.fxml"));
 		loader.setRoot(this);
@@ -153,13 +153,12 @@ public class BeheerSessieSchermController extends AnchorPane {
 	}
 
 	public BeheerSessieSchermController(SessieController sc, Sessie sessie) {
-		this(sc);
+		//this(sc);
 		textWaardeSessieInvullen(sessie);
 	}
 
 	private void initialize() {
 		cbxStatusSessie.setItems(FXCollections.observableArrayList(StatusSessie.values()));
-		// degene die ingelogd is maakt de sessie aan, dus niet kunnen kieze
 		try {
 			tblSessies.setItems(sc.geefSessiesObservable().sorted(Comparator.comparing(Sessie::getStartDatum)));
 			colTitelSessie.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
@@ -185,15 +184,16 @@ public class BeheerSessieSchermController extends AnchorPane {
 
 			@Override
 			public void changed(ObservableValue<? extends Sessie> sessieObs, Sessie oldV, Sessie newV) {
-				// sc.setHuidigeSessie(tblSessies.getSelectionModel().getSelectedItem());
+				 sc.setHuidigeSessie(tblSessies.getSelectionModel().getSelectedItem());
 
 				if (newV == null)
 					return;
+				lblSucces.setText("");
 				btnPasAan.setDisable(false);
 				btnVerwijder.setDisable(false);
 				txtTitel.setText(newV.getTitel());
 				txtGastspreker.setText(newV.getGastspreker());
-				verantwoordelijke = sessieObs.getValue().getVerantwoordelijke();
+				//verantwoordelijke = sessieObs.getValue().getVerantwoordelijke();
 				lblVerantwoordelijke.setText((sessieObs.getValue().getVerantwoordelijke().getFamilienaam() + " "
 						+ sessieObs.getValue().getVerantwoordelijke().getVoornaam()));
 				txtCapaciteit.setText(Integer.toString(newV.getCapaciteit()));
@@ -277,7 +277,7 @@ public class BeheerSessieSchermController extends AnchorPane {
 				// txtEinduur.getText().matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$")) {
 
 				Boolean isOpenVrInschrijvingen = checkboxOpenVrInSchrijvingen.isSelected();
-				sc.wijzigSessie(verantwoordelijke, txtTitel.getText(), txtLokaal.getText(),
+				sc.wijzigSessie(/*verantwoordelijke,*/ txtTitel.getText(), txtLokaal.getText(),
 						zetOmNaarDateTime(dpStartdatum.getValue(), txtStartuur.getText()),
 						zetOmNaarDateTime(dpEinddatum.getValue(), txtEinduur.getText()),
 						Integer.parseInt(txtCapaciteit.getText()), txtOmschrvijving.getText(), txtGastspreker.getText(),
@@ -305,6 +305,7 @@ public class BeheerSessieSchermController extends AnchorPane {
 		} catch (Exception e) {
 			lblErrorDetailsSessie.setVisible(true);
 			lblErrorDetailsSessie.setText(e.getMessage());
+			System.out.println(e.getMessage());
 		}
 	}
 
@@ -337,7 +338,7 @@ public class BeheerSessieSchermController extends AnchorPane {
 
 				// bij nieuwe sessie is de ingelogde persoon ge verantwoordelijke
 				//System.out.println("Ingelogde: " + ingelogde.geefIngelogdeVerantwoordelijke());
-				sc.voegSessieToe(/*ingelogde.geefIngelogdeVerantwoordelijke()*/ verantwoordelijke, txtTitel.getText(), txtLokaal.getText(),
+				sc.voegSessieToe(gc.getIngelogdeVerantwoordelijke() /*verantwoordelijke*/, txtTitel.getText(), txtLokaal.getText(),
 						zetOmNaarDateTime(dpStartdatum.getValue(), txtStartuur.getText()),
 						zetOmNaarDateTime(dpEinddatum.getValue(), txtEinduur.getText()),
 						Integer.parseInt(txtCapaciteit.getText()), txtOmschrvijving.getText(),
@@ -415,7 +416,7 @@ public class BeheerSessieSchermController extends AnchorPane {
 				.forEach(f -> f.clear());
 		dpEinddatum.setValue(null);
 		dpStartdatum.setValue(null);
-
+		lblVerantwoordelijke.setText(gc.getIngelogdeVerantwoordelijke().getVoornaam() + " " +gc.getIngelogdeVerantwoordelijke().getFamilienaam());
 		btnBeherenAankondigingen.setDisable(true);
 		btnBeherenIngeschrevenen.setDisable(true);
 		checkboxOpenVrInSchrijvingen.setSelected(false);
@@ -427,6 +428,7 @@ public class BeheerSessieSchermController extends AnchorPane {
 		lblGemiddeldeScoreWergave.setVisible(false);
 		lblGemiddeldeScore.setVisible(false);
 		lblSucces.setVisible(false);
+		
 	}
 
 	private LocalDateTime zetOmNaarDateTime(LocalDate datum, String uur) {

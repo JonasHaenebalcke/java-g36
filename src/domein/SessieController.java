@@ -56,20 +56,21 @@ public class SessieController {
 		this.huidigeSessie = sessie;
 	}
 
-	public void wijzigSessie(Gebruiker verantwoordelijke, String titel, String lokaal, LocalDateTime startDatum,
+	public void wijzigSessie(/*Gebruiker verantwoordelijke,*/ String titel, String lokaal, LocalDateTime startDatum,
 			LocalDateTime eindDatum, int capaciteit, String omschrijving, String gastspreker, boolean open) {
-//		try {
-			GenericDaoJpa.startTransaction();
+		try {
+			//GenericDaoJpa.startTransaction();
 
 			huidigeSessie.wijzigSessie(titel, lokaal, startDatum, eindDatum, capaciteit, omschrijving, gastspreker,
 					open);
-
+			GenericDaoJpa.startTransaction();
 			sessieRepo.update(huidigeSessie);
 			GenericDaoJpa.commitTransaction();
-//		} catch (Exception e) {
-//			System.err.println(e.getMessage());
-//			throw new IllegalArgumentException("Er ging iets mis bij het opslaan van de gewijzigde sessie.");
-//		}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			throw new IllegalArgumentException(e.getMessage());
+		//	throw new IllegalArgumentException("Er ging iets mis bij het opslaan van de gewijzigde sessie.");
+		}
 	}
 
 	public void voegSessieToe(Gebruiker verantwoordelijke, String titel, String lokaal, LocalDateTime startDatum,
@@ -77,10 +78,10 @@ public class SessieController {
 		Sessie sessie = new Sessie(verantwoordelijke, titel, lokaal, startDatum, eindDatum, capaciteit, omschrijving,
 				gastspreker);
 		try {
-			GenericDaoJpa.startTransaction();
 			setHuidigeSessie(sessie);
 			sessieLijst.add(sessie);
 			sessieObservableList.add(sessie);
+			GenericDaoJpa.startTransaction();
 			sessieRepo.insert(sessie);
 			GenericDaoJpa.commitTransaction();
 		} catch (Exception e) {
@@ -94,10 +95,10 @@ public class SessieController {
 		if (sessie.getStatusSessie() != StatusSessie.nietOpen)
 			throw new IllegalArgumentException("Sessie kan niet worden verwijderd want deze is al opengesteld.");
 		try {
-			GenericDaoJpa.startTransaction();
 			sessieLijst.remove(sessie);
 			sessieObservableList.remove(sessie);
 			setHuidigeSessie(null);
+			GenericDaoJpa.startTransaction();
 			sessieRepo.delete(sessie);
 			GenericDaoJpa.commitTransaction();
 		} catch (Exception e) {

@@ -237,7 +237,7 @@ public class BeherenIngeschrevenenSchermController extends AnchorPane {
 		}*/
 		
 		
-		BeheerSessieSchermController bSessieScherm = new BeheerSessieSchermController(sc);
+		BeheerSessieSchermController bSessieScherm = new BeheerSessieSchermController(sc, gc);
 		this.getChildren().setAll(bSessieScherm);
 	}
 

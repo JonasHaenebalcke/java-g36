@@ -81,7 +81,7 @@ public class MenuController extends BorderPane {
 
 	@FXML
 	void sessiesBeheren(ActionEvent event) throws IOException {
-		BeheerSessieSchermController bSessieScherm = new BeheerSessieSchermController(this.sc);
+		BeheerSessieSchermController bSessieScherm = new BeheerSessieSchermController(this.sc, this.dc);
 		scherm.getChildren().setAll(bSessieScherm);
 	}
 
