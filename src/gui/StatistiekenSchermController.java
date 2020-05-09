@@ -87,9 +87,19 @@ public class StatistiekenSchermController extends AnchorPane{
 		}
 
 	    private void initialize() {
-	    	tvGebruikers();
-	    	tvSessies();
-			
+	    	addListenerToTableGebruikers();
+	    	addListenerToTableSessies();
+	    	
+	    	colTitel.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
+	    	
+			tvSessies.setVisible(false);
+			tvGebruikers.setVisible(true);
+			tvGebruikers.setItems(dc.geefGebruikersObservableList());
+			colNaam.setCellValueFactory(cel -> cel.getValue().getNaamProperty());
+			colVoornaam.setCellValueFactory(cel -> cel.getValue().getVoorNaamProperty());
+			colType.setCellValueFactory(cel ->cel.getValue().getTypeProperty());
+			colStatus.setCellValueFactory(cel -> cel.getValue().getStatusProperty());
+//			colAantalFeedbacks.setCellValueFactory(cel -> );
 		}
 
 		@FXML
@@ -97,11 +107,11 @@ public class StatistiekenSchermController extends AnchorPane{
 			tvSessies.setVisible(false);
 			tvGebruikers.setVisible(true);
 			tvGebruikers.setItems(dc.geefGebruikersObservableList());
-			colNaam.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getFamilienaam()));
-			colVoornaam.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getVoornaam()));
-			colType.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getType().toString()));
-			colStatus.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getStatus().toString()));
-			colAantalFeedbacks.setCellValueFactory(cel -> new ReadOnlyStringWrapper("4"));
+			colNaam.setCellValueFactory(cel -> cel.getValue().getNaamProperty());
+			colVoornaam.setCellValueFactory(cel -> cel.getValue().getVoorNaamProperty());
+			colType.setCellValueFactory(cel -> cel.getValue().getTypeProperty());
+			colStatus.setCellValueFactory(cel -> cel.getValue().getStatusProperty());
+//			colAantalFeedbacks.setCellValueFactory(cel -> new ReadOnlyStringWrapper("4"));
 			
 			
 	    }
@@ -111,14 +121,14 @@ public class StatistiekenSchermController extends AnchorPane{
 	    	tvGebruikers.setVisible(false);
 	    	tvSessies.setVisible(true);
 	    	tvSessies.setItems(sc.geefSessiesObservable());
-	    	colVerantwoordelijke.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getVerantwoordelijke().getFamilienaam() + " " + cel.getValue().getVerantwoordelijke().getVoornaam()));
+	    	colVerantwoordelijke.setCellValueFactory(cel -> cel.getValue().getNaamVerantwoordelijke());
 	    	colTitel.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
 	    	colStart.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
 	    	colEind.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
-	    	colAantalDeelnemers.setCellValueFactory(cel -> new ReadOnlyStringWrapper("28"));
+//	    	colAantalDeelnemers.setCellValueFactory(cel -> new ReadOnlyStringWrapper("28"));
 	    }
 	    
-	    void tvGebruikers() {
+	    void addListenerToTableGebruikers() {
 			tvGebruikers.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Gebruiker>() {
 
 				@Override
@@ -133,7 +143,7 @@ public class StatistiekenSchermController extends AnchorPane{
 
 		}
 	    
-	    void tvSessies() {
+	    void addListenerToTableSessies() {
 			tvSessies.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Sessie>() {
 
 				@Override
@@ -148,15 +158,15 @@ public class StatistiekenSchermController extends AnchorPane{
 
 		}
 
-	    @FXML
-	    void slaEersteStatiestiekOp(ActionEvent event) {
-
-	    }
-	    
-	    @FXML
-	    void SlaTweedeStatistiekOp(ActionEvent event) {
-
-	    }
+//	    @FXML 
+//	    void slaEersteStatiestiekOp(ActionEvent event) {
+//
+//	    }
+//	    
+//	    @FXML
+//	    void SlaTweedeStatistiekOp(ActionEvent event) {
+//
+//	    }
 
 	
 

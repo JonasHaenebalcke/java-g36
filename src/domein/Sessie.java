@@ -74,6 +74,8 @@ public class Sessie implements Serializable {
 	private SimpleStringProperty startDatumSessieProperty;
 	@Transient
 	private SimpleStringProperty eindDatumSessieProperty;
+	@Transient
+	private SimpleStringProperty naamVerantwoordelijke;
 
 	protected Sessie() {
 		gebruikerSessieLijst = new ArrayList<GebruikerSessie>();
@@ -136,6 +138,19 @@ public class Sessie implements Serializable {
 
 	public boolean isInschrijvingenOpen() {
 		return statusSessie == StatusSessie.InschrijvingenOpen;
+	}
+
+	public SimpleStringProperty getNaamVerantwoordelijke() {
+		if (naamVerantwoordelijke == null) {
+			naamVerantwoordelijke = new SimpleStringProperty();
+			setNaamVerantwoordelijke();
+		}
+		return naamVerantwoordelijke;
+	}
+
+	public void setNaamVerantwoordelijke() {
+		this.naamVerantwoordelijke
+				.set(this.verantwoordelijke.getVoornaam() + " " + this.verantwoordelijke.getFamilienaam());
 	}
 
 	public StatusSessie getStatusSessie() {
@@ -282,7 +297,7 @@ public class Sessie implements Serializable {
 	}
 
 	private void setDatums(LocalDateTime startDatum, LocalDateTime eindDatum) {
-		
+
 		if (!(ChronoUnit.DAYS.between(startDatum.toLocalDate(), eindDatum.toLocalDate()) == 0
 				|| ChronoUnit.DAYS.between(startDatum.toLocalDate(), eindDatum.toLocalDate()) == 1))
 			throw new IllegalArgumentException("De einddatum moet op dezelfde dag of 1 dag na de startdatum liggen.");
@@ -300,7 +315,7 @@ public class Sessie implements Serializable {
 
 		if (statusSessie == StatusSessie.open || statusSessie == StatusSessie.gesloten)
 			throw new IllegalArgumentException("De sessie mag niet geopend zijn om deze te kunnen wijzigen.");
-		
+
 		setDatums(startDatum, eindDatum);
 
 		setTitel(titel);
@@ -347,7 +362,7 @@ public class Sessie implements Serializable {
 					gebruikerSessie.wijzigAanwezigheid(aanwezig);
 				else
 					ingeschrevene.verwijderGebruikerSessie(gebruikerSessie);
-					gebruikerSessieLijst.remove(gebruikerSessie);
+				gebruikerSessieLijst.remove(gebruikerSessie);
 				break;
 			}
 		}
@@ -364,13 +379,13 @@ public class Sessie implements Serializable {
 	}
 
 	public int geefGemiddeldeScore() {
-		if(getFeedbackLijst().isEmpty())
-            return 0;
-        int res = 0;
-        for (Feedback feedback : getFeedbackLijst()) {
-            res += feedback.getScore();
-        }
-        return res / getFeedbackLijst().size();
+		if (getFeedbackLijst().isEmpty())
+			return 0;
+		int res = 0;
+		for (Feedback feedback : getFeedbackLijst()) {
+			res += feedback.getScore();
+		}
+		return res / getFeedbackLijst().size();
 	}
 
 	@Override

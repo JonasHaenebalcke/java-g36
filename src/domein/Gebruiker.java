@@ -123,6 +123,8 @@ public class Gebruiker implements Serializable {
 	@Transient
 	private SimpleStringProperty typeProperty;
 	@Transient
+	private SimpleStringProperty statusProperty;
+	@Transient
 	private SimpleStringProperty emailProperty;
 	
 	// Methodes voor Enums te mappen
@@ -200,6 +202,18 @@ public class Gebruiker implements Serializable {
 		setRandomGebruikerID();
 		setPasswordHashJava(wachtwoord);
 		setStringProperties();
+	}
+
+	public SimpleStringProperty getStatusProperty() {
+		if (statusProperty== null) {
+			statusProperty = new SimpleStringProperty();
+			setStatusProperty();
+		}
+		return voorNaamProperty;
+	}
+
+	public void setStatusProperty() {
+		this.statusProperty.set(getStatus().toString());
 	}
 
 	public StringProperty getVoorNaamProperty() {

@@ -37,8 +37,6 @@
             <Label fx:id="lblStatistiek2" text="Omschrijving" GridPane.rowIndex="1" />
             <Label fx:id="lblStatistiek1Value" text="Waarde" GridPane.columnIndex="1" />
             <Label fx:id="lblStatistiek2Value" text="Waarde" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Button mnemonicParsing="false" onAction="#slaEersteStatiestiekOp" text="Opslaan" GridPane.columnIndex="2" />
-            <Button mnemonicParsing="false" onAction="#SlaTweedeStatistiekOp" text="Opslaan" GridPane.columnIndex="2" GridPane.rowIndex="1" />
          </children>
       </GridPane>
       <TableView fx:id="tvSessies" layoutX="133.0" layoutY="164.0" prefHeight="430.0" prefWidth="1207.0">
