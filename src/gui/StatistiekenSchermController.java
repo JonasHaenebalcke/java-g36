@@ -104,7 +104,7 @@ public class StatistiekenSchermController extends AnchorPane {
 		colVoornaam.setCellValueFactory(cel -> cel.getValue().getVoorNaamProperty());
 		colType.setCellValueFactory(cel -> cel.getValue().getTypeProperty());
 		colStatus.setCellValueFactory(cel -> cel.getValue().getStatusProperty());
-//			colAantalFeedbacks.setCellValueFactory(cel -> );
+		colAantalFeedbacks.setCellValueFactory(cel -> cel.getValue().getAantalFeedbacksProperty());
 	}
 
 	@FXML

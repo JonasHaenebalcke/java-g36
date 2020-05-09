@@ -279,8 +279,6 @@ public class Gebruiker implements Serializable {
 	}
 
 	public StringProperty getAantalFeedbacksProperty() {
-		System.out.println("GETAANTALFEEDBACK");
-		System.out.println(getAantalFeedbacksProperty().getValue());
 		if (aantalFeedbacksProperty == null) {
 			setAantalFeedbacksProperty();
 		}
@@ -289,9 +287,6 @@ public class Gebruiker implements Serializable {
 	}
 
 	private void setAantalFeedbacksProperty() {
-		System.out.println("SETAANTALFEEDBACK");
-		System.out.println(this.feedbackLijst.toString());
-		System.out.println(this.feedbackLijst.size());
 		if (aantalFeedbacksProperty == null) {
 			aantalFeedbacksProperty = new SimpleStringProperty();
 		}
