@@ -14,7 +14,6 @@ public class StatistiekController {
 			if (gs.isAanwezig())
 				ret++;
 		}
-
 		return ret;
 	}
 

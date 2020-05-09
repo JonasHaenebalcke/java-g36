@@ -25,6 +25,7 @@ import javax.persistence.Transient;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+
 import java.io.*;
 import javafx.beans.property.*;
 
@@ -115,7 +116,7 @@ public class Gebruiker implements Serializable {
 //	@Transient
 	@OneToMany(mappedBy = "auteur")
 	private List<Feedback> feedbackLijst;
-	
+
 	@Transient
 	private SimpleStringProperty voorNaamProperty;
 	@Transient
@@ -126,7 +127,9 @@ public class Gebruiker implements Serializable {
 	private SimpleStringProperty statusProperty;
 	@Transient
 	private SimpleStringProperty emailProperty;
-	
+	@Transient
+	private SimpleStringProperty aantalFeedbacksProperty;
+
 	// Methodes voor Enums te mappen
 	@PostLoad
 	public void fillTransient() {
@@ -158,6 +161,7 @@ public class Gebruiker implements Serializable {
 
 	protected Gebruiker() {
 		gebruikerSessieLijst = new ArrayList<GebruikerSessie>();
+		feedbackLijst = new ArrayList<Feedback>();
 	}
 
 	/**
@@ -205,72 +209,104 @@ public class Gebruiker implements Serializable {
 	}
 
 	public SimpleStringProperty getStatusProperty() {
-		if (statusProperty== null) {
-			statusProperty = new SimpleStringProperty();
+		if (statusProperty == null) {
 			setStatusProperty();
 		}
-		return voorNaamProperty;
+		return statusProperty;
 	}
 
 	public void setStatusProperty() {
-		this.statusProperty.set(getStatus().toString());
+		if (statusProperty == null) {
+			statusProperty = new SimpleStringProperty();
+		}
+		statusProperty.set(getStatus().toString());
 	}
 
 	public StringProperty getVoorNaamProperty() {
 		if (voorNaamProperty == null) {
-			voorNaamProperty = new SimpleStringProperty();
 			setVoorNaamProperty();
 		}
 		return voorNaamProperty;
 	}
 
 	private void setVoorNaamProperty() {
+		if (voorNaamProperty == null) {
+			voorNaamProperty = new SimpleStringProperty();
+		}
 		voorNaamProperty.set(getVoornaam());
 	}
 
 	public StringProperty getNaamProperty() {
 		if (naamProperty == null) {
-			naamProperty = new SimpleStringProperty();
 			setNaamProperty();
 		}
 		return naamProperty;
 	}
 
 	private void setNaamProperty() {
-		naamProperty.set(getVoornaam());
+		if (naamProperty == null) {
+			naamProperty = new SimpleStringProperty();
+		}
+		naamProperty.set(getFamilienaam());
 	}
 
 	public StringProperty getTypeProperty() {
 		if (typeProperty == null) {
-			typeProperty = new SimpleStringProperty();
 			setTypeProperty();
 		}
 		return typeProperty;
 	}
 
 	private void setTypeProperty() {
-		typeProperty.set(getType().toString());
+		if (typeProperty == null) {
+			typeProperty = new SimpleStringProperty();
 		}
+		typeProperty.set(getType().toString());
+	}
 
 	public StringProperty getEmailProperty() {
 		if (emailProperty == null) {
-			emailProperty = new SimpleStringProperty();
 			setEmailProperty();
 		}
 		return emailProperty;
 	}
 
 	private void setEmailProperty() {
+		if (emailProperty == null) {
+			emailProperty = new SimpleStringProperty();
+		}
 		emailProperty.set(getMailadres());
 	}
+
+	public StringProperty getAantalFeedbacksProperty() {
+		System.out.println("GETAANTALFEEDBACK");
+		System.out.println(getAantalFeedbacksProperty().getValue());
+		if (aantalFeedbacksProperty == null) {
+			setAantalFeedbacksProperty();
+		}
+		
+		return aantalFeedbacksProperty;
+	}
+
+	private void setAantalFeedbacksProperty() {
+		System.out.println("SETAANTALFEEDBACK");
+		System.out.println(this.feedbackLijst.toString());
+		System.out.println(this.feedbackLijst.size());
+		if (aantalFeedbacksProperty == null) {
+			aantalFeedbacksProperty = new SimpleStringProperty();
+		}
 	
+		aantalFeedbacksProperty.set(String.valueOf(this.feedbackLijst.size()));
+	}
+
 	private void setStringProperties() {
 		setNaamProperty();
 		setVoorNaamProperty();
 		setTypeProperty();
 		setEmailProperty();
+		setAantalFeedbacksProperty();
 	}
-	
+
 	public String getPasswordHashJava() {
 		return passwordHashJava;
 	}
@@ -286,7 +322,7 @@ public class Gebruiker implements Serializable {
 	public void addGebruikerSessie(GebruikerSessie gebruikerSessie) {
 		gebruikerSessieLijst.add(gebruikerSessie);
 	}
-	
+
 	public void verwijderGebruikerSessie(GebruikerSessie gebruikerSessie) {
 		gebruikerSessieLijst.remove(gebruikerSessie);
 	}
@@ -418,7 +454,7 @@ public class Gebruiker implements Serializable {
 		setFamilienaam(familienaam);
 		setMailadres(mailadres);
 		setProfielfoto(profielfoto);
-		
+
 		setStringProperties();
 	}
 

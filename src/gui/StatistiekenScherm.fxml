@@ -33,8 +33,8 @@
           <RowConstraints maxHeight="53.0" minHeight="10.0" prefHeight="53.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label fx:id="lblStatistiek1" text="Omschrijving" />
-            <Label fx:id="lblStatistiek2" text="Omschrijving" GridPane.rowIndex="1" />
+            <Label fx:id="lblStatistiek1Omschrijving" text="Omschrijving" />
+            <Label fx:id="lblStatistiek2Omschrijving" text="Omschrijving" GridPane.rowIndex="1" />
             <Label fx:id="lblStatistiek1Value" text="Waarde" GridPane.columnIndex="1" />
             <Label fx:id="lblStatistiek2Value" text="Waarde" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>

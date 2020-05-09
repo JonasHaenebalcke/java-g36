@@ -76,6 +76,8 @@ public class Sessie implements Serializable {
 	private SimpleStringProperty eindDatumSessieProperty;
 	@Transient
 	private SimpleStringProperty naamVerantwoordelijke;
+	@Transient
+	private SimpleStringProperty aantalDeelnemersProperty;
 
 	protected Sessie() {
 		gebruikerSessieLijst = new ArrayList<GebruikerSessie>();
@@ -290,10 +292,23 @@ public class Sessie implements Serializable {
 		return eindDatumSessieProperty;
 	}
 
+	private void setAantalDeelnemersProperty(int aantal) {
+		aantalDeelnemersProperty.set(String.valueOf(aantal));
+	}
+
+	public StringProperty getAantalDeelnemersProperty() {
+		if (aantalDeelnemersProperty == null) {
+			aantalDeelnemersProperty = new SimpleStringProperty();
+			setAantalDeelnemersProperty((this.getGebruikerSessieLijst().size()));
+		}
+		return aantalDeelnemersProperty;
+	}
+
 	public void setStringProperties() {
 		setStartDatumSessieProperty(getStartDatum().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 		setEindDatumSessieProperty(getEindDatum().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 		setTitelSessieProperty(getTitel());
+		getAantalDeelnemersProperty(); //Setter wordt opgeroepen in getter (dit is eigenlijke dubbele code dus zou opgekuist moeten worden)
 	}
 
 	private void setDatums(LocalDateTime startDatum, LocalDateTime eindDatum) {

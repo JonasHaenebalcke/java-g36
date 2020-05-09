@@ -18,6 +18,7 @@ import java.security.spec.InvalidKeySpecException;
 import domein.GebruikerController;
 import domein.SessieController;
 import domein.SessieKalenderController;
+import domein.StatistiekController;
 import javafx.event.ActionEvent;
 
 public class MeldAanSchermController extends AnchorPane {
@@ -33,8 +34,9 @@ public class MeldAanSchermController extends AnchorPane {
 	public GebruikerController dc;
 	public SessieKalenderController skc;
 	public SessieController sc;
+	public StatistiekController statc;
 
-	public MeldAanSchermController(GebruikerController dc, SessieKalenderController skc, SessieController sc) {
+	public MeldAanSchermController(GebruikerController dc, SessieKalenderController skc, SessieController sc, StatistiekController statc) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("MeldAanScherm.fxml"));
 		loader.setRoot(this);
 		loader.setController(this);
@@ -47,6 +49,7 @@ public class MeldAanSchermController extends AnchorPane {
 		this.dc = dc;
 		this.skc = skc;
 		this.sc = sc;
+		this.statc = statc;
 	}
 
 	// Event Listener on Button[#btnMeldAan].onAction
@@ -55,7 +58,7 @@ public class MeldAanSchermController extends AnchorPane {
 		try {
 			dc.meldAan(inputGebruikersnaam.getText(), inputWachtwoord.getText());			
 
-			Scene scene = new Scene(new MenuController(dc, skc, sc));
+			Scene scene = new Scene(new MenuController(dc, skc, sc, statc));
 			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 			stage.setTitle("IT LAB");
 			stage.setScene(scene);

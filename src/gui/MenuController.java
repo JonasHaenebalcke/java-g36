@@ -4,6 +4,7 @@ import java.io.IOException;
 import domein.GebruikerController;
 import domein.SessieController;
 import domein.SessieKalenderController;
+import domein.StatistiekController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,8 +36,9 @@ public class MenuController extends BorderPane {
 	public GebruikerController dc;
 	public SessieKalenderController skc;
 	public SessieController sc;
+	public StatistiekController statc;
 
-	public MenuController(GebruikerController dc, SessieKalenderController skc, SessieController sc) {
+	public MenuController(GebruikerController dc, SessieKalenderController skc, SessieController sc, StatistiekController statc) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("Menu.fxml"));
 		loader.setRoot(this);
 		loader.setController(this);
@@ -49,6 +51,7 @@ public class MenuController extends BorderPane {
 		this.dc = dc;
 		this.skc = skc;
 		this.sc = sc;
+		this.statc = statc;
 		lblAangemeldAls.setText("Aangemeld als \n" + dc.getIngelogdeVerantwoordelijke().getVoornaam() + " "
 				+ dc.getIngelogdeVerantwoordelijke().getFamilienaam());
 	}
@@ -94,7 +97,7 @@ public class MenuController extends BorderPane {
 
 	@FXML
 	void statistieken(ActionEvent event) throws IOException {
-		StatistiekenSchermController statiestiekenScherm = new StatistiekenSchermController(this.dc, this.sc);
+		StatistiekenSchermController statiestiekenScherm = new StatistiekenSchermController(this.dc, this.sc, this.statc);
 		scherm.getChildren().setAll(statiestiekenScherm);
 	}
 
@@ -106,7 +109,7 @@ public class MenuController extends BorderPane {
 
 	@FXML
 	void logUIt(ActionEvent event) {
-		MeldAanSchermController root = new MeldAanSchermController(dc, skc, sc);
+		MeldAanSchermController root = new MeldAanSchermController(dc, skc, sc, statc);
 		this.getChildren().setAll(root);
 	}
 }
