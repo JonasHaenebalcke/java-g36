@@ -2,6 +2,8 @@ package domein;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +12,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.fxml.FXML;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 
 @SuppressWarnings("serial")
 @Entity
@@ -41,6 +50,12 @@ public class Aankondiging implements Serializable{
 	@JoinColumn(name="publicistID")
 	public Gebruiker publicist;
 	
+	@Transient
+	private SimpleStringProperty publicistProperty ; //= new SimpleStringProperty();
+	@Transient
+	private SimpleStringProperty titelAankondigingProperty; // = new SimpleStringProperty();
+	@Transient
+	private SimpleStringProperty datumAankondigingProperty; //= new SimpleStringProperty();
 	
 	protected Aankondiging() {
 		
@@ -53,6 +68,7 @@ public class Aankondiging implements Serializable{
 		setPublicist(publicist);
 		setVerzonden(isVerzonden);
 		this.datum = LocalDateTime.now();
+		setStringProperties();
 	}
 
 	private void setSessie(Sessie sessie) {
@@ -121,13 +137,59 @@ public class Aankondiging implements Serializable{
 			setTitel(titel);
 			setAankondingingTekst(aankondigingTekst);
 			setVerzonden(isVerzonden);
+			setStringProperties();
 		}
+	}
+	
+	public StringProperty getPublicistProperty() {
+		if(publicist == null) {
+			publicistProperty = new SimpleStringProperty();
+			setPublicistProperty();
+		}
+		return publicistProperty;
+	}
+
+	public void setPublicistProperty() {
+		publicistProperty.set(this.publicist.getFamilienaam()+" "+this.publicist.getVoornaam() );
+	}
+
+	public StringProperty getTitelAankondigingProperty() {
+		if(titelAankondigingProperty == null) {
+			titelAankondigingProperty = new SimpleStringProperty();
+			setTitelAankondigingProperty(getTitel());
+		}
+		return titelAankondigingProperty;
+	}
+
+	public void setTitelAankondigingProperty(String titelAankondiging) {
+		titelAankondigingProperty.set(titelAankondiging);
+	}
+
+	public StringProperty getDatumAankondigingProperty() {
+		if(datumAankondigingProperty==null) {
+			datumAankondigingProperty = new SimpleStringProperty();
+			setDatumAankondigingProperty(getDatumAangemaakt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+		}
+		return datumAankondigingProperty;
+	}
+
+	public void setDatumAankondigingProperty(String datumAankondiging) {
+		datumAankondigingProperty.set(datumAankondiging);
+	}
+	
+	public void setStringProperties() {
+		setDatumAankondigingProperty(getDatumAangemaakt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+		setTitelAankondigingProperty(getTitel());
+		setAankondingingTekst(getAankondingingTekst());
+		setPublicistProperty();
 	}
 
 	@Override
 	public String toString() {
-		return "Aankondiging [titel=" + titel + ", aankondingingTekst=" + aankondingingTekst + "]";
+		return "Aankondiging [aankondigingID=" + aankondigingID + ", titel=" + titel + ", aankondingingTekst="
+				+ aankondingingTekst + ", datum=" + datum + ", isVerzonden=" + isVerzonden + ", sessie=" + sessie
+				+ ", publicist=" + publicist + "]";
 	}
-	
+		
 	
 }
