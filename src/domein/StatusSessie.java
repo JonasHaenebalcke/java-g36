@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public enum StatusSessie {
 //	open, gesloten, InschrijvingenOpen, nietOpen;
-	open(1), gesloten(2), InschrijvingenOpen(3), nietOpen(4);
+	open(0), gesloten(1), InschrijvingenOpen(2), nietOpen(3);
 	
 	private int status;
 
