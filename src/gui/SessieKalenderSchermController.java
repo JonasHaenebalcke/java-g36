@@ -31,6 +31,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.scene.control.Label;
@@ -38,7 +39,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 
-public class SessieKalenderSchermController extends AnchorPane {
+public class SessieKalenderSchermController extends GridPane {
 	@FXML
 	private Label lblAcademieJaar;
 	@FXML

@@ -10,19 +10,19 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
+
 <fx:root style="-fx-background-color: #0081c5#0081c5 #0081c5#0081c5;" type="BorderPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #0081c5#0081c5;">
          <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="200.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="200.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/Itlablogo.png" />
                </image>
             </ImageView>
             <Button fx:id="btnMeldAan" layoutX="200.0" layoutY="265.0" mnemonicParsing="false" onAction="#meldAan" text="Meld aan" />
             <TextField fx:id="inputGebruikersnaam" layoutX="200.0" layoutY="157.0" prefWidth="200.0" />
-            <PasswordField fx:id="inputWachtwoord" layoutX="200.0" layoutY="221.0" prefWidth="200.0" />
-            <Label alignment="CENTER" layoutX="200.0" layoutY="131.0" snapToPixel="false" text="Gebruikersnaam">
+            <Label layoutX="200.0" layoutY="131.0" text="Gebruikersnaam">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -37,6 +37,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
+            <PasswordField fx:id="inputWachtwoord" layoutX="200.0" layoutY="221.0" prefHeight="26.0" prefWidth="200.0" />
          </children>
       </AnchorPane>
    </center>

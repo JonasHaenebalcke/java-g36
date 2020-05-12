@@ -16,7 +16,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
-public class MenuController extends BorderPane {
+public class MenuController extends BorderPane{
 
 	@FXML
 	private GridPane scherm;
@@ -53,8 +53,8 @@ public class MenuController extends BorderPane {
 		this.skc = skc;
 		this.sc = sc;
 		this.statc = statc;
-		lblAangemeldAls.setText("Aangemeld als \n" + dc.getIngelogdeVerantwoordelijke().getVoornaam() + " "
-				+ dc.getIngelogdeVerantwoordelijke().getFamilienaam());
+		//lblAangemeldAls.setText("Aangemeld als \n" + dc.getIngelogdeVerantwoordelijke().getVoornaam() + " "
+		//		+ dc.getIngelogdeVerantwoordelijke().getFamilienaam());
 	}
 
 	public void initialize() {
@@ -95,9 +95,6 @@ public class MenuController extends BorderPane {
 				this.sc);
 		scherm.getChildren().setAll(bIngeschrevenenScherm);
 	}
-	   
-	
-	    
 
 	@FXML
 	void statistieken(ActionEvent event) throws IOException {

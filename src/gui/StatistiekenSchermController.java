@@ -18,9 +18,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.beans.property.ReadOnlyStringWrapper;
 
-public class StatistiekenSchermController extends AnchorPane {
+public class StatistiekenSchermController extends GridPane {
 
 	@FXML
 	private TableView<Gebruiker> tvGebruikers;

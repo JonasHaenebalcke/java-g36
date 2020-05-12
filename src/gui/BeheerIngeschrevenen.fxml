@@ -6,58 +6,108 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="713.0" prefWidth="1352.0" type="AnchorPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-	<children>
-      <AnchorPane prefHeight="714.0" prefWidth="574.0">
-         <children>
-            <Label layoutX="252.0" layoutY="31.0" prefHeight="27.0" prefWidth="69.0" text="Sessies">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <ComboBox fx:id="cbxStatusSessie" layoutX="438.0" layoutY="84.0" onAction="#geefSessiesGekozenStatus" prefHeight="26.0" prefWidth="117.0" promptText="Status sessies" />
-         </children>
-      </AnchorPane>
-		<AnchorPane layoutX="565.0" layoutY="1.0" prefHeight="714.0" prefWidth="788.0">
-			<children>
-				<TableView fx:id="tvIngeschrevenen" layoutX="115.0" layoutY="125.0" prefHeight="538.0" prefWidth="642.0">
-					<columns>
-                  <TableColumn fx:id="tcIngeschreven" prefWidth="87.20001220703125" resizable="false" text="Ingeschreven" />
-						<TableColumn fx:id="tcAanwezig" prefWidth="78.39996337890625" resizable="false" text="Aanwezig" />
-						<TableColumn fx:id="tcVoornaam" prefWidth="158.39996337890625" resizable="false" text="Voornaam" />
-						<TableColumn fx:id="tcFamilienaam" prefWidth="187.19989013671875" resizable="false" text="Familienaam" />
-						<TableColumn fx:id="tcInschrijvingsdatum" prefWidth="131.2000732421875" resizable="false" text="inschrijvingsdatum" />
-					</columns>
-				</TableView>
-				<Label fx:id="lbltitelTabelGebruikers" layoutX="369.0" layoutY="29.0" prefHeight="27.0" prefWidth="135.0" text="Ingeschrevenen">
-					<font>
-						<Font size="18.0" />
-					</font>
-				</Label>
-				<Button fx:id="btnSchrijfGebruikerIn" layoutX="10.0" layoutY="206.0" mnemonicParsing="false" onAction="#voegIngeschrevenenToe" prefHeight="26.0" prefWidth="94.0" text="Schrijf in" />
-				<Button fx:id="btnZetGebruikerAanwezig" layoutX="10.0" layoutY="279.0" mnemonicParsing="false" onAction="#zetGebruikerAanwezig" prefHeight="26.0" prefWidth="94.0" text="Zet aanwezig" />
-				<Button fx:id="btnZoekGebruiker" layoutX="528.0" layoutY="85.0" mnemonicParsing="false" onAction="#zoekGebruiker" text="Zoek" />
-				<Label fx:id="lblError" layoutX="279.0" layoutY="56.0" prefHeight="27.0" prefWidth="334.0" textFill="RED">
-					<font>
-						<Font size="14.0" />
-					</font>
-				</Label>
-				<TextField fx:id="txtGebruiker" layoutX="303.0" layoutY="85.0" prefHeight="26.0" prefWidth="214.0" promptText="Gebruiker" />
-            <ComboBox fx:id="cbxStatusGebruiker" layoutX="622.0" layoutY="85.0" onAction="#geefGebruikersGekozenStatus" prefHeight="26.0" prefWidth="135.0" promptText="Status gebruikers" />
-            <Button fx:id="btnBeherenSessie" layoutX="10.0" layoutY="356.0" mnemonicParsing="false" onAction="#GaNaarBeherenSessie" text="Beheren sessie" />
-			</children>
-		</AnchorPane>
-      <TableView fx:id="tvSessies" layoutX="16.0" layoutY="126.0" prefHeight="530.0" prefWidth="540.0">
+<fx:root prefHeight="700.0" prefWidth="1340.0" type="GridPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <columnConstraints>
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="40.0" prefWidth="100.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="2.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="2.0" prefWidth="100.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="40.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" percentHeight="75.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <Label prefHeight="27.0" prefWidth="69.0" text="Sessies" GridPane.columnIndex="1">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tvSessies" prefHeight="530.0" prefWidth="540.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <columns>
             <TableColumn fx:id="colTitelSessie" prefWidth="245.5999813079834" resizable="false" text="Titel" />
             <TableColumn fx:id="colStartSessie" minWidth="20.0" prefWidth="140.79998779296875" resizable="false" text="Start" />
             <TableColumn fx:id="ColEindSessie" prefWidth="153.60006713867188" resizable="false" text="Eind" />
          </columns>
       </TableView>
-      <TextField fx:id="txtSessie" layoutX="199.0" layoutY="85.0" promptText="Sessie" />
-      <Button fx:id="btnZoekSessie" layoutX="359.0" layoutY="85.0" mnemonicParsing="false" onAction="#zoekSessie" text="Zoek" />
-	</children>
+				<TableView fx:id="tvIngeschrevenen" prefHeight="538.0" prefWidth="642.0" GridPane.columnIndex="5" GridPane.rowIndex="2">
+					<columns>
+            <TableColumn fx:id="tcIngeschreven" prefWidth="87.20001220703125" resizable="false" text="Ingeschreven" />
+						<TableColumn fx:id="tcAanwezig" prefWidth="78.39996337890625" resizable="false" text="Aanwezig" />
+						<TableColumn fx:id="tcVoornaam" prefWidth="158.39996337890625" resizable="false" text="Voornaam" />
+						<TableColumn fx:id="tcFamilienaam" prefWidth="187.19989013671875" resizable="false" text="Familienaam" />
+						<TableColumn fx:id="tcInschrijvingsdatum" prefWidth="131.2000732421875" resizable="false" text="inschrijvingsdatum" />
+					</columns>
+				</TableView>
+      <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <TextField fx:id="txtSessie" promptText="Sessie" />
+            <Button fx:id="btnZoekSessie" mnemonicParsing="false" onAction="#zoekSessie" text="Zoek" GridPane.columnIndex="2" />
+            <ComboBox fx:id="cbxStatusSessie" onAction="#geefSessiesGekozenStatus" prefHeight="27.0" prefWidth="187.0" promptText="Status sessies" GridPane.columnIndex="3" />
+         </children>
+      </GridPane>
+				<Label fx:id="lbltitelTabelGebruikers" prefHeight="27.0" prefWidth="135.0" text="Ingeschrevenen" GridPane.columnIndex="5">
+					<font>
+						<Font size="18.0" />
+					</font>
+				</Label>
+      <GridPane GridPane.columnIndex="3" GridPane.rowIndex="2">
+        <columnConstraints>
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+				<Button fx:id="btnSchrijfGebruikerIn" mnemonicParsing="false" onAction="#voegIngeschrevenenToe" prefHeight="26.0" prefWidth="94.0" text="Schrijf in" />
+				<Button fx:id="btnZetGebruikerAanwezig" mnemonicParsing="false" onAction="#zetGebruikerAanwezig" prefHeight="26.0" prefWidth="94.0" text="Zet aanwezig" GridPane.rowIndex="1" />
+            <Button fx:id="btnBeherenSessie" mnemonicParsing="false" onAction="#GaNaarBeherenSessie" text="Beheren sessie" GridPane.rowIndex="2" />
+         </children>
+      </GridPane>
+      <GridPane prefWidth="516.0" GridPane.columnIndex="5" GridPane.rowIndex="1">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints />
+            <RowConstraints />
+            <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
+            <RowConstraints maxHeight="27.0" minHeight="27.0" percentHeight="100.0" prefHeight="27.0" />
+        </rowConstraints>
+         <children>
+				<TextField fx:id="txtGebruiker" prefHeight="26.0" prefWidth="214.0" promptText="Gebruiker" GridPane.rowIndex="3" />
+				<Button fx:id="btnZoekGebruiker" mnemonicParsing="false" onAction="#zoekGebruiker" text="Zoek" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <ComboBox fx:id="cbxStatusGebruiker" onAction="#geefGebruikersGekozenStatus" prefHeight="27.0" prefWidth="215.0" promptText="Status gebruikers" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+         </children>
+      </GridPane>
+				<Label fx:id="lblError" prefHeight="27.0" prefWidth="334.0" textFill="RED" GridPane.columnIndex="5" GridPane.rowIndex="3">
+					<font>
+						<Font size="14.0" />
+					</font>
+				</Label>
+   </children>
 </fx:root>

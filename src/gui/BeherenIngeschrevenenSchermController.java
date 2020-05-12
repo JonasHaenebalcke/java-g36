@@ -38,9 +38,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 
-public class BeherenIngeschrevenenSchermController extends AnchorPane {
+public class BeherenIngeschrevenenSchermController extends GridPane {
 
 	@FXML
 	private TableView<Sessie> tvSessies;
