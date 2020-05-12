@@ -92,6 +92,14 @@ public class AankondigingenSchermController extends GridPane {
 		this.sc = sc;
 		initialize();
 	}
+	
+	public AankondigingenSchermController(SessieController sc, Sessie sessie) {
+		this(sc);
+		if(sessie!=null) {
+		tvSessies.getSelectionModel().select(sessie);
+		}
+		
+	}
 
 	private void initialize() {
 		tvSessies.setItems(sc.geefSessiesObservable());

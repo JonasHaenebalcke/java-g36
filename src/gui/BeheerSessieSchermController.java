@@ -421,7 +421,7 @@ public class BeheerSessieSchermController extends GridPane {
 	void beherenAankondigingen(ActionEvent event) {
 		Sessie sessie = tblSessies.getSelectionModel().getSelectedItem();
 		sc.setHuidigeSessie(sessie);
-		AankondigingenSchermController asc = new AankondigingenSchermController(sc);
+		AankondigingenSchermController asc = new AankondigingenSchermController(sc, sessie);
 		this.getChildren().setAll(asc);
 	}
 
