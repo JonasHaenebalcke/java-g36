@@ -27,6 +27,8 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 @SuppressWarnings("serial")
 @Entity
@@ -78,6 +80,8 @@ public class Sessie implements Serializable {
 	private SimpleStringProperty naamVerantwoordelijke;
 	@Transient
 	private SimpleStringProperty aantalDeelnemersProperty;
+	@Transient
+	private ObservableList<Feedback> feedbackObservableLijst;
 
 	protected Sessie() {
 		gebruikerSessieLijst = new ArrayList<GebruikerSessie>();
@@ -104,6 +108,13 @@ public class Sessie implements Serializable {
 //		if (this.typeGebruiker == typeGebruiker.Gebruiker)
 //			this.typeGebruiker = null;
 //	}
+
+	public ObservableList<Feedback> getFeedbackObservable() {
+		if (feedbackObservableLijst == null) {
+			feedbackObservableLijst = FXCollections.observableArrayList(getFeedbackLijst());
+		}
+		return feedbackObservableLijst;
+	}
 
 	public List<Feedback> getFeedbackLijst() {
 //		List<Feedback> feedbackLijst = new ArrayList<Feedback>();
@@ -143,14 +154,14 @@ public class Sessie implements Serializable {
 	}
 
 	public SimpleStringProperty getNaamVerantwoordelijke() {
-		if (naamVerantwoordelijke == null) {
-			naamVerantwoordelijke = new SimpleStringProperty();
+		if (naamVerantwoordelijke == null)
 			setNaamVerantwoordelijke();
-		}
 		return naamVerantwoordelijke;
 	}
 
 	public void setNaamVerantwoordelijke() {
+		if (naamVerantwoordelijke == null)
+			naamVerantwoordelijke = new SimpleStringProperty();
 		this.naamVerantwoordelijke
 				.set(this.verantwoordelijke.getVoornaam() + " " + this.verantwoordelijke.getFamilienaam());
 	}
@@ -256,59 +267,60 @@ public class Sessie implements Serializable {
 		this.verantwoordelijke = verantwoordelijke;
 	}
 
-	private void setTitelSessieProperty(String titel) {
-		titelProperty.set(titel);
+	private void setTitelSessieProperty() {
+		if (titelProperty == null)
+			titelProperty = new SimpleStringProperty();
+		titelProperty.set(getTitel());
 	}
 
 	public StringProperty getTitelSessieProperty() {
-		if (titelProperty == null) {
-			titelProperty = new SimpleStringProperty();
-			setTitelSessieProperty(getTitel());
-		}
+		if (titelProperty == null)
+			setTitelSessieProperty();
 		return titelProperty;
 	}
 
-	private void setStartDatumSessieProperty(String startdatum) {
-		startDatumSessieProperty.set(startdatum);
+	private void setStartDatumSessieProperty() {
+		if (startDatumSessieProperty == null)
+			startDatumSessieProperty = new SimpleStringProperty();
+		startDatumSessieProperty.set(getStartDatum().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 	}
 
 	public StringProperty getStartDatumSessieProperty() {
-		if (startDatumSessieProperty == null) {
-			startDatumSessieProperty = new SimpleStringProperty();
-			setStartDatumSessieProperty(getStartDatum().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-		}
+		if (startDatumSessieProperty == null)
+			setStartDatumSessieProperty();
 		return startDatumSessieProperty;
 	}
 
-	private void setEindDatumSessieProperty(String einddatum) {
-		eindDatumSessieProperty.set(einddatum);
+	private void setEindDatumSessieProperty() {
+		if (eindDatumSessieProperty == null)
+			eindDatumSessieProperty = new SimpleStringProperty();
+		eindDatumSessieProperty.set(getEindDatum().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 	}
 
 	public StringProperty getEindDatumSessieProperty() {
-		if (eindDatumSessieProperty == null) {
-			eindDatumSessieProperty = new SimpleStringProperty();
-			setEindDatumSessieProperty(getEindDatum().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-		}
+		if (eindDatumSessieProperty == null)
+			setEindDatumSessieProperty();
 		return eindDatumSessieProperty;
 	}
 
-	private void setAantalDeelnemersProperty(int aantal) {
-		aantalDeelnemersProperty.set(String.valueOf(aantal));
+	private void setAantalDeelnemersProperty() {
+		if (aantalDeelnemersProperty == null)
+			aantalDeelnemersProperty = new SimpleStringProperty();
+		aantalDeelnemersProperty.set(String.valueOf(getGebruikerSessieLijst().size()));
 	}
 
 	public StringProperty getAantalDeelnemersProperty() {
-		if (aantalDeelnemersProperty == null) {
-			aantalDeelnemersProperty = new SimpleStringProperty();
-			setAantalDeelnemersProperty((this.getGebruikerSessieLijst().size()));
-		}
+		if (aantalDeelnemersProperty == null)
+			setAantalDeelnemersProperty();
 		return aantalDeelnemersProperty;
 	}
 
 	public void setStringProperties() {
-		setStartDatumSessieProperty(getStartDatum().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-		setEindDatumSessieProperty(getEindDatum().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-		setTitelSessieProperty(getTitel());
-		getAantalDeelnemersProperty(); //Setter wordt opgeroepen in getter (dit is eigenlijke dubbele code dus zou opgekuist moeten worden)
+		setStartDatumSessieProperty();
+		setEindDatumSessieProperty();
+		setTitelSessieProperty();
+		getAantalDeelnemersProperty(); // Setter wordt opgeroepen in getter (dit is eigenlijke dubbele code dus zou
+										// opgekuist moeten worden)
 	}
 
 	private void setDatums(LocalDateTime startDatum, LocalDateTime eindDatum) {

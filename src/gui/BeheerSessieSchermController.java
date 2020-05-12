@@ -163,7 +163,7 @@ public class BeheerSessieSchermController extends GridPane {
 		List<String> statussen = new ArrayList<>();
 		statussen.add("Alle");
 		for (StatusSessie status : StatusSessie.values()) {
-			 statussen.add(status.toString());
+			statussen.add(status.toString());
 		}
 		cbxStatusSessie.setItems(FXCollections.observableArrayList(statussen));
 		cbxStatusSessie.getSelectionModel().selectFirst();
@@ -225,8 +225,9 @@ public class BeheerSessieSchermController extends GridPane {
 
 					// System.out.println("FeedbackLijst:" +
 					// sessieObs.getValue().getFeedbackLijst()); // {IndirectList: not instantiated}
-					tvFeedback.setItems(FXCollections.observableArrayList(newV.getFeedbackLijst())
-							.sorted(Comparator.comparing(Feedback::getTimeWritten)));
+//					tvFeedback.setItems(FXCollections.observableArrayList(newV.getFeedbackLijst())
+					tvFeedback.setItems(
+							newV.getFeedbackObservable().sorted(Comparator.comparing(Feedback::getTimeWritten)));
 					colAuteurFeedback.setCellValueFactory(cel -> cel.getValue().getFeedbackAuteurProperty());
 					colScoreFeedback.setCellValueFactory(cel -> cel.getValue().getScoreProperty());
 					colFeedback.setCellValueFactory(cel -> cel.getValue().getFeedbackProperty());
