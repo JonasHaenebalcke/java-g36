@@ -101,8 +101,9 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 		this.sc = new SessieController();
 	}
 
-	public BeherenIngeschrevenenSchermController(SessieController sc) {
+	public BeherenIngeschrevenenSchermController(SessieController sc, GebruikerController gc) {
 		this.sc = sc;
+		this.gc = gc;
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("BeheerIngeschrevenen.fxml"));
 		loader.setRoot(this);
@@ -214,8 +215,8 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 			
 			@Override
 			public void changed(ObservableValue<? extends GebruikerSessie> gebruikerObs, GebruikerSessie oldV, GebruikerSessie newV) {
-				System.out.println("selected: "+tvIngeschrevenen.getSelectionModel().getSelectedItem().getIngeschrevene());
-				System.out.println("Gebruiker: " + newV.getIngeschrevene());
+				System.out.println("Geselecteerde Gebruiker: " + newV.getIngeschrevene());
+				System.out.println("GebruikerSessieLijst: " + newV.getIngeschrevene().getGebruikerSessieLijst());
 				System.out.println("lijst: "+ gc.geefSessiesGebruikerObservable(newV.getIngeschrevene()));
 				tvSessies.setItems(gc.geefSessiesGebruikerObservable(newV.getIngeschrevene()));
 				colTitelSessie.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());

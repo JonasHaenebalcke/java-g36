@@ -412,7 +412,7 @@ public class BeheerSessieSchermController extends GridPane {
 		Sessie sessie = tblSessies.getSelectionModel().getSelectedItem();
 		sc.setHuidigeSessie(sessie);
 
-		BeherenIngeschrevenenSchermController bIngeschrevenenScherm = new BeherenIngeschrevenenSchermController(sc);
+		BeherenIngeschrevenenSchermController bIngeschrevenenScherm = new BeherenIngeschrevenenSchermController(sc, gc);
 		this.getChildren().setAll(bIngeschrevenenScherm);
 
 	}

@@ -92,7 +92,7 @@ public class MenuController extends BorderPane{
 	@FXML
 	void IngeschrevenenBeheren(ActionEvent event) throws IOException {
 		BeherenIngeschrevenenSchermController bIngeschrevenenScherm = new BeherenIngeschrevenenSchermController(
-				this.sc);
+				this.sc, this.dc);
 		scherm.getChildren().setAll(bIngeschrevenenScherm);
 	}
 
