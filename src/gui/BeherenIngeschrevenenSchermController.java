@@ -116,6 +116,14 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 	
 		initialize();
 	}
+	
+	public BeherenIngeschrevenenSchermController(SessieController sc, GebruikerController gc , Sessie sessie) {
+		this(sc, gc);
+		if(sessie !=null) {
+			tvSessies.getSelectionModel().select(sessie);
+			
+		}
+	}
 
 	private void initialize() {
 		cbxStatusSessie.setItems(FXCollections.observableArrayList(StatusSessie.values()));
