@@ -4,10 +4,14 @@ import java.io.IOException;
 
 import domein.Aankondiging;
 import domein.AankondigingController;
+import domein.GebruikerController;
+import domein.GebruikerSessie;
 import domein.Sessie;
 import domein.SessieController;
 import domein.StatusSessie;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,8 +23,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.util.Callback;
 
 public class AankondigingenSchermController extends GridPane {
 
@@ -56,6 +63,10 @@ public class AankondigingenSchermController extends GridPane {
 
 	@FXML
 	private TableColumn<Aankondiging, String> colDatumAankondiging;
+	@FXML
+	private TableColumn<Aankondiging, String> colMailVerstuurd;
+	@FXML
+	private TableColumn<Aankondiging, String> colVerstuurMail;
 
 	@FXML
 	private CheckBox cbHerinnering;
@@ -80,6 +91,7 @@ public class AankondigingenSchermController extends GridPane {
 
 	private SessieController sc;
 	private AankondigingController ac;
+	private GebruikerController gc;
 
 	public AankondigingenSchermController(SessieController sc, AankondigingController ac) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("AankondigingenScherm.fxml"));
@@ -94,10 +106,12 @@ public class AankondigingenSchermController extends GridPane {
 		}
 		this.sc = sc;
 		this.ac = ac;
+		this.gc = gc;
 		initialize();
 	}
 
-	public AankondigingenSchermController(SessieController sc, Sessie sessie, AankondigingController ac) {
+	public AankondigingenSchermController(SessieController sc, Sessie sessie, AankondigingController ac,
+			GebruikerController gc) {
 		this(sc, ac);
 		if (sessie != null) {
 			tvSessies.getSelectionModel().select(sessie);
@@ -121,22 +135,50 @@ public class AankondigingenSchermController extends GridPane {
 																											// worden
 
 			cbxFilter.setItems(FXCollections.observableArrayList(StatusSessie.values()));
-			cbxDagenOpVoorhand.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7));
+//			cbxDagenOpVoorhand.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7));
 
 			System.out.println(ac.geefAankondigingen().toString());
-			tvAankondigingen.setItems(ac.geefAankondigingObservableList());
-			colPublicist.setCellValueFactory(cel -> new ReadOnlyStringWrapper("Lucas Van Der Haegen"));
-			colTitelAankondiging.setCellValueFactory(cel -> new ReadOnlyStringWrapper(
-					"Verandering van lokaal sessie \"Omgaan met frustratie problemen\""));
-			colDatumAankondiging.setCellValueFactory(cel -> new ReadOnlyStringWrapper("05/05/2020 15:30"));
+			initializeTvAankondigingen();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	private void initializeTvAankondigingen() {
+		tvAankondigingen.setItems(ac.geefAankondigingObservableList());
+		colPublicist.setCellValueFactory(cel -> cel.getValue().getPublicistProperty());
+		colTitelAankondiging.setCellValueFactory(cel -> cel.getValue().getTitelAankondigingProperty());
+		colDatumAankondiging.setCellValueFactory(cel -> cel.getValue().getDatumAankondigingProperty());
+//		colMailVerstuurd.setCellFactory(column -> new CheckBoxTableCell<>());
+
+//		colMailVerstuurd.setCellValueFactory(
+//				new Callback<TableColumn.CellDataFeatures<Aankondiging, Boolean>, ObservableValue<Boolean>>() {
+//					@Override
+//					public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<Aankondiging, Boolean> gs) {
+//						return new SimpleBooleanProperty(gs.getValue().isVerzonden);
+//					}
+//				});
+
+//		colVerstuurMail
+//				.setCellFactory(ActionButtonTableCell.<Aankondiging>forTableColumn("Verzend Aankondiging", (Aankondiging a) -> {
+//					ac.verzendAankondiging(tvAankondigingen.getSelectionModel().getSelectedIndex());
+//					return a;
+//				}));
+	}
+
 	@FXML
 	void aankondigingPlaatsen(ActionEvent event) {
-
+		try {
+			Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
+			// Controlleren of Sessie null is
+			// Controleren of verantwoordelijke geplaatst mag worden
+			ac.voegAankondigingToe(txtTitel.getText(), txtAankondiging.getText(), false, sessie,
+					gc.getIngelogdeVerantwoordelijke());
+		} catch (Exception e) {
+			lblError.setVisible(true);
+			lblError.setText(e.getMessage());
+			System.err.println(e.getMessage());
+		}
 	}
 
 	@FXML
@@ -146,7 +188,16 @@ public class AankondigingenSchermController extends GridPane {
 
 	@FXML
 	void zoek(ActionEvent event) {
+		changeFilter();
+	}
 
+	private void changeFilter() {
+		String filter = txtZoek.getText();
+		String status = cbxFilter.getValue().toString();
+
+		System.out.println("filter: " + filter);
+		System.out.println("status: " + status);
+		sc.changeFilter(filter, status);
 	}
 
 }

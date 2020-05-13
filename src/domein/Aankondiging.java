@@ -149,9 +149,13 @@ public class Aankondiging implements Serializable {
 	}
 
 	public void setPublicistProperty() {
+		System.out.println("TEST");
 		if (publicistProperty == null) {
 			publicistProperty = new SimpleStringProperty();
 		}
+		
+		System.out.println(publicist.getFamilienaam());
+		System.out.println(publicist.getVoornaam());
 		publicistProperty.set(this.publicist.getFamilienaam() + " " + this.publicist.getVoornaam());
 	}
 
@@ -184,6 +188,7 @@ public class Aankondiging implements Serializable {
 	}
 
 	public void setStringProperties() {
+		System.out.println("SetProperties");
 		setDatumAankondigingProperty();
 		setTitelAankondigingProperty();
 //		setAankondingingTekst();
