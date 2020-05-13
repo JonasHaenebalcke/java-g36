@@ -3,6 +3,7 @@ package main;
 import java.time.LocalDate;
 import java.util.Date;
 
+import domein.AankondigingController;
 import domein.GebruikerController;
 import domein.PopulateDB;
 import domein.SessieController;
@@ -20,7 +21,7 @@ public class StartUp extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		PopulateDB populatedb = new PopulateDB();
-//		populatedb.run(); // Als ge db wilt resetten, moet ge eerst dotnet runnen
+		populatedb.run(); // Als ge db wilt resetten, moet ge eerst dotnet runnen
 		GebruikerController gc = new GebruikerController();
 		SessieKalenderController skc = new SessieKalenderController();
 		SessieController sc = new SessieController(gc);
@@ -30,7 +31,8 @@ public class StartUp extends Application {
 //		sc.geefSessies().forEach(s -> System.out.println(s.toString()));
 //        MenuController root = new MenuController(dc, skc, sc);
 		StatistiekController stc = new StatistiekController();
-		MeldAanSchermController root = new MeldAanSchermController(gc, skc, sc, stc);
+		AankondigingController ac = new AankondigingController();
+		MeldAanSchermController root = new MeldAanSchermController(gc, skc, sc, stc, ac);
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add("gui/stylesheet.css");
 		primaryStage.setMaximized(true);

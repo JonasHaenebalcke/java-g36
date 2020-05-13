@@ -10,6 +10,7 @@ import java.util.Observable;
 
 import org.mockito.exceptions.verification.NeverWantedButInvoked;
 
+import domein.AankondigingController;
 import domein.Gebruiker;
 import domein.GebruikerController;
 import domein.GebruikerSessie;
@@ -93,6 +94,7 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 
 	private SessieController sc;
 	private GebruikerController gc;
+	private AankondigingController ac;
 	
 	//private ObservableList<String> lijst = FXCollections.observableArrayList("Alle gebruiker","Ingeschreven", "Aanwezig", "Afwezig");
 
@@ -101,9 +103,10 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 		this.sc = new SessieController();
 	}
 
-	public BeherenIngeschrevenenSchermController(SessieController sc, GebruikerController gc) {
+	public BeherenIngeschrevenenSchermController(SessieController sc, GebruikerController gc, AankondigingController ac) {
 		this.sc = sc;
 		this.gc = gc;
+		this.ac = ac;
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("BeheerIngeschrevenen.fxml"));
 		loader.setRoot(this);
@@ -117,8 +120,8 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 		initialize();
 	}
 	
-	public BeherenIngeschrevenenSchermController(SessieController sc, GebruikerController gc , Sessie sessie) {
-		this(sc, gc);
+	public BeherenIngeschrevenenSchermController(SessieController sc, GebruikerController gc , Sessie sessie, AankondigingController ac) {
+		this(sc, gc, ac);
 		if(sessie !=null) {
 			tvSessies.getSelectionModel().select(sessie);
 			
@@ -247,7 +250,7 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 		}*/
 		
 		
-		BeheerSessieSchermController bSessieScherm = new BeheerSessieSchermController(sc, gc);
+		BeheerSessieSchermController bSessieScherm = new BeheerSessieSchermController(sc, gc, ac);
 		this.getChildren().setAll(bSessieScherm);
 	}
 

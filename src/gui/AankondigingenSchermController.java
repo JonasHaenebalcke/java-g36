@@ -2,6 +2,8 @@ package gui;
 
 import java.io.IOException;
 
+import domein.Aankondiging;
+import domein.AankondigingController;
 import domein.Sessie;
 import domein.SessieController;
 import domein.StatusSessie;
@@ -43,17 +45,17 @@ public class AankondigingenSchermController extends GridPane {
 	@FXML
 	private TableColumn<Sessie, String> colLokaal;
 
-	@FXML // MOET VERANDERd WORDEN VAN SESSIE NAAR AANKODIGING!!!
-	private TableView<Sessie> tvAankondigingen; // puur voor demo
+	@FXML
+	private TableView<Aankondiging> tvAankondigingen;
 
-	@FXML // MOET VERANDERd WORDEN VAN SESSIE NAAR AANKODIGING!!!
-	private TableColumn<Sessie, String> colPublicist;
+	@FXML
+	private TableColumn<Aankondiging, String> colPublicist;
 
-	@FXML // MOET VERANDERd WORDEN VAN SESSIE NAAR AANKODIGING!!!
-	private TableColumn<Sessie, String> colTitelAankondiging;
+	@FXML
+	private TableColumn<Aankondiging, String> colTitelAankondiging;
 
-	@FXML // MOET VERANDERd WORDEN VAN SESSIE NAAR AANKODIGING!!!
-	private TableColumn<Sessie, String> colDatumAankondiging;
+	@FXML
+	private TableColumn<Aankondiging, String> colDatumAankondiging;
 
 	@FXML
 	private CheckBox cbHerinnering;
@@ -77,8 +79,9 @@ public class AankondigingenSchermController extends GridPane {
 	private ComboBox<StatusSessie> cbxFilter;
 
 	private SessieController sc;
+	private AankondigingController ac;
 
-	public AankondigingenSchermController(SessieController sc) {
+	public AankondigingenSchermController(SessieController sc, AankondigingController ac) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("AankondigingenScherm.fxml"));
 		loader.setRoot(this);
 		loader.setController(this);
@@ -90,39 +93,45 @@ public class AankondigingenSchermController extends GridPane {
 			throw new RuntimeException(ex);
 		}
 		this.sc = sc;
+		this.ac = ac;
 		initialize();
 	}
-	
-	public AankondigingenSchermController(SessieController sc, Sessie sessie) {
-		this(sc);
-		if(sessie!=null) {
-		tvSessies.getSelectionModel().select(sessie);
+
+	public AankondigingenSchermController(SessieController sc, Sessie sessie, AankondigingController ac) {
+		this(sc, ac);
+		if (sessie != null) {
+			tvSessies.getSelectionModel().select(sessie);
 		}
-		
+
 	}
 
 	private void initialize() {
-		tvSessies.setItems(sc.geefSessiesObservable());
-		colVerantwoordelijke.setCellValueFactory(
-				cel -> new ReadOnlyStringWrapper(cel.getValue().getVerantwoordelijke().getFamilienaam() + " "
-						+ cel.getValue().getVerantwoordelijke().getVoornaam()));
-		colTitel.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
-		colStart.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
-		colEind.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
-		colLokaal.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getLokaal()));
-		colOpnePlaatsen.setCellValueFactory(
-				cel -> new ReadOnlyStringWrapper(Integer.toString(cel.getValue().getCapaciteit()))); // moet nog
-																										// veranderd
-																										// worden
+		try {
+			tvSessies.setItems(sc.geefSessiesObservable());
+			colVerantwoordelijke.setCellValueFactory(
+					cel -> new ReadOnlyStringWrapper(cel.getValue().getVerantwoordelijke().getFamilienaam() + " "
+							+ cel.getValue().getVerantwoordelijke().getVoornaam()));
+			colTitel.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
+			colStart.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
+			colEind.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
+			colLokaal.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getLokaal()));
+			colOpnePlaatsen.setCellValueFactory(
+					cel -> new ReadOnlyStringWrapper(Integer.toString(cel.getValue().getCapaciteit()))); // moet nog
+																											// veranderd
+																											// worden
 
-		cbxFilter.setItems(FXCollections.observableArrayList(StatusSessie.values()));
-		cbxDagenOpVoorhand.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7));
+			cbxFilter.setItems(FXCollections.observableArrayList(StatusSessie.values()));
+			cbxDagenOpVoorhand.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7));
 
-		tvAankondigingen.setItems(sc.geefSessiesObservable());
-		colPublicist.setCellValueFactory(cel -> new ReadOnlyStringWrapper("Lucas Van Der Haegen"));
-		colTitelAankondiging.setCellValueFactory(
-				cel -> new ReadOnlyStringWrapper("Verandering van lokaal sessie \"Omgaan met frustratie problemen\""));
-		colDatumAankondiging.setCellValueFactory(cel -> new ReadOnlyStringWrapper("05/05/2020 15:30"));
+			System.out.println(ac.geefAankondigingen().toString());
+			tvAankondigingen.setItems(ac.geefAankondigingObservableList());
+			colPublicist.setCellValueFactory(cel -> new ReadOnlyStringWrapper("Lucas Van Der Haegen"));
+			colTitelAankondiging.setCellValueFactory(cel -> new ReadOnlyStringWrapper(
+					"Verandering van lokaal sessie \"Omgaan met frustratie problemen\""));
+			colDatumAankondiging.setCellValueFactory(cel -> new ReadOnlyStringWrapper("05/05/2020 15:30"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@FXML

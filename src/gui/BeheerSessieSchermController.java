@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
+import domein.AankondigingController;
 import domein.Feedback;
 import domein.Gebruiker;
 import domein.GebruikerController;
@@ -131,15 +132,18 @@ public class BeheerSessieSchermController extends GridPane {
 
 	private GebruikerController gc;
 	private SessieController sc;
+	private AankondigingController ac;
 
 	public BeheerSessieSchermController() {
 		this.sc = new SessieController();
 		this.gc = new GebruikerController();
+		this.ac = new AankondigingController();
 	}
 
-	public BeheerSessieSchermController(SessieController sc, GebruikerController gc) {
+	public BeheerSessieSchermController(SessieController sc, GebruikerController gc, AankondigingController ac) {
 		this.sc = sc;
 		this.gc = gc;
+		this.ac = ac;
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("Sessie.fxml"));
 		loader.setRoot(this);
@@ -154,8 +158,8 @@ public class BeheerSessieSchermController extends GridPane {
 		initialize();
 	}
 
-	public BeheerSessieSchermController(SessieController sc, GebruikerController gc, Sessie sessie) {
-		this(sc, gc);
+	public BeheerSessieSchermController(SessieController sc, GebruikerController gc, Sessie sessie, AankondigingController ac) {
+		this(sc, gc, ac);
 		textWaardeSessieInvullen(sessie);
 	}
 
@@ -457,7 +461,7 @@ public class BeheerSessieSchermController extends GridPane {
 		Sessie sessie = tblSessies.getSelectionModel().getSelectedItem();
 		sc.setHuidigeSessie(sessie);
 
-		BeherenIngeschrevenenSchermController bIngeschrevenenScherm = new BeherenIngeschrevenenSchermController(sc, gc, sessie);
+		BeherenIngeschrevenenSchermController bIngeschrevenenScherm = new BeherenIngeschrevenenSchermController(sc, gc, sessie, ac);
 		this.getChildren().setAll(bIngeschrevenenScherm);
 
 	}
@@ -466,7 +470,7 @@ public class BeheerSessieSchermController extends GridPane {
 	void beherenAankondigingen(ActionEvent event) {
 		Sessie sessie = tblSessies.getSelectionModel().getSelectedItem();
 		sc.setHuidigeSessie(sessie);
-		AankondigingenSchermController asc = new AankondigingenSchermController(sc, sessie);
+		AankondigingenSchermController asc = new AankondigingenSchermController(sc, sessie, ac);
 		this.getChildren().setAll(asc);
 	}
 

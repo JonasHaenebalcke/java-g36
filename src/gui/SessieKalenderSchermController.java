@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import domein.AankondigingController;
 import domein.GebruikerController;
 import domein.Maand;
 import domein.Sessie;
@@ -97,6 +98,7 @@ public class SessieKalenderSchermController extends GridPane {
 	private SessieKalender sk;
 	private SessieKalenderController dc;
 	private SessieController sc;
+	private AankondigingController ac;
 	private GebruikerController gc;
 
 	public SessieKalenderSchermController() {
@@ -106,10 +108,11 @@ public class SessieKalenderSchermController extends GridPane {
 //		initializeSessieKalender();
 	}
 
-	public SessieKalenderSchermController(SessieKalenderController dc, SessieController sc, GebruikerController gc) {
+	public SessieKalenderSchermController(SessieKalenderController dc, SessieController sc, GebruikerController gc, AankondigingController ac) {
 		this.dc = dc;
 		this.sc = sc;
 		this.gc = gc;
+		this.ac = ac;
 		sk = dc.getHuidigeSessieKalender();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("SessieKalender.fxml"));
 		loader.setRoot(this);
@@ -331,7 +334,7 @@ public class SessieKalenderSchermController extends GridPane {
 	@FXML
 	public void beheerSessie(ActionEvent event) {
 		Sessie sessie = tblSessies.getSelectionModel().getSelectedItem();
-		this.getChildren().setAll(new BeheerSessieSchermController(this.sc, this.gc, sessie));
+		this.getChildren().setAll(new BeheerSessieSchermController(this.sc, this.gc, sessie, this.ac));
 		
 //		System.out.println("beheer sessie");    
 //		Sessie sessie = tblSessies.getSelectionModel().getSelectedItem();

@@ -22,45 +22,45 @@ import javafx.scene.control.TableView;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name="Aankondiging")
-public class Aankondiging implements Serializable{
+@Table(name = "Aankondiging")
+public class Aankondiging implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name ="AankondidingID")
+	@Column(name = "AankondidingID")
 	public int aankondigingID;
-	
-	@Column(name="Titel")
+
+	@Column(name = "Titel")
 	public String titel;
-	
-	@Column(name="Tekst")
+
+	@Column(name = "Tekst")
 	public String aankondingingTekst;
-	
-	@Column(name="DatumAangemaakt")
+
+	@Column(name = "DatumAangemaakt")
 	public LocalDateTime datum;
-	
-	@Column(name="isVerzonden")
+
+	@Column(name = "isVerzonden")
 	public boolean isVerzonden;
-	
+
 	@ManyToOne
-	@JoinColumn(name="SessieID")
-    public Sessie sessie;
-	
+	@JoinColumn(name = "SessieID")
+	public Sessie sessie;
+
 	@ManyToOne
-	@JoinColumn(name="publicistID")
+	@JoinColumn(name = "publicistID")
 	public Gebruiker publicist;
-	
+
 	@Transient
-	private SimpleStringProperty publicistProperty ; //= new SimpleStringProperty();
+	private SimpleStringProperty publicistProperty; // = new SimpleStringProperty();
 	@Transient
 	private SimpleStringProperty titelAankondigingProperty; // = new SimpleStringProperty();
 	@Transient
-	private SimpleStringProperty datumAankondigingProperty; //= new SimpleStringProperty();
-	
+	private SimpleStringProperty datumAankondigingProperty; // = new SimpleStringProperty();
+
 	protected Aankondiging() {
-		
+
 	}
-	
+
 	public Aankondiging(String titel, String aankondiging, Sessie sessie, Gebruiker publicist, boolean isVerzonden) {
 		setTitel(titel);
 		setAankondingingTekst(aankondiging);
@@ -72,22 +72,22 @@ public class Aankondiging implements Serializable{
 	}
 
 	private void setSessie(Sessie sessie) {
-		if(sessie==null) {
+		if (sessie == null) {
 			throw new IllegalArgumentException("Sessie moet ingevuld zijn");
 		}
-		this.sessie = sessie;	
+		this.sessie = sessie;
 	}
 
 	public Sessie getSessie() {
 		return sessie;
 	}
-	
+
 	public boolean isVerzonden() {
 		return isVerzonden;
 	}
 
 	private void setVerzonden(boolean isVerzonden) {
-		if(this.isVerzonden) {
+		if (this.isVerzonden) {
 			throw new IllegalArgumentException("Aankondiging is al verzonden");
 		}
 		this.isVerzonden = isVerzonden;
@@ -98,7 +98,7 @@ public class Aankondiging implements Serializable{
 	}
 
 	private void setTitel(String titel) {
-		if(titel == null || titel.isBlank()) {
+		if (titel == null || titel.isBlank()) {
 			throw new IllegalArgumentException("Gelieve de titel in te vullen!");
 		}
 		this.titel = titel;
@@ -109,12 +109,12 @@ public class Aankondiging implements Serializable{
 	}
 
 	private void setAankondingingTekst(String aankondingingTekst) {
-		if(aankondingingTekst == null || aankondingingTekst.isBlank()) {
-		throw new IllegalArgumentException("Gelieve je aankondiging in te vullen!");
-	}
+		if (aankondingingTekst == null || aankondingingTekst.isBlank()) {
+			throw new IllegalArgumentException("Gelieve je aankondiging in te vullen!");
+		}
 		this.aankondingingTekst = aankondingingTekst;
 	}
-	
+
 	public LocalDateTime getDatumAangemaakt() {
 		return datum;
 	}
@@ -124,14 +124,14 @@ public class Aankondiging implements Serializable{
 	}
 
 	private void setPublicist(Gebruiker publicist) {
-		if(publicist==null) {
+		if (publicist == null) {
 			throw new IllegalArgumentException("Gelieve een publicist mee te geven");
 		}
 		this.publicist = publicist;
 	}
-	
+
 	public void wijzigAankondiging(String titel, String aankondigingTekst, boolean isVerzonden) {
-		if(this.isVerzonden) {
+		if (this.isVerzonden) {
 			throw new IllegalArgumentException("Je kan de aankondiging niet meer aanpassen, want hij is al verzonden");
 		} else {
 			setTitel(titel);
@@ -140,47 +140,50 @@ public class Aankondiging implements Serializable{
 			setStringProperties();
 		}
 	}
-	
+
 	public StringProperty getPublicistProperty() {
-		if(publicist == null) {
-			publicistProperty = new SimpleStringProperty();
+		if (publicist == null) {
 			setPublicistProperty();
 		}
 		return publicistProperty;
 	}
 
 	public void setPublicistProperty() {
-		publicistProperty.set(this.publicist.getFamilienaam()+" "+this.publicist.getVoornaam() );
+		publicistProperty.set(this.publicist.getFamilienaam() + " " + this.publicist.getVoornaam());
 	}
 
 	public StringProperty getTitelAankondigingProperty() {
-		if(titelAankondigingProperty == null) {
-			titelAankondigingProperty = new SimpleStringProperty();
-			setTitelAankondigingProperty(getTitel());
+		if (titelAankondigingProperty == null) {
+			setTitelAankondigingProperty();
 		}
 		return titelAankondigingProperty;
 	}
 
-	public void setTitelAankondigingProperty(String titelAankondiging) {
-		titelAankondigingProperty.set(titelAankondiging);
+	public void setTitelAankondigingProperty() {
+		if (titelAankondigingProperty == null) {
+			titelAankondigingProperty = new SimpleStringProperty();
+		}
+		titelAankondigingProperty.set(getTitel());
 	}
 
 	public StringProperty getDatumAankondigingProperty() {
-		if(datumAankondigingProperty==null) {
-			datumAankondigingProperty = new SimpleStringProperty();
-			setDatumAankondigingProperty(getDatumAangemaakt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+		if (datumAankondigingProperty == null) {
+			setDatumAankondigingProperty();
 		}
 		return datumAankondigingProperty;
 	}
 
-	public void setDatumAankondigingProperty(String datumAankondiging) {
-		datumAankondigingProperty.set(datumAankondiging);
+	public void setDatumAankondigingProperty() {
+		if (datumAankondigingProperty == null) {
+			datumAankondigingProperty = new SimpleStringProperty();
+		}
+		datumAankondigingProperty.set(getDatumAangemaakt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 	}
-	
+
 	public void setStringProperties() {
-		setDatumAankondigingProperty(getDatumAangemaakt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-		setTitelAankondigingProperty(getTitel());
-		setAankondingingTekst(getAankondingingTekst());
+		setDatumAankondigingProperty();
+		setTitelAankondigingProperty();
+//		setAankondingingTekst();
 		setPublicistProperty();
 	}
 
@@ -190,6 +193,5 @@ public class Aankondiging implements Serializable{
 				+ aankondingingTekst + ", datum=" + datum + ", isVerzonden=" + isVerzonden + ", sessie=" + sessie
 				+ ", publicist=" + publicist + "]";
 	}
-		
-	
+
 }
