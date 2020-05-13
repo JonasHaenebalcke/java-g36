@@ -97,6 +97,7 @@ public class SessieKalenderSchermController extends GridPane {
 	private SessieKalender sk;
 	private SessieKalenderController dc;
 	private SessieController sc;
+	private GebruikerController gc;
 
 	public SessieKalenderSchermController() {
 		this.dc = new SessieKalenderController();
@@ -105,9 +106,10 @@ public class SessieKalenderSchermController extends GridPane {
 //		initializeSessieKalender();
 	}
 
-	public SessieKalenderSchermController(SessieKalenderController dc, SessieController sc) {
+	public SessieKalenderSchermController(SessieKalenderController dc, SessieController sc, GebruikerController gc) {
 		this.dc = dc;
 		this.sc = sc;
+		this.gc = gc;
 		sk = dc.getHuidigeSessieKalender();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("SessieKalender.fxml"));
 		loader.setRoot(this);
@@ -329,7 +331,7 @@ public class SessieKalenderSchermController extends GridPane {
 	@FXML
 	public void beheerSessie(ActionEvent event) {
 		Sessie sessie = tblSessies.getSelectionModel().getSelectedItem();
-		this.getChildren().setAll(new BeheerSessieSchermController(this.sc, sessie));
+		this.getChildren().setAll(new BeheerSessieSchermController(this.sc, this.gc, sessie));
 		
 //		System.out.println("beheer sessie");    
 //		Sessie sessie = tblSessies.getSelectionModel().getSelectedItem();

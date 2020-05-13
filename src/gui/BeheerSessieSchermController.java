@@ -154,8 +154,8 @@ public class BeheerSessieSchermController extends GridPane {
 		initialize();
 	}
 
-	public BeheerSessieSchermController(SessieController sc, Sessie sessie) {
-		// this(sc);
+	public BeheerSessieSchermController(SessieController sc, GebruikerController gc, Sessie sessie) {
+		this(sc, gc);
 		textWaardeSessieInvullen(sessie);
 	}
 
@@ -248,7 +248,52 @@ public class BeheerSessieSchermController extends GridPane {
 	}
 
 	private void textWaardeSessieInvullen(Sessie sessie) {
-		System.out.println("Deze code wordt gestolen van Audrey als hij werkt");
+		lblSucces.setText("");
+		btnPasAan.setDisable(false);
+		btnVerwijder.setDisable(false);
+		txtTitel.setText(sessie.getTitel());
+		txtGastspreker.setText(sessie.getGastspreker());
+		// verantwoordelijke = sessieObs.getValue().getVerantwoordelijke();
+		lblVerantwoordelijke.setText((sessie.getVerantwoordelijke().getFamilienaam() + " "
+				+ sessie.getVerantwoordelijke().getVoornaam()));
+		txtCapaciteit.setText(Integer.toString(sessie.getCapaciteit()));
+		txtLokaal.setText(sessie.getLokaal());
+		txtOmschrvijving.setText(sessie.getOmschrijving());
+		checkboxOpenVrInSchrijvingen.setSelected(sessie.isInschrijvingenOpen());
+		dpEinddatum.setValue(sessie.getEindDatum().toLocalDate());
+		dpStartdatum.setValue(sessie.getStartDatum().toLocalDate());
+		txtEinduur.setText(sessie.getEindDatum().format(DateTimeFormatter.ofPattern("HH:mm")));
+		txtStartuur.setText(sessie.getStartDatum().format(DateTimeFormatter.ofPattern("HH:mm")));
+
+		btnVoegToe.setDisable(true);
+
+		// tvMedia.setItems();
+		// colMediaTitel.setCellValueFactory(cel -> cel.getValue());
+		// colMediaLink.setCellValueFactory(cel -> cel.getValue());
+
+		if (sessie.getStatusSessie() == StatusSessie.open || sessie.getStatusSessie() == StatusSessie.gesloten
+				|| sessie.getEindDatum().isBefore(LocalDateTime.now())) {
+
+			// System.out.println("FeedbackLijst:" +
+			// sessieObs.getValue().getFeedbackLijst()); // {IndirectList: not instantiated}
+//			tvFeedback.setItems(FXCollections.observableArrayList(newV.getFeedbackLijst())
+			tvFeedback.setItems(
+					sessie.getFeedbackObservable().sorted(Comparator.comparing(Feedback::getTimeWritten)));
+			colAuteurFeedback.setCellValueFactory(cel -> cel.getValue().getFeedbackAuteurProperty());
+			colScoreFeedback.setCellValueFactory(cel -> cel.getValue().getScoreProperty());
+			colFeedback.setCellValueFactory(cel -> cel.getValue().getFeedbackProperty());
+			colDatumFeedback.setCellValueFactory(cel -> cel.getValue().getDatumFeedbackroperty());
+			lblGemiddeldeScore.setVisible(true);
+			lblFeedback.setVisible(true);
+			tvFeedback.setVisible(true);
+			lblGemiddeldeScoreWergave.setVisible(true);
+			lblGemiddeldeScoreWergave.setText(Double.toString(sessie.geefGemiddeldeScore()));
+		} else {
+			lblFeedback.setVisible(false);
+			tvFeedback.setVisible(false);
+			lblGemiddeldeScoreWergave.setVisible(false);
+			lblGemiddeldeScore.setVisible(false);
+		}
 	}
 
 	@FXML

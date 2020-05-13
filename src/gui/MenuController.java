@@ -79,7 +79,7 @@ public class MenuController extends BorderPane{
 
 	@FXML
 	void sessiekalenderBeheren(ActionEvent event) throws IOException {
-		SessieKalenderSchermController skcScherm = new SessieKalenderSchermController(this.skc, this.sc);
+		SessieKalenderSchermController skcScherm = new SessieKalenderSchermController(this.skc, this.sc, this.dc);
 		scherm.getChildren().setAll(skcScherm);
 	}
 
