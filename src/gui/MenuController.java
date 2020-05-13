@@ -53,8 +53,8 @@ public class MenuController extends BorderPane{
 		this.skc = skc;
 		this.sc = sc;
 		this.statc = statc;
-		//lblAangemeldAls.setText("Aangemeld als \n" + dc.getIngelogdeVerantwoordelijke().getVoornaam() + " "
-		//		+ dc.getIngelogdeVerantwoordelijke().getFamilienaam());
+		lblAangemeldAls.setText("Aangemeld als \n" + dc.getIngelogdeVerantwoordelijke().getVoornaam() + " "
+				+ dc.getIngelogdeVerantwoordelijke().getFamilienaam());
 	}
 
 	public void initialize() {
@@ -111,6 +111,7 @@ public class MenuController extends BorderPane{
 	@FXML
 	void logUIt(ActionEvent event) {
 		MeldAanSchermController root = new MeldAanSchermController(dc, skc, sc, statc);
-		this.getChildren().setAll(root);
+		this.getScene().setRoot(root);
+//		this.getChildren().setAll(root);
 	}
 }
