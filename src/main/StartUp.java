@@ -21,7 +21,7 @@ public class StartUp extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		PopulateDB populatedb = new PopulateDB();
-		populatedb.run(); // Als ge db wilt resetten, moet ge eerst dotnet runnen
+//		populatedb.run(); // Als ge db wilt resetten, moet ge eerst dotnet runnen
 		GebruikerController gc = new GebruikerController();
 		SessieKalenderController skc = new SessieKalenderController();
 		SessieController sc = new SessieController(gc);

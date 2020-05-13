@@ -27,7 +27,7 @@ public class Aankondiging implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "AankondidingID")
+	@Column(name = "AankondigingID")
 	public int aankondigingID;
 
 	@Column(name = "Titel")
@@ -39,7 +39,7 @@ public class Aankondiging implements Serializable {
 	@Column(name = "DatumAangemaakt")
 	public LocalDateTime datum;
 
-	@Column(name = "isVerzonden")
+	@Column(name = "IsVerzonden")
 	public boolean isVerzonden;
 
 	@ManyToOne
@@ -47,7 +47,7 @@ public class Aankondiging implements Serializable {
 	public Sessie sessie;
 
 	@ManyToOne
-	@JoinColumn(name = "publicistID")
+	@JoinColumn(name = "PublicistID")
 	public Gebruiker publicist;
 
 	@Transient
@@ -149,6 +149,9 @@ public class Aankondiging implements Serializable {
 	}
 
 	public void setPublicistProperty() {
+		if (publicistProperty == null) {
+			publicistProperty = new SimpleStringProperty();
+		}
 		publicistProperty.set(this.publicist.getFamilienaam() + " " + this.publicist.getVoornaam());
 	}
 

@@ -11,6 +11,13 @@ import repository.GenericDaoJpa;
 
 public class PopulateDB {
 	public void run() {
+//		Gebruiker gebruiker1 = null;
+//		try {
+//			gebruiker1 = new Gebruiker("Katrien", "Maasens", "katrien.maasen@student.hogent.be", "123456km",
+//					TypeGebruiker.Hoofdverantwoordelijke, Status.Actief, "");
+//		} catch (Exception e) {
+//			System.out.println(e.toString());
+//		}
 		GenericDao gebruikerdao = new GenericDaoJpa(Gebruiker.class);
 		GenericDaoJpa.startTransaction();
 		Gebruiker gebruiker1 = null;
@@ -51,12 +58,7 @@ public class PopulateDB {
 		try {
 			Sessie sessie1 = (Sessie) sessiedao.get(13);
 			Aankondiging aankondiging1 = new Aankondiging("een aankondiging",
-					"Belangrijke info ivbm met de aankondiging",
-					new Sessie(gebruiker1, "titel", "lokaal", LocalDateTime.now().plusDays(1).plusHours(1),
-							LocalDateTime.now().plusDays(1).plusHours(3), 5, "omschrijving", "gastspreker"),
-//					new Gebruiker("voornaam", "familienaam", "jonas.haenebalcke@student.hogent.be", "789456ok",
-//							TypeGebruiker.Gebruiker, Status.Actief, ""
-					gebruiker1, true);
+					"Belangrijke info ivbm met de aankondiging", sessie1, gebruiker1, true);
 			aankondigingdao.insert(aankondiging1);
 		} catch (Exception e) {
 			e.printStackTrace();

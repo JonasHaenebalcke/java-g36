@@ -52,6 +52,8 @@ public class Sessie implements Serializable {
 	private List<GebruikerSessie> gebruikerSessieLijst;
 	@OneToMany(mappedBy = "sessie")
 	private List<Feedback> feedbackLijst;
+	@OneToMany(mappedBy = "sessie")
+	private List<Aankondiging> aankondigingen;
 	@Column(name = "Titel")
 	private String titel;
 	@Column(name = "Lokaal")
@@ -86,6 +88,7 @@ public class Sessie implements Serializable {
 	protected Sessie() {
 		gebruikerSessieLijst = new ArrayList<GebruikerSessie>();
 		statusSessie = StatusSessie.nietOpen;
+		aankondigingen = new ArrayList<Aankondiging>();
 	}
 
 	public Sessie(Gebruiker verantwoordelijke, String titel, String lokaal, LocalDateTime startDatum,

@@ -116,6 +116,8 @@ public class Gebruiker implements Serializable {
 //	@Transient
 	@OneToMany(mappedBy = "auteur")
 	private List<Feedback> feedbackLijst;
+	@OneToMany(mappedBy = "publicist")
+	private List<Aankondiging> aankondigingen;
 
 	@Transient
 	private SimpleStringProperty voorNaamProperty;
@@ -162,6 +164,7 @@ public class Gebruiker implements Serializable {
 	protected Gebruiker() {
 		gebruikerSessieLijst = new ArrayList<GebruikerSessie>();
 		feedbackLijst = new ArrayList<Feedback>();
+		aankondigingen = new ArrayList<Aankondiging>();
 	}
 
 	/**
