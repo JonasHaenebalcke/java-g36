@@ -236,7 +236,7 @@ public class BeheerSessieSchermController extends GridPane {
 					lblFeedback.setVisible(true);
 					tvFeedback.setVisible(true);
 					lblGemiddeldeScoreWergave.setVisible(true);
-					lblGemiddeldeScoreWergave.setText(Integer.toString(newV.geefGemiddeldeScore()));
+					lblGemiddeldeScoreWergave.setText(Double.toString(newV.geefGemiddeldeScore()));
 				} else {
 					lblFeedback.setVisible(false);
 					tvFeedback.setVisible(false);

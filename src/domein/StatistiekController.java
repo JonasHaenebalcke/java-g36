@@ -32,7 +32,7 @@ public class StatistiekController {
 		return ret;
 	}
 
-	public int geefGemiddeldeScore(Sessie sessie) {
+	public double geefGemiddeldeScore(Sessie sessie) {
 		return sessie.geefGemiddeldeScore();
 	}
 }

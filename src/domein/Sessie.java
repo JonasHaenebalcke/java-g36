@@ -405,10 +405,10 @@ public class Sessie implements Serializable {
 
 	}
 
-	public int geefGemiddeldeScore() {
+	public double geefGemiddeldeScore() {
 		if (getFeedbackLijst().isEmpty())
 			return 0;
-		int res = 0;
+		double res = 0;
 		for (Feedback feedback : getFeedbackLijst()) {
 			res += feedback.getScore();
 		}

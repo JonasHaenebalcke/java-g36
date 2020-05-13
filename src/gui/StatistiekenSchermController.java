@@ -167,10 +167,20 @@ public class StatistiekenSchermController extends GridPane {
 				lblStatistiek1Omschrijving.setText("Aantal aanwezigen");
 				lblStatistiek1Value.setText(String.valueOf(statc.geefAantalAanwezigen(newValue)));
 				lblStatistiek2Omschrijving.setText("Gemiddelde score");
-				lblStatistiek2Value.setText(String.valueOf(statc.geefGemiddeldeScore(newValue)) + "/5");
+				lblStatistiek2Value.setText(String.valueOf(rondAf((statc.geefGemiddeldeScore(newValue)), 2)+ "/5"));
 			}
 		});
 
+	}
+
+	private static double rondAf(double value, int places) { //Source https://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
+		if (places < 0)
+			throw new IllegalArgumentException();
+
+		long factor = (long) Math.pow(10, places);
+		value = value * factor;
+		long tmp = Math.round(value);
+		return (double) tmp / factor;
 	}
 
 //	    @FXML 
