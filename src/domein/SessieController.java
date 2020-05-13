@@ -57,22 +57,21 @@ public class SessieController {
 		return FXCollections.observableArrayList(huidigeSessie.getGebruikerSessieLijst());
 	}
 
-	public void changeFilter(String filter, StatusSessie status) {
+	public void changeFilter(String filter, String status) {
 		sessieFilteredLijst.setPredicate(sessie -> {
-			if ((filter == null || filter.isBlank()) && status == null)
-				return true;
+//			if ((filter == null || filter.isBlank()) && (status.contentEquals("Alle") || status == null || status.isBlank()))
+//				return true;
 			String lowercase = filter.toLowerCase();
-			return ((sessie.getTitel().toLowerCase().contains(lowercase)
-					|| sessie.getVerantwoordelijke().getVoornaam().toLowerCase().contains(lowercase)
-					|| sessie.getVerantwoordelijke().getFamilienaam().toLowerCase().contains(lowercase)
-					|| sessie.getGastspreker().toLowerCase().contains(lowercase)
-					|| sessie.getEindDatum().toString().toLowerCase().contains(lowercase)
-					|| sessie.getStartDatum().toString().toLowerCase().contains(lowercase)
-					)
-					&&
-					sessie.getStatusSessie() == status
-					)
-					;
+			boolean filterbool = (filter == null || filter.isBlank()) ? true
+					: (sessie.getTitel().toLowerCase().contains(lowercase)
+							|| sessie.getVerantwoordelijke().getVoornaam().toLowerCase().contains(lowercase)
+							|| sessie.getVerantwoordelijke().getFamilienaam().toLowerCase().contains(lowercase)
+							|| sessie.getGastspreker().toLowerCase().contains(lowercase)
+							|| sessie.getStartDatum().toString().toLowerCase().contains(lowercase));
+
+			boolean statusbool = status.contentEquals("Alle") || status == null || status.isBlank() ? true
+					: sessie.getStatusSessie().toString() == status;
+			return (filterbool && statusbool);
 		});
 	}
 
