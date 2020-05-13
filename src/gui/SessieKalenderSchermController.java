@@ -183,10 +183,11 @@ public class SessieKalenderSchermController extends GridPane {
 
 	private void initializeSessieKalenderTable() {
 		try {
+//		System.out.println("INITIALIZE SESSIE KALENDER");
 			lblSucces.setVisible(false);
 			lblErrorSessieKalender.setVisible(false);
 //			lvSessieKalender.setItems(dc.geefSessieKalenderObservableList().sorted());
-
+			System.out.println(dc.geefSessieKalenderObservableList().toString());
 			tblSessieKalenders.setItems(dc.geefSessieKalenderObservableList().sorted());
 //			System.out.println(sk.getStartDatumProperty());
 //			colStartDatum.setCellValueFactory(cel -> cel.getValue().startDatumProperty()());
