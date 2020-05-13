@@ -1,6 +1,8 @@
 package gui;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import domein.Aankondiging;
 import domein.AankondigingController;
@@ -87,7 +89,7 @@ public class AankondigingenSchermController extends GridPane {
 	private TextField txtZoek;
 
 	@FXML
-	private ComboBox<StatusSessie> cbxFilter;
+	private ComboBox<String> cbxFilter;
 
 	private SessieController sc;
 	private AankondigingController ac;
@@ -121,7 +123,7 @@ public class AankondigingenSchermController extends GridPane {
 
 	private void initialize() {
 		try {
-			tvSessies.setItems(sc.geefSessiesObservable());
+			tvSessies.setItems(sc.geefSessiesSorted());
 			colVerantwoordelijke.setCellValueFactory(
 					cel -> new ReadOnlyStringWrapper(cel.getValue().getVerantwoordelijke().getFamilienaam() + " "
 							+ cel.getValue().getVerantwoordelijke().getVoornaam()));
@@ -134,7 +136,13 @@ public class AankondigingenSchermController extends GridPane {
 																											// veranderd
 																											// worden
 
-			cbxFilter.setItems(FXCollections.observableArrayList(StatusSessie.values()));
+			List<String> statussen = new ArrayList<>();
+			statussen.add("Alle");
+			for (StatusSessie status : StatusSessie.values()) {
+				statussen.add(status.toString());
+			}
+			cbxFilter.setItems(FXCollections.observableArrayList(statussen));
+			cbxFilter.getSelectionModel().selectFirst();
 //			cbxDagenOpVoorhand.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7));
 
 			System.out.println(ac.geefAankondigingen().toString());

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -100,6 +101,8 @@ public class SessieKalenderSchermController extends GridPane {
 	private SessieController sc;
 	private AankondigingController ac;
 	private GebruikerController gc;
+	
+	private final Comparator<String> byDatum = (s1, s2) -> s1.substring(6).compareTo(s2.substring(6));
 
 	public SessieKalenderSchermController() {
 		this.dc = new SessieKalenderController();
@@ -193,7 +196,12 @@ public class SessieKalenderSchermController extends GridPane {
 			lblErrorSessieKalender.setVisible(false);
 //			lvSessieKalender.setItems(dc.geefSessieKalenderObservableList().sorted());
 			System.out.println(dc.geefSessieKalenderObservableList().toString());
-			tblSessieKalenders.setItems(dc.geefSessieKalenderObservableList().sorted());
+			tblSessieKalenders.setItems(dc.geefSessieKalenderObservableList());
+			tblSessieKalenders.getSortOrder().add(colStartDatum);
+//			colStartDatum.setComparator(byDatum);
+//			colEindDatum.setComparator(byDatum);
+			
+			
 //			System.out.println(sk.getStartDatumProperty());
 //			colStartDatum.setCellValueFactory(cel -> cel.getValue().startDatumProperty()());
 //			System.out.println(sk.getStartDatumProperty());
@@ -213,6 +221,7 @@ public class SessieKalenderSchermController extends GridPane {
 			sc.geefSessies().forEach(s -> s.setStringProperties());
 			dc.geefSessiesMaand(maand).forEach(s -> System.out.println(s.toString()));
 			tblSessies.setItems(dc.geefSessiesMaand(maand));
+			tblSessies.getSortOrder().add(colStartDatumSessie);
 
 			colTitel.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
 //		colDuur.setCellValueFactory(cel -> cel.getValue().getDuurSessieProperty());

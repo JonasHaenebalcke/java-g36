@@ -54,7 +54,7 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 	private TableColumn<Sessie, String> ColEindSessie;
 
 	@FXML
-	private ComboBox<StatusSessie> cbxStatusSessie;
+	private ComboBox<String> cbxStatusSessie;
 
 	@FXML
 	private Label lbltitelTabelGebruikers;
@@ -132,9 +132,15 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 	}
 
 	private void initialize() {
-		cbxStatusSessie.setItems(FXCollections.observableArrayList(StatusSessie.values()));
+		List<String> statussen = new ArrayList<>();
+		statussen.add("Alle");
+		for (StatusSessie status : StatusSessie.values()) {
+			statussen.add(status.toString());
+		}
+		cbxStatusSessie.setItems(FXCollections.observableArrayList(statussen));
+		cbxStatusSessie.getSelectionModel().selectFirst();
 		try {
-			tvSessies.setItems(sc.geefSessiesObservable().sorted(Comparator.comparing(Sessie::getStartDatum)));
+			tvSessies.setItems(sc.geefSessiesSorted());//.geefSessiesObservable().sorted(Comparator.comparing(Sessie::getStartDatum)));
 			colTitelSessie.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
 			colStartSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
 			ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
@@ -270,7 +276,6 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 	@FXML
 	void geefSessiesGekozenStatus(ActionEvent event) {
 		try {
-			System.out.print(cbxStatusSessie.getValue().name() + " ");
 
 //			if (cbxStatusSessie.getValue().name().equals(StatusSessie.open.toString())	|| cbxStatusSessie.getValue().name().equals(StatusSessie.gesloten.toString()))
 //			{

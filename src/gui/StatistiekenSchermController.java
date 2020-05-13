@@ -136,7 +136,7 @@ public class StatistiekenSchermController extends GridPane {
 		lblStatistiek2Value.setText("Waarde");
 		tvGebruikers.setVisible(false);
 		tvSessies.setVisible(true);
-		tvSessies.setItems(sc.geefSessiesObservable());
+		tvSessies.setItems(sc.geefSessiesSorted());
 		colVerantwoordelijke.setCellValueFactory(cel -> cel.getValue().getNaamVerantwoordelijke());
 		colTitel.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
 		colStart.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());

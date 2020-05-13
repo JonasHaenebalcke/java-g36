@@ -8,6 +8,8 @@ import repository.GenericDao;
 import repository.GenericDaoJpa;
 import javafx.beans.InvalidationListener;
 import javafx.collections.*;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -19,6 +21,11 @@ public class GebruikerController {
 	private List<Gebruiker> gebruikerList;
 	private GenericDao gebruikerRepo;
 	private Gebruiker ingelogdeVerantwoordelijke;
+	private FilteredList<Gebruiker> gebruikerFilteredLijst;
+	private SortedList<Gebruiker> gebruikerSortedLijst;
+
+	private final Comparator<Gebruiker> sortOrder = Comparator.comparing(Gebruiker::getType)
+			.thenComparing(Comparator.comparing(Gebruiker::getFamilienaam)).thenComparing(Gebruiker::getVoornaam);
 
 	public GebruikerController() {
 		setGebruikerRepo(new GenericDaoJpa(Gebruiker.class));
@@ -51,6 +58,20 @@ public class GebruikerController {
 		return gebruikerObservableList;
 	}
 
+	public FilteredList<Gebruiker> geefGebruikersFiltered() {
+		if (gebruikerFilteredLijst == null) {
+			gebruikerFilteredLijst = new FilteredList<>(geefGebruikersObservableList(), p -> true);
+		}
+		return gebruikerFilteredLijst;
+	}
+
+	public SortedList<Gebruiker> geefGebruikersSorted() {
+		if (gebruikerSortedLijst == null) {
+			gebruikerSortedLijst = new SortedList<>(geefGebruikersFiltered(), sortOrder);
+		}
+		return gebruikerSortedLijst;
+	}
+
 	public ObservableList<Sessie> geefSessiesGebruikerObservable(Gebruiker gebruiker) {
 
 		List<Sessie> se = new ArrayList<Sessie>();
@@ -58,6 +79,22 @@ public class GebruikerController {
 
 		gebruiker.getGebruikerSessieLijst().forEach(sessie -> se.add(sessie.getSessie()));
 		return FXCollections.observableArrayList(se);
+	}
+
+	public void changeFilter(String filter, String type, String status) {
+		gebruikerFilteredLijst.setPredicate(gebruiker -> {
+//			if ((filter == null || filter.isBlank()) && (status.contentEquals("Alle") || status == null || status.isBlank()))
+//				return true;
+			String lowercase = filter.toLowerCase();
+			boolean filterbool = (filter == null || filter.isBlank()) ? true : false;
+
+			boolean typebool = type.contentEquals("Alle") || type == null || type.isBlank() ? true
+					: gebruiker.getType().toString().equalsIgnoreCase(type);
+
+			boolean statusbool = status.contentEquals("Alle") || status == null || status.isBlank() ? true
+					: gebruiker.getStatus().toString().equalsIgnoreCase(status);
+			return (filterbool && typebool && statusbool);
+		});
 	}
 
 	public void voegToeGebruiker(String voornaam, String familienaam, String mailadres, String gebruikersnaam,
@@ -112,12 +149,12 @@ public class GebruikerController {
 			if (gebruiker.getGebruikersnaam().equals(gebruikersnaam)) {
 
 				try {
-				gebruiker.wijzigGebruiker(voornaam, familienaam, mailadres, type, status, profielfoto);
-				GenericDaoJpa.startTransaction();
-			
-				gebruikerRepo.update(gebruiker);
-				GenericDaoJpa.commitTransaction();
-				break;
+					gebruiker.wijzigGebruiker(voornaam, familienaam, mailadres, type, status, profielfoto);
+					GenericDaoJpa.startTransaction();
+
+					gebruikerRepo.update(gebruiker);
+					GenericDaoJpa.commitTransaction();
+					break;
 				} catch (Exception e) {
 					System.err.println(e.getMessage());
 					throw new IllegalArgumentException(e.getMessage());

@@ -36,9 +36,9 @@ public class SessieKalender {
 	private LocalDate eindDatum;
 
 	@Transient
-	private SimpleStringProperty startDatumProperty = new SimpleStringProperty();
+	private SimpleStringProperty startDatumProperty;
 	@Transient
-	private SimpleStringProperty eindDatumProperty = new SimpleStringProperty();
+	private SimpleStringProperty eindDatumProperty;
 
 	protected SessieKalender() {
 		sessieLijst = new ArrayList<Sessie>();
@@ -66,23 +66,31 @@ public class SessieKalender {
 	}
 
 	public void setStringProperties() {
-		setStartDatumProperty(getStartDatum().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-		setEindDatumProperty(getEindDatum().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+		setStartDatumProperty();
+		setEindDatumProperty();
 	}
 
-	private void setStartDatumProperty(String datum) {
-		startDatumProperty.set(datum);
+	private void setStartDatumProperty() {
+		if (startDatumProperty == null)
+			startDatumProperty = new SimpleStringProperty();
+		startDatumProperty.set(getStartDatum().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 	}
 
 	public StringProperty getStartDatumProperty() {
+		if (startDatumProperty == null)
+			setStartDatumProperty();
 		return startDatumProperty;
 	}
 
-	private void setEindDatumProperty(String datum) {
-		eindDatumProperty.set(datum);
+	private void setEindDatumProperty() {
+		if (eindDatumProperty == null)
+			eindDatumProperty = new SimpleStringProperty();
+		eindDatumProperty.set(getEindDatum().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 	}
 
 	public StringProperty getEindDatumProperty() {
+		if (eindDatumProperty == null)
+			setEindDatumProperty();
 		return eindDatumProperty;
 	}
 
