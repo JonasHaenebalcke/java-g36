@@ -6,6 +6,7 @@ import java.util.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import repository.GenericDao;
 import repository.GenericDaoJpa;
 
@@ -14,9 +15,14 @@ public class SessieController {
 	private List<Sessie> sessieLijst;
 	private Sessie huidigeSessie;
 	private GebruikerController gc;
-	private ObservableList<Sessie> sessieObservableList;
+	private ObservableList<Sessie> sessieObservableLijst;
 	private GenericDao<Sessie> sessieRepo;
 	private FilteredList<Sessie> sessieFilteredLijst;
+	private SortedList<Sessie> sessieSortedLijst;
+	
+	private final Comparator<Sessie> byVerantwoordelijke = (s1, s2) -> s1.getVerantwoordelijke().getVoornaam().compareToIgnoreCase(s2.getVerantwoordelijke().getVoornaam());
+	private final Comparator<Sessie> byDatum = (s1, s2) -> s1.getStartDatum().toLocalDate().compareTo(s2.getStartDatum().toLocalDate());
+	private final Comparator<Sessie> sortOrder = byDatum.reversed().thenComparing(Comparator.comparing(Sessie::getTitel)).thenComparing(byVerantwoordelijke);
 
 	public SessieController() {
 		gc = new GebruikerController();
@@ -40,10 +46,10 @@ public class SessieController {
 	}
 
 	public ObservableList<Sessie> geefSessiesObservable() {
-		if (sessieObservableList == null) {
-			sessieObservableList = FXCollections.observableArrayList(geefSessies());
+		if (sessieObservableLijst == null) {
+			sessieObservableLijst = FXCollections.observableArrayList(geefSessies());
 		}
-		return sessieObservableList;
+		return sessieObservableLijst;
 	}
 
 	public FilteredList<Sessie> geefSessiesFiltered() {
@@ -51,6 +57,13 @@ public class SessieController {
 			sessieFilteredLijst = new FilteredList<>(geefSessiesObservable(), p -> true);
 		}
 		return sessieFilteredLijst;
+	}
+	
+	public SortedList<Sessie> geefSessiesSorted() {
+		if (sessieSortedLijst == null) {
+			sessieSortedLijst = new SortedList<>(geefSessiesFiltered(), sortOrder);
+		}
+		return sessieSortedLijst;
 	}
 
 	public ObservableList<GebruikerSessie> geefGebruikerSessiesObservable() {
@@ -99,7 +112,7 @@ public class SessieController {
 		try {
 			setHuidigeSessie(sessie);
 			sessieLijst.add(sessie);
-			sessieObservableList.add(sessie);
+			sessieObservableLijst.add(sessie);
 			GenericDaoJpa.startTransaction();
 			sessieRepo.insert(sessie);
 			GenericDaoJpa.commitTransaction();
@@ -115,7 +128,7 @@ public class SessieController {
 			throw new IllegalArgumentException("Sessie kan niet worden verwijderd want deze is al opengesteld.");
 		try {
 			sessieLijst.remove(sessie);
-			sessieObservableList.remove(sessie);
+			sessieObservableLijst.remove(sessie);
 			setHuidigeSessie(null);
 			GenericDaoJpa.startTransaction();
 			sessieRepo.delete(sessie);

@@ -271,15 +271,27 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 	void geefSessiesGekozenStatus(ActionEvent event) {
 		try {
 			System.out.print(cbxStatusSessie.getValue().name() + " ");
-			if (cbxStatusSessie.getValue().name().equals(StatusSessie.open.toString())
-					|| cbxStatusSessie.getValue().name().equals(StatusSessie.gesloten.toString())) {
-				tvSessies.setItems(sc.geefSessiesObservable());// nog aanpassen
 
-				initialize();
-			}
+//			if (cbxStatusSessie.getValue().name().equals(StatusSessie.open.toString())	|| cbxStatusSessie.getValue().name().equals(StatusSessie.gesloten.toString()))
+//			{
+//				tvSessies.setItems(sc.geefSessiesObservable());// nog aanpassen
+
+//				initialize();
+//			}
+			changeSessieFilter();
+			
 		} catch (NullPointerException e) {
 			lblError.setText(e.getMessage());
 		}
+	}
+	
+	private void changeSessieFilter() {
+		String filter = txtSessie.getText();
+		String status = cbxStatusSessie.getValue().toString();
+
+		System.out.println("filter: " + filter);
+		System.out.println("status: " + status);
+		sc.changeFilter(filter, status);
 	}
 
 	/*
@@ -334,11 +346,8 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 	void zoekSessie(ActionEvent event) {
 		String sessieTitel = txtSessie.getText();
 
-		/*
-		 * tvSessies.getItems().stream() .filter(sessie -> sessie.getTitel()==
-		 * sessieTitel) .findAny() .ifPresent(item -> {
-		 * tvSessies.getSelectionModel().select(item); tvSessies.scrollTo(item); });
-		 */
+		changeSessieFilter();
+    
 	}
 
 }

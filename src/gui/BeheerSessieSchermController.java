@@ -173,7 +173,7 @@ public class BeheerSessieSchermController extends GridPane {
 		cbxStatusSessie.getSelectionModel().selectFirst();
 
 		try {
-			tblSessies.setItems(sc.geefSessiesFiltered().sorted(Comparator.comparing(Sessie::getStartDatum)));
+			tblSessies.setItems(sc.geefSessiesSorted());//.geefSessiesFiltered().sorted(Comparator.comparing(Sessie::getStartDatum)));
 			colTitelSessie.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
 			colStartSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
 			ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
