@@ -169,7 +169,7 @@ public class BeheerSessieSchermController extends GridPane {
 		cbxStatusSessie.getSelectionModel().selectFirst();
 
 		try {
-			tblSessies.setItems(sc.geefSessiesObservable().sorted(Comparator.comparing(Sessie::getStartDatum)));
+			tblSessies.setItems(sc.geefSessiesFiltered().sorted(Comparator.comparing(Sessie::getStartDatum)));
 			colTitelSessie.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
 			colStartSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
 			ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
@@ -301,7 +301,7 @@ public class BeheerSessieSchermController extends GridPane {
 		try {
 //			System.out.println(cbxStatusSessie.getValue().name() + " ");
 			System.out.println(cbxStatusSessie.getValue() + " ");
-			tblSessies.setItems(sc.geefSessiesObservable()); // nog aanpassen
+//			tblSessies.setItems(sc.geefSessiesObservable()); // nog aanpassen
 			if (cbxStatusSessie.getValue().equals(StatusSessie.open.toString())
 					|| cbxStatusSessie.getValue().equals("Alle")
 					|| cbxStatusSessie.getValue().equals(StatusSessie.gesloten.toString())//
@@ -317,11 +317,21 @@ public class BeheerSessieSchermController extends GridPane {
 				lblGemiddeldeScoreWergave.setVisible(false);
 				lblGemiddeldeScore.setVisible(false);
 			}
+			changeFilter();
 
 		} catch (NullPointerException e) {
 			lblErrorDetailsSessie.setVisible(true);
 			lblErrorDetailsSessie.setText(e.getMessage());
 		}
+	}
+	
+	private void changeFilter() {
+		String filter = txtSessie.getText();
+		String status = cbxStatusSessie.getValue().toString();
+
+		System.out.println("filter: " + filter);
+		System.out.println("status: " + status);
+		sc.changeFilter(filter, status);
 	}
 
 	@FXML
@@ -434,8 +444,8 @@ public class BeheerSessieSchermController extends GridPane {
 	@FXML
 	void zoekSessie(ActionEvent event) {
 		try {
-			String sessieTitel = txtSessie.getText();
-			System.out.println(sessieTitel); // werkt
+//			String sessieTitel = txtSessie.getText();
+//			System.out.println(sessieTitel); // werkt
 
 //		Stream<Sessie> l = tblSessies.getItems().stream()
 //			.filter(sessie -> sessie.getTitel() == sessieTitel); // stream;
@@ -447,6 +457,8 @@ public class BeheerSessieSchermController extends GridPane {
 //				tblSessies.getSelectionModel().select(item);
 //				tblSessies.scrollTo(item);
 //			});*/
+			
+			changeFilter();
 		} catch (Exception e) {
 			lblErrorDetailsSessie.setText(e.getMessage());
 		}
