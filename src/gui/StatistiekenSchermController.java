@@ -43,7 +43,12 @@ public class StatistiekenSchermController extends GridPane {
 
 	@FXML
 	private TableColumn<Gebruiker, String> colAantalFeedbacks;
-
+	@FXML
+	private TableColumn<Gebruiker, String> colAantalAanwezig;
+	@FXML
+	private TableColumn<Gebruiker, String> colAantalAfwezig;
+	@FXML
+	private TableColumn<Gebruiker, String> colProcentueelAanwezig;
 	@FXML
 	private Label lblStatistiek1Omschrijving;
 
@@ -66,10 +71,16 @@ public class StatistiekenSchermController extends GridPane {
 	private TableColumn<Sessie, String> colStart;
 
 	@FXML
-	private TableColumn<Sessie, String> colEind;
+	private TableColumn<Sessie, String> colStartUur;
 
 	@FXML
-	private TableColumn<Sessie, String> colAantalDeelnemers;
+	private TableColumn<Sessie, String> colAantalIngeschrevenen;
+	@FXML
+	private TableColumn<Sessie, String> colDuur;
+	@FXML
+	private TableColumn<Sessie, String> colAantalAanwezigen;
+	@FXML
+	private TableColumn<Sessie, String> colGemiddleScore;
 
 	private GebruikerController dc;
 	private SessieController sc;
@@ -106,6 +117,9 @@ public class StatistiekenSchermController extends GridPane {
 		colType.setCellValueFactory(cel -> cel.getValue().getTypeProperty());
 		colStatus.setCellValueFactory(cel -> cel.getValue().getStatusProperty());
 		colAantalFeedbacks.setCellValueFactory(cel -> cel.getValue().getAantalFeedbacksProperty());
+		colAantalAanwezig.setCellValueFactory(cel -> cel.getValue().getAantalAanwezigProprty());
+		colAantalAfwezig.setCellValueFactory(cel -> cel.getValue().getAantalAfwezigProperty());
+		colProcentueelAanwezig.setCellValueFactory(cel -> cel.getValue().getProcentueelAanwezigProperty());
 	}
 
 	@FXML
@@ -122,6 +136,9 @@ public class StatistiekenSchermController extends GridPane {
 		colType.setCellValueFactory(cel -> cel.getValue().getTypeProperty());
 		colStatus.setCellValueFactory(cel -> cel.getValue().getStatusProperty());
 		colAantalFeedbacks.setCellValueFactory(cel -> cel.getValue().getAantalFeedbacksProperty());
+		colAantalAanwezig.setCellValueFactory(cel -> cel.getValue().getAantalAanwezigProprty());
+		colAantalAfwezig.setCellValueFactory(cel -> cel.getValue().getAantalAfwezigProperty());
+		colProcentueelAanwezig.setCellValueFactory(cel -> cel.getValue().getProcentueelAanwezigProperty());
 
 //		colStatus.setCellValueFactory(cel -> System.out.println(cel.getValue().getStatusProperty().getValue()));
 //		colAantalFeedbacks.setCellValueFactory(cel ->  System.out.println(cel.getValue().getAantalFeedbacksProperty().getValue()));
@@ -140,8 +157,8 @@ public class StatistiekenSchermController extends GridPane {
 		colVerantwoordelijke.setCellValueFactory(cel -> cel.getValue().getNaamVerantwoordelijke());
 		colTitel.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
 		colStart.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
-		colEind.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
-		colAantalDeelnemers.setCellValueFactory(cel -> cel.getValue().getAantalDeelnemersProperty());
+//		colEind.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
+//		colAantalDeelnemers.setCellValueFactory(cel -> cel.getValue().getAantalDeelnemersProperty());
 	}
 
 	void addListenerToTableGebruikers() {
@@ -151,9 +168,9 @@ public class StatistiekenSchermController extends GridPane {
 			public void changed(ObservableValue<? extends Gebruiker> observable, Gebruiker oldValue,
 					Gebruiker newValue) {
 				lblStatistiek1Omschrijving.setText("Aantal maal aanwezig");
-				lblStatistiek1Value.setText(String.valueOf(statc.geefAantalKeerAanwezig(newValue)));
+				lblStatistiek1Value.setText("TE VERANDEREN");
 				lblStatistiek2Omschrijving.setText("Aantal maal afwezig");
-				lblStatistiek2Value.setText(String.valueOf(statc.geefAantalKeerAfwezig(newValue)));
+				lblStatistiek2Value.setText("TE VERANDEREN");
 			}
 		});
 
@@ -167,13 +184,14 @@ public class StatistiekenSchermController extends GridPane {
 				lblStatistiek1Omschrijving.setText("Aantal aanwezigen");
 				lblStatistiek1Value.setText(String.valueOf(statc.geefAantalAanwezigen(newValue)));
 				lblStatistiek2Omschrijving.setText("Gemiddelde score");
-				lblStatistiek2Value.setText(String.valueOf(rondAf((statc.geefGemiddeldeScore(newValue)), 2)+ "/5"));
+				lblStatistiek2Value.setText(String.valueOf(rondAf((statc.geefGemiddeldeScore(newValue)), 2) + "/5"));
 			}
 		});
 
 	}
 
-	private static double rondAf(double value, int places) { //Source https://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
+	private static double rondAf(double value, int places) { // Source
+																// https://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
 		if (places < 0)
 			throw new IllegalArgumentException();
 

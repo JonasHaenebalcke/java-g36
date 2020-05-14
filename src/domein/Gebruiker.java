@@ -131,6 +131,12 @@ public class Gebruiker implements Serializable {
 	private SimpleStringProperty emailProperty;
 	@Transient
 	private SimpleStringProperty aantalFeedbacksProperty;
+	@Transient
+	private SimpleStringProperty aantalAanwezigProprty;
+	@Transient
+	private SimpleStringProperty aantalAfwezigProperty;
+	@Transient
+	private SimpleStringProperty procentueelAanwezigProperty;
 
 	// Methodes voor Enums te mappen
 	@PostLoad
@@ -211,6 +217,65 @@ public class Gebruiker implements Serializable {
 		setStringProperties();
 	}
 
+	public int geefAantalKeerAanwezig() {
+		int ret = 0;
+
+		for (GebruikerSessie gs : getGebruikerSessieLijst()) {
+			if (gs.isAanwezig())
+				ret++;
+		}
+		return ret;
+	}
+
+	public double geefProcentueelAanwezig() {
+		if(getGebruikerSessieLijst().size() == 0)
+			return 0;
+		return (geefAantalKeerAanwezig() / getGebruikerSessieLijst().size()) * 100;
+	}
+
+	public SimpleStringProperty getAantalAanwezigProprty() {
+		if (aantalAanwezigProprty == null) {
+			setAantalAanwezigProprty();
+		}
+		return aantalAanwezigProprty;
+	}
+
+	public void setAantalAanwezigProprty() {
+		if (aantalAanwezigProprty == null) {
+			aantalAanwezigProprty = new SimpleStringProperty();
+		}
+		aantalAanwezigProprty.set(String.valueOf(geefAantalKeerAanwezig()));
+	}
+
+	public SimpleStringProperty getAantalAfwezigProperty() {
+		if (aantalAfwezigProperty == null) {
+			setAantalAfwezigProperty();
+		}
+		return aantalAfwezigProperty;
+	}
+
+	public void setAantalAfwezigProperty() {
+		if (aantalAfwezigProperty == null) {
+			aantalAfwezigProperty = new SimpleStringProperty();
+		}
+		aantalAfwezigProperty.set(String.valueOf(getAantalKeerAfwezig()));
+	}
+
+	public SimpleStringProperty getProcentueelAanwezigProperty() {
+		System.out.println("GET PROCENTUEEL AANWEZIG");
+		if (procentueelAanwezigProperty == null) {
+			setProcentueelAanwezigProperty();
+		}
+		return procentueelAanwezigProperty;
+	}
+
+	public void setProcentueelAanwezigProperty() {
+		if (procentueelAanwezigProperty == null) {
+			procentueelAanwezigProperty = new SimpleStringProperty();
+		}
+		procentueelAanwezigProperty.set(String.valueOf(geefProcentueelAanwezig()));
+	}
+
 	public SimpleStringProperty getStatusProperty() {
 		if (statusProperty == null) {
 			setStatusProperty();
@@ -226,6 +291,7 @@ public class Gebruiker implements Serializable {
 	}
 
 	public StringProperty getVoorNaamProperty() {
+		System.out.println("GET VOORNAAM PROP");
 		if (voorNaamProperty == null) {
 			setVoorNaamProperty();
 		}
@@ -285,7 +351,7 @@ public class Gebruiker implements Serializable {
 		if (aantalFeedbacksProperty == null) {
 			setAantalFeedbacksProperty();
 		}
-		
+
 		return aantalFeedbacksProperty;
 	}
 
@@ -293,7 +359,7 @@ public class Gebruiker implements Serializable {
 		if (aantalFeedbacksProperty == null) {
 			aantalFeedbacksProperty = new SimpleStringProperty();
 		}
-	
+
 		aantalFeedbacksProperty.set(String.valueOf(this.feedbackLijst.size()));
 	}
 
@@ -303,6 +369,9 @@ public class Gebruiker implements Serializable {
 		setTypeProperty();
 		setEmailProperty();
 		setAantalFeedbacksProperty();
+		setAantalAanwezigProprty();
+		setAantalAfwezigProperty();
+		setProcentueelAanwezigProperty();
 	}
 
 	public String getPasswordHashJava() {

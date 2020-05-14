@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
 <fx:root prefHeight="700.0" prefWidth="1340.0" type="GridPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
@@ -47,20 +46,26 @@
          <children>
             <TableView fx:id="tvSessies" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <columns>
-                  <TableColumn fx:id="colVerantwoordelijke" prefWidth="223.08766174316406" text="Verantwoordelijke" />
-                  <TableColumn fx:id="colTitel" minWidth="8.569778442382812" prefWidth="246.412353515625" text="Titel" />
-                  <TableColumn fx:id="colStart" minWidth="8.569778442382812" prefWidth="277.2271728515625" text="Start" />
-                  <TableColumn fx:id="colEind" minWidth="8.569778442382812" prefWidth="235.32781982421875" text="Eind" />
-                  <TableColumn fx:id="colAantalDeelnemers" minWidth="8.569778442382812" prefWidth="226.1722412109375" text="Aantal Deelnemers" />
+                  <TableColumn fx:id="colVerantwoordelijke" prefWidth="146.40002745389938" text="Verantwoordelijke" />
+                  <TableColumn fx:id="colTitel" minWidth="8.569778442382812" prefWidth="242.39996337890625" text="Titel" />
+                  <TableColumn fx:id="colStart" minWidth="8.569778442382812" prefWidth="141.5999755859375" text="Start datum" />
+                  <TableColumn fx:id="colStartUur" minWidth="8.569778442382812" prefWidth="132.0" text="Start uur" />
+                  <TableColumn fx:id="colDuur" prefWidth="138.4000244140625" text="Duur" />
+                  <TableColumn fx:id="colAantalIngeschrevenen" minWidth="8.569778442382812" prefWidth="155.99993896484375" text="Aantal ingeschrevenen" />
+                  <TableColumn fx:id="colAantalAanwezigen" prefWidth="122.39996337890625" text="Aantal aanwezigen" />
+                  <TableColumn fx:id="colGemiddleScore" prefWidth="124.800048828125" text="Gemiddle Score" />
                </columns>
             </TableView>
-            <TableView fx:id="tvGebruikers" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <TableView fx:id="tvGebruikers" prefHeight="448.0" prefWidth="1206.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <columns>
-                <TableColumn fx:id="colNaam" prefWidth="223.08766174316406" text="Naam" />
-                <TableColumn fx:id="colVoornaam" minWidth="8.569778442382812" prefWidth="246.412353515625" text="Voornaam" />
-                  <TableColumn fx:id="colType" minWidth="8.569778442382812" prefWidth="277.2271728515625" text="Type" />
-                  <TableColumn fx:id="colStatus" minWidth="8.569778442382812" prefWidth="235.32781982421875" text="Status" />
-                  <TableColumn fx:id="colAantalFeedbacks" minWidth="8.569778442382812" prefWidth="226.1722412109375" text="Aantal Feedbacks" />
+                <TableColumn fx:id="colNaam" prefWidth="150.40002745389938" text="Naam" />
+                <TableColumn fx:id="colVoornaam" minWidth="8.569778442382812" prefWidth="143.199951171875" text="Voornaam" />
+                  <TableColumn fx:id="colType" minWidth="8.569778442382812" prefWidth="166.39996337890625" text="Type" />
+                  <TableColumn fx:id="colStatus" minWidth="8.569778442382812" prefWidth="106.4000244140625" text="Status" />
+                  <TableColumn fx:id="colAantalFeedbacks" minWidth="8.569778442382812" prefWidth="139.20001220703125" text="Aantal Feedbacks" />
+                  <TableColumn fx:id="colAantalAanwezig" prefWidth="111.20001220703125" text="Aantal Aanwezig" />
+                  <TableColumn fx:id="colAantalAfwezig" prefWidth="156.0" text="Aantal Afwezig" />
+                  <TableColumn fx:id="colProcentueelAanwezig" prefWidth="231.20001220703125" text="Procentueel aanwezig" />
               </columns>
             </TableView>
          </children>
