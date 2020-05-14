@@ -66,6 +66,9 @@ public class MeldAanSchermController extends BorderPane {
 			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 			stage.setTitle("IT LAB");
 			stage.setScene(scene);
+			stage.setMaximized(true);
+			stage.setMinWidth(1000);
+			stage.setMinHeight(500);
 			stage.show();
 		} catch (Exception e) {
 			lblError.setVisible(true);
