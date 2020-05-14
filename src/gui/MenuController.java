@@ -57,8 +57,8 @@ public class MenuController extends BorderPane{
 		this.sc = sc;
 		this.statc = statc;
 		this.ac = ac;
-		lblAangemeldAls.setText("Aangemeld als \n" + dc.getIngelogdeVerantwoordelijke().getVoornaam() + " "
-				+ dc.getIngelogdeVerantwoordelijke().getFamilienaam());
+		//lblAangemeldAls.setText("Aangemeld als \n" + dc.getIngelogdeVerantwoordelijke().getVoornaam() + " "
+		//		+ dc.getIngelogdeVerantwoordelijke().getFamilienaam());
 	}
 
 	public void initialize() {
@@ -98,7 +98,7 @@ public class MenuController extends BorderPane{
 		BeherenIngeschrevenenSchermController bIngeschrevenenScherm = new BeherenIngeschrevenenSchermController(
 				this.sc, this.dc, this.ac);
 		scherm.getChildren().setAll(bIngeschrevenenScherm);
-	}
+	}               
 
 	@FXML
 	void statistieken(ActionEvent event) throws IOException {

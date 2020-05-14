@@ -34,6 +34,9 @@
             <TableColumn fx:id="colEmail" prefWidth="347.2010803222656" text="E-mail" />
             <TableColumn fx:id="colType" prefWidth="150.2989501953125" text="Type" />
         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
       <Label text="Gebruikers" GridPane.columnIndex="1">
          <font>

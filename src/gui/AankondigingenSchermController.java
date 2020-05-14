@@ -190,8 +190,9 @@ public class AankondigingenSchermController extends GridPane {
 	}
 
 	@FXML
-	void beheerIngeschrevenen(ActionEvent event) {
-
+	void beheerSessie(ActionEvent event) {
+		Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
+		this.getChildren().setAll(new BeheerSessieSchermController(this.sc, this.gc, sessie, this.ac));
 	}
 
 	@FXML

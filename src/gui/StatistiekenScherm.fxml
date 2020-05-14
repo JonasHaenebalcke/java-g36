@@ -55,18 +55,24 @@
                   <TableColumn fx:id="colAantalAanwezigen" prefWidth="122.39996337890625" text="Aantal aanwezigen" />
                   <TableColumn fx:id="colGemiddleScore" prefWidth="124.800048828125" text="Gemiddle Score" />
                </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
             </TableView>
             <TableView fx:id="tvGebruikers" prefHeight="448.0" prefWidth="1206.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <columns>
                 <TableColumn fx:id="colNaam" prefWidth="150.40002745389938" text="Naam" />
                 <TableColumn fx:id="colVoornaam" minWidth="8.569778442382812" prefWidth="143.199951171875" text="Voornaam" />
                   <TableColumn fx:id="colType" minWidth="8.569778442382812" prefWidth="166.39996337890625" text="Type" />
-                  <TableColumn fx:id="colStatus" minWidth="8.569778442382812" prefWidth="106.4000244140625" text="Status" />
-                  <TableColumn fx:id="colAantalFeedbacks" minWidth="8.569778442382812" prefWidth="139.20001220703125" text="Aantal Feedbacks" />
-                  <TableColumn fx:id="colAantalAanwezig" prefWidth="111.20001220703125" text="Aantal Aanwezig" />
-                  <TableColumn fx:id="colAantalAfwezig" prefWidth="156.0" text="Aantal Afwezig" />
-                  <TableColumn fx:id="colProcentueelAanwezig" prefWidth="231.20001220703125" text="Procentueel aanwezig" />
+                  <TableColumn fx:id="colStatus" minWidth="8.569778442382812" prefWidth="113.5" text="Status" />
+                  <TableColumn fx:id="colAantalFeedbacks" minWidth="8.569778442382812" prefWidth="138.5" text="Aantal Feedbacks" />
+                  <TableColumn fx:id="colAantalAanwezig" prefWidth="133.5" text="Aantal Aanwezig" />
+                  <TableColumn fx:id="colAantalAfwezig" prefWidth="162.0" text="Aantal Afwezig" />
+                  <TableColumn fx:id="colProcentueelAanwezig" prefWidth="197.5" text="Procentueel aanwezig" />
               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
             </TableView>
          </children>
       </AnchorPane>
