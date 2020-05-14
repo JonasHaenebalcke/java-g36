@@ -6,6 +6,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -40,15 +41,6 @@
             <TableColumn fx:id="ColEindSessie" prefWidth="153.60006713867188" resizable="false" text="Eind" />
          </columns>
       </TableView>
-				<TableView fx:id="tvIngeschrevenen" prefHeight="538.0" prefWidth="642.0" GridPane.columnIndex="5" GridPane.rowIndex="2">
-					<columns>
-            <TableColumn fx:id="tcIngeschreven" prefWidth="87.20001220703125" resizable="false" text="Ingeschreven" />
-						<TableColumn fx:id="tcAanwezig" prefWidth="78.39996337890625" resizable="false" text="Aanwezig" />
-						<TableColumn fx:id="tcVoornaam" prefWidth="158.39996337890625" resizable="false" text="Voornaam" />
-						<TableColumn fx:id="tcFamilienaam" prefWidth="187.19989013671875" resizable="false" text="Familienaam" />
-						<TableColumn fx:id="tcInschrijvingsdatum" prefWidth="131.2000732421875" resizable="false" text="inschrijvingsdatum" />
-					</columns>
-				</TableView>
       <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -104,10 +96,34 @@
             <ComboBox fx:id="cbxStatusGebruiker" onAction="#geefGebruikersGekozenStatus" prefHeight="27.0" prefWidth="215.0" promptText="Status gebruikers" GridPane.columnIndex="3" GridPane.rowIndex="3" />
          </children>
       </GridPane>
-				<Label fx:id="lblError" prefHeight="27.0" prefWidth="334.0" textFill="RED" GridPane.columnIndex="5" GridPane.rowIndex="3">
+				<Label fx:id="lblError" prefHeight="27.0" prefWidth="484.0" textFill="RED" GridPane.columnIndex="5" GridPane.rowIndex="3">
 					<font>
 						<Font size="14.0" />
 					</font>
 				</Label>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="2">
+         <children>
+      				<TableView fx:id="tvIngeschrevenen" prefHeight="526.0" prefWidth="516.0">
+      					<columns>
+                  <TableColumn fx:id="tcIngeschreven" prefWidth="83.20001220703125" resizable="false" text="Ingeschreven" />
+      						<TableColumn fx:id="tcAanwezig" prefWidth="69.5999755859375" resizable="false" text="Aanwezig" />
+      						<TableColumn fx:id="tcVoornaam" prefWidth="163.9998779296875" resizable="false" text="Voornaam" />
+      						<TableColumn fx:id="tcFamilienaam" prefWidth="196.0001220703125" resizable="false" text="Familienaam" />
+      						<TableColumn fx:id="tcInschrijvingsdatum" prefWidth="131.2000732421875" resizable="false" text="inschrijvingsdatum" />
+      					</columns>
+      				</TableView>
+            <TableView fx:id="tvGebruikers" prefHeight="526.0" prefWidth="516.0">
+              <columns>
+                <TableColumn fx:id="colVoornaam" prefWidth="258.4000244140625" text="Voornaam" />
+                <TableColumn fx:id="colFamilienaam" prefWidth="257.60003662109375" text="Familienaam" />
+              </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+      <Label fx:id="lblErrorSessies" prefHeight="27.0" prefWidth="484.0" textFill="RED" GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
    </children>
 </fx:root>
