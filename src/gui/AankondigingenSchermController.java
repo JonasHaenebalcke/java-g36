@@ -1,8 +1,22 @@
 package gui;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.util.*;  
+import javax.mail.*;  
+import javax.mail.internet.*;
 
 import domein.Aankondiging;
 import domein.AankondigingController;
@@ -186,6 +200,39 @@ public class AankondigingenSchermController extends GridPane {
 			lblError.setVisible(true);
 			lblError.setText(e.getMessage());
 			System.err.println(e.getMessage());
+		}
+	}
+	
+	@FXML
+	void verzendMail(ActionEvent event) {
+		String naar = "jule.dekyvere@student.hogent.be"; //"audrey.behiels@student.hogent.be"; 
+		String van = "ProjectITLab@outlook.com";//gc.getIngelogdeVerantwoordelijke().getMailadres(); 
+		String host = "localhost";
+		Properties properties = new Properties();
+		
+		properties.put("mail.smtp.auth","true");
+		properties.put("mail.smtp.starttls.enable", "true");
+		properties.put("mail.smtp.host", "smtp-mail.outlook.com");
+		properties.put("mail.smtp.port", "587");
+		
+	Session sessie = Session.getDefaultInstance(properties, new Authenticator() {
+		protected PasswordAuthentication getPasswordAuthentication() {
+			return new PasswordAuthentication("ProjectITLab@outlook.com", "ProjectenSem2");
+		}
+	});
+		try {
+			MimeMessage message = new MimeMessage(sessie);
+			message.setFrom(new InternetAddress(van));
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(naar));
+			message.setSubject("Onderwerp test");
+			message.setText("Dit bericht is een test");
+			Transport.send(message);
+			System.out.println("bericht goed verzonden..");
+		} catch(MessagingException e)
+		{
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

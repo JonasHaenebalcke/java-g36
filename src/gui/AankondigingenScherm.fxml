@@ -133,6 +133,7 @@
                   <TextArea fx:id="txtAankondiging" prefHeight="270.0" prefWidth="379.0" promptText="Typ hier je aankondiging ..." GridPane.rowIndex="3" />
                   <Button mnemonicParsing="false" onAction="#aankondigingPlaatsen" text="Plaatsen" GridPane.rowIndex="4" />
                   <Label fx:id="lblError" alignment="CENTER" prefHeight="82.0" prefWidth="370.0" GridPane.rowIndex="6" />
+                  <Button mnemonicParsing="false" onAction="#verzendMail" text="Mail verzenden" GridPane.rowIndex="5" />
                </children>
             </GridPane>
          </children>
