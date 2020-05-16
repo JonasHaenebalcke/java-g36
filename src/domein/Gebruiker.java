@@ -228,9 +228,40 @@ public class Gebruiker implements Serializable {
 	}
 
 	public double geefProcentueelAanwezig() {
-		if(getGebruikerSessieLijst().size() == 0)
+//		if (getGebruikerSessieLijst().size() == 0) {
+//			return 0;
+//		} else {
+//			System.out.println(geefAantalKeerAanwezig() + " / " +  getGebruikerSessieLijst().size() + " = " + (geefAantalKeerAanwezig() / getGebruikerSessieLijst().size()) * 100);
+//			return (geefAantalKeerAanwezig() / getGebruikerSessieLijst().size()) * 100;
+//		}
+		if (geefAantalKeerAanwezig() == 0) {
 			return 0;
-		return (geefAantalKeerAanwezig() / getGebruikerSessieLijst().size()) * 100;
+		} else if (getAantalKeerAfwezig() == 0) {
+			return 100;
+		} else {
+			System.out
+					.println(
+							geefAantalKeerAanwezig() + " / " + (geefAantalKeerAanwezig() + getAantalKeerAfwezig())
+									+ " = "
+									+ (((double) getAantalKeerAfwezig()
+											/ ((double) geefAantalKeerAanwezig() + (double) getAantalKeerAfwezig()))
+											* 100));
+			double ret = (((double) geefAantalKeerAanwezig()
+					/ ((double) geefAantalKeerAanwezig() + (double) getAantalKeerAfwezig())) * 100);
+
+			return rondAf(ret, 2);
+		}
+	}
+
+	private static double rondAf(double value, int places) { // Source
+		// https://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
+		if (places < 0)
+			throw new IllegalArgumentException();
+
+		long factor = (long) Math.pow(10, places);
+		value = value * factor;
+		long tmp = Math.round(value);
+		return (double) tmp / factor;
 	}
 
 	public SimpleStringProperty getAantalAanwezigProprty() {
@@ -262,7 +293,6 @@ public class Gebruiker implements Serializable {
 	}
 
 	public SimpleStringProperty getProcentueelAanwezigProperty() {
-		System.out.println("GET PROCENTUEEL AANWEZIG");
 		if (procentueelAanwezigProperty == null) {
 			setProcentueelAanwezigProperty();
 		}
@@ -273,7 +303,7 @@ public class Gebruiker implements Serializable {
 		if (procentueelAanwezigProperty == null) {
 			procentueelAanwezigProperty = new SimpleStringProperty();
 		}
-		procentueelAanwezigProperty.set(String.valueOf(geefProcentueelAanwezig()));
+		procentueelAanwezigProperty.set(String.valueOf(geefProcentueelAanwezig() + " %"));
 	}
 
 	public SimpleStringProperty getStatusProperty() {
@@ -291,7 +321,6 @@ public class Gebruiker implements Serializable {
 	}
 
 	public StringProperty getVoorNaamProperty() {
-		System.out.println("GET VOORNAAM PROP");
 		if (voorNaamProperty == null) {
 			setVoorNaamProperty();
 		}

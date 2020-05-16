@@ -325,7 +325,7 @@ public class Sessie implements Serializable {
 	private void setGemiddleScoreProperty() {
 		if (gemiddleScoreProperty == null)
 			gemiddleScoreProperty = new SimpleStringProperty();
-		gemiddleScoreProperty.set(String.valueOf(geefGemiddeldeScore()));
+		gemiddleScoreProperty.set(String.valueOf(geefGemiddeldeScore()) + "/5");
 	}
 
 	private void setStartDatumSessieProperty() {
@@ -367,7 +367,7 @@ public class Sessie implements Serializable {
 	public void setDuurProperty() {
 		if (duurProperty == null)
 			duurProperty = new SimpleStringProperty();
-		duurProperty.set(String.valueOf(ChronoUnit.HOURS.between(eindDatum, startDatum)));
+		duurProperty.set(String.valueOf(ChronoUnit.MINUTES.between(startDatum, eindDatum)) + " minuten");
 	}
 
 	public SimpleStringProperty getDuurProperty() {

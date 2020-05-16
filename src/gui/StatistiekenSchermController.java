@@ -185,20 +185,20 @@ public class StatistiekenSchermController extends GridPane {
 //		colAantalDeelnemers.setCellValueFactory(cel -> cel.getValue().getAantalDeelnemersProperty());
 	}
 
-	void addListenerToTableGebruikers() {
-		tvGebruikers.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Gebruiker>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Gebruiker> observable, Gebruiker oldValue,
-					Gebruiker newValue) {
-				lblStatistiek1Omschrijving.setText("Aantal maal aanwezig");
-				lblStatistiek1Value.setText("TE VERANDEREN");
-				lblStatistiek2Omschrijving.setText("Aantal maal afwezig");
-				lblStatistiek2Value.setText("TE VERANDEREN");
-			}
-		});
-
-	}
+//	void addListenerToTableGebruikers() {
+//		tvGebruikers.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Gebruiker>() {
+//
+//			@Override
+//			public void changed(ObservableValue<? extends Gebruiker> observable, Gebruiker oldValue,
+//					Gebruiker newValue) {
+//				lblStatistiek1Omschrijving.setText("Aantal maal aanwezig");
+//				lblStatistiek1Value.setText("TE VERANDEREN");
+//				lblStatistiek2Omschrijving.setText("Aantal maal afwezig");
+//				lblStatistiek2Value.setText("TE VERANDEREN");
+//			}
+//		});
+//
+//	}
 
 //	void addListenerToTableSessies() {
 //		tvSessies.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Sessie>() {
@@ -214,16 +214,16 @@ public class StatistiekenSchermController extends GridPane {
 //
 //	}
 
-	private static double rondAf(double value, int places) { // Source
-																// https://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
-		if (places < 0)
-			throw new IllegalArgumentException();
-
-		long factor = (long) Math.pow(10, places);
-		value = value * factor;
-		long tmp = Math.round(value);
-		return (double) tmp / factor;
-	}
+//	private static double rondAf(double value, int places) { // Source
+//																// https://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
+//		if (places < 0)
+//			throw new IllegalArgumentException();
+//
+//		long factor = (long) Math.pow(10, places);
+//		value = value * factor;
+//		long tmp = Math.round(value);
+//		return (double) tmp / factor;
+//	}
 
 //	    @FXML 
 //	    void slaEersteStatiestiekOp(ActionEvent event) {
