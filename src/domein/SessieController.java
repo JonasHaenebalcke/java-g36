@@ -1,6 +1,8 @@
 package domein;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import javafx.collections.FXCollections;
@@ -19,10 +21,13 @@ public class SessieController {
 	private GenericDao<Sessie> sessieRepo;
 	private FilteredList<Sessie> sessieFilteredLijst;
 	private SortedList<Sessie> sessieSortedLijst;
-	
-	private final Comparator<Sessie> byVerantwoordelijke = (s1, s2) -> s1.getVerantwoordelijke().getVoornaam().compareToIgnoreCase(s2.getVerantwoordelijke().getVoornaam());
-	private final Comparator<Sessie> byDatum = (s1, s2) -> s1.getStartDatum().toLocalDate().compareTo(s2.getStartDatum().toLocalDate());
-	private final Comparator<Sessie> sortOrder = byDatum.reversed().thenComparing(Comparator.comparing(Sessie::getTitel)).thenComparing(byVerantwoordelijke);
+
+	private final Comparator<Sessie> byVerantwoordelijke = (s1, s2) -> s1.getVerantwoordelijke().getVoornaam()
+			.compareToIgnoreCase(s2.getVerantwoordelijke().getVoornaam());
+	private final Comparator<Sessie> byDatum = (s1, s2) -> s1.getStartDatum().toLocalDate()
+			.compareTo(s2.getStartDatum().toLocalDate());
+	private final Comparator<Sessie> sortOrder = byDatum.reversed()
+			.thenComparing(Comparator.comparing(Sessie::getTitel)).thenComparing(byVerantwoordelijke);
 
 	public SessieController() {
 		gc = new GebruikerController();
@@ -58,7 +63,7 @@ public class SessieController {
 		}
 		return sessieFilteredLijst;
 	}
-	
+
 	public SortedList<Sessie> geefSessiesSorted() {
 		if (sessieSortedLijst == null) {
 			sessieSortedLijst = new SortedList<>(geefSessiesFiltered(), sortOrder);
@@ -149,6 +154,48 @@ public class SessieController {
 
 	public void wijzigFeedback(int feedbackID, String content, int score) {
 		huidigeSessie.wijzigFeedback(feedbackID, content, score);
+	}
+
+	public String geefPopulaireStartUur() {
+		LocalTime uur = sessieLijst.get(0).getStartDatum().toLocalTime();
+		LocalTime tempuur = null;
+		int tempcount = 0;
+		int count = 0;
+
+		for (Sessie sessie : sessieLijst) {
+			tempuur = sessie.getStartDatum().toLocalTime();
+			tempcount = 0;
+			for (Sessie sessie2 : sessieLijst) {
+				if (sessie2.getStartDatum().toLocalTime().equals(tempuur))
+					tempcount++;
+			}
+			if (tempcount > count) {
+				count = tempcount;
+				uur = tempuur;
+			}
+		}
+		return uur.format(DateTimeFormatter.ofPattern("HH:mm"));
+	}
+
+	public int geefPopulaireDuur() {
+		int duur = sessieLijst.get(0).getDuur();
+		int tempduur = 0;
+		int tempcount = 0;
+		int count = 0;
+
+		for (Sessie sessie : sessieLijst) {
+			tempduur = sessie.getDuur();
+			tempcount = 0;
+			for (Sessie sessie2 : sessieLijst) {
+				if (sessie2.getDuur() == tempduur)
+					tempcount++;
+			}
+			if (tempcount > count) {
+				count = tempcount;
+				duur = tempduur;
+			}
+		}
+		return duur;
 	}
 
 	public void close() {

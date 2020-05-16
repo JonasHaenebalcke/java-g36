@@ -363,11 +363,15 @@ public class Sessie implements Serializable {
 			setAantalDeelnemersProperty();
 		return aantalDeelnemersProperty;
 	}
+	
+	public int getDuur() {
+		return (int) ChronoUnit.MINUTES.between(startDatum, eindDatum);
+	}
 
 	public void setDuurProperty() {
 		if (duurProperty == null)
 			duurProperty = new SimpleStringProperty();
-		duurProperty.set(String.valueOf(ChronoUnit.MINUTES.between(startDatum, eindDatum)) + " minuten");
+		duurProperty.set(String.valueOf(getDuur()) + " minuten");
 	}
 
 	public SimpleStringProperty getDuurProperty() {
