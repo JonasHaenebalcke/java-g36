@@ -363,7 +363,7 @@ public class Sessie implements Serializable {
 			setAantalDeelnemersProperty();
 		return aantalDeelnemersProperty;
 	}
-	
+
 	public int getDuur() {
 		return (int) ChronoUnit.MINUTES.between(startDatum, eindDatum);
 	}
@@ -469,7 +469,8 @@ public class Sessie implements Serializable {
 		return aanwezig;
 	}
 
-	public void wijzigIngeschrevenen(Gebruiker ingeschrevene, boolean ingeschreven, boolean aanwezig) {
+	public GebruikerSessie wijzigIngeschrevenen(Gebruiker ingeschrevene, boolean ingeschreven, boolean aanwezig) {
+		GebruikerSessie res = null;
 		if (!isInschrijvingenOpen())
 			throw new IllegalArgumentException("Deze sessie is nog niet open voor inschrijvingen");
 
@@ -477,11 +478,14 @@ public class Sessie implements Serializable {
 		for (GebruikerSessie gebruikerSessie : gebruikerSessieLijst) {
 			if (gebruikerSessie.getIngeschrevene().equals(ingeschrevene)) {
 				gebruikerGevonden = true;
-				if (ingeschreven)
+				
+				if (ingeschreven) 
 					gebruikerSessie.wijzigAanwezigheid(aanwezig);
-				else
+				else {
 					ingeschrevene.verwijderGebruikerSessie(gebruikerSessie);
-				gebruikerSessieLijst.remove(gebruikerSessie);
+					gebruikerSessieLijst.remove(gebruikerSessie);
+				}
+				res = gebruikerSessie;
 				break;
 			}
 		}
@@ -491,10 +495,11 @@ public class Sessie implements Serializable {
 				gebruikerSessie.wijzigAanwezigheid(aanwezig);
 				ingeschrevene.addGebruikerSessie(gebruikerSessie);
 				gebruikerSessieLijst.add(gebruikerSessie);
+				res= gebruikerSessie;
 			} else
 				throw new IllegalArgumentException("Gebruiker is al uitgeschreven voor deze sessie");
 		}
-
+		return res;
 	}
 
 	public double geefGemiddeldeScore() {

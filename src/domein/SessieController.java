@@ -19,6 +19,7 @@ public class SessieController {
 	private GebruikerController gc;
 	private ObservableList<Sessie> sessieObservableLijst;
 	private GenericDao<Sessie> sessieRepo;
+	private GenericDao<GebruikerSessie> gebruikerSessieRepo;
 	private FilteredList<Sessie> sessieFilteredLijst;
 	private SortedList<Sessie> sessieSortedLijst;
 
@@ -41,6 +42,7 @@ public class SessieController {
 	public SessieController(GebruikerController gc) {
 		this.gc = gc;
 		setSessieRepo(new GenericDaoJpa(Sessie.class));
+		gebruikerSessieRepo  = new GenericDaoJpa<GebruikerSessie>(GebruikerSessie.class);
 	}
 
 	public void setSessieRepo(GenericDao mock) {
@@ -80,7 +82,7 @@ public class SessieController {
 	}
 
 	public void changeSorter(String order) {
-		if(order == null) {
+		if (order == null) {
 			sessieSortedLijst.setComparator(sortOrder);
 			return;
 		}
@@ -171,7 +173,22 @@ public class SessieController {
 	}
 
 	public void wijzigIngeschrevenen(Gebruiker ingeschrevene, boolean ingeschreven, boolean aanwezig) {
-		huidigeSessie.wijzigIngeschrevenen(ingeschrevene, ingeschreven, aanwezig);
+	GebruikerSessie res=	huidigeSessie.wijzigIngeschrevenen(ingeschrevene, ingeschreven, aanwezig);
+	boolean bool = huidigeSessie.isGebruikerIngeschreven(ingeschrevene);
+	try {
+			GenericDaoJpa.startTransaction();
+			if(!bool && ingeschreven)
+				gebruikerSessieRepo.insert(res);
+			else
+			if(ingeschreven && bool) {
+				gebruikerSessieRepo.update(res);
+			}else 
+				gebruikerSessieRepo.delete(res);
+			GenericDaoJpa.commitTransaction();
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			throw new IllegalArgumentException(e.getMessage());
+		}
 	}
 
 	public void addFeedback(Gebruiker auteur, String content, int score) {
