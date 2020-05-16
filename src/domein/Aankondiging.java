@@ -142,7 +142,7 @@ public class Aankondiging implements Serializable {
 	}
 
 	public StringProperty getPublicistProperty() {
-		if (publicist == null) {
+		if (publicistProperty == null) {
 			setPublicistProperty();
 		}
 		return publicistProperty;
