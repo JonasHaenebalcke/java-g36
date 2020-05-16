@@ -87,7 +87,6 @@ public class StatistiekenSchermController extends GridPane {
 
 	private GebruikerController gc;
 	private SessieController sc;
-	
 
 	public StatistiekenSchermController(GebruikerController dc, SessieController sc) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("StatistiekenScherm.fxml"));
@@ -166,10 +165,10 @@ public class StatistiekenSchermController extends GridPane {
 //		lblStatistiek1Value.setText(String.valueOf(gc.geefAantalAanwezigen()));
 //		lblStatistiek2Value.setText(String.valueOf(gc.geefAantalAfwezigen()));
 
-		lblStatistiek1Omschrijving.setText("Omschrijving");
-		lblStatistiek2Omschrijving.setText("Omschrijving");
-		lblStatistiek1Value.setText("Waarde");
-		lblStatistiek2Value.setText("Waarde");
+		lblStatistiek1Omschrijving.setText("Populairste start uur");
+		lblStatistiek2Omschrijving.setText("Populairste duratie van een sessie");
+		lblStatistiek1Value.setText(sc.geefPopulaireStartUur());
+		lblStatistiek2Value.setText(String.valueOf(sc.geefPopulaireDuur()));
 		tvGebruikers.setVisible(false);
 		tvSessies.setVisible(true);
 		tvSessies.setItems(sc.geefSessiesSorted());

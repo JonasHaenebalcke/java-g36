@@ -157,7 +157,7 @@ public class SessieController {
 	}
 
 	public String geefPopulaireStartUur() {
-		LocalTime uur = sessieLijst.get(0).getStartDatum().toLocalTime();
+		LocalTime uur = geefSessies().get(0).getStartDatum().toLocalTime();
 		LocalTime tempuur = null;
 		int tempcount = 0;
 		int count = 0;
