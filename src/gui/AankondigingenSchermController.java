@@ -24,11 +24,13 @@ import domein.GebruikerController;
 import domein.GebruikerSessie;
 import domein.Sessie;
 import domein.SessieController;
+import domein.SessieKalender;
 import domein.Status;
 import domein.StatusSessie;
 import domein.TypeGebruiker;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -83,7 +85,7 @@ public class AankondigingenSchermController extends GridPane {
 	@FXML
 	private TableColumn<Aankondiging, String> colDatumAankondiging;
 	@FXML
-	private TableColumn<Aankondiging, String> colMailVerstuurd;
+	private TableColumn<Aankondiging, Boolean> colMailVerstuurd;
 	@FXML
 	private TableColumn<Aankondiging, String> colVerstuurMail;
 
@@ -164,9 +166,28 @@ public class AankondigingenSchermController extends GridPane {
 
 			System.out.println(ac.geefAankondigingen().toString());
 			initializeTvAankondigingen();
+			addListenerToTableAankondigingen();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void addListenerToTableAankondigingen() {
+
+		tvAankondigingen.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Aankondiging>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Aankondiging> observable, Aankondiging newValue,
+					Aankondiging oldValue) {
+				if (newValue != null) {
+					txtTitel.setText(newValue.titel);
+					txtAankondiging.setText(newValue.aankondingingTekst);
+				} else {
+					txtTitel.setText(observable.getValue().titel);
+					txtAankondiging.setText(observable.getValue().aankondingingTekst);
+				}
+			}
+		});
 	}
 
 	private void initializeTvAankondigingen() {
@@ -174,21 +195,16 @@ public class AankondigingenSchermController extends GridPane {
 		colPublicist.setCellValueFactory(cel -> cel.getValue().getPublicistProperty());
 		colTitelAankondiging.setCellValueFactory(cel -> cel.getValue().getTitelAankondigingProperty());
 		colDatumAankondiging.setCellValueFactory(cel -> cel.getValue().getDatumAankondigingProperty());
-//		colMailVerstuurd.setCellFactory(column -> new CheckBoxTableCell<>());
+		colMailVerstuurd.setCellFactory(column -> new CheckBoxTableCell<>());
 
-//		colMailVerstuurd.setCellValueFactory(
-//				new Callback<TableColumn.CellDataFeatures<Aankondiging, Boolean>, ObservableValue<Boolean>>() {
-//					@Override
-//					public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<Aankondiging, Boolean> gs) {
-//						return new SimpleBooleanProperty(gs.getValue().isVerzonden);
-//					}
-//				});
+		colMailVerstuurd.setCellValueFactory(
+				new Callback<TableColumn.CellDataFeatures<Aankondiging, Boolean>, ObservableValue<Boolean>>() {
 
-//		colVerstuurMail
-//				.setCellFactory(ActionButtonTableCell.<Aankondiging>forTableColumn("Verzend Aankondiging", (Aankondiging a) -> {
-//					ac.verzendAankondiging(tvAankondigingen.getSelectionModel().getSelectedIndex());
-//					return a;
-//				}));
+					@Override
+					public ObservableValue<Boolean> call(CellDataFeatures<Aankondiging, Boolean> a) {
+						return new SimpleBooleanProperty(a.getValue().isVerzonden);
+					}
+				});
 	}
 
 	@FXML
@@ -211,7 +227,7 @@ public class AankondigingenSchermController extends GridPane {
 	@FXML
 	void verzendMail(ActionEvent event) {
 		try {
-			
+
 			if (gc.getIngelogdeVerantwoordelijke().getStatus().equals(Status.Actief)
 					&& !gc.getIngelogdeVerantwoordelijke().getType().equals(TypeGebruiker.Gebruiker)) {
 
@@ -219,7 +235,7 @@ public class AankondigingenSchermController extends GridPane {
 					ac.setGekozenAankondiging(tvAankondigingen.getSelectionModel().getSelectedItem());
 				} else {
 					Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
-					
+
 					ac.voegAankondigingToe(txtTitel.getText(), txtAankondiging.getText(), false, sessie,
 							gc.getIngelogdeVerantwoordelijke());
 					Aankondiging nieuwAankondiging = new Aankondiging(txtTitel.getText(), txtAankondiging.getText(),
