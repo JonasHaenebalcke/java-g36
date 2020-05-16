@@ -108,7 +108,7 @@ public class MenuController extends BorderPane{
 
 	@FXML
 	void aankondigingen(ActionEvent event) throws IOException {
-		AankondigingenSchermController aankondigingenScherm = new AankondigingenSchermController(this.sc, this.ac);
+		AankondigingenSchermController aankondigingenScherm = new AankondigingenSchermController(this.sc, this.ac, this.dc);
 		scherm.getChildren().setAll(aankondigingenScherm);
 	}
 

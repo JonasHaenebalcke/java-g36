@@ -14,8 +14,8 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.util.*;  
-import javax.mail.*;  
+import java.util.*;
+import javax.mail.*;
 import javax.mail.internet.*;
 
 import domein.Aankondiging;
@@ -24,7 +24,9 @@ import domein.GebruikerController;
 import domein.GebruikerSessie;
 import domein.Sessie;
 import domein.SessieController;
+import domein.Status;
 import domein.StatusSessie;
+import domein.TypeGebruiker;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
@@ -43,6 +45,7 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Paint;
 import javafx.util.Callback;
 
 public class AankondigingenSchermController extends GridPane {
@@ -109,7 +112,7 @@ public class AankondigingenSchermController extends GridPane {
 	private AankondigingController ac;
 	private GebruikerController gc;
 
-	public AankondigingenSchermController(SessieController sc, AankondigingController ac) {
+	public AankondigingenSchermController(SessieController sc, AankondigingController ac, GebruikerController gc) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("AankondigingenScherm.fxml"));
 		loader.setRoot(this);
 		loader.setController(this);
@@ -128,7 +131,7 @@ public class AankondigingenSchermController extends GridPane {
 
 	public AankondigingenSchermController(SessieController sc, Sessie sessie, AankondigingController ac,
 			GebruikerController gc) {
-		this(sc, ac);
+		this(sc, ac, gc);
 		if (sessie != null) {
 			tvSessies.getSelectionModel().select(sessie);
 		}
@@ -192,47 +195,46 @@ public class AankondigingenSchermController extends GridPane {
 	void aankondigingPlaatsen(ActionEvent event) {
 		try {
 			Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
-			// Controlleren of Sessie null is
-			// Controleren of verantwoordelijke geplaatst mag worden
-			ac.voegAankondigingToe(txtTitel.getText(), txtAankondiging.getText(), false, sessie,
-					gc.getIngelogdeVerantwoordelijke());
+			if (gc.getIngelogdeVerantwoordelijke().getStatus().equals(Status.Actief)
+					&& !gc.getIngelogdeVerantwoordelijke().getType().equals(TypeGebruiker.Gebruiker)) {
+
+				ac.voegAankondigingToe(txtTitel.getText(), txtAankondiging.getText(), false, sessie,
+						gc.getIngelogdeVerantwoordelijke());
+			}
 		} catch (Exception e) {
 			lblError.setVisible(true);
 			lblError.setText(e.getMessage());
 			System.err.println(e.getMessage());
 		}
 	}
-	
+
 	@FXML
 	void verzendMail(ActionEvent event) {
-		String naar = "jule.dekyvere@student.hogent.be"; //"audrey.behiels@student.hogent.be"; 
-		String van = "ProjectITLab@outlook.com";//gc.getIngelogdeVerantwoordelijke().getMailadres(); 
-		String host = "localhost";
-		Properties properties = new Properties();
-		
-		properties.put("mail.smtp.auth","true");
-		properties.put("mail.smtp.starttls.enable", "true");
-		properties.put("mail.smtp.host", "smtp-mail.outlook.com");
-		properties.put("mail.smtp.port", "587");
-		
-	Session sessie = Session.getDefaultInstance(properties, new Authenticator() {
-		protected PasswordAuthentication getPasswordAuthentication() {
-			return new PasswordAuthentication("ProjectITLab@outlook.com", "ProjectenSem2");
-		}
-	});
 		try {
-			MimeMessage message = new MimeMessage(sessie);
-			message.setFrom(new InternetAddress(van));
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(naar));
-			message.setSubject("Onderwerp test");
-			message.setText("Dit bericht is een test");
-			Transport.send(message);
-			System.out.println("bericht goed verzonden..");
-		} catch(MessagingException e)
-		{
-			e.printStackTrace();
+			
+			if (gc.getIngelogdeVerantwoordelijke().getStatus().equals(Status.Actief)
+					&& !gc.getIngelogdeVerantwoordelijke().getType().equals(TypeGebruiker.Gebruiker)) {
+
+				if (tvAankondigingen.getSelectionModel().getSelectedItem() != null) {
+					ac.setGekozenAankondiging(tvAankondigingen.getSelectionModel().getSelectedItem());
+				} else {
+					Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
+					
+					ac.voegAankondigingToe(txtTitel.getText(), txtAankondiging.getText(), false, sessie,
+							gc.getIngelogdeVerantwoordelijke());
+					Aankondiging nieuwAankondiging = new Aankondiging(txtTitel.getText(), txtAankondiging.getText(),
+							sessie, gc.getIngelogdeVerantwoordelijke(), false);
+					System.out.println(nieuwAankondiging);
+					ac.setGekozenAankondiging(nieuwAankondiging);
+				}
+				ac.verzendAankondiging();
+				lblError.setTextFill(Paint.valueOf("green"));
+				lblError.setText("De mail is verzonden!");
+			} else
+				throw new IllegalArgumentException("Je hebt niet de juiste rechten om een aankondiging te verzenden");
+
 		} catch (Exception e) {
-			e.printStackTrace();
+			lblError.setText(e.getMessage());
 		}
 	}
 
