@@ -86,7 +86,11 @@ public class GebruikerController {
 //			if ((filter == null || filter.isBlank()) && (status.contentEquals("Alle") || status == null || status.isBlank()))
 //				return true;
 			String lowercase = filter.toLowerCase();
-			boolean filterbool = (filter == null || filter.isBlank()) ? true : false;
+			boolean filterbool = (filter == null || filter.isBlank()) ? true : 
+				(gebruiker.getVoornaam().equalsIgnoreCase(lowercase)
+						|| gebruiker.getFamilienaam().equalsIgnoreCase(lowercase)
+				)
+				;
 
 			boolean typebool = type.contentEquals("Alle") || type == null || type.isBlank() ? true
 					: gebruiker.getType().toString().equalsIgnoreCase(type);
@@ -163,6 +167,10 @@ public class GebruikerController {
 				}
 			}
 		}
+	}
+	
+	public void resetAfwezighedenGebruiker(Gebruiker gebruiker) {
+		gebruiker.setAantalKeerAfwezig(0);
 	}
 
 	public void startTransaction() {
