@@ -13,9 +13,12 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -84,6 +87,15 @@ public class StatistiekenSchermController extends GridPane {
 	private TableColumn<Sessie, String> colAantalAanwezigen;
 	@FXML
 	private TableColumn<Sessie, String> colGemiddleScore;
+
+	@FXML
+	private TextField txfSessie;
+	@FXML
+	private Button zoekSessie;
+	@FXML
+	private ComboBox<?> cbxStatusSessie;
+	@FXML
+	private ComboBox<?> cbxSessieGegevens;
 
 	private GebruikerController gc;
 	private SessieController sc;
@@ -182,6 +194,21 @@ public class StatistiekenSchermController extends GridPane {
 		colStartUur.setCellValueFactory(cel -> cel.getValue().getStartUurProperty());
 //		colEind.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
 //		colAantalDeelnemers.setCellValueFactory(cel -> cel.getValue().getAantalDeelnemersProperty());
+	}
+
+	@FXML
+	void zoekSessie(ActionEvent event) {
+
+	}
+
+	@FXML
+	void geefSessiesGekozenStatus(ActionEvent event) {
+
+	}
+
+	@FXML
+	void geefSessiesGekozenTypeGegevens(ActionEvent event) {
+
 	}
 
 //	void addListenerToTableGebruikers() {
