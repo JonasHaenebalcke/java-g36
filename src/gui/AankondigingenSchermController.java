@@ -156,7 +156,7 @@ public class AankondigingenSchermController extends GridPane {
 																											// worden
 
 			List<String> statussen = new ArrayList<>();
-			statussen.add("Alle");
+			statussen.add("Alle Types");
 			for (StatusSessie status : StatusSessie.values()) {
 				statussen.add(status.toString());
 			}

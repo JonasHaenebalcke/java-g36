@@ -1,15 +1,19 @@
 package gui;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import domein.Gebruiker;
 import domein.GebruikerController;
 import domein.Sessie;
 import domein.SessieController;
 import domein.SessieKalenderController;
+import domein.StatusSessie;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -93,9 +97,9 @@ public class StatistiekenSchermController extends GridPane {
 	@FXML
 	private Button zoekSessie;
 	@FXML
-	private ComboBox<?> cbxStatusSessie;
+	private ComboBox<String> cbxStatusSessie;
 	@FXML
-	private ComboBox<?> cbxSessieGegevens;
+	private ComboBox<String> cbxSessieGegevens;
 
 	private GebruikerController gc;
 	private SessieController sc;
@@ -140,6 +144,22 @@ public class StatistiekenSchermController extends GridPane {
 		colAantalAanwezig.setCellValueFactory(cel -> cel.getValue().getAantalAanwezigProprty());
 		colAantalAfwezig.setCellValueFactory(cel -> cel.getValue().getAantalAfwezigProperty());
 		colProcentueelAanwezig.setCellValueFactory(cel -> cel.getValue().getProcentueelAanwezigProperty());
+		
+		List<String> statussen = new ArrayList<>();
+		statussen.add("Alle Types");
+		for (StatusSessie status : StatusSessie.values()) {
+			statussen.add(status.toString());
+		}
+		cbxStatusSessie.setItems(FXCollections.observableArrayList(statussen));
+		cbxStatusSessie.getSelectionModel().selectFirst();
+		
+		List<String> sorters = new ArrayList<>();
+		sorters.add("Ongesorteerd");
+		sorters.add("Bij score");
+		sorters.add("Bij aanwezigen");
+		sorters.add("Bij duur");
+		cbxSessieGegevens.setItems(FXCollections.observableArrayList(sorters));
+		cbxSessieGegevens.getSelectionModel().selectFirst();
 	}
 
 	@FXML
@@ -198,17 +218,28 @@ public class StatistiekenSchermController extends GridPane {
 
 	@FXML
 	void zoekSessie(ActionEvent event) {
-
+		changeFilter();
 	}
 
 	@FXML
 	void geefSessiesGekozenStatus(ActionEvent event) {
-
+		changeFilter();
 	}
 
 	@FXML
 	void geefSessiesGekozenTypeGegevens(ActionEvent event) {
+		String order = cbxSessieGegevens.getValue().toString();
 
+		sc.changeSorter(order);
+	}
+	
+	private void changeFilter() {
+		String filter = txfSessie.getText();
+		String status = cbxStatusSessie.getValue().toString();
+
+		System.out.println("filter: " + filter);
+		System.out.println("status: " + status);
+		sc.changeFilter(filter, status);
 	}
 
 //	void addListenerToTableGebruikers() {

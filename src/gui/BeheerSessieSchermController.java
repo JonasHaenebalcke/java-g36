@@ -168,7 +168,7 @@ public class BeheerSessieSchermController extends GridPane {
 
 	private void initialize() {
 		List<String> statussen = new ArrayList<>();
-		statussen.add("Alle");
+		statussen.add("Alle Types");
 		for (StatusSessie status : StatusSessie.values()) {
 			statussen.add(status.toString());
 		}
@@ -467,6 +467,7 @@ public class BeheerSessieSchermController extends GridPane {
 			
 			changeFilter();
 		} catch (Exception e) {
+			e.printStackTrace();
 			lblErrorDetailsSessie.setText(e.getMessage());
 		}
 	}

@@ -86,13 +86,13 @@ public class SessieController {
 		}
 
 		switch (order) {
-		case "Score":
+		case "Bij score":
 			sessieSortedLijst.setComparator(byGemScore.thenComparing(sortOrder));
 			break;
-		case "Duur":
+		case "Bij duur":
 			sessieSortedLijst.setComparator(byDuur.thenComparing(sortOrder));
 			break;
-		case "Aanwezigen":
+		case "Bij aanwezigen":
 			sessieSortedLijst.setComparator(byAantalAanwezigen.thenComparing(sortOrder));
 			break;
 		default:
@@ -113,7 +113,7 @@ public class SessieController {
 							|| sessie.getGastspreker().toLowerCase().contains(lowercase)
 							|| sessie.getStartDatum().toString().toLowerCase().contains(lowercase));
 
-			boolean statusbool = status.contentEquals("Alle") || status == null || status.isBlank() ? true
+			boolean statusbool = status.contentEquals("Alle Types") || status == null || status.isBlank() ? true
 					: sessie.getStatusSessie().toString() == status;
 			return (filterbool && statusbool);
 		});
