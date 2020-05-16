@@ -257,7 +257,11 @@ public class AankondigingenSchermController extends GridPane {
 	@FXML
 	void beheerSessie(ActionEvent event) {
 		Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
-		this.getChildren().setAll(new BeheerSessieSchermController(this.sc, this.gc, sessie, this.ac));
+		if (tvSessies.getSelectionModel().getSelectedItem() != null) {
+			this.getChildren().setAll(new BeheerSessieSchermController(this.sc, this.gc, sessie, this.ac));
+		} else {
+			lblError.setText("Je moet een sessie kiezen om het te beheren");
+		}
 	}
 
 	@FXML

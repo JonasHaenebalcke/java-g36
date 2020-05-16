@@ -249,7 +249,7 @@ public class Gebruiker implements Serializable {
 			double ret = (((double) geefAantalKeerAanwezig()
 					/ ((double) geefAantalKeerAanwezig() + (double) getAantalKeerAfwezig())) * 100);
 
-			return rondAf(ret, 2);
+			return rondAf(ret, 0);
 		}
 	}
 

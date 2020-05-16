@@ -26,8 +26,12 @@ public class SessieController {
 			.compareToIgnoreCase(s2.getVerantwoordelijke().getVoornaam());
 	private final Comparator<Sessie> byDatum = (s1, s2) -> s1.getStartDatum().toLocalDate()
 			.compareTo(s2.getStartDatum().toLocalDate());
-	private final Comparator<Sessie> sortOrder = byDatum.reversed()
-			.thenComparing(Comparator.comparing(Sessie::getTitel)).thenComparing(byVerantwoordelijke);
+	private final Comparator<Sessie> byGemScore = (Comparator.comparing(Sessie::geefGemiddeldeScore)).reversed();
+	private final Comparator<Sessie> byDuur = Comparator.comparing(Sessie::getDuur);
+	private final Comparator<Sessie> byAantalAanwezigen = (Comparator.comparing(Sessie::geefAantalAanwezigen))
+			.reversed();
+	private final Comparator<Sessie> sortOrder = byDatum.reversed().thenComparing(byVerantwoordelijke)
+			.thenComparing(Comparator.comparing(Sessie::getTitel));
 
 	public SessieController() {
 		gc = new GebruikerController();
@@ -57,6 +61,10 @@ public class SessieController {
 		return sessieObservableLijst;
 	}
 
+	public ObservableList<GebruikerSessie> geefGebruikerSessiesObservable() {
+		return FXCollections.observableArrayList(huidigeSessie.getGebruikerSessieLijst());
+	}
+
 	public FilteredList<Sessie> geefSessiesFiltered() {
 		if (sessieFilteredLijst == null) {
 			sessieFilteredLijst = new FilteredList<>(geefSessiesObservable(), p -> true);
@@ -71,8 +79,26 @@ public class SessieController {
 		return sessieSortedLijst;
 	}
 
-	public ObservableList<GebruikerSessie> geefGebruikerSessiesObservable() {
-		return FXCollections.observableArrayList(huidigeSessie.getGebruikerSessieLijst());
+	public void changeSorter(String order) {
+		if(order == null) {
+			sessieSortedLijst.setComparator(sortOrder);
+			return;
+		}
+
+		switch (order) {
+		case "Score":
+			sessieSortedLijst.setComparator(byGemScore.thenComparing(sortOrder));
+			break;
+		case "Duur":
+			sessieSortedLijst.setComparator(byDuur.thenComparing(sortOrder));
+			break;
+		case "Aanwezigen":
+			sessieSortedLijst.setComparator(byAantalAanwezigen.thenComparing(sortOrder));
+			break;
+		default:
+			sessieSortedLijst.setComparator(sortOrder);
+			break;
+		}
 	}
 
 	public void changeFilter(String filter, String status) {

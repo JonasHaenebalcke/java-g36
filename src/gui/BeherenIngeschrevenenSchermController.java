@@ -165,8 +165,8 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 			colStartSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
 			ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
 
-		//	tvGebruikers.setVisible(false);
-			//tvIngeschrevenen.setVisible(true);
+			// tvGebruikers.setVisible(false);
+			// tvIngeschrevenen.setVisible(true);
 			tvIngeschrevenen.setVisible(false);
 			tvGebruikers.setItems(gc.geefGebruikersSorted());
 			colVoornaam.setCellValueFactory(cel -> cel.getValue().getVoorNaamProperty());
@@ -282,12 +282,9 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 
 	@FXML
 	void GaNaarBeherenSessie(ActionEvent event) {
-
+		Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
 		if (tvSessies.getSelectionModel().getSelectedItem() != null) {
-			sc.setHuidigeSessie(tvSessies.getSelectionModel().getSelectedItem());
-
-			BeheerSessieSchermController bSessieScherm = new BeheerSessieSchermController(sc, gc, ac);
-			this.getChildren().setAll(bSessieScherm);
+			this.getChildren().setAll(new BeheerSessieSchermController(this.sc, this.gc, sessie, this.ac));
 		} else {
 			lblError.setText("Je moet een sessie kiezen om het te beheren");
 		}
@@ -295,11 +292,10 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 
 	@FXML
 	void geefGebruikersGekozenStatus(ActionEvent event) {
-		if(cbxStatusGebruiker.getValue().equals("Alle")) {
+		if (cbxStatusGebruiker.getValue().equals("Alle")) {
 			tvGebruikers.setVisible(true);
 			tvIngeschrevenen.setVisible(false);
-		}
-		else {
+		} else {
 			tvGebruikers.setVisible(false);
 			tvIngeschrevenen.setVisible(true);
 		}

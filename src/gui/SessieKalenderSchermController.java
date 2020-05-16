@@ -101,7 +101,7 @@ public class SessieKalenderSchermController extends GridPane {
 	private SessieController sc;
 	private AankondigingController ac;
 	private GebruikerController gc;
-	
+
 	private final Comparator<String> byDatum = (s1, s2) -> s1.substring(6).compareTo(s2.substring(6));
 
 	public SessieKalenderSchermController() {
@@ -111,7 +111,8 @@ public class SessieKalenderSchermController extends GridPane {
 //		initializeSessieKalender();
 	}
 
-	public SessieKalenderSchermController(SessieKalenderController dc, SessieController sc, GebruikerController gc, AankondigingController ac) {
+	public SessieKalenderSchermController(SessieKalenderController dc, SessieController sc, GebruikerController gc,
+			AankondigingController ac) {
 		this.dc = dc;
 		this.sc = sc;
 		this.gc = gc;
@@ -198,9 +199,6 @@ public class SessieKalenderSchermController extends GridPane {
 			System.out.println(dc.geefSessieKalenderObservableList().toString());
 			tblSessieKalenders.setItems(dc.geefSessieKalenderObservableList());
 
-
-			
-			
 //			System.out.println(sk.getStartDatumProperty());
 //			colStartDatum.setCellValueFactory(cel -> cel.getValue().startDatumProperty()());
 //			System.out.println(sk.getStartDatumProperty());
@@ -227,7 +225,7 @@ public class SessieKalenderSchermController extends GridPane {
 
 			colTitel.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
 //		colDuur.setCellValueFactory(cel -> cel.getValue().getDuurSessieProperty());
-			
+
 			colStartDatumSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
 			colEindDatumSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
 		} catch (Exception e) {
@@ -344,9 +342,9 @@ public class SessieKalenderSchermController extends GridPane {
 
 	@FXML
 	public void beheerSessie(ActionEvent event) {
-		Sessie sessie = tblSessies.getSelectionModel().getSelectedItem();
-		this.getChildren().setAll(new BeheerSessieSchermController(this.sc, this.gc, sessie, this.ac));
-		
+//		Sessie sessie = tblSessies.getSelectionModel().getSelectedItem();
+//		this.getChildren().setAll(new BeheerSessieSchermController(this.sc, this.gc, sessie, this.ac));
+
 //		System.out.println("beheer sessie");    
 //		Sessie sessie = tblSessies.getSelectionModel().getSelectedItem();
 //		Scene scene = new Scene(new BeheerSessieSchermController(this.sc, sessie));
@@ -354,6 +352,14 @@ public class SessieKalenderSchermController extends GridPane {
 //		stage.setTitle("IT LAB");
 //		stage.setScene(scene);
 //		stage.show();
+
+		Sessie sessie = tblSessies.getSelectionModel().getSelectedItem();
+		if (tblSessies.getSelectionModel().getSelectedItem() != null) {
+			this.getChildren().setAll(new BeheerSessieSchermController(this.sc, this.gc, sessie, this.ac));
+		} else {
+			lblErrorSessies.setText("Je moet een sessie kiezen om het te beheren");
+		}
+
 	}
 
 //	@FXML
