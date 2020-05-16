@@ -8,7 +8,6 @@ import domein.GebruikerController;
 import domein.PopulateDB;
 import domein.SessieController;
 import domein.SessieKalenderController;
-import domein.StatistiekController;
 import gui.GebruikersSchermController;
 import gui.MeldAanSchermController;
 import gui.MenuController;
@@ -30,9 +29,8 @@ public class StartUp extends Application {
 //		skc.geefSessieKalenderList().forEach(g -> System.out.println(g.toString()));
 //		sc.geefSessies().forEach(s -> System.out.println(s.toString()));
 //        MenuController root = new MenuController(dc, skc, sc);
-		StatistiekController stc = new StatistiekController();
 		AankondigingController ac = new AankondigingController();
-		MeldAanSchermController root = new MeldAanSchermController(gc, skc, sc, stc, ac);
+		MeldAanSchermController root = new MeldAanSchermController(gc, skc, sc, ac);
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add("gui/stylesheet.css");
 		primaryStage.setMaximized(true);
