@@ -21,9 +21,11 @@ import domein.TypeGebruiker;
 public class SessieTest {
 	Sessie sessie;
 	Gebruiker gebruiker;
+	Gebruiker ingeschrevene;
 	
 	public SessieTest() throws NoSuchAlgorithmException, InvalidKeySpecException {
 		gebruiker = new Gebruiker("Rein", "Daelman", "rein@gmail.com", "752460rd", TypeGebruiker.Hoofdverantwoordelijke, Status.Actief, null);
+		ingeschrevene = new Gebruiker("Trein", "Daelman", "trein@gmail.com", "752461rd", TypeGebruiker.Gebruiker, Status.Actief, null);
 		sessie = new Sessie(gebruiker, "titel", "B1.012", LocalDateTime.now().plus(1, ChronoUnit.DAYS).plusMinutes(5), LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS).plusMinutes(5),
 				20, "omschrijving", "gastspreker");
 	}
@@ -169,6 +171,49 @@ public class SessieTest {
 		Assertions.assertEquals(30, sessie.getCapaciteit());
 	}
 	
+	@Test 
+	public void inschrijvenSessie_slaagt() {
+		sessie.wijzigSessie("titel", "B1.012", LocalDateTime.now().plus(1, ChronoUnit.DAYS).plusMinutes(5), LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS).plusMinutes(5),
+				20, "omschrijving", "gastspreker", true);
+		sessie.wijzigIngeschrevenen(ingeschrevene, true, false);
+		Assertions.assertTrue(sessie.isGebruikerIngeschreven(ingeschrevene));
+	}
 	
+	@Test 
+	public void inschrijvenSessie_sessieNietOpen_faalt() {
+		sessie.wijzigSessie("titel", "B1.012", LocalDateTime.now().plus(1, ChronoUnit.DAYS).plusMinutes(5), LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS).plusMinutes(5),
+				20, "omschrijving", "gastspreker", false);
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			sessie.wijzigIngeschrevenen(ingeschrevene, true, false);
+			
+		});
+	}
 	
+	@Test 
+	public void inschrijvenSessie_gebruikerReedsUitgeschreven_faalt() {
+		sessie.wijzigSessie("titel", "B1.012", LocalDateTime.now().plus(1, ChronoUnit.DAYS).plusMinutes(5), LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS).plusMinutes(5),
+				20, "omschrijving", "gastspreker", true);
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			sessie.wijzigIngeschrevenen(ingeschrevene, false, false);
+			
+		});
+	}
+	
+	@Test 
+	public void aawezigZettenSessie_slaagt() {
+		sessie.wijzigSessie("titel", "B1.012", LocalDateTime.now().plus(1, ChronoUnit.DAYS).plusMinutes(5), LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS).plusMinutes(5),
+				20, "omschrijving", "gastspreker", true);
+		sessie.wijzigIngeschrevenen(ingeschrevene, true, true);
+		Assertions.assertTrue(sessie.isGebruikerAanwezig(ingeschrevene));
+	}
+	
+	@Test 
+	public void aanwezigZettenSessie_sessieNietOpen_faalt() {
+		sessie.wijzigSessie("titel", "B1.012", LocalDateTime.now().plus(1, ChronoUnit.DAYS).plusMinutes(5), LocalDateTime.now().plus(1, ChronoUnit.DAYS).plus(2, ChronoUnit.HOURS).plusMinutes(5),
+				20, "omschrijving", "gastspreker", false);
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			sessie.wijzigIngeschrevenen(ingeschrevene, true, true);
+			
+		});
+	}
 }
