@@ -212,6 +212,7 @@ public class StatistiekenSchermController extends GridPane {
 		colGemiddleScore.setCellValueFactory(cel -> cel.getValue().getGemiddleScoreProperty());
 		colDuur.setCellValueFactory(cel -> cel.getValue().getDuurProperty());
 		colStartUur.setCellValueFactory(cel -> cel.getValue().getStartUurProperty());
+		sc.changeSorter(null);
 //		colEind.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
 //		colAantalDeelnemers.setCellValueFactory(cel -> cel.getValue().getAantalDeelnemersProperty());
 	}

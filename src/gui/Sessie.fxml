@@ -64,7 +64,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <TextField fx:id="txtSessie" prefHeight="26.0" prefWidth="161.0" promptText="sessie" />
+                        <TextField fx:id="txtSessie" prefHeight="26.0" prefWidth="161.0" promptText="titel, verantwoordelijke, gastspreker, datum" />
                         <ComboBox fx:id="cbxStatusSessie" onAction="#geefSessiesGekozenStatus" prefHeight="26.0" prefWidth="138.0" promptText="Status sessies" GridPane.columnIndex="3" />
                         <Button fx:id="btnZoek" mnemonicParsing="false" onAction="#zoekSessie" text="Zoek" GridPane.columnIndex="2" />
                      </children>

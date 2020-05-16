@@ -87,15 +87,15 @@ public class GebruikerController {
 //				return true;
 			String lowercase = filter.toLowerCase();
 			boolean filterbool = (filter == null || filter.isBlank()) ? true : 
-				(gebruiker.getVoornaam().equalsIgnoreCase(lowercase)
-						|| gebruiker.getFamilienaam().equalsIgnoreCase(lowercase)
+				(gebruiker.getVoornaam().toLowerCase().contains(lowercase)
+						|| gebruiker.getFamilienaam().toLowerCase().contains(lowercase)
 				)
 				;
 
 			//boolean typebool = type.contentEquals("Alle") || type == null || type.isBlank() ? true
 			//		: gebruiker.getType().toString().equalsIgnoreCase(type);
 
-			boolean statusbool = status.contentEquals("Alle") || status == null || status.isBlank() ? true
+			boolean statusbool = status == null || status.isBlank() || status.contentEquals("Alle")  ? true
 					: gebruiker.getStatus().toString().equalsIgnoreCase(status);
 			return (filterbool /*&& typebool*/ && statusbool);
 		});

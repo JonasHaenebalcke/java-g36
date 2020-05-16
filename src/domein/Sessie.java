@@ -393,14 +393,14 @@ public class Sessie implements Serializable {
 	}
 
 	public void setStringProperties() {
-//		setStartDatumSessieProperty();
-//		setEindDatumSessieProperty();
-//		setTitelSessieProperty();
-//		getAantalDeelnemersProperty();
-//		setAantalIngeschrevenenProperty();
-//		setAantalAanwezigenProperty();
-//		setGemiddleScoreProperty();
-//		setDuurProperty();// Setter wordt opgeroepen in getter (dit is eigenlijke dubbele code dus zou
+		setStartDatumSessieProperty();
+		setEindDatumSessieProperty();
+		setTitelSessieProperty();
+		getAantalDeelnemersProperty();
+		setAantalIngeschrevenenProperty();
+		setAantalAanwezigenProperty();
+		setGemiddleScoreProperty();
+		setDuurProperty();// Setter wordt opgeroepen in getter (dit is eigenlijke dubbele code dus zou
 		// opgekuist moeten worden)
 	}
 

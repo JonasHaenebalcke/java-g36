@@ -181,6 +181,7 @@ public class BeheerSessieSchermController extends GridPane {
 			colStartSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
 			ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
 
+			sc.changeSorter(null);
 			textWaardeSessieInvullen();
 
 		} catch (NullPointerException e) {

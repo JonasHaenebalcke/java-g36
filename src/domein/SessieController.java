@@ -204,17 +204,23 @@ public class SessieController {
 		LocalTime tempuur = null;
 		int tempcount = 0;
 		int count = 0;
+		int aanwezigen = 0;
+		int tempAanwezigen = 0;
 
 		for (Sessie sessie : sessieLijst) {
 			tempuur = sessie.getStartDatum().toLocalTime();
 			tempcount = 0;
+			tempAanwezigen = 0;
 			for (Sessie sessie2 : sessieLijst) {
-				if (sessie2.getStartDatum().toLocalTime().equals(tempuur))
+				if (sessie2.getStartDatum().toLocalTime().equals(tempuur)) {
 					tempcount++;
+					tempAanwezigen += sessie2.geefAantalAanwezigen();
+				}
 			}
-			if (tempcount > count) {
+			if (tempcount > count && tempAanwezigen/tempcount > aanwezigen) {
 				count = tempcount;
 				uur = tempuur;
+				aanwezigen = tempAanwezigen/tempcount;
 			}
 		}
 		return uur.format(DateTimeFormatter.ofPattern("HH:mm"));
@@ -225,17 +231,22 @@ public class SessieController {
 		int tempduur = 0;
 		int tempcount = 0;
 		int count = 0;
+		int aanwezigen = 0;
+		int tempAanwezigen = 0;
 
 		for (Sessie sessie : sessieLijst) {
 			tempduur = sessie.getDuur();
 			tempcount = 0;
 			for (Sessie sessie2 : sessieLijst) {
-				if (sessie2.getDuur() == tempduur)
+				if (sessie2.getDuur() == tempduur){
 					tempcount++;
+					tempAanwezigen += sessie2.geefAantalAanwezigen();
+				}
 			}
-			if (tempcount > count) {
+			if (tempcount > count && tempAanwezigen/tempcount > aanwezigen) {
 				count = tempcount;
 				duur = tempduur;
+				aanwezigen = tempAanwezigen/tempcount;
 			}
 		}
 		return duur;

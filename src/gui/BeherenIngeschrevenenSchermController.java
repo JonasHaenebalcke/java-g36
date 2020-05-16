@@ -164,6 +164,7 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 			colTitelSessie.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
 			colStartSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
 			ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
+			sc.changeSorter(null);
 
 			// tvGebruikers.setVisible(false);
 			// tvIngeschrevenen.setVisible(true);
@@ -388,7 +389,7 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 	void zoekGebruiker(ActionEvent event) {// zoeken voornaam, familienaam, of mail
 
 		String gebruikersnaam = txtGebruiker.getText();
-
+		gc.changeFilter(gebruikersnaam, null);
 		/*
 		 * if(gebruikersnaam.matches(".*@+.*\\.+.*")) {
 		 * tvIngeschrevenen.getItems().stream() .filter(gebruiker ->

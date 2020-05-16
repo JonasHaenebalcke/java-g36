@@ -154,7 +154,7 @@ public class AankondigingenSchermController extends GridPane {
 					cel -> new ReadOnlyStringWrapper(Integer.toString(cel.getValue().getCapaciteit()))); // moet nog
 																											// veranderd
 																											// worden
-
+			sc.changeSorter(null);
 			List<String> statussen = new ArrayList<>();
 			statussen.add("Alle Types");
 			for (StatusSessie status : StatusSessie.values()) {
