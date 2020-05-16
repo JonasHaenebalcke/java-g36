@@ -24,8 +24,8 @@ public class GebruikerController {
 	private FilteredList<Gebruiker> gebruikerFilteredLijst;
 	private SortedList<Gebruiker> gebruikerSortedLijst;
 
-	private final Comparator<Gebruiker> sortOrder = Comparator.comparing(Gebruiker::getType)
-			.thenComparing(Comparator.comparing(Gebruiker::getFamilienaam)).thenComparing(Gebruiker::getVoornaam);
+	private final Comparator<Gebruiker> sortOrder = Comparator.comparing(Gebruiker::getFamilienaam)
+			.thenComparing(Comparator.comparing(Gebruiker::getVoornaam)).thenComparing(Gebruiker::getType);
 
 	public GebruikerController() {
 		setGebruikerRepo(new GenericDaoJpa(Gebruiker.class));
@@ -81,7 +81,7 @@ public class GebruikerController {
 		return FXCollections.observableArrayList(se);
 	}
 
-	public void changeFilter(String filter, String type, String status) {
+	public void changeFilter(String filter,/* String type,*/ String status) {
 		gebruikerFilteredLijst.setPredicate(gebruiker -> {
 //			if ((filter == null || filter.isBlank()) && (status.contentEquals("Alle") || status == null || status.isBlank()))
 //				return true;
@@ -92,12 +92,12 @@ public class GebruikerController {
 				)
 				;
 
-			boolean typebool = type.contentEquals("Alle") || type == null || type.isBlank() ? true
-					: gebruiker.getType().toString().equalsIgnoreCase(type);
+			//boolean typebool = type.contentEquals("Alle") || type == null || type.isBlank() ? true
+			//		: gebruiker.getType().toString().equalsIgnoreCase(type);
 
 			boolean statusbool = status.contentEquals("Alle") || status == null || status.isBlank() ? true
 					: gebruiker.getStatus().toString().equalsIgnoreCase(status);
-			return (filterbool && typebool && statusbool);
+			return (filterbool /*&& typebool*/ && statusbool);
 		});
 	}
 

@@ -32,11 +32,12 @@
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" percentHeight="7.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" percentHeight="2.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <TableView fx:id="tvGebruikers" prefHeight="528.0" prefWidth="771.0" GridPane.rowIndex="1">
+            <TableView fx:id="tvGebruikers" prefHeight="528.0" prefWidth="771.0" GridPane.rowIndex="2">
               <columns>
                 <TableColumn fx:id="colNaam" prefWidth="129.79888343811035" text="Naam" />
                 <TableColumn fx:id="colVoornaam" minWidth="0.0" prefWidth="142.201171875" text="Voornaam" />
@@ -55,12 +56,12 @@
                   <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <TextField fx:id="txtZoek" />
-                  <Button mnemonicParsing="false" onAction="#zoek" text="Button" GridPane.columnIndex="2" />
-                  <ComboBox prefWidth="150.0" GridPane.columnIndex="3" />
+                  <Button mnemonicParsing="false" onAction="#zoek" text="Zoek" GridPane.columnIndex="2" />
+                  <ComboBox fx:id="cbxFilter" prefWidth="150.0" promptText="Alle" GridPane.columnIndex="3" />
                </children>
             </GridPane>
          </children>
