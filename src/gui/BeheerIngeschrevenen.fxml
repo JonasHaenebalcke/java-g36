@@ -68,7 +68,7 @@
                   <ComboBox fx:id="cbxStatusSessie" onAction="#geefSessiesGekozenStatus" prefHeight="27.0" prefWidth="187.0" promptText="Status sessies" GridPane.columnIndex="3" />
                </children>
             </GridPane>
-      				<Label fx:id="lbltitelTabelGebruikers" prefHeight="27.0" prefWidth="135.0" text="Ingeschrevenen" GridPane.columnIndex="5">
+      				<Label fx:id="lbltitelTabelGebruikers" alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="412.0" text="Gebruikers" textAlignment="CENTER" GridPane.columnIndex="5">
       					<font>
       						<Font size="18.0" />
       					</font>

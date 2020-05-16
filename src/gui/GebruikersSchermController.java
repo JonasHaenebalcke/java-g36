@@ -1,11 +1,15 @@
 package gui;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Stream;
 
 import domein.Gebruiker;
 import domein.GebruikerController;
 import domein.Status;
+import domein.StatusSessie;
 import domein.TypeGebruiker;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
@@ -78,6 +82,12 @@ public class GebruikersSchermController extends GridPane {
 
 	@FXML
 	private Button btnGebruikerToevoegen;
+	
+	@FXML
+    private TextField txtZoek;
+
+    @FXML
+    private ComboBox<String> cbxFilter;
 
 	@FXML
 	private Label lblError;
@@ -114,8 +124,15 @@ public class GebruikersSchermController extends GridPane {
 		// lvGebruikers.setItems(dc.geefGebruikersObservableList());
 		cbxStatus.setItems(FXCollections.observableArrayList(Status.values()));
 		cbxType.setItems(FXCollections.observableArrayList(TypeGebruiker.values()));
+		List<String> statussen = new ArrayList<>();
+		statussen.add("Alle");
+		for (Status status : Status.values()) {
+			statussen.add(status.toString());
+		}
+		cbxFilter.setItems(FXCollections.observableArrayList(statussen));
 
 		tvGebruikers();
+		statusChangeListener();
 		btnPasAan.setVisible(false);
 		btnVerwijder.setVisible(false);
 		lblTitle.setText("Voeg gebruiker toe");
@@ -225,7 +242,8 @@ public class GebruikersSchermController extends GridPane {
 	}
 
 	void initializeList() {
-		tvGebruikers.setItems(dc.geefGebruikersObservableList());
+		
+		tvGebruikers.setItems(dc.geefGebruikersSorted());
 		try {
 			colNaam.setCellValueFactory(cel -> cel.getValue().getNaamProperty());
 			colVoornaam.setCellValueFactory(cel -> cel.getValue().getVoorNaamProperty());
@@ -236,5 +254,37 @@ public class GebruikersSchermController extends GridPane {
 		}
 		
 	}
+	
+	void statusChangeListener() {
+		cbxFilter.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue,
+					String newValue) {
+				changeFilter();
+			}
+		});
+
+	}
+	
+	private void changeFilter() {
+		String filter = txtZoek.getText();
+		String status = cbxFilter.getValue().toString();
+
+		System.out.println("filter: " + filter);
+		System.out.println("status: " + status);
+		dc.changeFilter(filter, status);
+	}
+	
+	@FXML
+    void zoek(ActionEvent event) {
+		try {
+				changeFilter();
+				
+		} catch (Exception e) {
+				lblError.setText(e.getMessage());
+		}
+		
+    }
 
 }
