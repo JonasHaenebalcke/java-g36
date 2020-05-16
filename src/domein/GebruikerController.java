@@ -209,5 +209,20 @@ public class GebruikerController {
 			throw new IllegalArgumentException("Gebruikersnaam of wachtwoord is incorrect");
 		}
 	}
+	
+	public int geefAantalAanwezigen() {
+		int ret = 0;
+		for(Gebruiker g : gebruikerList) {
+			ret += g.geefAantalKeerAanwezig();
+		}
+		return ret;
+	}
+	public int geefAantalAfwezigen() {
+		int ret = 0;
+		for(Gebruiker g : gebruikerList) {
+			ret += g.getAantalKeerAfwezig();
+		}
+		return ret;
+	}
 
 }

@@ -20,7 +20,6 @@ import domein.AankondigingController;
 import domein.GebruikerController;
 import domein.SessieController;
 import domein.SessieKalenderController;
-import domein.StatistiekController;
 import javafx.event.ActionEvent;
 
 public class MeldAanSchermController extends BorderPane {
@@ -36,10 +35,9 @@ public class MeldAanSchermController extends BorderPane {
 	public GebruikerController dc;
 	public SessieKalenderController skc;
 	public SessieController sc;
-	public StatistiekController statc;
 	public AankondigingController ac;
 
-	public MeldAanSchermController(GebruikerController dc, SessieKalenderController skc, SessieController sc, StatistiekController statc, AankondigingController ac) {
+	public MeldAanSchermController(GebruikerController dc, SessieKalenderController skc, SessieController sc, AankondigingController ac) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("MeldAanScherm.fxml"));
 		loader.setRoot(this);
 		loader.setController(this);
@@ -52,7 +50,6 @@ public class MeldAanSchermController extends BorderPane {
 		this.dc = dc;
 		this.skc = skc;
 		this.sc = sc;
-		this.statc = statc;
 		this.ac = ac;
 	}
 
@@ -62,7 +59,7 @@ public class MeldAanSchermController extends BorderPane {
 		try {
 			dc.meldAan(inputGebruikersnaam.getText(), inputWachtwoord.getText());			
 
-			Scene scene = new Scene(new MenuController(dc, skc, sc, statc, ac));
+			Scene scene = new Scene(new MenuController(dc, skc, sc, ac));
 			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 			stage.setTitle("IT LAB");
 			stage.setScene(scene);

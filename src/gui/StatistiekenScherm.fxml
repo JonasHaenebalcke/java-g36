@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
 <fx:root prefHeight="700.0" prefWidth="1340.0" type="GridPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
@@ -40,6 +41,11 @@
             <Label fx:id="lblStatistiek2Omschrijving" text="Omschrijving" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label fx:id="lblStatistiek1Value" text="Waarde" GridPane.columnIndex="2" />
             <Label fx:id="lblStatistiek2Value" text="Waarde" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Label fx:id="lblVoorAlle" alignment="CENTER" contentDisplay="BOTTOM" prefHeight="40.0" prefWidth="381.0" text="VoorAlle">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
          </children>
       </GridPane>
       <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="3">
@@ -76,17 +82,23 @@
             </TableView>
          </children>
       </AnchorPane>
-      <GridPane prefWidth="1025.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <GridPane prefHeight="112.0" prefWidth="1206.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
         <columnConstraints>
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Button mnemonicParsing="false" onAction="#geefStatistiekenGebruikers" prefHeight="54.0" prefWidth="186.0" text="Gebruikers" />
-            <Button mnemonicParsing="false" onAction="#geefStatistiekenSessies" prefHeight="54.0" prefWidth="186.0" text="Sessies" GridPane.columnIndex="1" />
+            <Button mnemonicParsing="false" onAction="#geefStatistiekenSessies" prefHeight="54.0" prefWidth="186.0" text="Sessies" GridPane.columnIndex="2" />
+            <Label fx:id="lblTitel" alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="143.0" text="Titel" GridPane.columnIndex="1">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Label>
          </children>
       </GridPane>
    </children>

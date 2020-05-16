@@ -83,6 +83,16 @@ public class Sessie implements Serializable {
 	@Transient
 	private SimpleStringProperty aantalDeelnemersProperty;
 	@Transient
+	private SimpleStringProperty aantalIngeschrevenenProperty;
+	@Transient
+	private SimpleStringProperty aantalAanwezigenProperty;
+	@Transient
+	private SimpleStringProperty gemiddleScoreProperty;
+	@Transient
+	private SimpleStringProperty duurProperty;
+	@Transient
+	private SimpleStringProperty startUur;
+	@Transient
 	private ObservableList<Feedback> feedbackObservableLijst;
 
 	protected Sessie() {
@@ -282,6 +292,42 @@ public class Sessie implements Serializable {
 		return titelProperty;
 	}
 
+	public StringProperty getAantalIngeschrevenenProperty() {
+		if (aantalIngeschrevenenProperty == null)
+			setAantalIngeschrevenenProperty();
+		return aantalIngeschrevenenProperty;
+	}
+
+	private void setAantalIngeschrevenenProperty() {
+		if (aantalIngeschrevenenProperty == null)
+			aantalIngeschrevenenProperty = new SimpleStringProperty();
+		aantalIngeschrevenenProperty.set(String.valueOf(getGebruikerSessieLijst().size()));
+	}
+
+	public StringProperty getAantalAanwezigenProperty() {
+		if (aantalAanwezigenProperty == null)
+			setAantalAanwezigenProperty();
+		return aantalAanwezigenProperty;
+	}
+
+	private void setAantalAanwezigenProperty() {
+		if (aantalAanwezigenProperty == null)
+			aantalAanwezigenProperty = new SimpleStringProperty();
+		aantalAanwezigenProperty.set(String.valueOf(geefAantalAanwezigen()));
+	}
+
+	public StringProperty getGemiddleScoreProperty() {
+		if (gemiddleScoreProperty == null)
+			setGemiddleScoreProperty();
+		return gemiddleScoreProperty;
+	}
+
+	private void setGemiddleScoreProperty() {
+		if (gemiddleScoreProperty == null)
+			gemiddleScoreProperty = new SimpleStringProperty();
+		gemiddleScoreProperty.set(String.valueOf(geefGemiddeldeScore()));
+	}
+
 	private void setStartDatumSessieProperty() {
 		if (startDatumSessieProperty == null)
 			startDatumSessieProperty = new SimpleStringProperty();
@@ -318,12 +364,40 @@ public class Sessie implements Serializable {
 		return aantalDeelnemersProperty;
 	}
 
+	public void setDuurProperty() {
+		if (duurProperty == null)
+			duurProperty = new SimpleStringProperty();
+		duurProperty.set(String.valueOf(ChronoUnit.HOURS.between(eindDatum, startDatum)));
+	}
+
+	public SimpleStringProperty getDuurProperty() {
+		if (duurProperty == null)
+			setDuurProperty();
+		return duurProperty;
+	}
+
+	public void setStartUurProperty() {
+		if (startUur == null)
+			startUur = new SimpleStringProperty();
+		startUur.set(String.valueOf(getStartDatum().format(DateTimeFormatter.ofPattern("HH:mm"))));
+	}
+
+	public SimpleStringProperty getStartUurProperty() {
+		if (startUur == null)
+			setStartUurProperty();
+		return startUur;
+	}
+
 	public void setStringProperties() {
-		setStartDatumSessieProperty();
-		setEindDatumSessieProperty();
-		setTitelSessieProperty();
-		getAantalDeelnemersProperty(); // Setter wordt opgeroepen in getter (dit is eigenlijke dubbele code dus zou
-										// opgekuist moeten worden)
+//		setStartDatumSessieProperty();
+//		setEindDatumSessieProperty();
+//		setTitelSessieProperty();
+//		getAantalDeelnemersProperty();
+//		setAantalIngeschrevenenProperty();
+//		setAantalAanwezigenProperty();
+//		setGemiddleScoreProperty();
+//		setDuurProperty();// Setter wordt opgeroepen in getter (dit is eigenlijke dubbele code dus zou
+		// opgekuist moeten worden)
 	}
 
 	private void setDatums(LocalDateTime startDatum, LocalDateTime eindDatum) {
@@ -338,6 +412,17 @@ public class Sessie implements Serializable {
 			throw new IllegalArgumentException("De sessie moet een minimumperiode van 30 minuten hebben.");
 		setStartUur(startDatum);
 		setEindUur(eindDatum);
+	}
+
+	public int geefAantalAanwezigen() {
+		int ret = 0;
+
+		for (GebruikerSessie gs : getGebruikerSessieLijst()) {
+			if (gs.isAanwezig())
+				ret++;
+		}
+
+		return ret;
 	}
 
 	public void wijzigSessie(String titel, String lokaal, LocalDateTime startDatum, LocalDateTime eindDatum,
