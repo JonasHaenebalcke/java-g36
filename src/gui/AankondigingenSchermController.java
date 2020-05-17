@@ -167,6 +167,7 @@ public class AankondigingenSchermController extends GridPane {
 			System.out.println(ac.geefAankondigingen().toString());
 			initializeTvAankondigingen();
 			addListenerToTableAankondigingen();
+			addListenerToTableSessies();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -190,8 +191,43 @@ public class AankondigingenSchermController extends GridPane {
 		});
 	}
 
+	private void addListenerToTableSessies() {
+		tvSessies.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Sessie>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Sessie> observable, Sessie newValue, Sessie oldValue) {
+				if (newValue != null) {
+					tvAankondigingen.getItems().clear();
+					initializeTvAankondigingen(newValue);
+				}
+			}
+		});
+	}
+
 	private void initializeTvAankondigingen() {
 		tvAankondigingen.setItems(ac.geefAankondigingObservableList());
+		colPublicist.setCellValueFactory(cel -> cel.getValue().getPublicistProperty());
+		colTitelAankondiging.setCellValueFactory(cel -> cel.getValue().getTitelAankondigingProperty());
+		colDatumAankondiging.setCellValueFactory(cel -> cel.getValue().getDatumAankondigingProperty());
+		colMailVerstuurd.setCellFactory(column -> new CheckBoxTableCell<>());
+
+		colMailVerstuurd.setCellValueFactory(
+				new Callback<TableColumn.CellDataFeatures<Aankondiging, Boolean>, ObservableValue<Boolean>>() {
+
+					@Override
+					public ObservableValue<Boolean> call(CellDataFeatures<Aankondiging, Boolean> a) {
+						return new SimpleBooleanProperty(a.getValue().isVerzonden);
+					}
+				});
+	}
+
+	private void initializeTvAankondigingen(Sessie sessie) {
+		System.out.println("Observable");
+		System.out.println(ac.geefAankondigingObservableList(sessie));
+		System.out.println("List");
+		System.out.println(ac.geefAankondigingen(sessie));
+
+		tvAankondigingen.setItems(ac.geefAankondigingObservableList(sessie));
 		colPublicist.setCellValueFactory(cel -> cel.getValue().getPublicistProperty());
 		colTitelAankondiging.setCellValueFactory(cel -> cel.getValue().getTitelAankondigingProperty());
 		colDatumAankondiging.setCellValueFactory(cel -> cel.getValue().getDatumAankondigingProperty());

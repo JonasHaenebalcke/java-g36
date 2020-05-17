@@ -227,7 +227,7 @@ public class Gebruiker implements Serializable {
 		return ret;
 	}
 
-	public double geefProcentueelAanwezig() {
+	public int geefProcentueelAanwezig() {
 //		if (getGebruikerSessieLijst().size() == 0) {
 //			return 0;
 //		} else {
@@ -249,7 +249,7 @@ public class Gebruiker implements Serializable {
 			double ret = (((double) geefAantalKeerAanwezig()
 					/ ((double) geefAantalKeerAanwezig() + (double) getAantalKeerAfwezig())) * 100);
 
-			return rondAf(ret, 0);
+			return (int) rondAf(ret, 0);
 		}
 	}
 

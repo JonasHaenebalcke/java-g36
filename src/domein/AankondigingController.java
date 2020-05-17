@@ -42,9 +42,29 @@ public class AankondigingController {
 		return aankondigingLijst;
 	}
 
+	public List<Aankondiging> geefAankondigingen(Sessie sessie) {
+		if (aankondigingLijst == null) {
+			aankondigingLijst = aankondigingRepo.findAll();
+		}
+		List<Aankondiging> aankondigingen = new ArrayList<Aankondiging>();
+		for (Aankondiging a : aankondigingLijst) {
+			if (sessie.equals(a.sessie)) {
+				aankondigingen.add(a);
+			}
+		}
+		return aankondigingen;
+	}
+
 	public ObservableList<Aankondiging> geefAankondigingObservableList() {
-		if (aankondigingObservableList == null) {
+		if (aankondigingObservableList == null || aankondigingObservableList.isEmpty()) {
 			aankondigingObservableList = FXCollections.observableArrayList(geefAankondigingen());
+		}
+		return aankondigingObservableList;
+	}
+
+	public ObservableList<Aankondiging> geefAankondigingObservableList(Sessie sessie) {
+		if (aankondigingObservableList == null || aankondigingObservableList.isEmpty()) {
+			aankondigingObservableList = FXCollections.observableArrayList(geefAankondigingen(sessie));
 		}
 		return aankondigingObservableList;
 	}
@@ -106,11 +126,12 @@ public class AankondigingController {
 			if (this.gekozenAankondiging != null) {
 				if (gekozenAankondiging.isVerzonden()) {
 					throw new IllegalArgumentException("Je hebt deze aankondiging al verzonden");
-				} 
-				if(!gekozenAankondiging.getSessie().isInschrijvingenOpen()) {
-					throw new IllegalAccessException("aankondiging kan niet worden verzonden want de sessie is niet open voor ingeschrijving");
 				}
-				
+				if (!gekozenAankondiging.getSessie().isInschrijvingenOpen()) {
+					throw new IllegalAccessException(
+							"aankondiging kan niet worden verzonden want de sessie is niet open voor ingeschrijving");
+				}
+
 //				List<String> geadresseerden = new ArrayList<>();
 
 				String naar = "audrey.behiels@student.hogent.be";
@@ -144,8 +165,10 @@ public class AankondigingController {
 					MimeMessage message = new MimeMessage(sessie);
 					message.setFrom(new InternetAddress(van));
 					message.addRecipient(Message.RecipientType.TO, new InternetAddress(naar));
-					// message.addRecipient(Message.RecipientType.TO, new InternetAddress("audrey.beh@student.hogent.be")); // Om te testen 
-					// message.addRecipient(Message.RecipientType.TO, new InternetAddress("test@student.hogent.be"));// Om te testen 
+					// message.addRecipient(Message.RecipientType.TO, new
+					// InternetAddress("audrey.beh@student.hogent.be")); // Om te testen
+					// message.addRecipient(Message.RecipientType.TO, new
+					// InternetAddress("test@student.hogent.be"));// Om te testen
 
 //					message.setRecipients(Message.RecipientType.CC, cc);
 
