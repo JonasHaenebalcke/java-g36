@@ -61,7 +61,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <TextField fx:id="txtZoek" />
+                  <TextField fx:id="txtZoek" promptText="naam, familienaam"/>
                   <Button mnemonicParsing="false" onAction="#zoek" text="Zoek" GridPane.columnIndex="2" />
                   <ComboBox fx:id="cbxFilter" prefWidth="150.0" promptText="Status" GridPane.columnIndex="5" />
                   <ComboBox fx:id="cbxFilterType" prefWidth="150.0" promptText="Type" GridPane.columnIndex="3" />

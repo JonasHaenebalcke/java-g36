@@ -92,7 +92,7 @@ public class GebruikerController {
 				)
 				;
 
-			boolean typebool = type.contentEquals("Alle") || type == null || type.isBlank() ? true
+			boolean typebool = type == null || type.isBlank() || type.contentEquals("Alle") ? true
 					: gebruiker.getType().toString().equalsIgnoreCase(type);
 
 			boolean statusbool = (status == null || status.isBlank() || status.contentEquals("Alle")  ? true
