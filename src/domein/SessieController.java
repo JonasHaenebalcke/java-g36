@@ -123,6 +123,8 @@ public class SessieController {
 			boolean statusbool = status == null || status.contentEquals("Alle Types") || status.contentEquals("ingeschrevenen sessies") ||
 					status.isBlank() ? true
 					: sessie.getStatusSessie().toString() == status;
+			if(status.contentEquals("ingeschrevenen sessies") && gebruiker ==null)
+				statusbool = false;
 			boolean bool = gebruiker ==null ||!status.contentEquals("ingeschrevenen sessies") ? true : 
 				(sessie.isGebruikerIngeschreven(gebruiker) ) 
 					;
@@ -132,6 +134,9 @@ public class SessieController {
 
 	public List<GebruikerSessie> geefGebruikerSessies() {
 		if (gebruikerSessieLijst == null) {
+			if(huidigeSessie == null)
+				gebruikerSessieLijst = new ArrayList<GebruikerSessie>();
+			else
 			gebruikerSessieLijst = huidigeSessie.getGebruikerSessieLijst();
 		}
 		return gebruikerSessieLijst;
@@ -190,7 +195,7 @@ public class SessieController {
 		});
 	}
 
-	private void resetGebruikerSessieLijst() {
+	public void resetGebruikerSessieLijst() {
 		gebruikerSessieLijst = null;
 		gebruikerSessieObservableLijst = null;
 		gebruikerSessieFilteredLijst = null;

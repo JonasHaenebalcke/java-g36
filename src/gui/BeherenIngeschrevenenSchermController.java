@@ -172,6 +172,7 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 			colVoornaam.setCellValueFactory(cel -> cel.getValue().getVoorNaamProperty());
 			colFamilienaam.setCellValueFactory(cel -> cel.getValue().getNaamProperty());
 			tabelwaardeGebruikersInvullen();
+			txtWaardeInvullenGebruikerGekozen();
 
 		} catch (NullPointerException e) {
 			lblErrorSessies.setVisible(true);
@@ -199,8 +200,9 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 				if (newV == null)
 					return;
 				sc.setHuidigeSessie(newV);
+				tvIngeschrevenen.getSelectionModel().clearSelection();
 				tvIngeschrevenen.setItems(sc.geefGebruikerSessiesSorted());
-
+				changeGebruikerSessieFilter();
 				tcVoornaam.setCellValueFactory(
 						cel -> new ReadOnlyStringWrapper(cel.getValue().getIngeschrevene().getVoornaam()));
 				tcFamilienaam.setCellValueFactory(
@@ -237,13 +239,25 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 								return new SimpleBooleanProperty(b);
 							}
 						});
+
+				if (tvGebruikers.getSelectionModel() != null) {
+					if (newV.isGebruikerIngeschreven(tvGebruikers.getSelectionModel().getSelectedItem())) {
+						btnSchrijfGebruikerIn.setText("Schrijf uit");
+						if (newV.isGebruikerAanwezig(tvGebruikers.getSelectionModel().getSelectedItem()))
+							btnZetGebruikerAanwezig.setText("Zet afwezig");
+					} else {
+						btnSchrijfGebruikerIn.setText("Schrijf in");
+						btnZetGebruikerAanwezig.setText("Zet aanwezig");
+					}
+				}
+
 			}
 		});
-		txtWaardeInvullenGebruikerGekozen();
+		txtWaardeInvullenIngeschreveneGekozen();
 
 	}
 
-	private void txtWaardeInvullenGebruikerGekozen() {
+	private void txtWaardeInvullenIngeschreveneGekozen() {
 		tvIngeschrevenen.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<GebruikerSessie>() {
 
 			@Override
@@ -252,19 +266,41 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 				if (newV == null)
 					return;
 
-				cbxStatusSessie.getSelectionModel().selectLast();
-					changeSessieFilter();
-				System.out.println(" ....");
-			//	tvSessies.setItems(gc.geefSessiesGebruikerObservable(newV.getIngeschrevene()));
-				colTitelSessie.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
-				colStartSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
-				ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
-				System.out.println("----");
+//				cbxStatusSessie.getSelectionModel().selectLast();
+				changeSessieFilter();
+				// tvSessies.setItems(gc.geefSessiesGebruikerObservable(newV.getIngeschrevene()));
+//				colTitelSessie.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
+//				colStartSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
+//				ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
 				btnSchrijfGebruikerIn.setText("Schrijf uit");
 				if (newV.isAanwezig()) {
 					btnZetGebruikerAanwezig.setText("Zet afwezig");
 				} else {
 					btnZetGebruikerAanwezig.setText("Zet aanwezig");
+				}
+			}
+
+		});
+
+	}
+
+	private void txtWaardeInvullenGebruikerGekozen() {
+		tvGebruikers.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Gebruiker>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Gebruiker> gebruikerObs, Gebruiker oldV, Gebruiker newV) {
+				if (newV == null)
+					return;
+				changeSessieFilter();
+				if (tvSessies.getSelectionModel() != null) {
+					if (tvSessies.getSelectionModel().getSelectedItem().isGebruikerIngeschreven(newV)) {
+						btnSchrijfGebruikerIn.setText("Schrijf uit");
+						if (tvSessies.getSelectionModel().getSelectedItem().isGebruikerAanwezig(newV))
+							btnZetGebruikerAanwezig.setText("Zet afwezig");
+					} else {
+						btnSchrijfGebruikerIn.setText("Schrijf in");
+						btnZetGebruikerAanwezig.setText("Zet aanwezig");
+					}
 				}
 			}
 
@@ -313,6 +349,13 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 	@FXML
 	void geefSessiesGekozenStatus(ActionEvent event) {
 		try {
+			if (!cbxStatusGebruiker.getValue().equals("Alle gebruikers")
+					&& tvIngeschrevenen.getSelectionModel() != null) {
+				sc.setHuidigeSessie(null);
+				tvSessies.getSelectionModel().clearSelection();
+				tvIngeschrevenen.setItems(sc.geefGebruikerSessiesSorted());
+			}
+//			else {
 			switch (cbxStatusSessie.getValue()) {
 			case "Alle Types":
 				lblTitelTabelSessies.setText("Alle sessies");
@@ -332,6 +375,7 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 			}
 
 			changeSessieFilter();
+//			}
 
 		} catch (NullPointerException e) {
 			lblError.setText(e.getMessage());
@@ -341,14 +385,16 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 	private void changeSessieFilter() {
 		String filter = txtSessie.getText();
 		String status = cbxStatusSessie.getValue().toString();
-		GebruikerSessie gs = tvIngeschrevenen.getSelectionModel().getSelectedItem();
+//		GebruikerSessie gs = tvIngeschrevenen.getSelectionModel().getSelectedItem();
+		Gebruiker gs = tvGebruikers.getSelectionModel().getSelectedItem();
 		System.out.println(gs);
-		if (gs != null) {
+		if (gs != null && status.toLowerCase().contentEquals("ingeschrevenen sessies")) {
 			// initializeSessiesList();
 
-			sc.changeFilter(filter, status, gs.getIngeschrevene());
+			sc.changeFilter(filter, status, gs);
+			// .getIngeschrevene());
 		} else {
-		
+
 			System.out.println("filter: " + filter);
 			System.out.println("status: " + status);
 			sc.changeFilter(filter, status, null);
