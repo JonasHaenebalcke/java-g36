@@ -91,7 +91,7 @@ public class AankondigingController {
 		try {
 			if (!(publicist.getStatus().equals(Status.Actief) || publicist.getType().equals(TypeGebruiker.Gebruiker))) {
 				Aankondiging newAankondiging = new Aankondiging(titel, aankondiging, sessie, publicist, isVerzonden);
-
+				setGekozenAankondiging(newAankondiging);
 				aankondigingLijst.add(newAankondiging);
 				aankondigingObservableList.add(newAankondiging);
 				GenericDaoJpa.startTransaction();
@@ -113,9 +113,11 @@ public class AankondigingController {
 			}
 			aankondigingLijst.remove(aankondiging);
 			aankondigingObservableList.remove(aankondiging);
+			setGekozenAankondiging(null);
 			GenericDaoJpa.startTransaction();
 			aankondigingRepo.delete(aankondiging);
 			GenericDaoJpa.commitTransaction();
+
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Er ging iets fout bij het verwijderen van een aankondiging");
 		}
@@ -129,7 +131,7 @@ public class AankondigingController {
 				}
 				if (!gekozenAankondiging.getSessie().isInschrijvingenOpen()) {
 					throw new IllegalAccessException(
-							"aankondiging kan niet worden verzonden want de sessie is niet open voor ingeschrijving");
+							"Aankondiging kan niet worden verzonden want de sessie is niet open voor ingeschrijving");
 				}
 
 //				List<String> geadresseerden = new ArrayList<>();
@@ -179,8 +181,9 @@ public class AankondigingController {
 					message.setText(this.gekozenAankondiging.getAankondingingTekst());
 
 					Transport.send(message);
-					System.out.println("bericht goed verzonden..");
+					System.out.println("Bericht is goed verzonden..");
 //					gekozenAankondiging.isVerzonden = true;
+					setGekozenAankondiging(null);
 				} catch (MessagingException e) {
 					e.printStackTrace();
 				} catch (Exception e) {

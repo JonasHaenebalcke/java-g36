@@ -240,7 +240,7 @@ public class StatistiekenSchermController extends GridPane {
 
 		System.out.println("filter: " + filter);
 		System.out.println("status: " + status);
-		sc.changeFilter(filter, status);
+		sc.changeFilter(filter, status,null);
 	}
 
 //	void addListenerToTableGebruikers() {

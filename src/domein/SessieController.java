@@ -108,8 +108,8 @@ public class SessieController {
 		}
 	}
 
-	public void changeFilter(String filter, String status) {
-		sessieFilteredLijst.setPredicate(sessie -> {
+	public void changeFilter(String filter, String status, Gebruiker gebruiker) {
+		geefSessiesFiltered().setPredicate(sessie -> {
 //			if ((filter == null || filter.isBlank()) && (status.contentEquals("Alle") || status == null || status.isBlank()))
 //				return true;
 			String lowercase = filter.toLowerCase();
@@ -120,9 +120,13 @@ public class SessieController {
 							|| sessie.getGastspreker().toLowerCase().contains(lowercase)
 							|| sessie.getStartDatum().toString().toLowerCase().contains(lowercase));
 
-			boolean statusbool = status.contentEquals("Alle Types") || status == null || status.isBlank() ? true
+			boolean statusbool = status == null || status.contentEquals("Alle Types") || status.contentEquals("ingeschrevenen sessies") ||
+					status.isBlank() ? true
 					: sessie.getStatusSessie().toString() == status;
-			return (filterbool && statusbool);
+			boolean bool = gebruiker ==null ||!status.contentEquals("ingeschrevenen sessies") ? true : 
+				(sessie.isGebruikerIngeschreven(gebruiker) ) 
+					;
+			return (filterbool && statusbool && bool);
 		});
 	}
 
@@ -167,7 +171,7 @@ public class SessieController {
 			boolean statusbool = false;
 			if (status != null) {
 				switch (status) {
-				case "Alle":
+				case "Alle gebruikers":
 					resetGebruikerSessieLijst();
 					break;
 				case "Aanwezigen":

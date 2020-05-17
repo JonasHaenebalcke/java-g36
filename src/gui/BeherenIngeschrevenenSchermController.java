@@ -107,7 +107,6 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 	private GebruikerController gc;
 	private AankondigingController ac;
 
-
 	public BeherenIngeschrevenenSchermController() {
 		this.sc = new SessieController();
 		this.gc = new GebruikerController();
@@ -143,9 +142,11 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 	private void initialize() {
 		List<String> statussen = new ArrayList<>();
 		statussen.add("Alle Types");
+
 		for (StatusSessie status : StatusSessie.values()) {
 			statussen.add(status.toString());
 		}
+		statussen.add("ingeschrevenen sessies");
 		cbxStatusSessie.setItems(FXCollections.observableArrayList(statussen));
 		cbxStatusSessie.getSelectionModel().selectFirst();
 
@@ -188,6 +189,7 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 		colStartSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
 		ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
 	}
+
 	private void tabelwaardeGebruikersInvullen() {
 
 		tvSessies.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Sessie>() {
@@ -249,11 +251,15 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 					GebruikerSessie newV) {
 				if (newV == null)
 					return;
-				tvSessies.setItems(gc.geefSessiesGebruikerObservable(newV.getIngeschrevene()));
+
+				cbxStatusSessie.getSelectionModel().selectLast();
+					changeSessieFilter();
+				System.out.println(" ....");
+			//	tvSessies.setItems(gc.geefSessiesGebruikerObservable(newV.getIngeschrevene()));
 				colTitelSessie.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
 				colStartSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
 				ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
-
+				System.out.println("----");
 				btnSchrijfGebruikerIn.setText("Schrijf uit");
 				if (newV.isAanwezig()) {
 					btnZetGebruikerAanwezig.setText("Zet afwezig");
@@ -261,6 +267,7 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 					btnZetGebruikerAanwezig.setText("Zet aanwezig");
 				}
 			}
+
 		});
 
 	}
@@ -280,16 +287,24 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 		if (cbxStatusGebruiker.getValue().equals("Alle gebruikers")) {
 			tvGebruikers.setVisible(true);
 			tvIngeschrevenen.setVisible(false);
-			
+
 		} else {
 			tvGebruikers.setVisible(false);
 			tvIngeschrevenen.setVisible(true);
 		}
-		switch(cbxStatusGebruiker.getValue()) {
-			case "Alle gebruikers": lbltitelTabelGebruikers.setText("Alle gebruikers"); break;
-			case "Ingeschrevenen": lbltitelTabelGebruikers.setText("Ingeschreven gebruikers"); break;
-			case "Aanwezigen": lbltitelTabelGebruikers.setText("Aanwezige gebruikers"); break;
-			case "Afwezigen": lbltitelTabelGebruikers.setText("Afwezige gebruikers"); break;
+		switch (cbxStatusGebruiker.getValue()) {
+		case "Alle gebruikers":
+			lbltitelTabelGebruikers.setText("Alle gebruikers");
+			break;
+		case "Ingeschrevenen":
+			lbltitelTabelGebruikers.setText("Ingeschreven gebruikers");
+			break;
+		case "Aanwezigen":
+			lbltitelTabelGebruikers.setText("Aanwezige gebruikers");
+			break;
+		case "Afwezigen":
+			lbltitelTabelGebruikers.setText("Afwezige gebruikers");
+			break;
 		}
 		changeGebruikerSessieFilter();
 
@@ -298,14 +313,24 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 	@FXML
 	void geefSessiesGekozenStatus(ActionEvent event) {
 		try {
-			switch(cbxStatusSessie.getValue()) {
-			 case "Alle Types": lblTitelTabelSessies.setText("Alle sessies"); break;
-				case "open": lblTitelTabelSessies.setText("Open sessies"); break;
-				case "gesloten": lblTitelTabelSessies.setText("Gesloten sessies"); break;
-				case "InschrijvingenOpen": lblTitelTabelSessies.setText("Sessies open voor inschrijvingen"); break;
-				case "nietOpen": lblTitelTabelSessies.setText("Niet open sessies"); break;
+			switch (cbxStatusSessie.getValue()) {
+			case "Alle Types":
+				lblTitelTabelSessies.setText("Alle sessies");
+				break;
+			case "open":
+				lblTitelTabelSessies.setText("Open sessies");
+				break;
+			case "gesloten":
+				lblTitelTabelSessies.setText("Gesloten sessies");
+				break;
+			case "InschrijvingenOpen":
+				lblTitelTabelSessies.setText("Sessies open voor inschrijvingen");
+				break;
+			case "nietOpen":
+				lblTitelTabelSessies.setText("Niet open sessies");
+				break;
 			}
-			
+
 			changeSessieFilter();
 
 		} catch (NullPointerException e) {
@@ -316,12 +341,18 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 	private void changeSessieFilter() {
 		String filter = txtSessie.getText();
 		String status = cbxStatusSessie.getValue().toString();
+		GebruikerSessie gs = tvIngeschrevenen.getSelectionModel().getSelectedItem();
+		System.out.println(gs);
+		if (gs != null) {
+			// initializeSessiesList();
 
-		System.out.println("filter: " + filter);
-		System.out.println("status: " + status);
-		sc.changeFilter(filter, status);
-		initializeSessiesList();
+			sc.changeFilter(filter, status, gs.getIngeschrevene());
+		} else {
 		
+			System.out.println("filter: " + filter);
+			System.out.println("status: " + status);
+			sc.changeFilter(filter, status, null);
+		}
 	}
 
 	private void changeGebruikerSessieFilter() {
@@ -332,10 +363,10 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 		System.out.println("status: " + status);
 
 		if (cbxStatusGebruiker.getValue().equals("Alle gebruikers"))
-			gc.changeFilter(filter,null, null);
-		else if(tvSessies.getSelectionModel().getSelectedItem() != null)
+			gc.changeFilter(filter, null, null);
+		else if (tvSessies.getSelectionModel().getSelectedItem() != null)
 			sc.changeFilterGebruikerSessie(filter, cbxStatusGebruiker.getValue());
-		
+
 	}
 
 	@FXML // zet ingeschreven /niet ingeschreven
