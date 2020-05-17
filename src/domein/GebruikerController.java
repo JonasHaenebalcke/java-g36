@@ -81,7 +81,7 @@ public class GebruikerController {
 		return FXCollections.observableArrayList(se);
 	}
 
-	public void changeFilter(String filter,/* String type,*/ String status) {
+	public void changeFilter(String filter, String type, String status) {
 		gebruikerFilteredLijst.setPredicate(gebruiker -> {
 //			if ((filter == null || filter.isBlank()) && (status.contentEquals("Alle") || status == null || status.isBlank()))
 //				return true;
@@ -92,12 +92,12 @@ public class GebruikerController {
 				)
 				;
 
-			//boolean typebool = type.contentEquals("Alle") || type == null || type.isBlank() ? true
-			//		: gebruiker.getType().toString().equalsIgnoreCase(type);
+			boolean typebool = type.contentEquals("Alle") || type == null || type.isBlank() ? true
+					: gebruiker.getType().toString().equalsIgnoreCase(type);
 
 			boolean statusbool = (status == null || status.isBlank() || status.contentEquals("Alle")  ? true
 					: gebruiker.getStatus().toString().equalsIgnoreCase(status));
-			return (filterbool /*&& typebool*/ && statusbool);
+			return (filterbool && typebool && statusbool);
 		});
 	}
 

@@ -50,18 +50,21 @@
             </TableView>
             <GridPane>
               <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="2.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" percentWidth="2.0" prefWidth="100.0" />
                   <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <TextField fx:id="txtZoek" promptText="naam, voornaam"/>
+                  <TextField fx:id="txtZoek" />
                   <Button mnemonicParsing="false" onAction="#zoek" text="Zoek" GridPane.columnIndex="2" />
-                  <ComboBox fx:id="cbxFilter" prefWidth="150.0" promptText="Alle" GridPane.columnIndex="3" />
+                  <ComboBox fx:id="cbxFilter" prefWidth="150.0" promptText="Status" GridPane.columnIndex="5" />
+                  <ComboBox fx:id="cbxFilterType" prefWidth="150.0" promptText="Type" GridPane.columnIndex="3" />
                </children>
             </GridPane>
          </children>

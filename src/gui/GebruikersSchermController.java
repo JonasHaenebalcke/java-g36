@@ -88,6 +88,9 @@ public class GebruikersSchermController extends GridPane {
 
 	@FXML
 	private ComboBox<String> cbxFilter;
+	
+    @FXML
+    private ComboBox<String> cbxFilterType;
 
 	@FXML
 	private Label lblError;
@@ -130,8 +133,16 @@ public class GebruikersSchermController extends GridPane {
 		cbxFilter.setItems(FXCollections.observableArrayList(statussen));
 		cbxFilter.getSelectionModel().selectFirst();
 
+		List<String> types = new ArrayList<>();
+		types.add("Alle");
+		for (TypeGebruiker type : TypeGebruiker.values()) {
+			types.add(type.toString());
+		}
+		cbxFilterType.setItems(FXCollections.observableArrayList(types));
+		cbxFilterType.getSelectionModel().selectFirst();
 		tvGebruikers();
 		statusChangeListener();
+		typeChangeListener();
 		btnPasAan.setVisible(false);
 		btnVerwijder.setVisible(false);
 		lblTitle.setText("Voeg gebruiker toe");
@@ -260,16 +271,27 @@ public class GebruikersSchermController extends GridPane {
 		});
 
 	}
+	
+	void typeChangeListener() {
+		cbxFilterType.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				changeFilter();
+			}
+		});
+
+	}
 
 	private void changeFilter() {
 		String filter = txtZoek.getText();
 		String status = cbxFilter.getValue().toString();
-//		String type = cbxType.getValue().toString();
+		String type = cbxFilterType.getValue().toString();
 
 		System.out.println("filter: " + filter);
 		System.out.println("status: " + status);
-		dc.changeFilter(filter// , type
-				, status);
+		System.out.println("type: " + type);
+		dc.changeFilter(filter , type, status);
 	}
 
 	@FXML

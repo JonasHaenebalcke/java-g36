@@ -323,7 +323,7 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 		System.out.println("status: " + status);
 
 		if (cbxStatusGebruiker.getValue().equals("Alle"))
-			gc.changeFilter(filter, null);
+			gc.changeFilter(filter,null, null);
 		else if(tvSessies.getSelectionModel().getSelectedItem() != null)
 			sc.changeFilterGebruikerSessie(filter, cbxStatusGebruiker.getValue());
 	}
