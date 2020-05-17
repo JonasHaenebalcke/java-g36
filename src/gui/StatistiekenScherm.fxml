@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.TextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -45,7 +45,7 @@
             <Label fx:id="lblStatistiek2Omschrijving" text="Omschrijving" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label fx:id="lblStatistiek1Value" text="Waarde" GridPane.columnIndex="2" />
             <Label fx:id="lblStatistiek2Value" text="Waarde" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Label fx:id="lblVoorAlle" alignment="CENTER" contentDisplay="BOTTOM" prefHeight="40.0" prefWidth="381.0" text="VoorAlle">
+            <Label fx:id="lblVoorAlle" alignment="CENTER" contentDisplay="BOTTOM" prefHeight="40.0" prefWidth="381.0" text="Voor alle">
                <font>
                   <Font size="20.0" />
                </font>
@@ -119,9 +119,9 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField fx:id="txfSessie" prefHeight="62.0" prefWidth="341.0" promptText="sessie" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <TextField fx:id="txfSessie" prefHeight="11.0" prefWidth="299.0" promptText="sessie" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <GridPane.margin>
-                  <Insets top="20.0" />
+                  <Insets />
                </GridPane.margin>
             </TextField>
             <Button fx:id="zoekSessie" mnemonicParsing="false" onAction="#zoekSessie" prefHeight="26.0" prefWidth="60.0" text="Zoek" GridPane.columnIndex="3" />
