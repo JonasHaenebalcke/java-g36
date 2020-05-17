@@ -159,10 +159,11 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 		cbxStatusGebruiker.getSelectionModel().selectFirst();
 
 		try {
-			tvSessies.setItems(sc.geefSessiesSorted());// .geefSessiesObservable().sorted(Comparator.comparing(Sessie::getStartDatum)));
-			colTitelSessie.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
-			colStartSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
-			ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
+			initializeSessiesList();
+//			tvSessies.setItems(sc.geefSessiesSorted());// .geefSessiesObservable().sorted(Comparator.comparing(Sessie::getStartDatum)));
+//			colTitelSessie.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
+//			colStartSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
+//			ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
 			sc.changeSorter(null);
 
 			tvIngeschrevenen.setVisible(false);
@@ -181,6 +182,12 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 
 	}
 
+	private void initializeSessiesList() {
+		tvSessies.setItems(sc.geefSessiesSorted());// .geefSessiesObservable().sorted(Comparator.comparing(Sessie::getStartDatum)));
+		colTitelSessie.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
+		colStartSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
+		ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
+	}
 	private void tabelwaardeGebruikersInvullen() {
 
 		tvSessies.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Sessie>() {
@@ -298,6 +305,7 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 				case "InschrijvingenOpen": lblTitelTabelSessies.setText("Sessies open voor inschrijvingen"); break;
 				case "nietOpen": lblTitelTabelSessies.setText("Niet open sessies"); break;
 			}
+			
 			changeSessieFilter();
 
 		} catch (NullPointerException e) {
@@ -312,6 +320,8 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 		System.out.println("filter: " + filter);
 		System.out.println("status: " + status);
 		sc.changeFilter(filter, status);
+		initializeSessiesList();
+		
 	}
 
 	private void changeGebruikerSessieFilter() {
@@ -355,7 +365,6 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 			}
 		}
 		tabelwaardeGebruikersInvullen();
-
 	}
 
 	@FXML // zet aanwezig /niet aanwezig
@@ -390,7 +399,6 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 			}
 		}
 		tabelwaardeGebruikersInvullen();
-
 	}
 
 	@FXML
@@ -400,10 +408,7 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 
 	@FXML
 	void zoekSessie(ActionEvent event) {
-		String sessieTitel = txtSessie.getText();
-
 		changeSessieFilter();
-
 	}
 
 }
