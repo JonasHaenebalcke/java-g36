@@ -89,15 +89,17 @@ public class AankondigingController {
 	public void voegAankondigingToe(String titel, String aankondiging, boolean isVerzonden, Sessie sessie,
 			Gebruiker publicist) {
 		try {
-			if (!(publicist.getStatus().equals(Status.Actief) || publicist.getType().equals(TypeGebruiker.Gebruiker))) {
-				Aankondiging newAankondiging = new Aankondiging(titel, aankondiging, sessie, publicist, isVerzonden);
-				setGekozenAankondiging(newAankondiging);
-				aankondigingLijst.add(newAankondiging);
-				aankondigingObservableList.add(newAankondiging);
-				GenericDaoJpa.startTransaction();
-				aankondigingRepo.insert(newAankondiging);
-				GenericDaoJpa.commitTransaction();
-			}
+//			if (!(publicist.getStatus().equals(Status.Actief) || publicist.getType().equals(TypeGebruiker.Gebruiker))) {
+//			Hier wordt toch op gecontroleerd bij het inloggen?
+			Aankondiging newAankondiging = new Aankondiging(titel, aankondiging, sessie, publicist, isVerzonden);
+			System.out.println(newAankondiging);
+			setGekozenAankondiging(newAankondiging);
+			aankondigingLijst.add(newAankondiging);
+			aankondigingObservableList.add(newAankondiging);
+			GenericDaoJpa.startTransaction();
+			aankondigingRepo.insert(newAankondiging);
+			GenericDaoJpa.commitTransaction();
+//			}
 		} catch (Exception e) {
 			throw new IllegalArgumentException(e.getMessage());
 			// throw new IllegalArgumentException("Er ging iets fout bij het aanmaken van de
@@ -131,12 +133,13 @@ public class AankondigingController {
 				}
 				if (!gekozenAankondiging.getSessie().isInschrijvingenOpen()) {
 					throw new IllegalAccessException(
-							"Aankondiging kan niet worden verzonden want de sessie is niet open voor ingeschrijving");
+							"Aankondiging kan niet worden verzonden \nomdat de sessie niet open is voor inschrijvingen");
 				}
 
 //				List<String> geadresseerden = new ArrayList<>();
 
 				String naar = "audrey.behiels@student.hogent.be";
+//				String naar = "jonashaenebalcke@hotmail.be";
 				String van = "ProjectITLab@outlook.com";// gc.getIngelogdeVerantwoordelijke().getMailadres();
 				String host = "localhost";
 				Properties properties = new Properties();
@@ -179,8 +182,12 @@ public class AankondigingController {
 
 					message.setSubject(this.gekozenAankondiging.getTitel());
 					message.setText(this.gekozenAankondiging.getAankondingingTekst());
-
+					this.gekozenAankondiging.verzend();
 					Transport.send(message);
+					GenericDaoJpa.startTransaction();
+					aankondigingRepo.update(this.gekozenAankondiging);
+					GenericDaoJpa.commitTransaction();
+
 					System.out.println("Bericht is goed verzonden..");
 //					gekozenAankondiging.isVerzonden = true;
 					setGekozenAankondiging(null);
@@ -191,7 +198,8 @@ public class AankondigingController {
 				}
 			}
 		} catch (Exception e) {
-			throw new IllegalArgumentException("Er ging iets fout bij het verzenden van de aankondiging");
+//			throw new IllegalArgumentException("Er ging iets fout bij het verzenden van de aankondiging");
+			throw new IllegalArgumentException(e.getMessage());
 		}
 	}
 

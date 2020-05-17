@@ -36,6 +36,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -108,6 +109,9 @@ public class AankondigingenSchermController extends GridPane {
 	private TextField txtZoek;
 
 	@FXML
+	private Button btnMailVerzenden;
+
+	@FXML
 	private ComboBox<String> cbxFilter;
 
 	private SessieController sc;
@@ -165,6 +169,7 @@ public class AankondigingenSchermController extends GridPane {
 //			cbxDagenOpVoorhand.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7));
 
 			System.out.println(ac.geefAankondigingen().toString());
+			btnMailVerzenden.setDisable(true);
 			initializeTvAankondigingen();
 			addListenerToTableAankondigingen();
 			addListenerToTableSessies();
@@ -180,15 +185,12 @@ public class AankondigingenSchermController extends GridPane {
 			@Override
 			public void changed(ObservableValue<? extends Aankondiging> observable, Aankondiging oldValue,
 					Aankondiging newValue) {
-
+				lblError.setVisible(false);
+				btnMailVerzenden.setDisable(false);
 				if (newValue != null) {
-					System.out.println("NEW VALUE");
-					System.out.println(newValue.toString());
 					txtTitel.setText(newValue.titel);
 					txtAankondiging.setText(newValue.aankondingingTekst);
 				} else {
-					System.out.println("OLD VALUE");
-					System.out.println(oldValue.toString());
 					txtTitel.setText(oldValue.titel);
 					txtAankondiging.setText(oldValue.aankondingingTekst);
 				}
@@ -228,10 +230,6 @@ public class AankondigingenSchermController extends GridPane {
 	}
 
 	private void initializeTvAankondigingen(Sessie sessie) {
-		System.out.println("Observable");
-		System.out.println(ac.geefAankondigingObservableList(sessie));
-		System.out.println("List");
-		System.out.println(ac.geefAankondigingen(sessie));
 		tvAankondigingen.getItems().clear();
 		tvAankondigingen.setItems(ac.geefAankondigingObservableList(sessie));
 		colPublicist.setCellValueFactory(cel -> cel.getValue().getPublicistProperty());
@@ -252,13 +250,17 @@ public class AankondigingenSchermController extends GridPane {
 	@FXML
 	void aankondigingPlaatsen(ActionEvent event) {
 		try {
+			lblError.setVisible(false);
 			Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
-			if (gc.getIngelogdeVerantwoordelijke().getStatus().equals(Status.Actief)
-					&& !gc.getIngelogdeVerantwoordelijke().getType().equals(TypeGebruiker.Gebruiker)) {
-
-				ac.voegAankondigingToe(txtTitel.getText(), txtAankondiging.getText(), false, sessie,
-						gc.getIngelogdeVerantwoordelijke());
-			}
+//			if (gc.getIngelogdeVerantwoordelijke().getStatus().equals(Status.Actief)
+//					&& !gc.getIngelogdeVerantwoordelijke().getType().equals(TypeGebruiker.Gebruiker)) {
+//			Wordt toch bij login op gecontroleerd?
+			ac.voegAankondigingToe(txtTitel.getText(), txtAankondiging.getText(), false, sessie,
+					gc.getIngelogdeVerantwoordelijke());
+			lblError.setVisible(true);
+			lblError.setTextFill(Paint.valueOf("green"));
+			lblError.setText("Aankondiging werd succesvol opgeslagen");
+//			}
 		} catch (Exception e) {
 			lblError.setVisible(true);
 			lblError.setText(e.getMessage());
@@ -269,29 +271,36 @@ public class AankondigingenSchermController extends GridPane {
 	@FXML
 	void verzendMail(ActionEvent event) {
 		try {
+			lblError.setVisible(true);
+//			if (gc.getIngelogdeVerantwoordelijke().getStatus().equals(Status.Actief)
+//					&& !gc.getIngelogdeVerantwoordelijke().getType().equals(TypeGebruiker.Gebruiker)) {
+//			Hier wordt al op gecontroleerd bij login, mag dit weg?
+			if (tvAankondigingen.getSelectionModel().getSelectedItem() != null) {
+				ac.setGekozenAankondiging(tvAankondigingen.getSelectionModel().getSelectedItem());
+			} else {
+				btnMailVerzenden.setDisable(true);
+				Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
 
-			if (gc.getIngelogdeVerantwoordelijke().getStatus().equals(Status.Actief)
-					&& !gc.getIngelogdeVerantwoordelijke().getType().equals(TypeGebruiker.Gebruiker)) {
-
-				if (tvAankondigingen.getSelectionModel().getSelectedItem() != null) {
-					ac.setGekozenAankondiging(tvAankondigingen.getSelectionModel().getSelectedItem());
-				} else {
-					Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
-
-					ac.voegAankondigingToe(txtTitel.getText(), txtAankondiging.getText(), false, sessie,
-							gc.getIngelogdeVerantwoordelijke());
-					Aankondiging nieuwAankondiging = new Aankondiging(txtTitel.getText(), txtAankondiging.getText(),
-							sessie, gc.getIngelogdeVerantwoordelijke(), false);
-					System.out.println(nieuwAankondiging);
-					ac.setGekozenAankondiging(nieuwAankondiging);
-				}
-				ac.verzendAankondiging();
-				lblError.setTextFill(Paint.valueOf("green"));
-				lblError.setText("De mail is verzonden!");
-			} else
-				throw new IllegalArgumentException("Je hebt niet de juiste rechten om een aankondiging te verzenden");
+//				ac.voegAankondigingToe(txtTitel.getText(), txtAankondiging.getText(), false, sessie,
+//						gc.getIngelogdeVerantwoordelijke());
+//				Heb ik in commentaar gezet, je kan nu enkel mail verzenden als er een aankondiging,
+//				die reeds aangemaakt is, geselecteerd is
+				Aankondiging nieuwAankondiging = new Aankondiging(txtTitel.getText(), txtAankondiging.getText(), sessie,
+						gc.getIngelogdeVerantwoordelijke(), false);
+				System.out.println(nieuwAankondiging);
+				ac.setGekozenAankondiging(nieuwAankondiging);
+			}
+			ac.verzendAankondiging();
+			initializeTvAankondigingen();
+			lblError.setVisible(true);
+			lblError.setTextFill(Paint.valueOf("green"));
+			lblError.setText("De mail is verzonden!");
+//			} else
+//				throw new IllegalArgumentException("Je hebt niet de juiste rechten om een aankondiging te verzenden");
 
 		} catch (Exception e) {
+			lblError.setVisible(true);
+			lblError.setTextFill(Paint.valueOf("red"));
 			lblError.setText(e.getMessage());
 		}
 	}
@@ -302,6 +311,8 @@ public class AankondigingenSchermController extends GridPane {
 		if (tvSessies.getSelectionModel().getSelectedItem() != null) {
 			this.getChildren().setAll(new BeheerSessieSchermController(this.sc, this.gc, sessie, this.ac));
 		} else {
+			lblError.setVisible(true);
+			lblError.setTextFill(Paint.valueOf("red"));
 			lblError.setText("Je moet een sessie kiezen om het te beheren");
 		}
 	}

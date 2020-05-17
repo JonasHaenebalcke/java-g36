@@ -93,6 +93,10 @@ public class Aankondiging implements Serializable {
 		this.isVerzonden = isVerzonden;
 	}
 
+	public void verzend() {
+		setVerzonden(true);
+	}
+
 	public String getTitel() {
 		return titel;
 	}
@@ -153,7 +157,7 @@ public class Aankondiging implements Serializable {
 		if (publicistProperty == null) {
 			publicistProperty = new SimpleStringProperty();
 		}
-		
+
 		System.out.println(publicist.getFamilienaam());
 		System.out.println(publicist.getVoornaam());
 		publicistProperty.set(this.publicist.getFamilienaam() + " " + this.publicist.getVoornaam());
