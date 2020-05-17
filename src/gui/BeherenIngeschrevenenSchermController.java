@@ -45,6 +45,8 @@ import javafx.util.Callback;
 public class BeherenIngeschrevenenSchermController extends GridPane {
 
 	@FXML
+	private Label lblTitelTabelSessies;
+	@FXML
 	private TableView<Sessie> tvSessies;
 	@FXML
 	private TableColumn<Sessie, String> colTitelSessie;
@@ -105,9 +107,6 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 	private GebruikerController gc;
 	private AankondigingController ac;
 
-	// private ObservableList<String> lijst =
-	// FXCollections.observableArrayList("Alle gebruiker","Ingeschreven",
-	// "Aanwezig", "Afwezig");
 
 	public BeherenIngeschrevenenSchermController() {
 		this.sc = new SessieController();
@@ -151,7 +150,7 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 		cbxStatusSessie.getSelectionModel().selectFirst();
 
 		List<String> statusGebruikers = new ArrayList<>();
-		statusGebruikers.add(0, "Alle");
+		statusGebruikers.add(0, "Alle gebruikers");
 		statusGebruikers.add(1, "Ingeschrevenen");
 		statusGebruikers.add(2, "Aanwezigen");
 		statusGebruikers.add(3, "Afwezigen");
@@ -166,8 +165,6 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 			ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
 			sc.changeSorter(null);
 
-			// tvGebruikers.setVisible(false);
-			// tvIngeschrevenen.setVisible(true);
 			tvIngeschrevenen.setVisible(false);
 			tvGebruikers.setItems(gc.geefGebruikersSorted());
 			colVoornaam.setCellValueFactory(cel -> cel.getValue().getVoorNaamProperty());
@@ -273,7 +270,7 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 
 	@FXML
 	void geefGebruikersGekozenStatus(ActionEvent event) {
-		if (cbxStatusGebruiker.getValue().equals("Alle")) {
+		if (cbxStatusGebruiker.getValue().equals("Alle gebruikers")) {
 			tvGebruikers.setVisible(true);
 			tvIngeschrevenen.setVisible(false);
 			
@@ -281,24 +278,26 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 			tvGebruikers.setVisible(false);
 			tvIngeschrevenen.setVisible(true);
 		}
+		switch(cbxStatusGebruiker.getValue()) {
+			case "Alle gebruikers": lbltitelTabelGebruikers.setText("Alle gebruikers"); break;
+			case "Ingeschrevenen": lbltitelTabelGebruikers.setText("Ingeschreven gebruikers"); break;
+			case "Aanwezigen": lbltitelTabelGebruikers.setText("Aanwezige gebruikers"); break;
+			case "Afwezigen": lbltitelTabelGebruikers.setText("Afwezige gebruikers"); break;
+		}
 		changeGebruikerSessieFilter();
-//		if (cbxStatusSessie.getValue().equals(StatusSessie.open.toString()) || cbxStatusSessie.getValue().equals(StatusSessie.gesloten.toString())) {
-//
-//			tvIngeschrevenen.setItems(sc.geefGebruikerSessiesObservable());
-//			lbltitelTabelGebruikers.setText(""); // hang af van wat gekozen
-//		}
+
 	}
 
 	@FXML
 	void geefSessiesGekozenStatus(ActionEvent event) {
 		try {
-
-//			if (cbxStatusSessie.getValue().name().equals(StatusSessie.open.toString())	|| cbxStatusSessie.getValue().name().equals(StatusSessie.gesloten.toString()))
-//			{
-//				tvSessies.setItems(sc.geefSessiesObservable());// nog aanpassen
-
-//				initialize();
-//			}
+			switch(cbxStatusSessie.getValue()) {
+			 case "Alle Types": lblTitelTabelSessies.setText("Alle sessies"); break;
+				case "open": lblTitelTabelSessies.setText("Open sessies"); break;
+				case "gesloten": lblTitelTabelSessies.setText("Gesloten sessies"); break;
+				case "InschrijvingenOpen": lblTitelTabelSessies.setText("Sessies open voor inschrijvingen"); break;
+				case "nietOpen": lblTitelTabelSessies.setText("Niet open sessies"); break;
+			}
 			changeSessieFilter();
 
 		} catch (NullPointerException e) {
@@ -322,17 +321,12 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 		System.out.println("filter: " + filter);
 		System.out.println("status: " + status);
 
-		if (cbxStatusGebruiker.getValue().equals("Alle"))
+		if (cbxStatusGebruiker.getValue().equals("Alle gebruikers"))
 			gc.changeFilter(filter,null, null);
 		else if(tvSessies.getSelectionModel().getSelectedItem() != null)
 			sc.changeFilterGebruikerSessie(filter, cbxStatusGebruiker.getValue());
+		
 	}
-
-	/*
-	 * @FXML void verwijderIngeschrevenen(ActionEvent event) { GebruikerSessie
-	 * gebruiker = tvIngeschrevenen.getSelectionModel().getSelectedItem();
-	 * sc.wijzigIngeschrevenen(gebruiker.getIngeschrevene(), false, false); }
-	 */
 
 	@FXML // zet ingeschreven /niet ingeschreven
 	void voegIngeschrevenenToe(ActionEvent event) {
@@ -400,31 +394,8 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 	}
 
 	@FXML
-	void zoekGebruiker(ActionEvent event) {// zoeken voornaam, familienaam, of mail
+	void zoekGebruiker(ActionEvent event) {
 		changeGebruikerSessieFilter();
-//		String gebruikersnaam = txtGebruiker.getText();
-//		try {
-//			if(cbxStatusGebruiker.getValue().equals("Alle"))
-//				gc.changeFilter(gebruikersnaam, null);
-//			else
-//				sc.changeFilterGebruikerSessie(gebruikersnaam, cbxStatusGebruiker.getValue());
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		/*
-		 * if(gebruikersnaam.matches(".*@+.*\\.+.*")) {
-		 * tvIngeschrevenen.getItems().stream() .filter(gebruiker ->
-		 * gebruiker.getIngeschrevene().getMailadres() == gebruikersnaam) .findAny()
-		 * .ifPresent(item -> { tvIngeschrevenen.getSelectionModel().select(item);
-		 * tvIngeschrevenen.scrollTo(item); });
-		 * 
-		 * } else { tvIngeschrevenen.getItems().stream() .filter(gebruiker ->
-		 * gebruiker.getIngeschrevene().getFamilienaam() == gebruikersnaam ||
-		 * gebruiker.getIngeschrevene().getVoornaam() == gebruikersnaam) .findAny()
-		 * .ifPresent(item -> { tvIngeschrevenen.getSelectionModel().select(item);
-		 * tvIngeschrevenen.scrollTo(item); }); }
-		 */
 	}
 
 	@FXML
