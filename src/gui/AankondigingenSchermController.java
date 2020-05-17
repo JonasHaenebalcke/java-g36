@@ -178,14 +178,19 @@ public class AankondigingenSchermController extends GridPane {
 		tvAankondigingen.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Aankondiging>() {
 
 			@Override
-			public void changed(ObservableValue<? extends Aankondiging> observable, Aankondiging newValue,
-					Aankondiging oldValue) {
+			public void changed(ObservableValue<? extends Aankondiging> observable, Aankondiging oldValue,
+					Aankondiging newValue) {
+
 				if (newValue != null) {
+					System.out.println("NEW VALUE");
+					System.out.println(newValue.toString());
 					txtTitel.setText(newValue.titel);
 					txtAankondiging.setText(newValue.aankondingingTekst);
 				} else {
-					txtTitel.setText(observable.getValue().titel);
-					txtAankondiging.setText(observable.getValue().aankondingingTekst);
+					System.out.println("OLD VALUE");
+					System.out.println(oldValue.toString());
+					txtTitel.setText(oldValue.titel);
+					txtAankondiging.setText(oldValue.aankondingingTekst);
 				}
 			}
 		});
@@ -195,10 +200,11 @@ public class AankondigingenSchermController extends GridPane {
 		tvSessies.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Sessie>() {
 
 			@Override
-			public void changed(ObservableValue<? extends Sessie> observable, Sessie newValue, Sessie oldValue) {
+			public void changed(ObservableValue<? extends Sessie> observable, Sessie oldValue, Sessie newValue) {
 				if (newValue != null) {
-					tvAankondigingen.getItems().clear();
 					initializeTvAankondigingen(newValue);
+				} else {
+					initializeTvAankondigingen(oldValue);
 				}
 			}
 		});
@@ -226,7 +232,7 @@ public class AankondigingenSchermController extends GridPane {
 		System.out.println(ac.geefAankondigingObservableList(sessie));
 		System.out.println("List");
 		System.out.println(ac.geefAankondigingen(sessie));
-
+		tvAankondigingen.getItems().clear();
 		tvAankondigingen.setItems(ac.geefAankondigingObservableList(sessie));
 		colPublicist.setCellValueFactory(cel -> cel.getValue().getPublicistProperty());
 		colTitelAankondiging.setCellValueFactory(cel -> cel.getValue().getTitelAankondigingProperty());
@@ -311,7 +317,7 @@ public class AankondigingenSchermController extends GridPane {
 
 		System.out.println("filter: " + filter);
 		System.out.println("status: " + status);
-		sc.changeFilter(filter, status,null);
+		sc.changeFilter(filter, status, null);
 	}
 
 }
