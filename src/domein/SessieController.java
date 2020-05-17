@@ -15,16 +15,20 @@ import repository.GenericDaoJpa;
 public class SessieController {
 
 	private List<Sessie> sessieLijst;
+	private List<GebruikerSessie> gebruikerSessieLijst;
 	private Sessie huidigeSessie;
 	private GebruikerController gc;
 	private ObservableList<Sessie> sessieObservableLijst;
+	private ObservableList<GebruikerSessie> gebruikerSessieObservableLijst;
 	private GenericDao<Sessie> sessieRepo;
 	private GenericDao<GebruikerSessie> gebruikerSessieRepo;
 	private FilteredList<Sessie> sessieFilteredLijst;
 	private SortedList<Sessie> sessieSortedLijst;
+	private FilteredList<GebruikerSessie> gebruikerSessieFilteredLijst;
+	private SortedList<GebruikerSessie> gebruikerSessieSortedLijst;
 
-	private final Comparator<Sessie> byVerantwoordelijke = (s1, s2) -> s1.getVerantwoordelijke().getVoornaam()
-			.compareToIgnoreCase(s2.getVerantwoordelijke().getVoornaam());
+	private final Comparator<Sessie> byVerantwoordelijke = (s1, s2) -> s1.getVerantwoordelijke().getFamilienaam()
+			.compareToIgnoreCase(s2.getVerantwoordelijke().getFamilienaam());
 	private final Comparator<Sessie> byDatum = (s1, s2) -> s1.getStartDatum().toLocalDate()
 			.compareTo(s2.getStartDatum().toLocalDate());
 	private final Comparator<Sessie> byGemScore = (Comparator.comparing(Sessie::geefGemiddeldeScore)).reversed();
@@ -33,6 +37,11 @@ public class SessieController {
 			.reversed();
 	private final Comparator<Sessie> sortOrder = byDatum.reversed().thenComparing(byVerantwoordelijke)
 			.thenComparing(Comparator.comparing(Sessie::getTitel));
+	private final Comparator<GebruikerSessie> byIngeschrevene = (gs1, gs2) -> gs1.getIngeschrevene().getFamilienaam()
+			.compareToIgnoreCase(gs2.getIngeschrevene().getFamilienaam());
+
+	private final Comparator<GebruikerSessie> sortOrderGebruikerSessie = Comparator
+			.comparing(GebruikerSessie::isAanwezig).thenComparing(byIngeschrevene);
 
 	public SessieController() {
 		gc = new GebruikerController();
@@ -42,7 +51,7 @@ public class SessieController {
 	public SessieController(GebruikerController gc) {
 		this.gc = gc;
 		setSessieRepo(new GenericDaoJpa(Sessie.class));
-		gebruikerSessieRepo  = new GenericDaoJpa<GebruikerSessie>(GebruikerSessie.class);
+		gebruikerSessieRepo = new GenericDaoJpa<GebruikerSessie>(GebruikerSessie.class);
 	}
 
 	public void setSessieRepo(GenericDao mock) {
@@ -61,10 +70,6 @@ public class SessieController {
 			sessieObservableLijst = FXCollections.observableArrayList(geefSessies());
 		}
 		return sessieObservableLijst;
-	}
-
-	public ObservableList<GebruikerSessie> geefGebruikerSessiesObservable() {
-		return FXCollections.observableArrayList(huidigeSessie.getGebruikerSessieLijst());
 	}
 
 	public FilteredList<Sessie> geefSessiesFiltered() {
@@ -121,8 +126,76 @@ public class SessieController {
 		});
 	}
 
+	public List<GebruikerSessie> geefGebruikerSessies() {
+		if (gebruikerSessieLijst == null) {
+			gebruikerSessieLijst = huidigeSessie.getGebruikerSessieLijst();
+		}
+		return gebruikerSessieLijst;
+	}
+
+	public ObservableList<GebruikerSessie> geefGebruikerSessiesObservable() {
+		if (gebruikerSessieObservableLijst == null) {
+			gebruikerSessieObservableLijst = FXCollections.observableArrayList(geefGebruikerSessies());
+		}
+		return gebruikerSessieObservableLijst;
+	}
+
+	public FilteredList<GebruikerSessie> geefGebruikerSessiesFiltered() {
+		if (gebruikerSessieFilteredLijst == null) {
+			gebruikerSessieFilteredLijst = new FilteredList<>(geefGebruikerSessiesObservable(), p -> true);
+		}
+		return gebruikerSessieFilteredLijst;
+	}
+
+	public SortedList<GebruikerSessie> geefGebruikerSessiesSorted() {
+		if (gebruikerSessieSortedLijst == null) {
+			gebruikerSessieSortedLijst = new SortedList<>(geefGebruikerSessiesFiltered(), sortOrderGebruikerSessie);
+		}
+		return gebruikerSessieSortedLijst;
+	}
+
+	public void changeFilterGebruikerSessie(String filter, String status) {
+		geefGebruikerSessiesFiltered().setPredicate(gebruikerSessie -> {
+//			if ((filter == null || filter.isBlank()) && (status.contentEquals("Alle") || status == null || status.isBlank()))
+//				return true;
+			String lowercase = filter.toLowerCase();
+			Gebruiker ingeschrevene = gebruikerSessie.getIngeschrevene();
+			boolean filterbool = (filter == null || filter.isBlank()) ? true
+					: ingeschrevene.getVoornaam().toLowerCase().contains(lowercase)
+							|| ingeschrevene.getFamilienaam().toLowerCase().contains(lowercase);
+
+			boolean statusbool = false;
+			if (status != null) {
+				switch (status) {
+				case "Alle":
+					resetGebruikerSessieLijst();
+					break;
+				case "Aanwezigen":
+					statusbool = (gebruikerSessie.isAanwezig() == true);
+					break;
+				case "Afwezigen":
+					statusbool = (gebruikerSessie.isAanwezig() == false);
+					break;
+				default:
+					statusbool = true;
+					break;
+				}
+			}
+
+			return (filterbool && statusbool);
+		});
+	}
+
+	private void resetGebruikerSessieLijst() {
+		gebruikerSessieLijst = null;
+		gebruikerSessieObservableLijst = null;
+		gebruikerSessieFilteredLijst = null;
+		gebruikerSessieSortedLijst = null;
+	}
+
 	public void setHuidigeSessie(Sessie sessie) {
 		this.huidigeSessie = sessie;
+		resetGebruikerSessieLijst();
 	}
 
 	public void wijzigSessie(String titel, String lokaal, LocalDateTime startDatum, LocalDateTime eindDatum,
@@ -173,16 +246,15 @@ public class SessieController {
 	}
 
 	public void wijzigIngeschrevenen(Gebruiker ingeschrevene, boolean ingeschreven, boolean aanwezig) {
-	GebruikerSessie res=	huidigeSessie.wijzigIngeschrevenen(ingeschrevene, ingeschreven, aanwezig);
-	boolean bool = huidigeSessie.isGebruikerIngeschreven(ingeschrevene);
-	try {
+		GebruikerSessie res = huidigeSessie.wijzigIngeschrevenen(ingeschrevene, ingeschreven, aanwezig);
+		boolean bool = huidigeSessie.isGebruikerIngeschreven(ingeschrevene);
+		try {
 			GenericDaoJpa.startTransaction();
-			if(!bool && ingeschreven)
+			if (!bool && ingeschreven)
 				gebruikerSessieRepo.insert(res);
-			else
-			if(ingeschreven && bool) {
+			else if (ingeschreven && bool) {
 				gebruikerSessieRepo.update(res);
-			}else 
+			} else
 				gebruikerSessieRepo.delete(res);
 			GenericDaoJpa.commitTransaction();
 		} catch (Exception e) {
@@ -217,10 +289,10 @@ public class SessieController {
 					tempAanwezigen += sessie2.geefAantalAanwezigen();
 				}
 			}
-			if (tempcount > count && tempAanwezigen/tempcount > aanwezigen) {
+			if (tempcount > count && tempAanwezigen / tempcount > aanwezigen) {
 				count = tempcount;
 				uur = tempuur;
-				aanwezigen = tempAanwezigen/tempcount;
+				aanwezigen = tempAanwezigen / tempcount;
 			}
 		}
 		return uur.format(DateTimeFormatter.ofPattern("HH:mm"));
@@ -238,15 +310,15 @@ public class SessieController {
 			tempduur = sessie.getDuur();
 			tempcount = 0;
 			for (Sessie sessie2 : sessieLijst) {
-				if (sessie2.getDuur() == tempduur){
+				if (sessie2.getDuur() == tempduur) {
 					tempcount++;
 					tempAanwezigen += sessie2.geefAantalAanwezigen();
 				}
 			}
-			if (tempcount > count && tempAanwezigen/tempcount > aanwezigen) {
+			if (tempcount > count && tempAanwezigen / tempcount > aanwezigen) {
 				count = tempcount;
 				duur = tempduur;
-				aanwezigen = tempAanwezigen/tempcount;
+				aanwezigen = tempAanwezigen / tempcount;
 			}
 		}
 		return duur;

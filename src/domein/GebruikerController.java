@@ -95,8 +95,8 @@ public class GebruikerController {
 			//boolean typebool = type.contentEquals("Alle") || type == null || type.isBlank() ? true
 			//		: gebruiker.getType().toString().equalsIgnoreCase(type);
 
-			boolean statusbool = status == null || status.isBlank() || status.contentEquals("Alle")  ? true
-					: gebruiker.getStatus().toString().equalsIgnoreCase(status);
+			boolean statusbool = (status == null || status.isBlank() || status.contentEquals("Alle")  ? true
+					: gebruiker.getStatus().toString().equalsIgnoreCase(status));
 			return (filterbool /*&& typebool*/ && statusbool);
 		});
 	}
