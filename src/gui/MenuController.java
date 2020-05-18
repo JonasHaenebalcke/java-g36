@@ -54,8 +54,8 @@ public class MenuController extends BorderPane{
 		this.skc = skc;
 		this.sc = sc;
 		this.ac = ac;
-		//lblAangemeldAls.setText("Aangemeld als \n" + dc.getIngelogdeVerantwoordelijke().getVoornaam() + " "
-		//		+ dc.getIngelogdeVerantwoordelijke().getFamilienaam());
+		lblAangemeldAls.setText("Aangemeld als \n" + dc.getIngelogdeVerantwoordelijke().getVoornaam() + " "
+				+ dc.getIngelogdeVerantwoordelijke().getFamilienaam());
 	}
 
 	public void initialize() {

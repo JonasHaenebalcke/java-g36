@@ -61,20 +61,21 @@ public class MeldAanSchermController extends BorderPane {
 		try {
 			dc.meldAan(inputGebruikersnaam.getText(), inputWachtwoord.getText());			
 
-			Scene scene = new Scene(new MenuController(dc, skc, sc, ac));
+			
 			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-			Screen screen = Screen.getPrimary();
-			Rectangle2D bounds = screen.getVisualBounds();
-
-			stage.setX(bounds.getMinX());
-			stage.setY(bounds.getMinY());
-			stage.setWidth(bounds.getWidth());
-			stage.setHeight(bounds.getHeight());
+			Scene scene = new Scene(new MenuController(dc, skc, sc, ac), stage.getWidth(), stage.getHeight());
+//			Screen screen = Screen.getPrimary();
+//			Rectangle2D bounds = screen.getVisualBounds();
+//
+//			stage.setX(bounds.getMinX());
+//			stage.setY(bounds.getMinY());
+//			stage.setWidth(bounds.getWidth());
+//			stage.setHeight(bounds.getHeight());
 			stage.setTitle("IT LAB");
 			stage.setScene(scene);
-			stage.setMaximized(true);
-			stage.setMinWidth(1000);
-			stage.setMinHeight(500);
+//			stage.setMaximized(true);
+//			stage.setMinWidth(1000); DOE IK IN STARTUP
+//			stage.setMinHeight(500);
 			stage.show();
 		} catch (Exception e) {
 			lblError.setVisible(true);

@@ -35,6 +35,8 @@ public class StartUp extends Application {
 		scene.getStylesheets().add("gui/stylesheet.css");
 		primaryStage.setMaximized(true);
 		primaryStage.setTitle("ITLab");
+		primaryStage.setMinWidth(1000);
+		primaryStage.setMinHeight(650);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
