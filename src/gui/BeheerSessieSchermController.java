@@ -207,6 +207,7 @@ public class BeheerSessieSchermController extends GridPane {
 				if (newV == null)
 					return;
 				lblSucces.setText("");
+				lblErrorDetailsSessie.setText("");
 				btnPasAan.setDisable(false);
 				btnVerwijder.setDisable(false);
 				txtTitel.setText(newV.getTitel());
@@ -417,18 +418,13 @@ public class BeheerSessieSchermController extends GridPane {
 				// bij nieuwe sessie is de ingelogde persoon ge verantwoordelijke
 				// System.out.println("Ingelogde: " +
 				// ingelogde.geefIngelogdeVerantwoordelijke());
-				System.out.println(gc.getIngelogdeVerantwoordelijke() + " " + txtTitel.getText() + " "
-						+ txtLokaal.getText() + " " + zetOmNaarDateTime(dpStartdatum.getValue(), txtStartuur.getText())
-						+ " " + zetOmNaarDateTime(dpEinddatum.getValue(), txtEinduur.getText()) + " "
-						+ Integer.parseInt(txtCapaciteit.getText()) + " " + txtOmschrvijving.getText() + " "
-						+ txtGastspreker.getText());
+				
 				sc.voegSessieToe(gc.getIngelogdeVerantwoordelijke(), txtTitel.getText(), txtLokaal.getText(),
 						zetOmNaarDateTime(dpStartdatum.getValue(), txtStartuur.getText()),
 						zetOmNaarDateTime(dpEinddatum.getValue(), txtEinduur.getText()),
 						Integer.parseInt(txtCapaciteit.getText()), txtOmschrvijving.getText(),
 						txtGastspreker.getText());
-
-				tblSessies.getSelectionModel().selectLast();
+				//tblSessies.getSelectionModel().selectLast();
 				initialize();
 				lblSucces.setVisible(true);
 				lblSucces.setText("De sessie werd succesvol toegevoegd");

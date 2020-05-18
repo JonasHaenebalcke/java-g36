@@ -209,7 +209,12 @@ public class SessieController {
 
 	public void wijzigSessie(String titel, String lokaal, LocalDateTime startDatum, LocalDateTime eindDatum,
 			int capaciteit, String omschrijving, String gastspreker, boolean open) {
+		if(huidigeSessie.getStatusSessie()!= StatusSessie.nietOpen) {
+			throw new IllegalArgumentException("Je kan de sessie niet maar aanpassen omdat hij open is gezet geweest");
+		} else {
+		
 		huidigeSessie.wijzigSessie(titel, lokaal, startDatum, eindDatum, capaciteit, omschrijving, gastspreker, open);
+		
 		try {
 			GenericDaoJpa.startTransaction();
 			sessieRepo.update(huidigeSessie);
@@ -217,6 +222,8 @@ public class SessieController {
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			throw new IllegalArgumentException("Er ging iets mis bij het opslaan van de gewijzigde sessie.");
+		
+		}
 		}
 	}
 
