@@ -295,7 +295,7 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 				if (newV == null)
 					return;
 				changeSessieFilter();
-				if (tvSessies.getSelectionModel() != null) {
+				if (tvSessies.getSelectionModel().getSelectedItem() != null) {
 					if (tvSessies.getSelectionModel().getSelectedItem().isGebruikerIngeschreven(newV)) {
 						btnSchrijfGebruikerIn.setText("Schrijf uit");
 						if (tvSessies.getSelectionModel().getSelectedItem().isGebruikerAanwezig(newV))
@@ -317,6 +317,7 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 		if (tvSessies.getSelectionModel().getSelectedItem() != null) {
 			this.getChildren().setAll(new BeheerSessieSchermController(this.sc, this.gc, sessie, this.ac));
 		} else {
+			lblError.setVisible(true);
 			lblError.setText("Je moet een sessie kiezen om het te beheren");
 		}
 	}
@@ -397,7 +398,6 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 			sc.changeFilter(filter, status, gs);
 			// .getIngeschrevene());
 		} else {
-
 			System.out.println("filter: " + filter);
 			System.out.println("status: " + status);
 			sc.changeFilter(filter, status, null);
@@ -405,6 +405,8 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 	}
 
 	private void changeGebruikerSessieFilter() {
+		tvGebruikers.getSelectionModel().clearSelection();
+		tvIngeschrevenen.getSelectionModel().clearSelection();
 		String filter = txtGebruiker.getText();
 		String status = cbxStatusGebruiker.getValue();
 
@@ -420,65 +422,77 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 
 	@FXML // zet ingeschreven /niet ingeschreven
 	void voegIngeschrevenenToe(ActionEvent event) {
-		GebruikerSessie gebruikerSessie = tvIngeschrevenen.getSelectionModel().getSelectedItem();
+		try {
+			lblError.setVisible(false);
+			GebruikerSessie gebruikerSessie = tvIngeschrevenen.getSelectionModel().getSelectedItem();
 
-		Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
-		if (gebruikerSessie != null) {
-			if (sessie.isGebruikerIngeschreven(gebruikerSessie.getIngeschrevene())) {
-				sc.wijzigIngeschrevenen(gebruikerSessie.getIngeschrevene(), false, gebruikerSessie.isAanwezig());
-				System.out.println("gebruikers is uitgeschreven");
-			} else {
-				sc.wijzigIngeschrevenen(gebruikerSessie.getIngeschrevene(), true, gebruikerSessie.isAanwezig());
-				System.out.println("gebruikers is ingeschreven");
-			}
-		} else {
-			Gebruiker gebruiker = tvGebruikers.getSelectionModel().getSelectedItem();
-
-			if (gebruiker != null) {
-				if (sessie.isGebruikerIngeschreven(gebruiker)) {
-					sc.wijzigIngeschrevenen(gebruiker, false, sessie.isGebruikerAanwezig(gebruiker));
-					System.out.println("gebruiker is uitgeschreven");
+			Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
+			if (gebruikerSessie != null) {
+				if (sessie.isGebruikerIngeschreven(gebruikerSessie.getIngeschrevene())) {
+					sc.wijzigIngeschrevenen(gebruikerSessie.getIngeschrevene(), false, gebruikerSessie.isAanwezig());
+					System.out.println("gebruikers is uitgeschreven");
 				} else {
-					sc.wijzigIngeschrevenen(gebruiker, true, sessie.isGebruikerAanwezig(gebruiker));
-					System.out.println("gebruiker is ingeschreven");
+					sc.wijzigIngeschrevenen(gebruikerSessie.getIngeschrevene(), true, gebruikerSessie.isAanwezig());
+					System.out.println("gebruikers is ingeschreven");
+				}
+			} else {
+				Gebruiker gebruiker = tvGebruikers.getSelectionModel().getSelectedItem();
+
+				if (gebruiker != null) {
+					if (sessie.isGebruikerIngeschreven(gebruiker)) {
+						sc.wijzigIngeschrevenen(gebruiker, false, sessie.isGebruikerAanwezig(gebruiker));
+						System.out.println("gebruiker is uitgeschreven");
+					} else {
+						sc.wijzigIngeschrevenen(gebruiker, true, sessie.isGebruikerAanwezig(gebruiker));
+						System.out.println("gebruiker is ingeschreven");
+					}
 				}
 			}
+			tabelwaardeGebruikersInvullen();
+		} catch (Exception e) {
+			lblError.setVisible(true);
+			lblError.setText(e.getMessage());
 		}
-		tabelwaardeGebruikersInvullen();
 	}
 
 	@FXML // zet aanwezig /niet aanwezig
 	void zetGebruikerAanwezig(ActionEvent event) {
-		GebruikerSessie gebruikerSessie = tvIngeschrevenen.getSelectionModel().getSelectedItem();
-		Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
-		if (gebruikerSessie != null) {
-			if (sessie.isGebruikerAanwezig(gebruikerSessie.getIngeschrevene())) {
-				sc.wijzigIngeschrevenen(gebruikerSessie.getIngeschrevene(),
-						sessie.isGebruikerIngeschreven(gebruikerSessie.getIngeschrevene()), false);
-				btnZetGebruikerAanwezig.setText("Zet afwezig");
-				System.out.println("gebruikers is afwezig gezet");
-
-			} else {
-				sc.wijzigIngeschrevenen(gebruikerSessie.getIngeschrevene(), true, true);
-				btnZetGebruikerAanwezig.setText("Zet aanwezig");
-				System.out.println("gebruikers is aanwezig gezet");
-
-			}
-		} else {
-			Gebruiker gebruiker = tvGebruikers.getSelectionModel().getSelectedItem();
-			if (gebruiker != null) {
-				if (sessie.isGebruikerAanwezig(gebruiker)) {
-					sc.wijzigIngeschrevenen(gebruiker, sessie.isGebruikerIngeschreven(gebruiker), false);
+		try {
+			lblError.setVisible(false);
+			GebruikerSessie gebruikerSessie = tvIngeschrevenen.getSelectionModel().getSelectedItem();
+			Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
+			if (gebruikerSessie != null) {
+				if (sessie.isGebruikerAanwezig(gebruikerSessie.getIngeschrevene())) {
+					sc.wijzigIngeschrevenen(gebruikerSessie.getIngeschrevene(),
+							sessie.isGebruikerIngeschreven(gebruikerSessie.getIngeschrevene()), false);
 					btnZetGebruikerAanwezig.setText("Zet afwezig");
+					System.out.println("gebruikers is afwezig gezet");
 
 				} else {
-					sc.wijzigIngeschrevenen(gebruiker, true, true);
+					sc.wijzigIngeschrevenen(gebruikerSessie.getIngeschrevene(), true, true);
 					btnZetGebruikerAanwezig.setText("Zet aanwezig");
+					System.out.println("gebruikers is aanwezig gezet");
 
 				}
+			} else {
+				Gebruiker gebruiker = tvGebruikers.getSelectionModel().getSelectedItem();
+				if (gebruiker != null) {
+					if (sessie.isGebruikerAanwezig(gebruiker)) {
+						sc.wijzigIngeschrevenen(gebruiker, sessie.isGebruikerIngeschreven(gebruiker), false);
+						btnZetGebruikerAanwezig.setText("Zet afwezig");
+
+					} else {
+						sc.wijzigIngeschrevenen(gebruiker, true, true);
+						btnZetGebruikerAanwezig.setText("Zet aanwezig");
+
+					}
+				}
 			}
+			tabelwaardeGebruikersInvullen();
+		} catch (Exception e) {
+			lblError.setVisible(true);
+			lblError.setText(e.getMessage());
 		}
-		tabelwaardeGebruikersInvullen();
 	}
 
 	@FXML

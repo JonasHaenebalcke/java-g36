@@ -87,9 +87,6 @@
                      <rowConstraints>
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                      </rowConstraints>
-                     <children>
-                        <Button mnemonicParsing="false" onAction="#beheerSessie" text="Beheer sessie" />
-                     </children>
                   </GridPane>
                   <Label text="Aankondigingen" GridPane.rowIndex="4">
                      <font>
