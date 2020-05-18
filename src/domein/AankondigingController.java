@@ -136,9 +136,9 @@ public class AankondigingController {
 							"Aankondiging kan niet worden verzonden \nomdat de sessie niet open is voor inschrijvingen");
 				}
 
-//				List<String> geadresseerden = new ArrayList<>();
+				List<String> geadresseerden = new ArrayList<>();
 
-				String naar = "audrey.behiels@student.hogent.be";
+//				String naar = "audrey.behiels@student.hogent.be";
 //				String naar = "jonashaenebalcke@hotmail.be";
 				String van = "ProjectITLab@outlook.com";// gc.getIngelogdeVerantwoordelijke().getMailadres();
 				String host = "localhost";
@@ -167,15 +167,30 @@ public class AankondigingController {
 //							teller++;
 //	//					}
 //					}
+
+					for (GebruikerSessie gs : gekozenAankondiging.sessie.getGebruikerSessieLijst()) {
+						geadresseerden.add(gs.getIngeschrevene().getMailadres());
+					}
+					Address[] cc = new Address[gekozenAankondiging.sessie.getGebruikerSessieLijst().size()];
+					int teller = 0;
+					for (GebruikerSessie gs : gekozenAankondiging.sessie.getGebruikerSessieLijst()) {
+
+//						if (!geadresseerden.contains(gs.getIngeschrevene().getMailadres())) {
+							geadresseerden.add(gs.getIngeschrevene().getMailadres());
+							cc[teller] = new InternetAddress(gs.getIngeschrevene().getMailadres());
+							teller++;
+//						}
+					}
+
 					MimeMessage message = new MimeMessage(sessie);
 					message.setFrom(new InternetAddress(van));
-					message.addRecipient(Message.RecipientType.TO, new InternetAddress(naar));
+//					message.addRecipient(Message.RecipientType.TO, new InternetAddress(naar));
 					// message.addRecipient(Message.RecipientType.TO, new
 					// InternetAddress("audrey.beh@student.hogent.be")); // Om te testen
 					// message.addRecipient(Message.RecipientType.TO, new
 					// InternetAddress("test@student.hogent.be"));// Om te testen
 
-//					message.setRecipients(Message.RecipientType.CC, cc);
+					message.setRecipients(Message.RecipientType.CC, cc);
 
 //					message.setSubject("Onderwerp titel test");
 //					message.setText("Dit bericht is een test.");
