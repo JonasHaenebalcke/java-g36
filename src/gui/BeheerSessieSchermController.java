@@ -46,7 +46,7 @@ public class BeheerSessieSchermController extends GridPane {
 	@FXML
 	private TableColumn<Sessie, String> colStartSessie;
 	@FXML
-	private TableColumn<Sessie, String> ColEindSessie;
+	private TableColumn<Sessie, String> colStartUurSessie;
 	@FXML
 	private Button btnVoegSessieToe; // knop om tekstvakken leeg te maken en nieuwe sessie toe te voegen
 
@@ -158,7 +158,8 @@ public class BeheerSessieSchermController extends GridPane {
 		initialize();
 	}
 
-	public BeheerSessieSchermController(SessieController sc, GebruikerController gc, Sessie sessie, AankondigingController ac) {
+	public BeheerSessieSchermController(SessieController sc, GebruikerController gc, Sessie sessie,
+			AankondigingController ac) {
 		this(sc, gc, ac);
 		tblSessies.getSelectionModel().select(sessie);
 		sc.changeSorter(null);
@@ -179,7 +180,7 @@ public class BeheerSessieSchermController extends GridPane {
 			tblSessies.setItems(sc.geefSessiesSorted());
 			colTitelSessie.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
 			colStartSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
-			ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
+			colStartUurSessie.setCellValueFactory(cel -> cel.getValue().getStartUurProperty());
 
 			sc.changeSorter(null);
 			textWaardeSessieInvullen();
@@ -332,14 +333,14 @@ public class BeheerSessieSchermController extends GridPane {
 			lblErrorDetailsSessie.setText(e.getMessage());
 		}
 	}
-	
+
 	private void changeFilter() {
 		String filter = txtSessie.getText();
 		String status = cbxStatusSessie.getValue().toString();
 
 		System.out.println("filter: " + filter);
 		System.out.println("status: " + status);
-		sc.changeFilter(filter, status,null );
+		sc.changeFilter(filter, status, null);
 	}
 
 	@FXML
@@ -416,13 +417,13 @@ public class BeheerSessieSchermController extends GridPane {
 				// bij nieuwe sessie is de ingelogde persoon ge verantwoordelijke
 				// System.out.println("Ingelogde: " +
 				// ingelogde.geefIngelogdeVerantwoordelijke());
-				System.out.println(gc.getIngelogdeVerantwoordelijke() + " "+  txtTitel.getText()  + " "+ 
-						txtLokaal.getText()  + " "+  zetOmNaarDateTime(dpStartdatum.getValue(), txtStartuur.getText())  + " "+ 
-						zetOmNaarDateTime(dpEinddatum.getValue(), txtEinduur.getText())  + " "+ 
-						Integer.parseInt(txtCapaciteit.getText())  + " "+ txtOmschrvijving.getText()  + " "+ 
-						txtGastspreker.getText());
-				sc.voegSessieToe(gc.getIngelogdeVerantwoordelijke() , txtTitel.getText(),
-						txtLokaal.getText(), zetOmNaarDateTime(dpStartdatum.getValue(), txtStartuur.getText()),
+				System.out.println(gc.getIngelogdeVerantwoordelijke() + " " + txtTitel.getText() + " "
+						+ txtLokaal.getText() + " " + zetOmNaarDateTime(dpStartdatum.getValue(), txtStartuur.getText())
+						+ " " + zetOmNaarDateTime(dpEinddatum.getValue(), txtEinduur.getText()) + " "
+						+ Integer.parseInt(txtCapaciteit.getText()) + " " + txtOmschrvijving.getText() + " "
+						+ txtGastspreker.getText());
+				sc.voegSessieToe(gc.getIngelogdeVerantwoordelijke(), txtTitel.getText(), txtLokaal.getText(),
+						zetOmNaarDateTime(dpStartdatum.getValue(), txtStartuur.getText()),
 						zetOmNaarDateTime(dpEinddatum.getValue(), txtEinduur.getText()),
 						Integer.parseInt(txtCapaciteit.getText()), txtOmschrvijving.getText(),
 						txtGastspreker.getText());
@@ -470,7 +471,7 @@ public class BeheerSessieSchermController extends GridPane {
 //				tblSessies.getSelectionModel().select(item);
 //				tblSessies.scrollTo(item);
 //			});*/
-			
+
 			changeFilter();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -483,7 +484,8 @@ public class BeheerSessieSchermController extends GridPane {
 		Sessie sessie = tblSessies.getSelectionModel().getSelectedItem();
 		sc.setHuidigeSessie(sessie);
 
-		BeherenIngeschrevenenSchermController bIngeschrevenenScherm = new BeherenIngeschrevenenSchermController(sc, gc, sessie, ac);
+		BeherenIngeschrevenenSchermController bIngeschrevenenScherm = new BeherenIngeschrevenenSchermController(sc, gc,
+				sessie, ac);
 		this.getChildren().setAll(bIngeschrevenenScherm);
 
 	}
@@ -514,7 +516,7 @@ public class BeheerSessieSchermController extends GridPane {
 		lblFeedback.setVisible(false);
 		lblGemiddeldeScoreWergave.setVisible(false);
 		lblGemiddeldeScore.setVisible(false);
-	//	lblSucces.setVisible(false);
+		// lblSucces.setVisible(false);
 		lblSucces.setText("");
 
 	}

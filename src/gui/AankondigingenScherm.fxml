@@ -71,8 +71,8 @@
                     <columns>
                       <TableColumn fx:id="colVerantwoordelijke" prefWidth="131.0" text="Verantwoordelijke" />
                       <TableColumn fx:id="colTitel" prefWidth="168.13897705078125" text="Titel" />
-                        <TableColumn fx:id="colStart" prefWidth="123.36093139648438" text="Start" />
-                        <TableColumn fx:id="colEind" prefWidth="112.05099487304688" text="Eind" />
+                        <TableColumn fx:id="colStart" prefWidth="123.36093139648438" text="Start datum" />
+                        <TableColumn fx:id="colStartUur" prefWidth="112.05099487304688" text="Start uur" />
                         <TableColumn fx:id="colOpnePlaatsen" prefWidth="182.0" text="Open plaatsen / Aanwezigen" />
                         <TableColumn fx:id="colLokaal" prefWidth="99.0" text="Lokaal" />
                     </columns>

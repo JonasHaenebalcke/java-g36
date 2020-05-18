@@ -71,9 +71,9 @@
                   </GridPane>
                   <TableView fx:id="tblSessies" prefHeight="530.0" prefWidth="435.0" GridPane.rowIndex="2">
                     <columns>
-                      <TableColumn fx:id="colTitelSessie" prefWidth="195.99997520446777" resizable="false" text="Titel" />
-                      <TableColumn fx:id="colStartSessie" minWidth="20.0" prefWidth="82.5" resizable="false" text="Start" />
-                        <TableColumn fx:id="ColEindSessie" prefWidth="77.5" resizable="false" text="Eind" />
+                      <TableColumn fx:id="colTitelSessie" prefWidth="161.60006028413773" resizable="false" text="Titel" />
+                      <TableColumn fx:id="colStartSessie" minWidth="20.0" prefWidth="124.00009155273438" resizable="false" text="Start datum" />
+                        <TableColumn fx:id="colStartUurSessie" prefWidth="71.199951171875" resizable="false" text="Start uur" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

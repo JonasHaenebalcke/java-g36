@@ -95,6 +95,8 @@ public class SessieKalenderSchermController extends GridPane {
 	private TableColumn<Sessie, String> colStartDatumSessie;
 	@FXML
 	private TableColumn<Sessie, String> colEindDatumSessie;
+	@FXML
+	private TableColumn<Sessie, String> colDuur;
 
 	private SessieKalender sk;
 	private SessieKalenderController dc;
@@ -227,7 +229,8 @@ public class SessieKalenderSchermController extends GridPane {
 //		colDuur.setCellValueFactory(cel -> cel.getValue().getDuurSessieProperty());
 
 			colStartDatumSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
-			colEindDatumSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
+			colEindDatumSessie.setCellValueFactory(cel -> cel.getValue().getStartUurProperty());
+			colDuur.setCellValueFactory(cel -> cel.getValue().getDuurProperty());
 		} catch (Exception e) {
 			tblSessies.getItems().clear();
 			lblErrorSessies.setVisible(true);

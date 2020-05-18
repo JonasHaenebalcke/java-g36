@@ -53,7 +53,9 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 	@FXML
 	private TableColumn<Sessie, String> colStartSessie;
 	@FXML
-	private TableColumn<Sessie, String> ColEindSessie;
+	private TableColumn<Sessie, String> colStartUur;
+	@FXML
+	private TableColumn<Sessie, String> colDuur;
 
 	@FXML
 	private ComboBox<String> cbxStatusSessie;
@@ -188,7 +190,8 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 		tvSessies.setItems(sc.geefSessiesSorted());// .geefSessiesObservable().sorted(Comparator.comparing(Sessie::getStartDatum)));
 		colTitelSessie.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
 		colStartSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
-		ColEindSessie.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
+		colStartUur.setCellValueFactory(cel -> cel.getValue().getStartUurProperty());
+		colDuur.setCellValueFactory(cel -> cel.getValue().getDuurProperty());
 	}
 
 	private void tabelwaardeGebruikersInvullen() {
