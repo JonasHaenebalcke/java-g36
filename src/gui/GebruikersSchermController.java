@@ -170,10 +170,11 @@ public class GebruikersSchermController extends GridPane {
 	@FXML
 	private void verwijderGebruiker(ActionEvent event) {
 		try {
-			int index = tvGebruikers.getSelectionModel().getSelectedIndex();
+			//int index = tvGebruikers.getSelectionModel().getSelectedIndex();
+			Gebruiker gebruiker = tvGebruikers.getSelectionModel().getSelectedItem();
 
 			// lvGebruikers.getSelectionModel().clearSelection();
-			dc.verwijderGebruiker(index);
+			dc.verwijderGebruiker(gebruiker);
 			initializeList();
 			Stream.of(inputVoornaam, inputEmail, inputNaam, inputGebruikersnaam).forEach(TextField::clear);
 		} catch (Exception e) {

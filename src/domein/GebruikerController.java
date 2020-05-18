@@ -125,9 +125,9 @@ public class GebruikerController {
 		}
 	}
 
-	public void verwijderGebruiker(int index) {
+	public void verwijderGebruiker(Gebruiker gebruiker) {
 		try {
-			Gebruiker gebruiker = gebruikerList.get(index);
+			//Gebruiker gebruiker = gebruikerList.get(index);
 
 			gebruikerList.remove(gebruiker);
 			gebruikerObservableList.remove(gebruiker);
