@@ -135,6 +135,10 @@ public class StatistiekenSchermController extends GridPane {
 
 		tvSessies.setVisible(false);
 		tvGebruikers.setVisible(true);
+		txfSessie.setVisible(false);
+		cbxStatusSessie.setVisible(false);
+		cbxSessieGegevens.setVisible(false);
+		zoekSessie.setVisible(false);
 		tvGebruikers.setItems(gc.geefGebruikersObservableList());
 		colNaam.setCellValueFactory(cel -> cel.getValue().getNaamProperty());
 		colVoornaam.setCellValueFactory(cel -> cel.getValue().getVoorNaamProperty());
@@ -167,6 +171,10 @@ public class StatistiekenSchermController extends GridPane {
 		lblTitel.setText("Gebruikers");
 		lblVoorAlle.setText("Voor alle gebruikers");
 
+		txfSessie.setVisible(false);
+		cbxStatusSessie.setVisible(false);
+		cbxSessieGegevens.setVisible(false);
+		zoekSessie.setVisible(false);
 		lblStatistiek1Omschrijving.setText("Totaal aantal keer aanwezig");
 		lblStatistiek2Omschrijving.setText("Totaal aantal keer afwezig");
 		lblStatistiek1Value.setText(String.valueOf(gc.geefAantalAanwezigen()));
@@ -197,6 +205,10 @@ public class StatistiekenSchermController extends GridPane {
 //		lblStatistiek1Value.setText(String.valueOf(gc.geefAantalAanwezigen()));
 //		lblStatistiek2Value.setText(String.valueOf(gc.geefAantalAfwezigen()));
 
+		txfSessie.setVisible(true);
+		cbxStatusSessie.setVisible(true);
+		cbxSessieGegevens.setVisible(true);
+		zoekSessie.setVisible(true);
 		lblStatistiek1Omschrijving.setText("Populairste start uur");
 		lblStatistiek2Omschrijving.setText("Populairste duratie van een sessie");
 		lblStatistiek1Value.setText(sc.geefPopulaireStartUur());
