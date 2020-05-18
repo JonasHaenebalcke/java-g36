@@ -10,6 +10,7 @@ import domein.Sessie;
 import domein.SessieController;
 import domein.SessieKalenderController;
 import domein.StatusSessie;
+import domein.TypeGebruiker;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -100,6 +101,9 @@ public class StatistiekenSchermController extends GridPane {
 	private ComboBox<String> cbxStatusSessie;
 	@FXML
 	private ComboBox<String> cbxSessieGegevens;
+	
+	@FXML
+    private ComboBox<String> cbxType;
 
 	private GebruikerController gc;
 	private SessieController sc;
@@ -135,11 +139,11 @@ public class StatistiekenSchermController extends GridPane {
 
 		tvSessies.setVisible(false);
 		tvGebruikers.setVisible(true);
-		txfSessie.setVisible(false);
+		txfSessie.setVisible(true);
 		cbxStatusSessie.setVisible(false);
 		cbxSessieGegevens.setVisible(false);
-		zoekSessie.setVisible(false);
-		tvGebruikers.setItems(gc.geefGebruikersObservableList());
+		zoekSessie.setVisible(true);
+		tvGebruikers.setItems(gc.geefGebruikersSorted());
 		colNaam.setCellValueFactory(cel -> cel.getValue().getNaamProperty());
 		colVoornaam.setCellValueFactory(cel -> cel.getValue().getVoorNaamProperty());
 		colType.setCellValueFactory(cel -> cel.getValue().getTypeProperty());
@@ -164,6 +168,15 @@ public class StatistiekenSchermController extends GridPane {
 		sorters.add("Bij duur");
 		cbxSessieGegevens.setItems(FXCollections.observableArrayList(sorters));
 		cbxSessieGegevens.getSelectionModel().selectFirst();
+		
+		List<String> types = new ArrayList<>();
+		types.add("Alle");
+		for (TypeGebruiker type : TypeGebruiker.values()) {
+			types.add(type.toString());
+		}
+		cbxType.setItems(FXCollections.observableArrayList(types));
+		cbxType.getSelectionModel().selectFirst();
+		typeChangeListener();
 	}
 
 	@FXML
@@ -171,17 +184,20 @@ public class StatistiekenSchermController extends GridPane {
 		lblTitel.setText("Gebruikers");
 		lblVoorAlle.setText("Voor alle gebruikers");
 
-		txfSessie.setVisible(false);
+		txfSessie.setText("");
+		txfSessie.setPromptText("Gebruiker");
+		cbxType.setVisible(true);
+		//txfSessie.setVisible(false);
 		cbxStatusSessie.setVisible(false);
 		cbxSessieGegevens.setVisible(false);
-		zoekSessie.setVisible(false);
+		//zoekSessie.setVisible(false);
 		lblStatistiek1Omschrijving.setText("Totaal aantal keer aanwezig");
 		lblStatistiek2Omschrijving.setText("Totaal aantal keer afwezig");
 		lblStatistiek1Value.setText(String.valueOf(gc.geefAantalAanwezigen()));
 		lblStatistiek2Value.setText(String.valueOf(gc.geefAantalAfwezigen()));
 		tvSessies.setVisible(false);
 		tvGebruikers.setVisible(true);
-		tvGebruikers.setItems(gc.geefGebruikersObservableList());
+		tvGebruikers.setItems(gc.geefGebruikersSorted());
 		colNaam.setCellValueFactory(cel -> cel.getValue().getNaamProperty());
 		colVoornaam.setCellValueFactory(cel -> cel.getValue().getVoorNaamProperty());
 		colType.setCellValueFactory(cel -> cel.getValue().getTypeProperty());
@@ -190,6 +206,7 @@ public class StatistiekenSchermController extends GridPane {
 		colAantalAanwezig.setCellValueFactory(cel -> cel.getValue().getAantalAanwezigProprty());
 		colAantalAfwezig.setCellValueFactory(cel -> cel.getValue().getAantalAfwezigProperty());
 		colProcentueelAanwezig.setCellValueFactory(cel -> cel.getValue().getProcentueelAanwezigProperty());
+		changeFilterGebruikers();
 
 //		colStatus.setCellValueFactory(cel -> System.out.println(cel.getValue().getStatusProperty().getValue()));
 //		colAantalFeedbacks.setCellValueFactory(cel ->  System.out.println(cel.getValue().getAantalFeedbacksProperty().getValue()));
@@ -205,6 +222,9 @@ public class StatistiekenSchermController extends GridPane {
 //		lblStatistiek1Value.setText(String.valueOf(gc.geefAantalAanwezigen()));
 //		lblStatistiek2Value.setText(String.valueOf(gc.geefAantalAfwezigen()));
 
+		txfSessie.setText("");
+		txfSessie.setPromptText("Sessie");
+		cbxType.setVisible(false);
 		txfSessie.setVisible(true);
 		cbxStatusSessie.setVisible(true);
 		cbxSessieGegevens.setVisible(true);
@@ -227,11 +247,15 @@ public class StatistiekenSchermController extends GridPane {
 		sc.changeSorter(null);
 //		colEind.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
 //		colAantalDeelnemers.setCellValueFactory(cel -> cel.getValue().getAantalDeelnemersProperty());
+		changeFilter();
 	}
 
 	@FXML
 	void zoekSessie(ActionEvent event) {
-		changeFilter();
+		if(cbxType.isVisible()) 
+			changeFilterGebruikers();
+		else
+			changeFilter();
 	}
 
 	@FXML
@@ -253,6 +277,26 @@ public class StatistiekenSchermController extends GridPane {
 		System.out.println("filter: " + filter);
 		System.out.println("status: " + status);
 		sc.changeFilter(filter, status,null);
+	}
+	
+	void typeChangeListener() {
+		cbxType.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				changeFilterGebruikers();
+			}
+		});
+
+	}
+	
+	private void changeFilterGebruikers() {
+		String filter = txfSessie.getText();
+		String type = cbxType.getValue().toString();
+
+		System.out.println("filter: " + filter);
+		System.out.println("type: " + type);
+		gc.changeFilter(filter, type, null);
 	}
 
 //	void addListenerToTableGebruikers() {
