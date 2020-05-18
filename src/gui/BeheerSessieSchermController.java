@@ -416,7 +416,12 @@ public class BeheerSessieSchermController extends GridPane {
 				// bij nieuwe sessie is de ingelogde persoon ge verantwoordelijke
 				// System.out.println("Ingelogde: " +
 				// ingelogde.geefIngelogdeVerantwoordelijke());
-				sc.voegSessieToe(gc.getIngelogdeVerantwoordelijke() /* verantwoordelijke */, txtTitel.getText(),
+				System.out.println(gc.getIngelogdeVerantwoordelijke() + " "+  txtTitel.getText()  + " "+ 
+						txtLokaal.getText()  + " "+  zetOmNaarDateTime(dpStartdatum.getValue(), txtStartuur.getText())  + " "+ 
+						zetOmNaarDateTime(dpEinddatum.getValue(), txtEinduur.getText())  + " "+ 
+						Integer.parseInt(txtCapaciteit.getText())  + " "+ txtOmschrvijving.getText()  + " "+ 
+						txtGastspreker.getText());
+				sc.voegSessieToe(gc.getIngelogdeVerantwoordelijke() , txtTitel.getText(),
 						txtLokaal.getText(), zetOmNaarDateTime(dpStartdatum.getValue(), txtStartuur.getText()),
 						zetOmNaarDateTime(dpEinddatum.getValue(), txtEinduur.getText()),
 						Integer.parseInt(txtCapaciteit.getText()), txtOmschrvijving.getText(),
@@ -509,7 +514,8 @@ public class BeheerSessieSchermController extends GridPane {
 		lblFeedback.setVisible(false);
 		lblGemiddeldeScoreWergave.setVisible(false);
 		lblGemiddeldeScore.setVisible(false);
-		lblSucces.setVisible(false);
+	//	lblSucces.setVisible(false);
+		lblSucces.setText("");
 
 	}
 
