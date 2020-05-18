@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<fx:root stylesheets="@stylesheet.css" type="BorderPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="980.0" prefWidth="2453.0" stylesheets="@stylesheet.css" type="BorderPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <left>
       <VBox prefHeight="500.0" prefWidth="200.0" style="-fx-background-color: #0081c5;" BorderPane.alignment="CENTER">
          <children>
@@ -68,6 +68,13 @@
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
+         <children>
+            <Label alignment="CENTER" prefHeight="54.0" prefWidth="2290.0" text="Welkom" textAlignment="CENTER">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+         </children>
       </GridPane>
    </center>
 </fx:root>
