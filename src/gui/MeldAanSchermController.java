@@ -2,6 +2,7 @@ package gui;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -10,6 +11,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -61,6 +63,13 @@ public class MeldAanSchermController extends BorderPane {
 
 			Scene scene = new Scene(new MenuController(dc, skc, sc, ac));
 			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+			Screen screen = Screen.getPrimary();
+			Rectangle2D bounds = screen.getVisualBounds();
+
+			stage.setX(bounds.getMinX());
+			stage.setY(bounds.getMinY());
+			stage.setWidth(bounds.getWidth());
+			stage.setHeight(bounds.getHeight());
 			stage.setTitle("IT LAB");
 			stage.setScene(scene);
 			stage.setMaximized(true);
