@@ -189,7 +189,7 @@ public class AankondigingController {
 					GenericDaoJpa.commitTransaction();
 
 					System.out.println("Bericht is goed verzonden..");
-//					gekozenAankondiging.isVerzonden = true;
+					gekozenAankondiging.isVerzonden = true;
 					setGekozenAankondiging(null);
 				} catch (MessagingException e) {
 					e.printStackTrace();
