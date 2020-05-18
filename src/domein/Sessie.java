@@ -99,6 +99,7 @@ public class Sessie implements Serializable {
 		gebruikerSessieLijst = new ArrayList<GebruikerSessie>();
 		statusSessie = StatusSessie.nietOpen;
 		aankondigingen = new ArrayList<Aankondiging>();
+		feedbackLijst = new ArrayList<Feedback>();
 	}
 
 	public Sessie(Gebruiker verantwoordelijke, String titel, String lokaal, LocalDateTime startDatum,
