@@ -255,6 +255,10 @@ public class SessieController {
 	}
 
 	public void wijzigIngeschrevenen(Gebruiker ingeschrevene, boolean ingeschreven, boolean aanwezig) {
+		if(ingeschrevene.getStatus()!=Status.Actief)
+		{
+			throw new IllegalArgumentException(ingeschrevene.getFamilienaam() + " "+  ingeschrevene.getVoornaam()+ " "+ "is niet actief");
+		} else {
 		GebruikerSessie res = huidigeSessie.wijzigIngeschrevenen(ingeschrevene, ingeschreven, aanwezig);
 		boolean bool = huidigeSessie.isGebruikerIngeschreven(ingeschrevene);
 		try {
@@ -270,6 +274,7 @@ public class SessieController {
 			System.err.println(e.getMessage());
 			throw new IllegalArgumentException(e.getMessage());
 		}
+	}
 	}
 
 	public void addFeedback(Gebruiker auteur, String content, int score) {
