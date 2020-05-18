@@ -51,6 +51,9 @@ public class GebruikersSchermController extends GridPane {
 	private TableColumn<Gebruiker, String> colType;
 
 	@FXML
+	private TableColumn<Gebruiker, String> colStatus;
+
+	@FXML
 	private TextField inputNaam;
 
 	@FXML
@@ -88,12 +91,15 @@ public class GebruikersSchermController extends GridPane {
 
 	@FXML
 	private ComboBox<String> cbxFilter;
-	
-    @FXML
-    private ComboBox<String> cbxFilterType;
+
+	@FXML
+	private ComboBox<String> cbxFilterType;
 
 	@FXML
 	private Label lblError;
+	
+	@FXML
+	private Label lblSucces;
 
 	private GebruikerController dc;
 
@@ -152,15 +158,19 @@ public class GebruikersSchermController extends GridPane {
 	}
 
 	@FXML
-	private void pasGebruikerAan(ActionEvent event) {
-		inputGebruikersnaam.setEditable(false);
+	private void pasGebruikerAan(ActionEvent event) {		
 		try {
+			lblSucces.setText("");
+			inputGebruikersnaam.setEditable(false);
+			lblError.setText("");
 			cbxType.setValue(cbxType.getValue());
 
 			dc.wijzigGebruiker(inputVoornaam.getText(), inputNaam.getText(), inputEmail.getText(),
 					inputGebruikersnaam.getText(), cbxType.getValue(), cbxStatus.getValue(), "profielfoto");
 
 			cbxType.setValue(cbxType.getValue());
+			
+			lblSucces.setText("Gebruiker werd succesvol aangepast");
 		} catch (Exception e) {
 			lblError.setText(e.getMessage());
 		}
@@ -170,13 +180,16 @@ public class GebruikersSchermController extends GridPane {
 	@FXML
 	private void verwijderGebruiker(ActionEvent event) {
 		try {
-			//int index = tvGebruikers.getSelectionModel().getSelectedIndex();
+			lblSucces.setText("");
+			lblError.setText("");
+			// int index = tvGebruikers.getSelectionModel().getSelectedIndex();
 			Gebruiker gebruiker = tvGebruikers.getSelectionModel().getSelectedItem();
 
 			// lvGebruikers.getSelectionModel().clearSelection();
 			dc.verwijderGebruiker(gebruiker);
 			initializeList();
 			Stream.of(inputVoornaam, inputEmail, inputNaam, inputGebruikersnaam).forEach(TextField::clear);
+			lblSucces.setText("Gebruiker werd succesvol verwijderd");
 		} catch (Exception e) {
 			lblError.setText(e.getMessage());
 			System.out.print(e.getMessage());
@@ -200,6 +213,8 @@ public class GebruikersSchermController extends GridPane {
 	@FXML
 	void voegGebruikerToe(ActionEvent event) {
 		try {
+			lblError.setText("");
+			lblSucces.setText("");
 			if (!inputVoornaam.getText().isBlank() && !inputNaam.getText().isBlank() && !inputEmail.getText().isBlank()
 					&& !inputGebruikersnaam.getText().isBlank()
 			/*
@@ -213,7 +228,7 @@ public class GebruikersSchermController extends GridPane {
 
 				initializeList();
 				inputGebruikersnaam.setEditable(false);
-
+				lblSucces.setText("Gebruiker is succesvol toegevoegd!");
 			} else {
 				lblError.setText("Tekstvakken mogen niet leeg zijn");
 			}
@@ -256,6 +271,7 @@ public class GebruikersSchermController extends GridPane {
 			colVoornaam.setCellValueFactory(cel -> cel.getValue().getVoorNaamProperty());
 			colEmail.setCellValueFactory(cel -> cel.getValue().getEmailProperty());
 			colType.setCellValueFactory(cel -> cel.getValue().getTypeProperty());
+			colStatus.setCellValueFactory(cel -> cel.getValue().getStatusProperty());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -272,7 +288,7 @@ public class GebruikersSchermController extends GridPane {
 		});
 
 	}
-	
+
 	void typeChangeListener() {
 		cbxFilterType.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 
@@ -292,7 +308,7 @@ public class GebruikersSchermController extends GridPane {
 		System.out.println("filter: " + filter);
 		System.out.println("status: " + status);
 		System.out.println("type: " + type);
-		dc.changeFilter(filter , type, status);
+		dc.changeFilter(filter, type, status);
 	}
 
 	@FXML
