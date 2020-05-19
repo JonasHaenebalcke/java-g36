@@ -350,6 +350,7 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 			lbltitelTabelGebruikers.setText("Afwezige gebruikers");
 			break;
 		}
+		changeSessieFilter();
 		changeGebruikerSessieFilter();
 
 	}
@@ -480,13 +481,13 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 				if (sessie.isGebruikerAanwezig(gebruikerSessie.getIngeschrevene())) {
 					sc.wijzigIngeschrevenen(gebruikerSessie.getIngeschrevene(),
 							sessie.isGebruikerIngeschreven(gebruikerSessie.getIngeschrevene()), false);
-					btnZetGebruikerAanwezig.setText("Zet afwezig");
+					btnZetGebruikerAanwezig.setText("Zet aanwezig");
 					System.out.println("gebruikers is afwezig gezet");
 					lblError.setText( gebruikerSessie.getIngeschrevene().getFamilienaam() + " " +  gebruikerSessie.getIngeschrevene().getVoornaam() + " "+"is afwezig gezet");
 
 				} else {
 					sc.wijzigIngeschrevenen(gebruikerSessie.getIngeschrevene(), true, true);
-					btnZetGebruikerAanwezig.setText("Zet aanwezig");
+					btnZetGebruikerAanwezig.setText("Zet afwezig");
 					System.out.println("gebruikers is aanwezig gezet");
 					lblError.setText(gebruikerSessie.getIngeschrevene().getFamilienaam() + " " +  gebruikerSessie.getIngeschrevene().getVoornaam() + " "+"is aanwezig gezet");
 				}
@@ -496,12 +497,12 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 				if (gebruiker != null) {
 					if (sessie.isGebruikerAanwezig(gebruiker)) {
 						sc.wijzigIngeschrevenen(gebruiker, sessie.isGebruikerIngeschreven(gebruiker), false);
-						btnZetGebruikerAanwezig.setText("Zet afwezig");
+						btnZetGebruikerAanwezig.setText("Zet aanwezig");
 						lblError.setText(gebruiker.getFamilienaam() + " " +  gebruiker.getVoornaam() + " "+ "is afwezig gezet");
 
 					} else {
 						sc.wijzigIngeschrevenen(gebruiker, true, true);
-						btnZetGebruikerAanwezig.setText("Zet aanwezig");
+						btnZetGebruikerAanwezig.setText("Zet afwezig");
 						lblError.setText(gebruiker.getFamilienaam() + " " +  gebruiker.getVoornaam() + " "+ "is aanwezig gezet");
 
 					}
