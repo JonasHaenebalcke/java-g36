@@ -88,10 +88,10 @@
             </Label>
             <TableView fx:id="tblSessies" prefHeight="350.0" prefWidth="675.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
               <columns>
-                <TableColumn fx:id="colTitel" prefWidth="256.00000607967377" text="Titel" />
-                  <TableColumn fx:id="colStartDatumSessie" prefWidth="159.20001220703125" text="Start datum" />
-                  <TableColumn fx:id="colEindDatumSessie" prefWidth="195.05572509765625" text="Start uur" />
-                  <TableColumn fx:id="colDuur" prefWidth="75.0" text="duur" />
+                <TableColumn fx:id="colTitel" prefWidth="287.200018286705" text="Titel" />
+                  <TableColumn fx:id="colStartDatumSessie" maxWidth="2000.0" prefWidth="253.60003662109375" text="Start datum" />
+                  <TableColumn fx:id="colEindDatumSessie" maxWidth="2000.0" prefWidth="138.39987182617188" text="Start uur" />
+                  <TableColumn fx:id="colDuur" maxWidth="1700.0" text="duur" />
               </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

@@ -360,6 +360,7 @@ public class SessieKalenderSchermController extends GridPane {
 		if (tblSessies.getSelectionModel().getSelectedItem() != null) {
 			this.getChildren().setAll(new BeheerSessieSchermController(this.sc, this.gc, sessie, this.ac));
 		} else {
+			lblErrorSessies.setVisible(true);
 			lblErrorSessies.setText("Je moet een sessie kiezen om het te beheren");
 		}
 

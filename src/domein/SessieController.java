@@ -208,8 +208,8 @@ public class SessieController {
 
 	public void wijzigSessie(String titel, String lokaal, LocalDateTime startDatum, LocalDateTime eindDatum,
 			int capaciteit, String omschrijving, String gastspreker, boolean open) {
-		if(huidigeSessie.getStatusSessie()!= StatusSessie.nietOpen) {
-			throw new IllegalArgumentException("Je kan de sessie niet maar aanpassen omdat hij open is gezet geweest");
+		if(huidigeSessie.getStatusSessie()== StatusSessie.open || huidigeSessie.getStatusSessie() == StatusSessie.gesloten) {
+			throw new IllegalArgumentException("Deze sessie kan je niet maar aanpassen omdat hij open is gezet geweest");
 		} else {
 		
 		huidigeSessie.wijzigSessie(titel, lokaal, startDatum, eindDatum, capaciteit, omschrijving, gastspreker, open);

@@ -58,13 +58,13 @@
             <TableView fx:id="tvSessies" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <columns>
                   <TableColumn fx:id="colVerantwoordelijke" prefWidth="146.40002745389938" text="Verantwoordelijke" />
-                  <TableColumn fx:id="colTitel" minWidth="8.569778442382812" prefWidth="242.39996337890625" text="Titel" />
-                  <TableColumn fx:id="colStart" minWidth="8.569778442382812" prefWidth="141.5999755859375" text="Start datum" />
-                  <TableColumn fx:id="colStartUur" minWidth="8.569778442382812" prefWidth="132.0" text="Start uur" />
-                  <TableColumn fx:id="colDuur" prefWidth="138.4000244140625" text="Duur" />
-                  <TableColumn fx:id="colAantalIngeschrevenen" minWidth="8.569778442382812" prefWidth="155.99993896484375" text="Aantal ingeschrevenen" />
-                  <TableColumn fx:id="colAantalAanwezigen" prefWidth="122.39996337890625" text="Aantal aanwezigen" />
-                  <TableColumn fx:id="colGemiddleScore" prefWidth="124.800048828125" text="Gemiddle Score" />
+                  <TableColumn fx:id="colTitel" maxWidth="7000.0" minWidth="8.569778442382812" prefWidth="320.0000762939453" text="Titel" />
+                  <TableColumn fx:id="colStart" maxWidth="3000.0" minWidth="8.569778442382812" prefWidth="117.5999755859375" text="Start datum" />
+                  <TableColumn fx:id="colStartUur" maxWidth="3000.0" minWidth="8.569778442382812" prefWidth="110.4000244140625" text="Start uur" />
+                  <TableColumn fx:id="colDuur" maxWidth="3000.0" prefWidth="107.20001220703125" text="Duur" />
+                  <TableColumn fx:id="colAantalIngeschrevenen" maxWidth="4000.0" minWidth="8.569778442382812" prefWidth="155.99993896484375" text="Aantal ingeschrevenen" />
+                  <TableColumn fx:id="colAantalAanwezigen" maxWidth="4000.0" prefWidth="136.00018310546875" text="Aantal aanwezigen" />
+                  <TableColumn fx:id="colGemiddleScore" maxWidth="3500.0" prefWidth="111.9998779296875" text="Gemiddle Score" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

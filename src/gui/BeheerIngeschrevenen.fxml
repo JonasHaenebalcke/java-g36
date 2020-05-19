@@ -44,10 +44,10 @@
             </Label>
             <TableView fx:id="tvSessies" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <columns>
-                  <TableColumn fx:id="colTitelSessie" prefWidth="245.5999813079834" resizable="false" text="Titel" />
                   <TableColumn fx:id="colStartSessie" minWidth="20.0" prefWidth="89.5999755859375" resizable="false" text="Start datum" />
-                  <TableColumn fx:id="colStartUur" minWidth="-Infinity" prefWidth="85.5999755859375" resizable="false" text="Start uur" />
-                  <TableColumn fx:id="colDuur" prefWidth="207.19998168945312" text="Duur" />
+                  <TableColumn fx:id="colTitelSessie" prefWidth="249.5999755859375" resizable="false" text="Titel" />
+                  <TableColumn fx:id="colStartUur" minWidth="-Infinity" prefWidth="84.79998779296875" resizable="false" text="Start uur" />
+                  <TableColumn fx:id="colDuur" minWidth="5.0" prefWidth="96.79995727539062" text="Duur" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -119,8 +119,8 @@
             					<columns>
                         <TableColumn fx:id="tcIngeschreven" prefWidth="83.20001220703125" resizable="false" text="Ingeschreven" />
             						<TableColumn fx:id="tcAanwezig" prefWidth="92.0" resizable="false" text="Aanwezig" />
-            						<TableColumn fx:id="tcVoornaam" prefWidth="102.0" resizable="false" text="Voornaam" />
             						<TableColumn fx:id="tcFamilienaam" minWidth="-1.0" prefWidth="116.5" resizable="false" text="Familienaam" />
+            						<TableColumn fx:id="tcVoornaam" prefWidth="102.0" resizable="false" text="Voornaam" />
             						<TableColumn fx:id="tcInschrijvingsdatum" prefWidth="121.0" resizable="false" text="inschrijvingsdatum" />
             					</columns>
                      <columnResizePolicy>
@@ -129,8 +129,8 @@
             				</TableView>
                   <TableView fx:id="tvGebruikers" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
+                        <TableColumn fx:id="colFamilienaam" prefWidth="257.0" text="Familienaam" />
                       <TableColumn fx:id="colVoornaam" prefWidth="257.0" text="Voornaam" />
-                      <TableColumn fx:id="colFamilienaam" prefWidth="257.0" text="Familienaam" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
