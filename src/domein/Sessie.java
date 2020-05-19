@@ -395,9 +395,10 @@ public class Sessie implements Serializable {
 
 	public void setStringProperties() {
 		setStartDatumSessieProperty();
+		setStartUurProperty();
 		setEindDatumSessieProperty();
 		setTitelSessieProperty();
-		getAantalDeelnemersProperty();
+		setAantalDeelnemersProperty();
 		setAantalIngeschrevenenProperty();
 		setAantalAanwezigenProperty();
 		setGemiddleScoreProperty();

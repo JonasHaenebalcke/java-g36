@@ -177,7 +177,6 @@ public class SessieController {
 			if (status != null) {
 				switch (status) {
 				case "Alle gebruikers":
-					resetGebruikerSessieLijst();
 					break;
 				case "Aanwezigen":
 					statusbool = (gebruikerSessie.isAanwezig() == true);
@@ -270,12 +269,18 @@ public class SessieController {
 		boolean bool = huidigeSessie.isGebruikerIngeschreven(ingeschrevene);
 		try {
 			GenericDaoJpa.startTransaction();
-			if (!bool && ingeschreven)
+			if (!bool && ingeschreven) {
+				geefGebruikerSessies().add(res);
+				geefGebruikerSessiesObservable().add(res);
 				gebruikerSessieRepo.insert(res);
+			}
 			else if (ingeschreven && bool) {
 				gebruikerSessieRepo.update(res);
-			} else
+			} else {
+				geefGebruikerSessies().remove(res);
+				geefGebruikerSessiesObservable().remove(res);
 				gebruikerSessieRepo.delete(res);
+			}
 			GenericDaoJpa.commitTransaction();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());

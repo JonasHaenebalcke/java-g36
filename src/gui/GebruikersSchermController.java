@@ -97,7 +97,7 @@ public class GebruikersSchermController extends GridPane {
 
 	@FXML
 	private Label lblError;
-	
+
 	@FXML
 	private Label lblSucces;
 
@@ -158,18 +158,17 @@ public class GebruikersSchermController extends GridPane {
 	}
 
 	@FXML
-	private void pasGebruikerAan(ActionEvent event) {		
+	private void pasGebruikerAan(ActionEvent event) {
 		try {
 			lblSucces.setText("");
 			inputGebruikersnaam.setEditable(false);
 			lblError.setText("");
 			cbxType.setValue(cbxType.getValue());
-
 			dc.wijzigGebruiker(inputVoornaam.getText(), inputNaam.getText(), inputEmail.getText(),
 					inputGebruikersnaam.getText(), cbxType.getValue(), cbxStatus.getValue(), "profielfoto");
 
 			cbxType.setValue(cbxType.getValue());
-			
+
 			lblSucces.setText("Gebruiker werd succesvol aangepast");
 		} catch (Exception e) {
 			lblError.setText(e.getMessage());
@@ -244,6 +243,8 @@ public class GebruikersSchermController extends GridPane {
 			@Override
 			public void changed(ObservableValue<? extends Gebruiker> observable, Gebruiker oldValue,
 					Gebruiker newValue) {
+				if (newValue == null)
+					return;
 				lblTitle.setText("Gebruiker aanpassen");
 				btnVoegToe.setVisible(false);
 				btnPasAan.setVisible(true);
@@ -264,7 +265,6 @@ public class GebruikersSchermController extends GridPane {
 	}
 
 	void initializeList() {
-
 		tvGebruikers.setItems(dc.geefGebruikersSorted());
 		try {
 			colNaam.setCellValueFactory(cel -> cel.getValue().getNaamProperty());
@@ -275,7 +275,6 @@ public class GebruikersSchermController extends GridPane {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	void statusChangeListener() {
@@ -301,6 +300,7 @@ public class GebruikersSchermController extends GridPane {
 	}
 
 	private void changeFilter() {
+		tvGebruikers.getSelectionModel().clearSelection();
 		String filter = txtZoek.getText();
 		String status = cbxFilter.getValue().toString();
 		String type = cbxFilterType.getValue().toString();

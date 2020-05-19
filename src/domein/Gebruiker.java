@@ -396,6 +396,7 @@ public class Gebruiker implements Serializable {
 		setNaamProperty();
 		setVoorNaamProperty();
 		setTypeProperty();
+		setStatusProperty();
 		setEmailProperty();
 		setAantalFeedbacksProperty();
 		setAantalAanwezigProprty();
