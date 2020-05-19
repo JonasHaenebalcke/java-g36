@@ -57,10 +57,10 @@
          <children>
             <TableView fx:id="tvSessies" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <columns>
+                  <TableColumn fx:id="colStart" maxWidth="2500.0" minWidth="8.569778442382812" prefWidth="117.5999755859375" text="Start datum" />
+                  <TableColumn fx:id="colStartUur" maxWidth="2000.0" minWidth="8.569778442382812" prefWidth="110.4000244140625" text="Start uur" />
                   <TableColumn fx:id="colVerantwoordelijke" prefWidth="146.40002745389938" text="Verantwoordelijke" />
-                  <TableColumn fx:id="colTitel" maxWidth="7000.0" minWidth="8.569778442382812" prefWidth="320.0000762939453" text="Titel" />
-                  <TableColumn fx:id="colStart" maxWidth="3000.0" minWidth="8.569778442382812" prefWidth="117.5999755859375" text="Start datum" />
-                  <TableColumn fx:id="colStartUur" maxWidth="3000.0" minWidth="8.569778442382812" prefWidth="110.4000244140625" text="Start uur" />
+                  <TableColumn fx:id="colTitel" maxWidth="9000.0" minWidth="8.569778442382812" prefWidth="320.0000762939453" text="Titel" />
                   <TableColumn fx:id="colDuur" maxWidth="3000.0" prefWidth="107.20001220703125" text="Duur" />
                   <TableColumn fx:id="colAantalIngeschrevenen" maxWidth="4000.0" minWidth="8.569778442382812" prefWidth="155.99993896484375" text="Aantal ingeschrevenen" />
                   <TableColumn fx:id="colAantalAanwezigen" maxWidth="4000.0" prefWidth="136.00018310546875" text="Aantal aanwezigen" />
