@@ -73,7 +73,7 @@
                         <TableColumn fx:id="colStartUur" maxWidth="2500.0" prefWidth="112.79998779296875" text="Start uur" />
                       <TableColumn fx:id="colVerantwoordelijke" prefWidth="131.0" text="Verantwoordelijke" />
                       <TableColumn fx:id="colTitel" maxWidth="8000.0" prefWidth="168.13897705078125" text="Titel" />
-                        <TableColumn fx:id="colOpnePlaatsen" maxWidth="5300.0" prefWidth="176.0" text="Ingeschrevenen / Capaciteit" />
+                        <TableColumn fx:id="colOpenPlaatsen" maxWidth="5300.0" prefWidth="176.0" text="Ingeschrevenen / Capaciteit" />
                         <TableColumn fx:id="colLokaal" maxWidth="2500.0" prefWidth="99.0" text="Lokaal" />
                     </columns>
                      <columnResizePolicy>

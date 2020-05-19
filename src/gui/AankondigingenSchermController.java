@@ -69,7 +69,7 @@ public class AankondigingenSchermController extends GridPane {
 	private TableColumn<Sessie, String> colStartUur;
 
 	@FXML
-	private TableColumn<Sessie, String> colOpnePlaatsen;
+	private TableColumn<Sessie, String> colOpenPlaatsen;
 
 	@FXML
 	private TableColumn<Sessie, String> colLokaal;
@@ -154,8 +154,7 @@ public class AankondigingenSchermController extends GridPane {
 			colStart.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
 			colStartUur.setCellValueFactory(cel -> cel.getValue().getStartUurProperty());
 			colLokaal.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getLokaal()));
-			colOpnePlaatsen.setCellValueFactory(
-					cel -> new ReadOnlyStringWrapper(Integer.toString(cel.getValue().getCapaciteit()))); // moet nog
+			colOpenPlaatsen.setCellValueFactory(cel -> cel.getValue().getOpenPlaatsenCapaciteitProperty()); // moet nog
 																											// veranderd
 																											// worden
 			sc.changeSorter(null);

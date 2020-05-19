@@ -93,6 +93,8 @@ public class Sessie implements Serializable {
 	@Transient
 	private SimpleStringProperty startUur;
 	@Transient
+	private SimpleStringProperty openPlaatsenCapaciteit;
+	@Transient
 	private ObservableList<Feedback> feedbackObservableLijst;
 
 	protected Sessie() {
@@ -392,6 +394,18 @@ public class Sessie implements Serializable {
 			setStartUurProperty();
 		return startUur;
 	}
+	
+	public void setOpenPlaatsenCapaciteitProperty() {
+		if (openPlaatsenCapaciteit == null)
+			openPlaatsenCapaciteit = new SimpleStringProperty();
+		openPlaatsenCapaciteit.set(String.valueOf(getGebruikerSessieLijst().size())+ "/" + String.valueOf(capaciteit));
+	}
+
+	public SimpleStringProperty getOpenPlaatsenCapaciteitProperty() {
+		if (openPlaatsenCapaciteit == null)
+			setOpenPlaatsenCapaciteitProperty();
+		return openPlaatsenCapaciteit;
+	}
 
 	public void setStringProperties() {
 		setStartDatumSessieProperty();
@@ -402,8 +416,10 @@ public class Sessie implements Serializable {
 		setAantalIngeschrevenenProperty();
 		setAantalAanwezigenProperty();
 		setGemiddleScoreProperty();
+		setOpenPlaatsenCapaciteitProperty();
 		setDuurProperty();// Setter wordt opgeroepen in getter (dit is eigenlijke dubbele code dus zou
 		// opgekuist moeten worden)
+		
 	}
 
 	private void setDatums(LocalDateTime startDatum, LocalDateTime eindDatum) {
