@@ -410,7 +410,7 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 	}
 
 	private void changeGebruikerSessieFilter() {
-		
+
 		tvGebruikers.getSelectionModel().clearSelection();
 		tvIngeschrevenen.getSelectionModel().clearSelection();
 		String filter = txtGebruiker.getText();
@@ -421,7 +421,7 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 
 		if (cbxStatusGebruiker.getValue().equals("Alle gebruikers"))
 			gc.changeFilter(filter, null, null);
-		
+
 		else if (tvSessies.getSelectionModel().getSelectedItem() != null)
 			sc.changeFilterGebruikerSessie(filter, cbxStatusGebruiker.getValue());
 
@@ -431,7 +431,7 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 	void voegIngeschrevenenToe(ActionEvent event) {
 		try {
 			lblError.setTextFill(Paint.valueOf("green"));
-		
+
 			GebruikerSessie gebruikerSessie = tvIngeschrevenen.getSelectionModel().getSelectedItem();
 
 			Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
@@ -439,25 +439,33 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 				if (sessie.isGebruikerIngeschreven(gebruikerSessie.getIngeschrevene())) {
 					sc.wijzigIngeschrevenen(gebruikerSessie.getIngeschrevene(), false, gebruikerSessie.isAanwezig());
 					System.out.println("gebruikers is uitgeschreven");
-					lblError.setText(gebruikerSessie.getIngeschrevene().getFamilienaam() + " " +  gebruikerSessie.getIngeschrevene().getVoornaam() + " "+ "is uitgeschreven");
+					lblError.setText(gebruikerSessie.getIngeschrevene().getFamilienaam() + " "
+							+ gebruikerSessie.getIngeschrevene().getVoornaam() + " " + "is uitgeschreven");
 				} else {
 					sc.wijzigIngeschrevenen(gebruikerSessie.getIngeschrevene(), true, gebruikerSessie.isAanwezig());
 					System.out.println("gebruikers is ingeschreven");
-					lblError.setText(gebruikerSessie.getIngeschrevene().getFamilienaam() + " " +  gebruikerSessie.getIngeschrevene().getVoornaam() + " "+ "is ingeschreven");
+					lblError.setText(gebruikerSessie.getIngeschrevene().getFamilienaam() + " "
+							+ gebruikerSessie.getIngeschrevene().getVoornaam() + " " + "is ingeschreven");
 				}
-				
+
 			} else {
 				Gebruiker gebruiker = tvGebruikers.getSelectionModel().getSelectedItem();
 
 				if (gebruiker != null) {
 					if (sessie.isGebruikerIngeschreven(gebruiker)) {
+						if (sessie.getVerantwoordelijke().equals(gebruiker)) {
+							throw new IllegalArgumentException(
+									"Je kan de verantwoordelijke van een sessie niet uitschrijven");
+						}
 						sc.wijzigIngeschrevenen(gebruiker, false, sessie.isGebruikerAanwezig(gebruiker));
 						System.out.println("gebruiker is uitgeschreven");
-						lblError.setText(gebruiker.getFamilienaam() + " " +  gebruiker.getVoornaam() + " "+ "is uitgeschreven");
+						lblError.setText(
+								gebruiker.getFamilienaam() + " " + gebruiker.getVoornaam() + " " + "is uitgeschreven");
 					} else {
 						sc.wijzigIngeschrevenen(gebruiker, true, sessie.isGebruikerAanwezig(gebruiker));
 						System.out.println("gebruiker is ingeschreven");
-						lblError.setText(gebruiker.getFamilienaam() + " " +  gebruiker.getVoornaam() + " "+"is ingeschreven");
+						lblError.setText(
+								gebruiker.getFamilienaam() + " " + gebruiker.getVoornaam() + " " + "is ingeschreven");
 					}
 
 				}
@@ -483,13 +491,15 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 							sessie.isGebruikerIngeschreven(gebruikerSessie.getIngeschrevene()), false);
 					btnZetGebruikerAanwezig.setText("Zet aanwezig");
 					System.out.println("gebruikers is afwezig gezet");
-					lblError.setText( gebruikerSessie.getIngeschrevene().getFamilienaam() + " " +  gebruikerSessie.getIngeschrevene().getVoornaam() + " "+"is afwezig gezet");
+					lblError.setText(gebruikerSessie.getIngeschrevene().getFamilienaam() + " "
+							+ gebruikerSessie.getIngeschrevene().getVoornaam() + " " + "is afwezig gezet");
 
 				} else {
 					sc.wijzigIngeschrevenen(gebruikerSessie.getIngeschrevene(), true, true);
 					btnZetGebruikerAanwezig.setText("Zet afwezig");
 					System.out.println("gebruikers is aanwezig gezet");
-					lblError.setText(gebruikerSessie.getIngeschrevene().getFamilienaam() + " " +  gebruikerSessie.getIngeschrevene().getVoornaam() + " "+"is aanwezig gezet");
+					lblError.setText(gebruikerSessie.getIngeschrevene().getFamilienaam() + " "
+							+ gebruikerSessie.getIngeschrevene().getVoornaam() + " " + "is aanwezig gezet");
 				}
 
 			} else {
@@ -498,12 +508,14 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 					if (sessie.isGebruikerAanwezig(gebruiker)) {
 						sc.wijzigIngeschrevenen(gebruiker, sessie.isGebruikerIngeschreven(gebruiker), false);
 						btnZetGebruikerAanwezig.setText("Zet aanwezig");
-						lblError.setText(gebruiker.getFamilienaam() + " " +  gebruiker.getVoornaam() + " "+ "is afwezig gezet");
+						lblError.setText(
+								gebruiker.getFamilienaam() + " " + gebruiker.getVoornaam() + " " + "is afwezig gezet");
 
 					} else {
 						sc.wijzigIngeschrevenen(gebruiker, true, true);
 						btnZetGebruikerAanwezig.setText("Zet afwezig");
-						lblError.setText(gebruiker.getFamilienaam() + " " +  gebruiker.getVoornaam() + " "+ "is aanwezig gezet");
+						lblError.setText(
+								gebruiker.getFamilienaam() + " " + gebruiker.getVoornaam() + " " + "is aanwezig gezet");
 
 					}
 				}
@@ -512,6 +524,7 @@ public class BeherenIngeschrevenenSchermController extends GridPane {
 			changeGebruikerSessieFilter();
 		} catch (Exception e) {
 			lblError.setVisible(true);
+			lblError.setTextFill(Paint.valueOf("red"));
 			lblError.setText(e.getMessage());
 		}
 	}
