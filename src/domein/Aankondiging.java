@@ -51,11 +51,11 @@ public class Aankondiging implements Serializable {
 	public Gebruiker publicist;
 
 	@Transient
-	private SimpleStringProperty publicistProperty; // = new SimpleStringProperty();
+	private SimpleStringProperty publicistProperty;
 	@Transient
-	private SimpleStringProperty titelAankondigingProperty; // = new SimpleStringProperty();
+	private SimpleStringProperty titelAankondigingProperty;
 	@Transient
-	private SimpleStringProperty datumAankondigingProperty; // = new SimpleStringProperty();
+	private SimpleStringProperty datumAankondigingProperty;
 
 	protected Aankondiging() {
 
@@ -152,13 +152,9 @@ public class Aankondiging implements Serializable {
 	}
 
 	public void setPublicistProperty() {
-		System.out.println("TEST");
 		if (publicistProperty == null) {
 			publicistProperty = new SimpleStringProperty();
 		}
-
-		System.out.println(publicist.getFamilienaam());
-		System.out.println(publicist.getVoornaam());
 		publicistProperty.set(this.publicist.getFamilienaam() + " " + this.publicist.getVoornaam());
 	}
 
@@ -191,10 +187,8 @@ public class Aankondiging implements Serializable {
 	}
 
 	public void setStringProperties() {
-		System.out.println("SetProperties");
 		setDatumAankondigingProperty();
 		setTitelAankondigingProperty();
-//		setAankondingingTekst();
 		setPublicistProperty();
 	}
 

@@ -101,9 +101,9 @@ public class StatistiekenSchermController extends GridPane {
 	private ComboBox<String> cbxStatusSessie;
 	@FXML
 	private ComboBox<String> cbxSessieGegevens;
-	
+
 	@FXML
-    private ComboBox<String> cbxType;
+	private ComboBox<String> cbxType;
 
 	private GebruikerController gc;
 	private SessieController sc;
@@ -125,9 +125,6 @@ public class StatistiekenSchermController extends GridPane {
 	}
 
 	private void initialize() {
-//		addListenerToTableGebruikers();
-//		addListenerToTableSessies();
-
 		lblTitel.setText("Gebruikers");
 		lblVoorAlle.setText("Voor alle gebruikers");
 		lblStatistiek1Omschrijving.setText("Totaal aantal keer aanwezig");
@@ -152,7 +149,7 @@ public class StatistiekenSchermController extends GridPane {
 		colAantalAanwezig.setCellValueFactory(cel -> cel.getValue().getAantalAanwezigProprty());
 		colAantalAfwezig.setCellValueFactory(cel -> cel.getValue().getAantalAfwezigProperty());
 		colProcentueelAanwezig.setCellValueFactory(cel -> cel.getValue().getProcentueelAanwezigProperty());
-		
+
 		List<String> statussen = new ArrayList<>();
 		statussen.add("Alle Types");
 		for (StatusSessie status : StatusSessie.values()) {
@@ -160,7 +157,7 @@ public class StatistiekenSchermController extends GridPane {
 		}
 		cbxStatusSessie.setItems(FXCollections.observableArrayList(statussen));
 		cbxStatusSessie.getSelectionModel().selectFirst();
-		
+
 		List<String> sorters = new ArrayList<>();
 		sorters.add("Ongesorteerd");
 		sorters.add("Bij score");
@@ -168,7 +165,7 @@ public class StatistiekenSchermController extends GridPane {
 		sorters.add("Bij duur");
 		cbxSessieGegevens.setItems(FXCollections.observableArrayList(sorters));
 		cbxSessieGegevens.getSelectionModel().selectFirst();
-		
+
 		List<String> types = new ArrayList<>();
 		types.add("Alle");
 		for (TypeGebruiker type : TypeGebruiker.values()) {
@@ -187,10 +184,8 @@ public class StatistiekenSchermController extends GridPane {
 		txfSessie.setText("");
 		txfSessie.setPromptText("Gebruiker");
 		cbxType.setVisible(true);
-		//txfSessie.setVisible(false);
 		cbxStatusSessie.setVisible(false);
 		cbxSessieGegevens.setVisible(false);
-		//zoekSessie.setVisible(false);
 		lblStatistiek1Omschrijving.setText("Totaal aantal keer aanwezig");
 		lblStatistiek2Omschrijving.setText("Totaal aantal keer afwezig");
 		lblStatistiek1Value.setText(String.valueOf(gc.geefAantalAanwezigen()));
@@ -207,20 +202,12 @@ public class StatistiekenSchermController extends GridPane {
 		colAantalAfwezig.setCellValueFactory(cel -> cel.getValue().getAantalAfwezigProperty());
 		colProcentueelAanwezig.setCellValueFactory(cel -> cel.getValue().getProcentueelAanwezigProperty());
 		changeFilterGebruikers();
-
-//		colStatus.setCellValueFactory(cel -> System.out.println(cel.getValue().getStatusProperty().getValue()));
-//		colAantalFeedbacks.setCellValueFactory(cel ->  System.out.println(cel.getValue().getAantalFeedbacksProperty().getValue()));
-
 	}
 
 	@FXML
 	void geefStatistiekenSessies(ActionEvent event) {
 		lblTitel.setText("Sessies");
 		lblVoorAlle.setText("Voor alle sessies");
-//		lblStatistiek1Omschrijving.setText("Totaal aantal keer aanwezig");
-//		lblStatistiek2Omschrijving.setText("Totaal aantal keer afwezig");
-//		lblStatistiek1Value.setText(String.valueOf(gc.geefAantalAanwezigen()));
-//		lblStatistiek2Value.setText(String.valueOf(gc.geefAantalAfwezigen()));
 
 		txfSessie.setText("");
 		txfSessie.setPromptText("Sessie");
@@ -245,14 +232,12 @@ public class StatistiekenSchermController extends GridPane {
 		colDuur.setCellValueFactory(cel -> cel.getValue().getDuurProperty());
 		colStartUur.setCellValueFactory(cel -> cel.getValue().getStartUurProperty());
 		sc.changeSorter(null);
-//		colEind.setCellValueFactory(cel -> cel.getValue().getEindDatumSessieProperty());
-//		colAantalDeelnemers.setCellValueFactory(cel -> cel.getValue().getAantalDeelnemersProperty());
 		changeFilter();
 	}
 
 	@FXML
 	void zoekSessie(ActionEvent event) {
-		if(cbxType.isVisible()) 
+		if (cbxType.isVisible())
 			changeFilterGebruikers();
 		else
 			changeFilter();
@@ -266,19 +251,15 @@ public class StatistiekenSchermController extends GridPane {
 	@FXML
 	void geefSessiesGekozenTypeGegevens(ActionEvent event) {
 		String order = cbxSessieGegevens.getValue().toString();
-
 		sc.changeSorter(order);
 	}
-	
+
 	private void changeFilter() {
 		String filter = txfSessie.getText();
 		String status = cbxStatusSessie.getValue().toString();
-
-		System.out.println("filter: " + filter);
-		System.out.println("status: " + status);
-		sc.changeFilter(filter, status,null);
+		sc.changeFilter(filter, status, null);
 	}
-	
+
 	void typeChangeListener() {
 		cbxType.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 
@@ -289,64 +270,10 @@ public class StatistiekenSchermController extends GridPane {
 		});
 
 	}
-	
+
 	private void changeFilterGebruikers() {
 		String filter = txfSessie.getText();
 		String type = cbxType.getValue().toString();
-
-		System.out.println("filter: " + filter);
-		System.out.println("type: " + type);
 		gc.changeFilter(filter, type, null);
 	}
-
-//	void addListenerToTableGebruikers() {
-//		tvGebruikers.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Gebruiker>() {
-//
-//			@Override
-//			public void changed(ObservableValue<? extends Gebruiker> observable, Gebruiker oldValue,
-//					Gebruiker newValue) {
-//				lblStatistiek1Omschrijving.setText("Aantal maal aanwezig");
-//				lblStatistiek1Value.setText("TE VERANDEREN");
-//				lblStatistiek2Omschrijving.setText("Aantal maal afwezig");
-//				lblStatistiek2Value.setText("TE VERANDEREN");
-//			}
-//		});
-//
-//	}
-
-//	void addListenerToTableSessies() {
-//		tvSessies.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Sessie>() {
-//
-//			@Override
-//			public void changed(ObservableValue<? extends Sessie> observable, Sessie oldValue, Sessie newValue) {
-//				lblStatistiek1Omschrijving.setText("Aantal aanwezigen");
-//				lblStatistiek1Value.setText(String.valueOf(statc.geefAantalAanwezigen(newValue)));
-//				lblStatistiek2Omschrijving.setText("Gemiddelde score");
-//				lblStatistiek2Value.setText(String.valueOf(rondAf((statc.geefGemiddeldeScore(newValue)), 2) + "/5"));
-//			}
-//		});
-//
-//	}
-
-//	private static double rondAf(double value, int places) { // Source
-//																// https://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
-//		if (places < 0)
-//			throw new IllegalArgumentException();
-//
-//		long factor = (long) Math.pow(10, places);
-//		value = value * factor;
-//		long tmp = Math.round(value);
-//		return (double) tmp / factor;
-//	}
-
-//	    @FXML 
-//	    void slaEersteStatiestiekOp(ActionEvent event) {
-//
-//	    }
-//	    
-//	    @FXML
-//	    void SlaTweedeStatistiekOp(ActionEvent event) {
-//
-//	    }
-
 }

@@ -35,6 +35,6 @@ public enum Maand {
     }
 
     public int getValue() {
-        return value;
-    }
+		return value;
+	}
 }

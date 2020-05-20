@@ -17,7 +17,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
-public class MenuController extends BorderPane{
+public class MenuController extends BorderPane {
 
 	@FXML
 	private GridPane scherm;
@@ -31,16 +31,13 @@ public class MenuController extends BorderPane{
 	@FXML
 	private Button btnLogUit;
 
-	/*
-	 * @FXML private Button btnIngeschrevenenBeheren;
-	 */
-
 	public GebruikerController dc;
 	public SessieKalenderController skc;
 	public SessieController sc;
 	public AankondigingController ac;
 
-	public MenuController(GebruikerController dc, SessieKalenderController skc, SessieController sc,  AankondigingController ac) {
+	public MenuController(GebruikerController dc, SessieKalenderController skc, SessieController sc,
+			AankondigingController ac) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("Menu.fxml"));
 		loader.setRoot(this);
 		loader.setController(this);
@@ -56,10 +53,6 @@ public class MenuController extends BorderPane{
 		this.ac = ac;
 		lblAangemeldAls.setText("Aangemeld als \n" + dc.getIngelogdeVerantwoordelijke().getVoornaam() + " "
 				+ dc.getIngelogdeVerantwoordelijke().getFamilienaam());
-	}
-
-	public void initialize() {
-
 	}
 
 	@FXML
@@ -80,7 +73,8 @@ public class MenuController extends BorderPane{
 
 	@FXML
 	void sessiekalenderBeheren(ActionEvent event) throws IOException {
-		SessieKalenderSchermController skcScherm = new SessieKalenderSchermController(this.skc, this.sc, this.dc, this.ac);
+		SessieKalenderSchermController skcScherm = new SessieKalenderSchermController(this.skc, this.sc, this.dc,
+				this.ac);
 		scherm.getChildren().setAll(skcScherm);
 	}
 
@@ -92,10 +86,10 @@ public class MenuController extends BorderPane{
 
 	@FXML
 	void IngeschrevenenBeheren(ActionEvent event) throws IOException {
-		BeherenIngeschrevenenSchermController bIngeschrevenenScherm = new BeherenIngeschrevenenSchermController(
-				this.sc, this.dc, this.ac);
+		BeherenIngeschrevenenSchermController bIngeschrevenenScherm = new BeherenIngeschrevenenSchermController(this.sc,
+				this.dc, this.ac);
 		scherm.getChildren().setAll(bIngeschrevenenScherm);
-	}               
+	}
 
 	@FXML
 	void statistieken(ActionEvent event) throws IOException {
@@ -105,7 +99,8 @@ public class MenuController extends BorderPane{
 
 	@FXML
 	void aankondigingen(ActionEvent event) throws IOException {
-		AankondigingenSchermController aankondigingenScherm = new AankondigingenSchermController(this.sc, this.ac, this.dc);
+		AankondigingenSchermController aankondigingenScherm = new AankondigingenSchermController(this.sc, this.ac,
+				this.dc);
 		scherm.getChildren().setAll(aankondigingenScherm);
 	}
 

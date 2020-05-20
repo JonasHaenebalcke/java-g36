@@ -3,19 +3,14 @@ package domein;
 import java.io.Serializable;
 import java.util.Arrays;
 
-public enum TypeGebruiker{
-	/*,*/ Verantwoordelijke(0), Hoofdverantwoordelijke(1), Gebruiker(2);
-
-//	Gebruiker,
-//	Verantwoordelijke,
-//	Hoofdverantwoordelijke
+public enum TypeGebruiker {
+	Verantwoordelijke(0), Hoofdverantwoordelijke(1), Gebruiker(2);
 
 	private int value;
 
 	private TypeGebruiker(int value) {
 		this.value = value;
 	}
-	
 
 	public int getValue() {
 		return value;

@@ -110,8 +110,6 @@ public class SessieController {
 
 	public void changeFilter(String filter, String status, Gebruiker gebruiker) {
 		geefSessiesFiltered().setPredicate(sessie -> {
-//			if ((filter == null || filter.isBlank()) && (status.contentEquals("Alle") || status == null || status.isBlank()))
-//				return true;
 			String lowercase = filter.toLowerCase();
 			boolean filterbool = (filter == null || filter.isBlank()) ? true
 					: (sessie.getTitel().toLowerCase().contains(lowercase)
@@ -120,24 +118,23 @@ public class SessieController {
 							|| sessie.getGastspreker().toLowerCase().contains(lowercase)
 							|| sessie.getStartDatum().toString().toLowerCase().contains(lowercase));
 
-			boolean statusbool = status == null || status.contentEquals("Alle Types") || status.contentEquals("ingeschrevenen sessies") ||
-					status.isBlank() ? true
-					: sessie.getStatusSessie().toString() == status;
-			if(status.contentEquals("ingeschrevenen sessies") && gebruiker ==null)
+			boolean statusbool = status == null || status.contentEquals("Alle Types")
+					|| status.contentEquals("ingeschrevenen sessies") || status.isBlank() ? true
+							: sessie.getStatusSessie().toString() == status;
+			if (status.contentEquals("ingeschrevenen sessies") && gebruiker == null)
 				statusbool = false;
-			boolean bool = gebruiker ==null ||!status.contentEquals("ingeschrevenen sessies") ? true : 
-				(sessie.isGebruikerIngeschreven(gebruiker) ) 
-					;
+			boolean bool = gebruiker == null || !status.contentEquals("ingeschrevenen sessies") ? true
+					: (sessie.isGebruikerIngeschreven(gebruiker));
 			return (filterbool && statusbool && bool);
 		});
 	}
 
 	public List<GebruikerSessie> geefGebruikerSessies() {
 		if (gebruikerSessieLijst == null) {
-			if(huidigeSessie == null)
+			if (huidigeSessie == null)
 				gebruikerSessieLijst = new ArrayList<GebruikerSessie>();
 			else
-			gebruikerSessieLijst = huidigeSessie.getGebruikerSessieLijst();
+				gebruikerSessieLijst = huidigeSessie.getGebruikerSessieLijst();
 		}
 		return gebruikerSessieLijst;
 	}
@@ -165,8 +162,6 @@ public class SessieController {
 
 	public void changeFilterGebruikerSessie(String filter, String status) {
 		geefGebruikerSessiesFiltered().setPredicate(gebruikerSessie -> {
-//			if ((filter == null || filter.isBlank()) && (status.contentEquals("Alle") || status == null || status.isBlank()))
-//				return true;
 			String lowercase = filter.toLowerCase();
 			Gebruiker ingeschrevene = gebruikerSessie.getIngeschrevene();
 			boolean filterbool = (filter == null || filter.isBlank()) ? true
@@ -189,7 +184,6 @@ public class SessieController {
 					break;
 				}
 			}
-
 			return (filterbool && statusbool);
 		});
 	}
@@ -208,21 +202,22 @@ public class SessieController {
 
 	public void wijzigSessie(String titel, String lokaal, LocalDateTime startDatum, LocalDateTime eindDatum,
 			int capaciteit, String omschrijving, String gastspreker, boolean open) {
-		if(huidigeSessie.getStatusSessie()== StatusSessie.open || huidigeSessie.getStatusSessie() == StatusSessie.gesloten) {
-			throw new IllegalArgumentException("Deze sessie kan je niet maar aanpassen omdat hij open is gezet geweest");
+		if (huidigeSessie.getStatusSessie() == StatusSessie.open
+				|| huidigeSessie.getStatusSessie() == StatusSessie.gesloten) {
+			throw new IllegalArgumentException(
+					"Deze sessie kan je niet maar aanpassen omdat hij open is gezet geweest");
 		} else {
-		
-		huidigeSessie.wijzigSessie(titel, lokaal, startDatum, eindDatum, capaciteit, omschrijving, gastspreker, open);
-		
-		try {
-			GenericDaoJpa.startTransaction();
-			sessieRepo.update(huidigeSessie);
-			GenericDaoJpa.commitTransaction();
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-			throw new IllegalArgumentException("Er ging iets mis bij het opslaan van de gewijzigde sessie.");
-		
-		}
+
+			huidigeSessie.wijzigSessie(titel, lokaal, startDatum, eindDatum, capaciteit, omschrijving, gastspreker,
+					open);
+
+			try {
+				GenericDaoJpa.startTransaction();
+				sessieRepo.update(huidigeSessie);
+				GenericDaoJpa.commitTransaction();
+			} catch (Exception e) {
+				throw new IllegalArgumentException("Er ging iets mis bij het opslaan van de gewijzigde sessie.");
+			}
 		}
 	}
 
@@ -261,32 +256,31 @@ public class SessieController {
 	}
 
 	public void wijzigIngeschrevenen(Gebruiker ingeschrevene, boolean ingeschreven, boolean aanwezig) {
-		if(ingeschrevene.getStatus()!=Status.Actief)
-		{
-			throw new IllegalArgumentException(ingeschrevene.getFamilienaam() + " "+  ingeschrevene.getVoornaam()+ " "+ "is niet actief");
+		if (ingeschrevene.getStatus() != Status.Actief) {
+			throw new IllegalArgumentException(
+					ingeschrevene.getFamilienaam() + " " + ingeschrevene.getVoornaam() + " " + "is niet actief");
 		} else {
-		GebruikerSessie res = huidigeSessie.wijzigIngeschrevenen(ingeschrevene, ingeschreven, aanwezig);
-		boolean bool = huidigeSessie.isGebruikerIngeschreven(ingeschrevene);
-		try {
-			GenericDaoJpa.startTransaction();
-			if (!bool && ingeschreven) {
-				geefGebruikerSessies().add(res);
-				geefGebruikerSessiesObservable().add(res);
-				gebruikerSessieRepo.insert(res);
+			GebruikerSessie res = huidigeSessie.wijzigIngeschrevenen(ingeschrevene, ingeschreven, aanwezig);
+			boolean bool = huidigeSessie.isGebruikerIngeschreven(ingeschrevene);
+			try {
+				GenericDaoJpa.startTransaction();
+				if (!bool && ingeschreven) {
+					geefGebruikerSessies().add(res);
+					geefGebruikerSessiesObservable().add(res);
+					gebruikerSessieRepo.insert(res);
+				} else if (ingeschreven && bool) {
+					gebruikerSessieRepo.update(res);
+				} else {
+					geefGebruikerSessies().remove(res);
+					geefGebruikerSessiesObservable().remove(res);
+					gebruikerSessieRepo.delete(res);
+				}
+				GenericDaoJpa.commitTransaction();
+			} catch (Exception e) {
+				System.err.println(e.getMessage());
+				throw new IllegalArgumentException(e.getMessage());
 			}
-			else if (ingeschreven && bool) {
-				gebruikerSessieRepo.update(res);
-			} else {
-				geefGebruikerSessies().remove(res);
-				geefGebruikerSessiesObservable().remove(res);
-				gebruikerSessieRepo.delete(res);
-			}
-			GenericDaoJpa.commitTransaction();
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-			throw new IllegalArgumentException(e.getMessage());
 		}
-	}
 	}
 
 	public void addFeedback(Gebruiker auteur, String content, int score) {

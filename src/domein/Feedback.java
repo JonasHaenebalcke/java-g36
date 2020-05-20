@@ -33,7 +33,6 @@ public class Feedback implements Serializable {
 	public String tekst;
 	@Column(name = "TimeWritten")
 	public LocalDateTime timeWritten;
-	// AuteurId
 	@ManyToOne
 	@JoinColumn(name = "AuteurId")
 	public Gebruiker auteur;
@@ -63,13 +62,6 @@ public class Feedback implements Serializable {
 		setScore(score);
 		setStringProperties();
 	}
-
-//    public Feedback(String content, int score)
-//    {
-//        this.tekst = content;
-//        this.timeWritten = LocalDateTime.now();
-//        this.score = score;
-//    }
 
 	public int getFeedbackID() {
 		return feedbackID;

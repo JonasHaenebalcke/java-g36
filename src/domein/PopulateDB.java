@@ -11,13 +11,6 @@ import repository.GenericDaoJpa;
 
 public class PopulateDB {
 	public void run() {
-//		Gebruiker gebruiker1 = null;
-//		try {
-//			gebruiker1 = new Gebruiker("Katrien", "Maasens", "katrien.maasen@student.hogent.be", "123456km",
-//					TypeGebruiker.Hoofdverantwoordelijke, Status.Actief, "");
-//		} catch (Exception e) {
-//			System.out.println(e.toString());
-//		}
 		GenericDao gebruikerdao = new GenericDaoJpa(Gebruiker.class);
 		GenericDaoJpa.startTransaction();
 		Gebruiker gebruiker1 = null;
@@ -42,7 +35,7 @@ public class PopulateDB {
 			SessieKalender sk2 = new SessieKalender(LocalDate.of(2020, 9, 25), LocalDate.of(2021, 6, 15), true);
 			SessieKalender sk3 = new SessieKalender(LocalDate.of(2021, 9, 25), LocalDate.of(2022, 6, 15), true);
 
-//		skdao.insert(sk1);
+//			skdao.insert(sk1);
 			skdao.insert(sk2);
 			skdao.insert(sk3);
 		} catch (Exception e) {
@@ -62,7 +55,6 @@ public class PopulateDB {
 			aankondigingdao.insert(aankondiging1);
 		} catch (Exception e) {
 			e.printStackTrace();
-//			System.err.println(e.toString());
 		}
 		GenericDaoJpa.commitTransaction();
 	}

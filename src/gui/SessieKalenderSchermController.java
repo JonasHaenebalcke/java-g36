@@ -46,8 +46,6 @@ public class SessieKalenderSchermController extends GridPane {
 	private Label lblAcademieJaar;
 	@FXML
 	private ChoiceBox<Maand> cbMaand;
-//	@FXML
-//	private Button btnNieweSessieKlalender;
 	@FXML
 	private Button btnBeheerSessie;
 	@FXML
@@ -88,7 +86,7 @@ public class SessieKalenderSchermController extends GridPane {
 	private TableColumn<SessieKalender, String> colEindDatum;
 
 	@FXML
-	private TableView<Sessie> tblSessies;// DataType String?
+	private TableView<Sessie> tblSessies;
 	@FXML
 	private TableColumn<Sessie, String> colTitel;
 	@FXML
@@ -108,9 +106,6 @@ public class SessieKalenderSchermController extends GridPane {
 
 	public SessieKalenderSchermController() {
 		this.dc = new SessieKalenderController();
-
-//		initialize();
-//		initializeSessieKalender();
 	}
 
 	public SessieKalenderSchermController(SessieKalenderController dc, SessieController sc, GebruikerController gc,
@@ -140,43 +135,17 @@ public class SessieKalenderSchermController extends GridPane {
 	}
 
 	public void initialize() {
-
-		// ALs het in commentaar staat moogt ge er mij niet voor judgen
-//
-//		cbMaand.getItems().addAll(FXCollections.observableArrayList( Arrays.asList(Maand.values()).
-//		stream().distinct().
-//		map(m -> m.toString())
-//		.collect(Collectors.toList())));
-
-		// gives error, should work maybe?
-//		cbMaand.getSelectionModel().selectedIndexProperty().addListener((observableValue, value, newValue) -> {
-//			if(newValue != null) {
-//				lvSessies.setItems(dc.geefSessiesMaand((int)newValue));
-//			System.out.println(cbMaand.getSelectionModel().getSelectedIndex());
-//			System.out.println(cbMaand.getSelectionModel().getSelectedItem().toString());
-//			}
-//			}
-//		);
 		try {
 			sk = dc.getHuidigeSessieKalender();
-//			System.out.println("INITIALIZE");
 			lblErrorSessies.setText("");
 			cbMaand.setItems(FXCollections.observableArrayList(Maand.values()));
 			cbMaand.setValue(Maand.valueOf(LocalDate.now().getMonthValue()));
-
-//			System.out.println(sk.toString());
-//
-//			System.out.println(cbMaand.getSelectionModel().getSelectedIndex());
-//			System.out.println(cbMaand.getSelectionModel().getSelectedItem().toString());
 
 			lblStartDatum.setText(sk.getStartDatum().format(DateTimeFormatter.ofPattern("MM/dd")));
 			lblEindDatum.setText(sk.getEindDatum().format(DateTimeFormatter.ofPattern("MM/dd")));
 			lblStartJaar.setText("" + sk.getStartDatum().getYear());
 			;
 			lblEindJaar.setText("" + sk.getEindDatum().getYear());
-//			lblStartDatum = new Label(sk.getStartDate().toString());
-//			lblEindDatum = new Label(sk.getEindDate().toString());
-//			lvSessies.setItems(dc.geefSessiesMaand(LocalDate.now().getMonthValue()));
 
 			lblSucces.setVisible(false);
 			lblErrorSessies.setVisible(false);
@@ -184,7 +153,6 @@ public class SessieKalenderSchermController extends GridPane {
 		} catch (NullPointerException e) {
 			System.err.println(e.getMessage());
 			lblErrorSessies.setVisible(true);
-//			lblErrorSessies.setText("ERROR " + "Er is geen SessieKalender voor het geselecteerde jaar");
 			lblErrorSessies.setText("ERROR " + e.getMessage());
 		} catch (Exception e) {
 			lblErrorSessies.setVisible(true);
@@ -194,16 +162,9 @@ public class SessieKalenderSchermController extends GridPane {
 
 	private void initializeSessieKalenderTable() {
 		try {
-//		System.out.println("INITIALIZE SESSIE KALENDER");
 			lblSucces.setVisible(false);
 			lblErrorSessieKalender.setVisible(false);
-//			lvSessieKalender.setItems(dc.geefSessieKalenderObservableList().sorted());
-			System.out.println(dc.geefSessieKalenderObservableList().toString());
 			tblSessieKalenders.setItems(dc.geefSessieKalenderObservableList());
-
-//			System.out.println(sk.getStartDatumProperty());
-//			colStartDatum.setCellValueFactory(cel -> cel.getValue().startDatumProperty()());
-//			System.out.println(sk.getStartDatumProperty());
 			colStartDatum.setCellValueFactory(cel -> cel.getValue().getStartDatumProperty());
 
 			colEindDatum.setCellValueFactory(cel -> cel.getValue().getEindDatumProperty());
@@ -221,13 +182,10 @@ public class SessieKalenderSchermController extends GridPane {
 	private void initalizeSessieTable(Number maand) {
 		try {
 			sc.geefSessies().forEach(s -> s.setStringProperties());
-			dc.geefSessiesMaand(maand).forEach(s -> System.out.println(s.toString()));
 			tblSessies.setItems(dc.geefSessiesMaand(maand));
 			tblSessies.getSortOrder().add(colStartDatumSessie);
 
 			colTitel.setCellValueFactory(cel -> cel.getValue().getTitelSessieProperty());
-//		colDuur.setCellValueFactory(cel -> cel.getValue().getDuurSessieProperty());
-
 			colStartDatumSessie.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
 			colEindDatumSessie.setCellValueFactory(cel -> cel.getValue().getStartUurProperty());
 			colDuur.setCellValueFactory(cel -> cel.getValue().getDuurProperty());
@@ -259,7 +217,6 @@ public class SessieKalenderSchermController extends GridPane {
 				public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 					lblErrorSessies.setVisible(false);
 					int temp = (int) newValue + 1;
-//					Number ret = (Number) temp;
 					initalizeSessieTable((Number) temp);
 				}
 			});
@@ -277,14 +234,8 @@ public class SessieKalenderSchermController extends GridPane {
 			initializeSessieKalenderTable();
 			if (inputStartDatum.getValue() == null || inputEindDatum.getValue() == null)
 				throw new IllegalArgumentException("Datum is verplicht in te vullen!");
-
-//			System.out.println(inputStartDatum.getValue().toString());
-
 			dc.voegToeSessieKalender(inputStartDatum.getValue(), inputEindDatum.getValue());
-//			sc.initialize();
 			initializeSessieKalenderTable();
-//			Stage stage = (Stage) this.getScene().getWindow();
-//			stage.close();
 			inputStartDatum.setValue(null);
 			inputEindDatum.setValue(null);
 			lblSucces.setVisible(true);
@@ -303,9 +254,7 @@ public class SessieKalenderSchermController extends GridPane {
 			tblSessieKalenders.getSelectionModel().clearSelection();
 
 			initializeSessieKalenderTable();
-//			SessieKalender sessieKalender = lvSessieKalender.getSelectionModel().getSelectedItem();
-			dc.wijzigSessieKalender(/* sessieKalender.getSessieKalenderID() */ skId, inputStartDatum.getValue(),
-					inputEindDatum.getValue());
+			dc.wijzigSessieKalender(skId, inputStartDatum.getValue(), inputEindDatum.getValue());
 
 			inputStartDatum.setValue(null);
 			inputEindDatum.setValue(null);
@@ -345,17 +294,6 @@ public class SessieKalenderSchermController extends GridPane {
 
 	@FXML
 	public void beheerSessie(ActionEvent event) {
-//		Sessie sessie = tblSessies.getSelectionModel().getSelectedItem();
-//		this.getChildren().setAll(new BeheerSessieSchermController(this.sc, this.gc, sessie, this.ac));
-
-//		System.out.println("beheer sessie");    
-//		Sessie sessie = tblSessies.getSelectionModel().getSelectedItem();
-//		Scene scene = new Scene(new BeheerSessieSchermController(this.sc, sessie));
-//    	Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//		stage.setTitle("IT LAB");
-//		stage.setScene(scene);
-//		stage.show();
-
 		Sessie sessie = tblSessies.getSelectionModel().getSelectedItem();
 		if (tblSessies.getSelectionModel().getSelectedItem() != null) {
 			this.getChildren().setAll(new BeheerSessieSchermController(this.sc, this.gc, sessie, this.ac));
@@ -365,34 +303,4 @@ public class SessieKalenderSchermController extends GridPane {
 		}
 
 	}
-
-//	@FXML
-//	void beheerSessieKalenders(ActionEvent event) {
-//		try {
-//		Scene scene = new Scene(new BeheerSessieKalendersController(dc, this), 700, 400);
-//		Stage stage = new Stage();
-//		stage.setTitle("Sessie Kalender aanmaken");
-//		stage.setScene(scene);
-//		stage.show();
-//	} catch (Exception e) {
-//		lblError.setVisible(true);
-//		lblError.setText(e.getMessage());
-//		System.err.println(e.getMessage());
-//	}
-
-//	@FXML
-//	void voegSessieKalenderToeBtn(ActionEvent event) {
-//		try {
-//
-//			Scene scene = new Scene(new SessieKalenderAanmakenSchermController(dc, this), 600, 400);
-//			Stage stage = new Stage();
-//			stage.setTitle("Sessie Kalender aanmaken");
-//			stage.setScene(scene);
-//			stage.show();
-//		} catch (Exception e) {
-//			lblError.setVisible(true);
-//			lblError.setText(e.getMessage());
-//			System.err.println(e.getMessage());
-//		}
-//	}
 }

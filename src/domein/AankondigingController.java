@@ -74,52 +74,42 @@ public class AankondigingController {
 	}
 
 	public void wijzigAankondiging(String titel, String aankondiging) {
-//		try {
-			System.out.println(gekozenAankondiging.toString());
-			gekozenAankondiging.wijzigAankondiging(titel, aankondiging);
+		gekozenAankondiging.wijzigAankondiging(titel, aankondiging);
+		try {
 			GenericDaoJpa.startTransaction();
 			aankondigingRepo.update(gekozenAankondiging);
 			GenericDaoJpa.commitTransaction();
-//		} catch (Exception e) {
-//			throw new IllegalArgumentException("Er ging iets fout bij het wijzigen van de aankondiging");
-//		}
-
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Er ging iets fout bij het wijzigen van de aankondiging");
+		}
 	}
 
 	public void voegAankondigingToe(String titel, String aankondiging, boolean isVerzonden, Sessie sessie,
 			Gebruiker publicist) {
+		Aankondiging newAankondiging = new Aankondiging(titel, aankondiging, sessie, publicist, isVerzonden);
+		setGekozenAankondiging(newAankondiging);
+		aankondigingLijst.add(newAankondiging);
+		aankondigingObservableList.add(newAankondiging);
 		try {
-//			if (!(publicist.getStatus().equals(Status.Actief) || publicist.getType().equals(TypeGebruiker.Gebruiker))) {
-//			Hier wordt toch op gecontroleerd bij het inloggen?
-			Aankondiging newAankondiging = new Aankondiging(titel, aankondiging, sessie, publicist, isVerzonden);
-			System.out.println(newAankondiging);
-			setGekozenAankondiging(newAankondiging);
-			aankondigingLijst.add(newAankondiging);
-			aankondigingObservableList.add(newAankondiging);
 			GenericDaoJpa.startTransaction();
 			aankondigingRepo.insert(newAankondiging);
 			GenericDaoJpa.commitTransaction();
-//			}
 		} catch (Exception e) {
-			throw new IllegalArgumentException(e.getMessage());
-			// throw new IllegalArgumentException("Er ging iets fout bij het aanmaken van de
-			// aankondiging");
+			throw new IllegalArgumentException("Er ging iets fout bij het aanmaken van de aankondiging");
 		}
 	}
 
 	public void verwijderAankondiging(Aankondiging aankondiging) {
+		if (aankondiging.isVerzonden()) {
+			throw new IllegalArgumentException("Aankondiging kan niet verwijderd worden omdat hij al verzonden is");
+		}
 		try {
-
-			if (aankondiging.isVerzonden()) {
-				throw new IllegalArgumentException("Aankondiging kan niet verwijderd worden omdat hij al verzonden is");
-			}
 			aankondigingLijst.remove(aankondiging);
 			aankondigingObservableList.remove(aankondiging);
 			setGekozenAankondiging(null);
 			GenericDaoJpa.startTransaction();
 			aankondigingRepo.delete(aankondiging);
 			GenericDaoJpa.commitTransaction();
-
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Er ging iets fout bij het verwijderen van een aankondiging");
 		}
@@ -137,9 +127,6 @@ public class AankondigingController {
 				}
 
 				List<String> geadresseerden = new ArrayList<>();
-
-//				String naar = "audrey.behiels@student.hogent.be";
-//				String naar = "jonashaenebalcke@hotmail.be";
 				String van = "ProjectITLab@outlook.com";// gc.getIngelogdeVerantwoordelijke().getMailadres();
 				String host = "localhost";
 				Properties properties = new Properties();
@@ -155,45 +142,20 @@ public class AankondigingController {
 					}
 				});
 				try {
-//					Address[] cc  = new Address[gekozenAankondiging.sessie.getGebruikerSessieLijst().size()];
-//						 Address[] cc = new Address[2];
-//					cc[0] = new InternetAddress(naar);
-//					cc[1] = new InternetAddress("jule.dekyvere@student.hogent.be");
-//					for (GebruikerSessie gs : gekozenAankondiging.sessie.getGebruikerSessieLijst()) {
-//						int teller=0;
-//	//					if(!geadresseerden.contains(gs.getIngeschrevene().getMailadres())) {
-//	//						geadresseerden.add(gs.getIngeschrevene().getMailadres());
-//							cc[teller] = new InternetAddress(gs.getIngeschrevene().getMailadres());
-//							teller++;
-//	//					}
-//					}
-
 					for (GebruikerSessie gs : gekozenAankondiging.sessie.getGebruikerSessieLijst()) {
 						geadresseerden.add(gs.getIngeschrevene().getMailadres());
 					}
 					Address[] cc = new Address[gekozenAankondiging.sessie.getGebruikerSessieLijst().size()];
 					int teller = 0;
 					for (GebruikerSessie gs : gekozenAankondiging.sessie.getGebruikerSessieLijst()) {
-
-//						if (!geadresseerden.contains(gs.getIngeschrevene().getMailadres())) {
 						geadresseerden.add(gs.getIngeschrevene().getMailadres());
 						cc[teller] = new InternetAddress(gs.getIngeschrevene().getMailadres());
 						teller++;
-//						}
 					}
 
 					MimeMessage message = new MimeMessage(sessie);
 					message.setFrom(new InternetAddress(van));
-//					message.addRecipient(Message.RecipientType.TO, new InternetAddress(naar));
-					// message.addRecipient(Message.RecipientType.TO, new
-					// InternetAddress("audrey.beh@student.hogent.be")); // Om te testen
-					// message.addRecipient(Message.RecipientType.TO, new
-					// InternetAddress("test@student.hogent.be"));// Om te testen
-
 					message.setRecipients(Message.RecipientType.CC, cc);
-
-//					message.setSubject("Onderwerp titel test");
-//					message.setText("Dit bericht is een test.");
 
 					message.setSubject(this.gekozenAankondiging.getTitel());
 					message.setText(this.gekozenAankondiging.getAankondingingTekst());
@@ -202,8 +164,6 @@ public class AankondigingController {
 					GenericDaoJpa.startTransaction();
 					aankondigingRepo.update(this.gekozenAankondiging);
 					GenericDaoJpa.commitTransaction();
-
-					System.out.println("Bericht is goed verzonden..");
 					gekozenAankondiging.isVerzonden = true;
 					setGekozenAankondiging(null);
 				} catch (MessagingException e) {

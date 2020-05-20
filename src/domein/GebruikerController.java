@@ -75,7 +75,6 @@ public class GebruikerController {
 	public ObservableList<Sessie> geefSessiesGebruikerObservable(Gebruiker gebruiker) {
 
 		List<Sessie> se = new ArrayList<Sessie>();
-		System.out.println(gebruiker);
 
 		gebruiker.getGebruikerSessieLijst().forEach(sessie -> se.add(sessie.getSessie()));
 		return FXCollections.observableArrayList(se);
@@ -83,19 +82,15 @@ public class GebruikerController {
 
 	public void changeFilter(String filter, String type, String status) {
 		gebruikerFilteredLijst.setPredicate(gebruiker -> {
-//			if ((filter == null || filter.isBlank()) && (status.contentEquals("Alle") || status == null || status.isBlank()))
-//				return true;
 			String lowercase = filter.toLowerCase();
-			boolean filterbool = (filter == null || filter.isBlank()) ? true : 
-				(gebruiker.getVoornaam().toLowerCase().contains(lowercase)
-						|| gebruiker.getFamilienaam().toLowerCase().contains(lowercase)
-				)
-				;
+			boolean filterbool = (filter == null || filter.isBlank()) ? true
+					: (gebruiker.getVoornaam().toLowerCase().contains(lowercase)
+							|| gebruiker.getFamilienaam().toLowerCase().contains(lowercase));
 
 			boolean typebool = type == null || type.isBlank() || type.contentEquals("Alle") ? true
 					: gebruiker.getType().toString().equalsIgnoreCase(type);
 
-			boolean statusbool = (status == null || status.isBlank() || status.contentEquals("Alle")  ? true
+			boolean statusbool = (status == null || status.isBlank() || status.contentEquals("Alle") ? true
 					: gebruiker.getStatus().toString().equalsIgnoreCase(status));
 			return (filterbool && typebool && statusbool);
 		});
@@ -127,15 +122,11 @@ public class GebruikerController {
 
 	public void verwijderGebruiker(Gebruiker gebruiker) {
 		try {
-			//Gebruiker gebruiker = gebruikerList.get(index);
-
 			gebruikerList.remove(gebruiker);
 			gebruikerObservableList.remove(gebruiker);
 			GenericDaoJpa.startTransaction();
 			gebruikerRepo.delete(gebruiker);
-
 			GenericDaoJpa.commitTransaction();
-
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			throw new IllegalArgumentException("Er ging iets fout bij het verwijderen van de gebruiker.");
@@ -151,24 +142,21 @@ public class GebruikerController {
 
 		for (Gebruiker gebruiker : gebruikerList) {
 			if (gebruiker.getGebruikersnaam().equals(gebruikersnaam)) {
-
+				gebruiker.wijzigGebruiker(voornaam, familienaam, mailadres, type, status, profielfoto);
 				try {
-					gebruiker.wijzigGebruiker(voornaam, familienaam, mailadres, type, status, profielfoto);
 					GenericDaoJpa.startTransaction();
-
 					gebruikerRepo.update(gebruiker);
 					GenericDaoJpa.commitTransaction();
 					break;
 				} catch (Exception e) {
-					System.err.println(e.getMessage());
-					throw new IllegalArgumentException(e.getMessage());
-//					throw new IllegalArgumentException(
-//							"Er ging iets fout bij het opslaan van de gewijzigde gebruiker.");
+//					throw new IllegalArgumentException(e.getMessage());
+					throw new IllegalArgumentException(
+							"Er ging iets fout bij het opslaan van de gewijzigde gebruiker.");
 				}
 			}
 		}
 	}
-	
+
 	public void resetAfwezighedenGebruiker(Gebruiker gebruiker) {
 		gebruiker.setAantalKeerAfwezig(0);
 	}
@@ -187,7 +175,6 @@ public class GebruikerController {
 
 	public void meldAan(String gebruikersnaam, String wachtwoord)
 			throws NoSuchAlgorithmException, InvalidKeySpecException {
-
 		boolean flagGebruikersnaam = false;
 		boolean flagWachtwoord = false;
 
@@ -209,17 +196,18 @@ public class GebruikerController {
 			throw new IllegalArgumentException("Gebruikersnaam of wachtwoord is incorrect");
 		}
 	}
-	
+
 	public int geefAantalAanwezigen() {
 		int ret = 0;
-		for(Gebruiker g : gebruikerList) {
+		for (Gebruiker g : gebruikerList) {
 			ret += g.geefAantalKeerAanwezig();
 		}
 		return ret;
 	}
+
 	public int geefAantalAfwezigen() {
 		int ret = 0;
-		for(Gebruiker g : gebruikerList) {
+		for (Gebruiker g : gebruikerList) {
 			ret += g.getAantalKeerAfwezig();
 		}
 		return ret;

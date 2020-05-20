@@ -105,13 +105,7 @@ public class PasswordHasher {
 		return salt;
 	}
 	
-	
-	
-	
-	
-	
 	//CONTROLEER WACHTWOORD
-	
 	
 	/***
 	 * checks of the password matches the 

@@ -23,7 +23,6 @@ import javafx.collections.ObservableList;
 @Table(name = "SessieKalender")
 public class SessieKalender {
 
-//	@Transient
 	@OneToMany(mappedBy = "sessieKalender")
 	private Collection<Sessie> sessieLijst;
 	@Id
@@ -160,9 +159,6 @@ public class SessieKalender {
 	public String toString() {
 		sessieLijst.size();
 		return sessieLijst.toString();
-//		return "SessieKalender [sessieLijst=" + sessieLijst + ", sessieKalenderID=" + sessieKalenderID + ", startDatum="
-//				+ startDatum + ", eindDatum=" + eindDatum + ", startDatumProperty=" + startDatumProperty
-//				+ ", eindDatumProperty=" + eindDatumProperty + "]";
 	}
 
 }

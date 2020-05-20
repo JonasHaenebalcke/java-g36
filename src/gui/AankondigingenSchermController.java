@@ -147,7 +147,6 @@ public class AankondigingenSchermController extends GridPane {
 		if (sessie != null) {
 			tvSessies.getSelectionModel().select(sessie);
 		}
-
 	}
 
 	private void initialize() {
@@ -161,9 +160,7 @@ public class AankondigingenSchermController extends GridPane {
 			colStart.setCellValueFactory(cel -> cel.getValue().getStartDatumSessieProperty());
 			colStartUur.setCellValueFactory(cel -> cel.getValue().getStartUurProperty());
 			colLokaal.setCellValueFactory(cel -> new ReadOnlyStringWrapper(cel.getValue().getLokaal()));
-			colOpenPlaatsen.setCellValueFactory(cel -> cel.getValue().getOpenPlaatsenCapaciteitProperty()); // moet nog
-																											// veranderd
-																											// worden
+			colOpenPlaatsen.setCellValueFactory(cel -> cel.getValue().getOpenPlaatsenCapaciteitProperty());
 			sc.changeSorter(null);
 			List<String> statussen = new ArrayList<>();
 			statussen.add("Alle Types");
@@ -172,9 +169,6 @@ public class AankondigingenSchermController extends GridPane {
 			}
 			cbxFilter.setItems(FXCollections.observableArrayList(statussen));
 			cbxFilter.getSelectionModel().selectFirst();
-//			cbxDagenOpVoorhand.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5, 6, 7));
-
-			System.out.println(ac.geefAankondigingen().toString());
 			btnMailVerzenden.setDisable(true);
 			btnVerwijder.setDisable(true);
 			btnWijzig.setDisable(true);
@@ -262,15 +256,11 @@ public class AankondigingenSchermController extends GridPane {
 		try {
 			lblError.setVisible(false);
 			Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
-//			if (gc.getIngelogdeVerantwoordelijke().getStatus().equals(Status.Actief)
-//					&& !gc.getIngelogdeVerantwoordelijke().getType().equals(TypeGebruiker.Gebruiker)) {
-//			Wordt toch bij login op gecontroleerd?
 			ac.voegAankondigingToe(txtTitel.getText(), txtAankondiging.getText(), false, sessie,
 					gc.getIngelogdeVerantwoordelijke());
 			lblError.setVisible(true);
 			lblError.setTextFill(Paint.valueOf("green"));
 			lblError.setText("Aankondiging werd succesvol opgeslagen");
-//			}
 		} catch (Exception e) {
 			lblError.setTextFill(Paint.valueOf("red"));
 			lblError.setVisible(true);
@@ -282,29 +272,18 @@ public class AankondigingenSchermController extends GridPane {
 	@FXML
 	void verzendMail(ActionEvent event) {
 		try {
-			System.err.println("VOOR IF");
 			if (tvSessies.getSelectionModel().getSelectedItem() == null) {
-				System.err.println("GOOIT ERROR");
 				throw new IllegalArgumentException("Sessie moet ingevuld zijn!");
 			}
 			Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
 
 			lblError.setVisible(true);
-//			if (gc.getIngelogdeVerantwoordelijke().getStatus().equals(Status.Actief)
-//					&& !gc.getIngelogdeVerantwoordelijke().getType().equals(TypeGebruiker.Gebruiker)) {
-//			Hier wordt al op gecontroleerd bij login, mag dit weg?
 			if (tvAankondigingen.getSelectionModel().getSelectedItem() != null) {
 				ac.setGekozenAankondiging(tvAankondigingen.getSelectionModel().getSelectedItem());
 			} else {
 				btnMailVerzenden.setDisable(true);
-
-//				ac.voegAankondigingToe(txtTitel.getText(), txtAankondiging.getText(), false, sessie,
-//						gc.getIngelogdeVerantwoordelijke());
-//				Heb ik in commentaar gezet, je kan nu enkel mail verzenden als er een aankondiging,
-//				die reeds aangemaakt is, geselecteerd is
 				Aankondiging nieuwAankondiging = new Aankondiging(txtTitel.getText(), txtAankondiging.getText(), sessie,
 						gc.getIngelogdeVerantwoordelijke(), false);
-				System.out.println(nieuwAankondiging);
 				ac.setGekozenAankondiging(nieuwAankondiging);
 			}
 			ac.verzendAankondiging();
@@ -312,9 +291,6 @@ public class AankondigingenSchermController extends GridPane {
 			lblError.setVisible(true);
 			lblError.setTextFill(Paint.valueOf("green"));
 			lblError.setText("De mail is verzonden!");
-//			} else
-//				throw new IllegalArgumentException("Je hebt niet de juiste rechten om een aankondiging te verzenden");
-
 		} catch (Exception e) {
 			lblError.setVisible(true);
 			lblError.setTextFill(Paint.valueOf("red"));
@@ -376,9 +352,6 @@ public class AankondigingenSchermController extends GridPane {
 	private void changeFilter() {
 		String filter = txtZoek.getText();
 		String status = cbxFilter.getValue().toString();
-
-		System.out.println("filter: " + filter);
-		System.out.println("status: " + status);
 		sc.changeFilter(filter, status, null);
 	}
 

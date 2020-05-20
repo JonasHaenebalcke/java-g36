@@ -35,20 +35,6 @@ import javafx.beans.property.*;
 @Table(name = "Gebruiker")
 public class Gebruiker implements Serializable {
 
-	// Attributen voor JavaFX
-//	@Transient
-//	private SimpleStringProperty gebruikerID = new SimpleStringProperty();
-//	@Transient
-//	private SimpleStringProperty gebruikersnaam = new SimpleStringProperty();
-//	@Transient
-//	private SimpleStringProperty voornaam = new SimpleStringProperty();
-//	@Transient
-//	private SimpleStringProperty familienaam = new SimpleStringProperty();
-//	@Transient
-//	private SimpleStringProperty mailadres = new SimpleStringProperty();
-//	@Transient // Dit is eigenlijk een pad, dus moet dit wel stringProp zijn?
-//	private StringProperty profielfoto = new SimpleStringProperty();
-
 	// Enums
 	@Column(name = "StatusGebruiker")
 	private int statusValue;
@@ -105,15 +91,10 @@ public class Gebruiker implements Serializable {
 	private String barcode;
 	@Column(name = "AantalKeerAfwezig")
 	private int aantalKeerAfwezig;
-//	@Column(name = "Type")
-//	private String typeDb;
-//	@Transient
 	@OneToMany(mappedBy = "verantwoordelijke")
 	private List<Sessie> OpenTeZettenSessies;
-//	@Transient
 	@OneToMany(mappedBy = "ingeschrevene")
 	private List<GebruikerSessie> gebruikerSessieLijst;
-//	@Transient
 	@OneToMany(mappedBy = "auteur")
 	private List<Feedback> feedbackLijst;
 	@OneToMany(mappedBy = "publicist")
@@ -142,29 +123,12 @@ public class Gebruiker implements Serializable {
 	@PostLoad
 	public void fillTransient() {
 		this.status = Status.of(statusValue);
-
-//		if (this.typeGebruiker == null) {
-//			this.typeGebruiker = typeGebruiker.Gebruiker;
-//		}
-//		try {
-//			if (this.typeGebruiker.toString().equalsIgnoreCase("Verantwoordelijke")) {
-//				this.typeGebruiker = typeGebruiker.Hoofdverantwoordelijke;
-//			} else {
-//				this.typeGebruiker = typeGebruiker.Verantwoordelijke;
-//			}
-//		} catch (NullPointerException e) {
-//			this.typeGebruiker = typeGebruiker.Gebruiker;
-//		}
-
 	}
 
 	@PrePersist
 	public void fillPersistent() {
 		if (status != null)
 			this.statusValue = status.getStatus();
-
-//		if (this.typeGebruiker == typeGebruiker.Gebruiker)
-//			this.typeGebruiker = null;
 	}
 
 	protected Gebruiker() {
@@ -239,13 +203,6 @@ public class Gebruiker implements Serializable {
 		} else if (getAantalKeerAfwezig() == 0) {
 			return 100;
 		} else {
-			System.out
-					.println(
-							geefAantalKeerAanwezig() + " / " + (geefAantalKeerAanwezig() + getAantalKeerAfwezig())
-									+ " = "
-									+ (((double) getAantalKeerAfwezig()
-											/ ((double) geefAantalKeerAanwezig() + (double) getAantalKeerAfwezig()))
-											* 100));
 			double ret = (((double) geefAantalKeerAanwezig()
 					/ ((double) geefAantalKeerAanwezig() + (double) getAantalKeerAfwezig())) * 100);
 
@@ -253,10 +210,11 @@ public class Gebruiker implements Serializable {
 		}
 	}
 
-	private static double rondAf(double value, int places) { // Source
+	private static double rondAf(double value, int places) {
+		// Source
 		// https://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
 		if (places < 0)
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Er ging iets mis bij het afronden.");
 
 		long factor = (long) Math.pow(10, places);
 		value = value * factor;
@@ -444,10 +402,6 @@ public class Gebruiker implements Serializable {
 		return gebruikerID;
 	}
 
-//	public StringProperty getGebruikerIDProperty() {
-//		return gebruikerID;
-//	}
-
 	public void setRandomGebruikerID() {
 		if (gebruikerID == null)
 			this.gebruikerID = UUID.randomUUID().toString();
@@ -456,10 +410,6 @@ public class Gebruiker implements Serializable {
 	public String getVoornaam() {
 		return voornaam;
 	}
-
-//	public StringProperty getVoornaamProperty() {
-//		return voornaam;
-//	}
 
 	private void setVoornaam(String voornaam) {
 		if (voornaam == null || voornaam.isBlank())
@@ -473,10 +423,6 @@ public class Gebruiker implements Serializable {
 		return familienaam;
 	}
 
-//	public StringProperty getFamilienaamProperty() {
-//		return familienaam;
-//	}
-
 	private void setFamilienaam(String familienaam) {
 		if (familienaam == null || familienaam.isBlank())
 			throw new NullPointerException("familienaam mag niet leeg zijn!");
@@ -488,10 +434,6 @@ public class Gebruiker implements Serializable {
 	public String getMailadres() {
 		return mailadres;
 	}
-
-//	public StringProperty getMailadresProperty() {
-//		return mailadres;
-//	}
 
 	private void setMailadres(String mailadres) {
 		if (mailadres == null || mailadres.isBlank())
@@ -508,12 +450,7 @@ public class Gebruiker implements Serializable {
 		return gebruikersnaam;
 	}
 
-//	public StringProperty getGebruikersnaamProperty() {
-//		return gebruikersnaam;
-//	}
-
 	private void setGebruikersnaam(String gebruikersnaam) {
-
 		if (gebruikersnaam == null || gebruikersnaam.isBlank())
 			throw new NullPointerException("Gebruikersnaam mag niet leeg zijn!");
 		if (!gebruikersnaam.matches("[0-9]{6}[a-z]{2}"))
@@ -526,10 +463,6 @@ public class Gebruiker implements Serializable {
 	public String getProfielfoto() {
 		return profielFoto;
 	}
-
-//	public StringProperty getProfielfotoProperty() {
-//		return profielfoto;
-//	}
 
 	private void setProfielfoto(String profielfoto) {
 		this.profielFoto = profielfoto;
@@ -683,14 +616,6 @@ public class Gebruiker implements Serializable {
 		this.aantalKeerAfwezig = aantalKeerAfwezig;
 	}
 
-//	public String getTypeDb() {
-//		return typeGebruiker;
-//	}
-
-//	public void setTypeDb(String typeDb) {
-//		this.typeDb = typeDb;
-//	}
-
 	public void setGebruikerID(String gebruikerID) {
 		this.gebruikerID = gebruikerID;
 	}
@@ -699,26 +624,9 @@ public class Gebruiker implements Serializable {
 	public String toString() {
 		return gebruikersnaam + ", " + voornaam + ", " + familienaam + ", " + mailadres + ", " + typeGebruiker + ", "
 				+ status;
-
-		/*
-		 * return "Gebruiker [status=" + status + ", type=" + typeGebruiker +
-		 * ", gebruikerID=" + gebruikerID + ", gebruikersnaam=" + gebruikersnaam +
-		 * ", voornaam=" + voornaam + ", familienaam=" + familienaam + ", mailadres=" +
-		 * mailadres + ", profielFoto=" + profielFoto + "]";
-		 */
 	}
 
 	public void addFeedback(Feedback feedback) {
 		feedbackLijst.add(feedback);
 	}
-
-//	@Override
-//	public String toString() {
-//		return "Gebruiker [gebruikerID=" + gebruikerID + ", gebruikersnaam=" + gebruikersnaam + ", voornaam=" + voornaam
-//				+ ", familienaam=" + familienaam + ", mailadres=" + mailadres + ", profielfoto=" + profielfoto
-//				+ ", statusValue=" + statusValue + ", status=" + status + ", type=" + type + ", gebruikerIdDb="
-//				+ gebruikerIdDb + ", gebruikersnaamDb=" + gebruikersnaamDb + ", voornaamDb=" + voornaamDb
-//				+ ", familienaamDb=" + familienaamDb + ", mailadresDb=" + mailadresDb + "]";
-//	}
-
 }

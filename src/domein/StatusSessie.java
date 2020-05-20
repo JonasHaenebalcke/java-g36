@@ -3,7 +3,6 @@ package domein;
 import java.util.Arrays;
 
 public enum StatusSessie {
-//	open, gesloten, InschrijvingenOpen, nietOpen;
 	open(0), gesloten(1), InschrijvingenOpen(2), nietOpen(3);
 	
 	private int status;

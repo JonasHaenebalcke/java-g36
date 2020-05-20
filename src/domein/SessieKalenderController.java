@@ -26,9 +26,8 @@ public class SessieKalenderController {
 		for (SessieKalender sk : geefSessieKalenderList()) {
 			if (sk.getStartDatum().isBefore(LocalDate.now()) && sk.getEindDatum().isAfter(LocalDate.now())) {
 				this.huidigeSessieKalender = sk;
-//				break;
+				break;
 			}
-			sk.setStringProperties();
 		}
 	}
 
@@ -72,8 +71,6 @@ public class SessieKalenderController {
 	}
 
 	public void wijzigSessieKalender(int id, LocalDate startDate, LocalDate eindDate) {
-//      try {
-
 		if ((LocalDate.now().getYear() == startDate.getYear() && LocalDate.now().getMonthValue() >= 9)
 				|| (LocalDate.now().getYear() == eindDate.getYear() && LocalDate.now().getMonthValue() < 9))
 			throw new IllegalArgumentException("Jaar van huidig sessiekalender mag niet worden aangepast");
@@ -81,22 +78,22 @@ public class SessieKalenderController {
 		for (SessieKalender sessieKalender : sessieKalenderList) {
 			if (sessieKalender.getSessieKalenderID() == id) {
 				sessieKalender.wijzigSessieKalender(startDate, eindDate);
-//				huidigeSessieKalender = sessieKalender;
 				sessieKalenderObservableList.stream().filter(s -> s.getSessieKalenderID() == id).findFirst().get()
 						.wijzigSessieKalender(startDate, eindDate);
-				GenericDaoJpa.startTransaction();
-				sessieKalenderRepo.update(sessieKalender);
-				GenericDaoJpa.commitTransaction();
-//					setStringProperties();
+				try {
+					GenericDaoJpa.startTransaction();
+					sessieKalenderRepo.update(sessieKalender);
+					GenericDaoJpa.commitTransaction();
+				} catch (Exception e) {
+					System.err.println(e.getMessage());
+				}
 			}
 		}
-//		} catch (Exception e) {
-//			System.err.println(e.getMessage());
-//		}
+
 	}
 
 	public void voegToeSessieKalender(LocalDate startDate, LocalDate eindDate) {
-//		try {
+//		
 		if (geefSessieKalenderList().stream().map(SessieKalender::getStartDatum).map(LocalDate::getYear)
 				.collect(Collectors.toList()).contains(startDate.getYear())
 				|| geefSessieKalenderList().stream().map(SessieKalender::getEindDatum).map(LocalDate::getYear)
@@ -108,22 +105,26 @@ public class SessieKalenderController {
 		sessieKalenderObservableList.add(sessieKalender);
 		sessieKalenderList.add(sessieKalender);
 		huidigeSessieKalender = sessieKalender;
-		GenericDaoJpa.startTransaction();
-		sessieKalenderRepo.insert(sessieKalender);
-		GenericDaoJpa.commitTransaction();
-//			setStringProperties();
-//		} catch (Exception e) {
-//			System.err.println(e.getMessage());
-//		}
+		try {
+			GenericDaoJpa.startTransaction();
+			sessieKalenderRepo.insert(sessieKalender);
+			GenericDaoJpa.commitTransaction();
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
 	}
 
 	public void voegSessieToe(int index, Gebruiker verantwoordelijke, LocalDateTime startDatum, LocalDateTime eindDatum,
 			String titel, String lokaal, int capaciteit, String omschrijving, String gastSpreker) {
 		Sessie sessie = new Sessie(verantwoordelijke, titel, lokaal, startDatum, eindDatum, capaciteit, omschrijving,
 				gastSpreker);
-		GenericDaoJpa.startTransaction();
-		huidigeSessieKalender.voegSessieToe(sessie);
-		GenericDaoJpa.commitTransaction();
+		try {
+			GenericDaoJpa.startTransaction();
+			huidigeSessieKalender.voegSessieToe(sessie);
+			GenericDaoJpa.commitTransaction();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void verwijderSessie(int index, Sessie sessie) {
@@ -132,6 +133,7 @@ public class SessieKalenderController {
 		GenericDaoJpa.commitTransaction();
 	}
 
+	// niet gevraagd
 //	public void verwijderSessieKalender(SessieKalender sessieKalender) {
 //		try {
 //		sessieKalenderList.remove(sessieKalender);
@@ -145,9 +147,8 @@ public class SessieKalenderController {
 
 	public ObservableList<Sessie> geefSessiesMaand(Number maand) {
 		try {
-			
-		return FXCollections.observableArrayList(huidigeSessieKalender.geefSessiesMaand(maand));
-		} catch(Exception e) {
+			return FXCollections.observableArrayList(huidigeSessieKalender.geefSessiesMaand(maand));
+		} catch (Exception e) {
 			throw new IllegalArgumentException(e.getMessage());
 		}
 	}

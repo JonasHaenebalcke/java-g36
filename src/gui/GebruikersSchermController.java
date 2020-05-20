@@ -122,13 +122,8 @@ public class GebruikersSchermController extends GridPane {
 	}
 
 	public void initialize() {
-//    	ObservableList<Gebruiker> items = dc.geefGebruikersObservableList();
-//    	 lvGebruikers.setItems(items);
-		// dc.GeefGebruikersList().forEach(g ->
-		// items.add(g/*g.getFamilienaam()+g.getVoornaam()*/));
 
 		initializeList();
-		// lvGebruikers.setItems(dc.geefGebruikersObservableList());
 		cbxStatus.setItems(FXCollections.observableArrayList(Status.values()));
 		cbxType.setItems(FXCollections.observableArrayList(TypeGebruiker.values()));
 		List<String> statussen = new ArrayList<>();
@@ -181,9 +176,7 @@ public class GebruikersSchermController extends GridPane {
 		try {
 			lblSucces.setText("");
 			lblError.setText("");
-			// int index = tvGebruikers.getSelectionModel().getSelectedIndex();
 			Gebruiker gebruiker = tvGebruikers.getSelectionModel().getSelectedItem();
-
 			// lvGebruikers.getSelectionModel().clearSelection();
 			dc.verwijderGebruiker(gebruiker);
 			initializeList();
@@ -191,7 +184,7 @@ public class GebruikersSchermController extends GridPane {
 			lblSucces.setText("Gebruiker werd succesvol verwijderd");
 		} catch (Exception e) {
 			lblError.setText(e.getMessage());
-			System.out.print(e.getMessage());
+			System.err.print(e.getMessage());
 		}
 	}
 
@@ -214,12 +207,8 @@ public class GebruikersSchermController extends GridPane {
 		try {
 			lblError.setText("");
 			lblSucces.setText("");
-			if (!inputVoornaam.getText().isBlank() && !inputNaam.getText().isBlank() && !inputEmail.getText().isBlank()
-					&& !inputGebruikersnaam.getText().isBlank()
-			/*
-			 * &&!cbxType.getValue().equals("Type") &&
-			 * !cbxStatus.getValue().equals("Status")
-			 */ ) {
+			if (!inputVoornaam.getText().isBlank() && !inputNaam.getText().isBlank()
+					&& !inputEmail.getText().isBlank()) {
 
 				dc.voegToeGebruiker(inputVoornaam.getText(), inputNaam.getText(), inputEmail.getText(),
 						inputGebruikersnaam.getText(), cbxType.getValue(), cbxStatus.getValue(), "profielfoto");
@@ -231,7 +220,6 @@ public class GebruikersSchermController extends GridPane {
 			} else {
 				lblError.setText("Tekstvakken mogen niet leeg zijn");
 			}
-
 		} catch (Exception e) {
 			lblError.setText(e.getMessage());
 		}
@@ -304,10 +292,6 @@ public class GebruikersSchermController extends GridPane {
 		String filter = txtZoek.getText();
 		String status = cbxFilter.getValue().toString();
 		String type = cbxFilterType.getValue().toString();
-
-		System.out.println("filter: " + filter);
-		System.out.println("status: " + status);
-		System.out.println("type: " + type);
 		dc.changeFilter(filter, type, status);
 	}
 
@@ -315,11 +299,8 @@ public class GebruikersSchermController extends GridPane {
 	void zoek(ActionEvent event) {
 		try {
 			changeFilter();
-
 		} catch (Exception e) {
 			lblError.setText(e.getMessage());
 		}
-
 	}
-
 }

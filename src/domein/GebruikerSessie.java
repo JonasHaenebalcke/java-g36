@@ -47,6 +47,7 @@ public class GebruikerSessie implements Serializable {
 	@Transient
 	private SimpleStringProperty inschrijvingsDatumProperty;
 
+//	idee
 //	private Feedback feedback;
 
 	protected GebruikerSessie() {
@@ -68,14 +69,6 @@ public class GebruikerSessie implements Serializable {
 		return aanwezig;
 	}
 
-//	public String getGebruikerID() {
-//		return gebruikerID;
-//	}
-//
-//	public int getSessieID() {
-//		return sessieID;
-//	}
-
 	public Sessie getSessie() {
 		return sessie;
 	}
@@ -88,6 +81,7 @@ public class GebruikerSessie implements Serializable {
 		this.aanwezig = aanwezig;
 	}
 
+//	idee
 //	public void addFeedback(String content, int score) {
 //		feedback = new Feedback(content, score);
 //	}
@@ -105,7 +99,7 @@ public class GebruikerSessie implements Serializable {
 	}
 
 	public StringProperty getInschrijvingsDatumProperty() {
-		if(inschrijvingsDatumProperty == null) {
+		if (inschrijvingsDatumProperty == null) {
 			inschrijvingsDatumProperty = new SimpleStringProperty();
 			setInschrijvingsDatumProperty(inschrijvingsDatum.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 		}

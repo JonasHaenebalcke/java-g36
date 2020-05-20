@@ -35,7 +35,6 @@ import javafx.collections.ObservableList;
 @Table(name = "Sessie")
 public class Sessie implements Serializable {
 
-//	@Transient
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "SessieID")
@@ -43,8 +42,6 @@ public class Sessie implements Serializable {
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "StatusSessie")
 	private StatusSessie statusSessie;
-//	@Column(name = "StatusSessie")
-//	private int statusSessieValue;
 	@ManyToOne
 	@JoinColumn(name = "VerantwoordelijkeId")
 	private Gebruiker verantwoordelijke;
@@ -111,20 +108,6 @@ public class Sessie implements Serializable {
 		wijzigSessie(titel, lokaal, startDatum, eindDatum, capaciteit, omschrijving, gastspreker, false);
 	}
 
-//	@PostLoad
-//	public void fillTransient() {
-//		this.statusSessie = StatusSessie.of(statusSessieValue);
-//	}
-//
-//	@PrePersist
-//	public void fillPersistent() {
-//		if (statusSessie != null)
-//			this.statusSessieValue = statusSessie.getStatus();
-//
-//		if (this.typeGebruiker == typeGebruiker.Gebruiker)
-//			this.typeGebruiker = null;
-//	}
-
 	public ObservableList<Feedback> getFeedbackObservable() {
 		if (feedbackObservableLijst == null) {
 			feedbackObservableLijst = FXCollections.observableArrayList(getFeedbackLijst());
@@ -133,6 +116,7 @@ public class Sessie implements Serializable {
 	}
 
 	public List<Feedback> getFeedbackLijst() {
+//		idee
 //		List<Feedback> feedbackLijst = new ArrayList<Feedback>();
 //		for (GebruikerSessie gebruikerSessie : gebruikerSessieLijst) {
 //			Feedback feedback = gebruikerSessie.getFeedback();
@@ -149,7 +133,6 @@ public class Sessie implements Serializable {
 	}
 
 	public void wijzigFeedback(int feedbackID, String content, int score) {
-
 		for (Feedback feedback : feedbackLijst) {
 			if (feedback.getFeedbackID() == feedbackID) {
 				feedback.wijzigFeedback(content, score);
@@ -259,6 +242,7 @@ public class Sessie implements Serializable {
 	}
 
 	private void setEindDatum(LocalDateTime eindDatum) {
+		// leeg want moet nog gecontroleerd worden op uren
 //		if (!(ChronoUnit.DAYS.between(startDatum.toLocalDate(), eindDatum.toLocalDate()) == 0
 //				|| ChronoUnit.DAYS.between(startDatum.toLocalDate(), eindDatum.toLocalDate()) == 1))
 //			throw new IllegalArgumentException("De einddatum moet op dezelfde dag of 1 dag na de startdatum liggen.");
@@ -394,11 +378,11 @@ public class Sessie implements Serializable {
 			setStartUurProperty();
 		return startUur;
 	}
-	
+
 	public void setOpenPlaatsenCapaciteitProperty() {
 		if (openPlaatsenCapaciteit == null)
 			openPlaatsenCapaciteit = new SimpleStringProperty();
-		openPlaatsenCapaciteit.set(String.valueOf(getGebruikerSessieLijst().size())+ "/" + String.valueOf(capaciteit));
+		openPlaatsenCapaciteit.set(String.valueOf(getGebruikerSessieLijst().size()) + "/" + String.valueOf(capaciteit));
 	}
 
 	public SimpleStringProperty getOpenPlaatsenCapaciteitProperty() {
@@ -417,9 +401,7 @@ public class Sessie implements Serializable {
 		setAantalAanwezigenProperty();
 		setGemiddleScoreProperty();
 		setOpenPlaatsenCapaciteitProperty();
-		setDuurProperty();// Setter wordt opgeroepen in getter (dit is eigenlijke dubbele code dus zou
-		// opgekuist moeten worden)
-		
+		setDuurProperty();
 	}
 
 	private void setDatums(LocalDateTime startDatum, LocalDateTime eindDatum) {
@@ -443,7 +425,6 @@ public class Sessie implements Serializable {
 			if (gs.isAanwezig())
 				ret++;
 		}
-
 		return ret;
 	}
 
@@ -496,8 +477,8 @@ public class Sessie implements Serializable {
 		for (GebruikerSessie gebruikerSessie : gebruikerSessieLijst) {
 			if (gebruikerSessie.getIngeschrevene().equals(ingeschrevene)) {
 				gebruikerGevonden = true;
-				
-				if (ingeschreven) 
+
+				if (ingeschreven)
 					gebruikerSessie.wijzigAanwezigheid(aanwezig);
 				else {
 					ingeschrevene.verwijderGebruikerSessie(gebruikerSessie);
@@ -513,7 +494,7 @@ public class Sessie implements Serializable {
 				gebruikerSessie.wijzigAanwezigheid(aanwezig);
 				ingeschrevene.addGebruikerSessie(gebruikerSessie);
 				gebruikerSessieLijst.add(gebruikerSessie);
-				res= gebruikerSessie;
+				res = gebruikerSessie;
 			} else
 				throw new IllegalArgumentException("Gebruiker is al uitgeschreven voor deze sessie");
 		}
@@ -541,7 +522,6 @@ public class Sessie implements Serializable {
 	}
 
 	public int getSessieID() {
-		// TODO Auto-generated method stub
 		return sessieID;
 	}
 }

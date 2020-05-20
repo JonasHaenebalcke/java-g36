@@ -163,8 +163,6 @@ public class BeheerSessieSchermController extends GridPane {
 		this(sc, gc, ac);
 		tblSessies.getSelectionModel().select(sessie);
 		sc.changeSorter(null);
-//		sc.setHuidigeSessie(sessie);
-//		textWaardeSessieInvullen(sessie);
 	}
 
 	private void initialize() {
@@ -188,11 +186,11 @@ public class BeheerSessieSchermController extends GridPane {
 		} catch (NullPointerException e) {
 			lblErrorSessies.setVisible(true);
 			lblErrorSessies.setText(e.getMessage());
-			System.out.println(e.getMessage());
+			System.err.println(e.getMessage());
 		} catch (Exception e) {
 			lblErrorSessies.setVisible(true);
 			lblErrorSessies.setText(e.toString());
-			System.out.println(e.getMessage());
+			System.err.println(e.getMessage());
 		}
 	}
 
@@ -212,7 +210,6 @@ public class BeheerSessieSchermController extends GridPane {
 				btnVerwijder.setDisable(false);
 				txtTitel.setText(newV.getTitel());
 				txtGastspreker.setText(newV.getGastspreker());
-				// verantwoordelijke = sessieObs.getValue().getVerantwoordelijke();
 				lblVerantwoordelijke.setText((sessieObs.getValue().getVerantwoordelijke().getFamilienaam() + " "
 						+ sessieObs.getValue().getVerantwoordelijke().getVoornaam()));
 				txtCapaciteit.setText(Integer.toString(newV.getCapaciteit()));
@@ -232,10 +229,6 @@ public class BeheerSessieSchermController extends GridPane {
 
 				if (newV.getStatusSessie() == StatusSessie.open || newV.getStatusSessie() == StatusSessie.gesloten
 						|| newV.getEindDatum().isBefore(LocalDateTime.now())) {
-
-					// System.out.println("FeedbackLijst:" +
-					// sessieObs.getValue().getFeedbackLijst()); // {IndirectList: not instantiated}
-//					tvFeedback.setItems(FXCollections.observableArrayList(newV.getFeedbackLijst())
 					tvFeedback.setItems(
 							newV.getFeedbackObservable().sorted(Comparator.comparing(Feedback::getTimeWritten)));
 					colAuteurFeedback.setCellValueFactory(cel -> cel.getValue().getFeedbackAuteurProperty());
@@ -257,61 +250,9 @@ public class BeheerSessieSchermController extends GridPane {
 		});
 	}
 
-//	private void textWaardeSessieInvullen(Sessie sessie) {
-//		lblSucces.setText("");
-//		btnPasAan.setDisable(false);
-//		btnVerwijder.setDisable(false);
-//		txtTitel.setText(sessie.getTitel());
-//		txtGastspreker.setText(sessie.getGastspreker());
-//		// verantwoordelijke = sessieObs.getValue().getVerantwoordelijke();
-//		lblVerantwoordelijke.setText((sessie.getVerantwoordelijke().getFamilienaam() + " "
-//				+ sessie.getVerantwoordelijke().getVoornaam()));
-//		txtCapaciteit.setText(Integer.toString(sessie.getCapaciteit()));
-//		txtLokaal.setText(sessie.getLokaal());
-//		txtOmschrvijving.setText(sessie.getOmschrijving());
-//		checkboxOpenVrInSchrijvingen.setSelected(sessie.isInschrijvingenOpen());
-//		dpEinddatum.setValue(sessie.getEindDatum().toLocalDate());
-//		dpStartdatum.setValue(sessie.getStartDatum().toLocalDate());
-//		txtEinduur.setText(sessie.getEindDatum().format(DateTimeFormatter.ofPattern("HH:mm")));
-//		txtStartuur.setText(sessie.getStartDatum().format(DateTimeFormatter.ofPattern("HH:mm")));
-//
-//		btnVoegToe.setDisable(true);
-//
-//		// tvMedia.setItems();
-//		// colMediaTitel.setCellValueFactory(cel -> cel.getValue());
-//		// colMediaLink.setCellValueFactory(cel -> cel.getValue());
-//
-//		if (sessie.getStatusSessie() == StatusSessie.open || sessie.getStatusSessie() == StatusSessie.gesloten
-//				|| sessie.getEindDatum().isBefore(LocalDateTime.now())) {
-//
-//			// System.out.println("FeedbackLijst:" +
-//			// sessieObs.getValue().getFeedbackLijst()); // {IndirectList: not instantiated}
-////			tvFeedback.setItems(FXCollections.observableArrayList(newV.getFeedbackLijst())
-//			tvFeedback.setItems(
-//					sessie.getFeedbackObservable().sorted(Comparator.comparing(Feedback::getTimeWritten)));
-//			colAuteurFeedback.setCellValueFactory(cel -> cel.getValue().getFeedbackAuteurProperty());
-//			colScoreFeedback.setCellValueFactory(cel -> cel.getValue().getScoreProperty());
-//			colFeedback.setCellValueFactory(cel -> cel.getValue().getFeedbackProperty());
-//			colDatumFeedback.setCellValueFactory(cel -> cel.getValue().getDatumFeedbackroperty());
-//			lblGemiddeldeScore.setVisible(true);
-//			lblFeedback.setVisible(true);
-//			tvFeedback.setVisible(true);
-//			lblGemiddeldeScoreWergave.setVisible(true);
-//			lblGemiddeldeScoreWergave.setText(Double.toString(sessie.geefGemiddeldeScore()));
-//		} else {
-//			lblFeedback.setVisible(false);
-//			tvFeedback.setVisible(false);
-//			lblGemiddeldeScoreWergave.setVisible(false);
-//			lblGemiddeldeScore.setVisible(false);
-//		}
-//	}
-
 	@FXML
 	void geefSessiesGekozenStatus(ActionEvent event) {
 		try {
-//			System.out.println(cbxStatusSessie.getValue().name() + " ");
-			System.out.println(cbxStatusSessie.getValue() + " ");
-//			tblSessies.setItems(sc.geefSessiesObservable()); // nog aanpassen
 			if (cbxStatusSessie.getValue().equals(StatusSessie.open.toString())
 					|| cbxStatusSessie.getValue().equals("Alle")
 					|| cbxStatusSessie.getValue().equals(StatusSessie.gesloten.toString())//
@@ -338,9 +279,6 @@ public class BeheerSessieSchermController extends GridPane {
 	private void changeFilter() {
 		String filter = txtSessie.getText();
 		String status = cbxStatusSessie.getValue().toString();
-
-		System.out.println("filter: " + filter);
-		System.out.println("status: " + status);
 		sc.changeFilter(filter, status, null);
 	}
 
@@ -351,7 +289,6 @@ public class BeheerSessieSchermController extends GridPane {
 			if (!txtTitel.getText().isBlank() && !txtLokaal.getText().isBlank() && (dpStartdatum.getValue() != null)
 					&& (dpEinddatum.getValue() != null) && !txtStartuur.getText().isBlank()
 					&& !txtEinduur.getText().isBlank() && !txtCapaciteit.getText().isBlank()) {
-				// if (txtCapaciteit.getText().matches("")) {
 				// if(txtStartuur.getText().matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$") &&
 				// txtEinduur.getText().matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$")) {
 
@@ -384,14 +321,13 @@ public class BeheerSessieSchermController extends GridPane {
 		} catch (Exception e) {
 			lblErrorDetailsSessie.setVisible(true);
 			lblErrorDetailsSessie.setText(e.getMessage());
-			System.out.println(e.getMessage());
+			System.err.println(e.getMessage());
 		}
 	}
 
 	@FXML
 	void verwijderSessie(ActionEvent event) {
 		try {
-
 			sc.verwijderHuidigeSessie();
 			initialize();
 			lblSucces.setVisible(true);
@@ -401,7 +337,7 @@ public class BeheerSessieSchermController extends GridPane {
 		} catch (Exception e) {
 			lblErrorDetailsSessie.setVisible(true);
 			lblErrorDetailsSessie.setText(e.getMessage());
-			System.out.print(e.getMessage());
+			System.err.print(e.getMessage());
 		}
 	}
 
@@ -416,15 +352,12 @@ public class BeheerSessieSchermController extends GridPane {
 				// txtEinduur.getText().matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$")) {
 
 				// bij nieuwe sessie is de ingelogde persoon ge verantwoordelijke
-				// System.out.println("Ingelogde: " +
-				// ingelogde.geefIngelogdeVerantwoordelijke());
-				
 				sc.voegSessieToe(gc.getIngelogdeVerantwoordelijke(), txtTitel.getText(), txtLokaal.getText(),
 						zetOmNaarDateTime(dpStartdatum.getValue(), txtStartuur.getText()),
 						zetOmNaarDateTime(dpEinddatum.getValue(), txtEinduur.getText()),
 						Integer.parseInt(txtCapaciteit.getText()), txtOmschrvijving.getText(),
 						txtGastspreker.getText());
-				//tblSessies.getSelectionModel().selectLast();
+				// tblSessies.getSelectionModel().selectLast();
 				initialize();
 				lblSucces.setVisible(true);
 				lblSucces.setText("De sessie werd succesvol toegevoegd");
@@ -434,11 +367,6 @@ public class BeheerSessieSchermController extends GridPane {
 				lblErrorDetailsSessie.setText("Tekstvakken mogen niet leeg zijn");
 
 			}
-			/*
-			 * } catch (IllegalArgumentException e) {
-			 * lblErrorDetailsSessie.setVisible(true);
-			 * lblErrorDetailsSessie.setText(e.getMessage());
-			 */
 		} catch (NumberFormatException e) {
 			lblErrorDetailsSessie.setText("Capaciteit moet een positief geheel getal zijn.");
 
@@ -454,20 +382,6 @@ public class BeheerSessieSchermController extends GridPane {
 	@FXML
 	void zoekSessie(ActionEvent event) {
 		try {
-//			String sessieTitel = txtSessie.getText();
-//			System.out.println(sessieTitel); // werkt
-
-//		Stream<Sessie> l = tblSessies.getItems().stream()
-//			.filter(sessie -> sessie.getTitel() == sessieTitel); // stream;
-//			
-//			
-//			.findAny()
-//			.ifPresent(item -> 
-//			{
-//				tblSessies.getSelectionModel().select(item);
-//				tblSessies.scrollTo(item);
-//			});*/
-
 			changeFilter();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -514,7 +428,6 @@ public class BeheerSessieSchermController extends GridPane {
 		lblGemiddeldeScore.setVisible(false);
 		// lblSucces.setVisible(false);
 		lblSucces.setText("");
-
 	}
 
 	private LocalDateTime zetOmNaarDateTime(LocalDate datum, String uur) {
