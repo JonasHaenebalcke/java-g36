@@ -152,7 +152,7 @@ public class AankondigingTest {
 	@MethodSource("juisteGegevens")
 	public void wijzigAankondiging_slaagt(String titel, String tekst, boolean isVerzonden) {
 		Aankondiging aankondiging = new Aankondiging("titel", "aankondiging", sessie, verantwoordelijke, false);
-		aankondiging.wijzigAankondiging(titel, tekst, isVerzonden);
+		aankondiging.wijzigAankondiging(titel, tekst);
 
 		Assertions.assertEquals(titel, aankondiging.getTitel());
 		Assertions.assertEquals(tekst, aankondiging.getAankondingingTekst());
@@ -167,7 +167,7 @@ public class AankondigingTest {
 		Aankondiging aankondiging = new Aankondiging("titel", "aankondiging", sessie, hoofdVerantwoordelijke,
 				true);
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-		aankondiging.wijzigAankondiging("nieuwe titel", "nieuwe aankondiging", true);
+		aankondiging.wijzigAankondiging("nieuwe titel", "nieuwe aankondiging");
 		});
 
 		Assertions.assertEquals("titel", aankondiging.getTitel());

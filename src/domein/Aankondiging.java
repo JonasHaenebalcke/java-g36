@@ -134,13 +134,12 @@ public class Aankondiging implements Serializable {
 		this.publicist = publicist;
 	}
 
-	public void wijzigAankondiging(String titel, String aankondigingTekst, boolean isVerzonden) {
+	public void wijzigAankondiging(String titel, String aankondigingTekst) {
 		if (this.isVerzonden) {
 			throw new IllegalArgumentException("Je kan de aankondiging niet meer aanpassen, want hij is al verzonden");
 		} else {
 			setTitel(titel);
 			setAankondingingTekst(aankondigingTekst);
-			setVerzonden(isVerzonden);
 			setStringProperties();
 		}
 	}

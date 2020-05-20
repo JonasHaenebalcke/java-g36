@@ -112,6 +112,12 @@ public class AankondigingenSchermController extends GridPane {
 	private Button btnMailVerzenden;
 
 	@FXML
+	private Button btnVerwijder;
+
+	@FXML
+	private Button btnWijzig;
+
+	@FXML
 	private ComboBox<String> cbxFilter;
 
 	private SessieController sc;
@@ -146,6 +152,7 @@ public class AankondigingenSchermController extends GridPane {
 
 	private void initialize() {
 		try {
+
 			tvSessies.setItems(sc.geefSessiesSorted());
 			colVerantwoordelijke.setCellValueFactory(
 					cel -> new ReadOnlyStringWrapper(cel.getValue().getVerantwoordelijke().getFamilienaam() + " "
@@ -169,6 +176,8 @@ public class AankondigingenSchermController extends GridPane {
 
 			System.out.println(ac.geefAankondigingen().toString());
 			btnMailVerzenden.setDisable(true);
+			btnVerwijder.setDisable(true);
+			btnWijzig.setDisable(true);
 			initializeTvAankondigingen();
 			addListenerToTableAankondigingen();
 			addListenerToTableSessies();
@@ -185,6 +194,8 @@ public class AankondigingenSchermController extends GridPane {
 			public void changed(ObservableValue<? extends Aankondiging> observable, Aankondiging oldValue,
 					Aankondiging newValue) {
 				lblError.setVisible(false);
+				btnVerwijder.setDisable(false);
+				btnWijzig.setDisable(false);
 				btnMailVerzenden.setDisable(false);
 				if (newValue != null) {
 					txtTitel.setText(newValue.titel);
@@ -261,6 +272,7 @@ public class AankondigingenSchermController extends GridPane {
 			lblError.setText("Aankondiging werd succesvol opgeslagen");
 //			}
 		} catch (Exception e) {
+			lblError.setTextFill(Paint.valueOf("red"));
 			lblError.setVisible(true);
 			lblError.setText(e.getMessage());
 			System.err.println(e.getMessage());
@@ -270,6 +282,13 @@ public class AankondigingenSchermController extends GridPane {
 	@FXML
 	void verzendMail(ActionEvent event) {
 		try {
+			System.err.println("VOOR IF");
+			if (tvSessies.getSelectionModel().getSelectedItem() == null) {
+				System.err.println("GOOIT ERROR");
+				throw new IllegalArgumentException("Sessie moet ingevuld zijn!");
+			}
+			Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
+
 			lblError.setVisible(true);
 //			if (gc.getIngelogdeVerantwoordelijke().getStatus().equals(Status.Actief)
 //					&& !gc.getIngelogdeVerantwoordelijke().getType().equals(TypeGebruiker.Gebruiker)) {
@@ -278,7 +297,6 @@ public class AankondigingenSchermController extends GridPane {
 				ac.setGekozenAankondiging(tvAankondigingen.getSelectionModel().getSelectedItem());
 			} else {
 				btnMailVerzenden.setDisable(true);
-				Sessie sessie = tvSessies.getSelectionModel().getSelectedItem();
 
 //				ac.voegAankondigingToe(txtTitel.getText(), txtAankondiging.getText(), false, sessie,
 //						gc.getIngelogdeVerantwoordelijke());
@@ -290,7 +308,7 @@ public class AankondigingenSchermController extends GridPane {
 				ac.setGekozenAankondiging(nieuwAankondiging);
 			}
 			ac.verzendAankondiging();
-			initializeTvAankondigingen();
+			initializeTvAankondigingen(tvSessies.getSelectionModel().getSelectedItem());
 			lblError.setVisible(true);
 			lblError.setTextFill(Paint.valueOf("green"));
 			lblError.setText("De mail is verzonden!");
@@ -301,6 +319,40 @@ public class AankondigingenSchermController extends GridPane {
 			lblError.setVisible(true);
 			lblError.setTextFill(Paint.valueOf("red"));
 			lblError.setText(e.getMessage());
+			System.err.println(e.getMessage());
+		}
+	}
+
+	@FXML
+	void aankondigingWijzigen(ActionEvent event) {
+		try {
+			lblError.setVisible(false);
+			ac.setGekozenAankondiging(tvAankondigingen.getSelectionModel().getSelectedItem());
+			ac.wijzigAankondiging(txtTitel.getText(), txtAankondiging.getText());
+			lblError.setVisible(true);
+			lblError.setTextFill(Paint.valueOf("green"));
+			lblError.setText("Aankondiging werd succesvol gewijzigd");
+		} catch (Exception e) {
+			lblError.setTextFill(Paint.valueOf("red"));
+			lblError.setVisible(true);
+			lblError.setText(e.getMessage());
+			System.err.println(e.getMessage());
+		}
+	}
+
+	@FXML
+	void aankondigingVerwijderen(ActionEvent event) {
+		try {
+			lblError.setVisible(false);
+			ac.verwijderAankondiging(tvAankondigingen.getSelectionModel().getSelectedItem());
+			lblError.setVisible(true);
+			lblError.setTextFill(Paint.valueOf("green"));
+			lblError.setText("Aankondiging werd succesvol verwijderd");
+		} catch (Exception e) {
+			lblError.setTextFill(Paint.valueOf("red"));
+			lblError.setVisible(true);
+			lblError.setText(e.getMessage());
+			System.err.println(e.getMessage());
 		}
 	}
 
