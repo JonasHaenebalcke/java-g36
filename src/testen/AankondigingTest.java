@@ -143,15 +143,13 @@ public class AankondigingTest {
 	static Stream<Arguments> juisteGegevens() {
 		return Stream.of(Arguments.of("nieuwe titel", "aankondiging", false), // CTRL ALT pijltje benede
 				Arguments.of("titel", "nieuwe aankondiging", false), // ctrl shift A
-				Arguments.of("nieuwe titel", "aankondiging", false), Arguments.of("titel", "aankondiging", true),
-				Arguments.of("nieuwe titel", "aankondiging", true), Arguments.of("titel", "nieuwe aankondiging", true),
-				Arguments.of("nieuwe titel", "nieuwe aankondiging", true));
+				Arguments.of("nieuwe titel", "aankondiging", false));
 	}
 
 	@ParameterizedTest
 	@MethodSource("juisteGegevens")
 	public void wijzigAankondiging_slaagt(String titel, String tekst, boolean isVerzonden) {
-		Aankondiging aankondiging = new Aankondiging("titel", "aankondiging", sessie, verantwoordelijke, false);
+		Aankondiging aankondiging = new Aankondiging("titel", "aankondiging", sessie, verantwoordelijke, isVerzonden);
 		aankondiging.wijzigAankondiging(titel, tekst);
 
 		Assertions.assertEquals(titel, aankondiging.getTitel());
